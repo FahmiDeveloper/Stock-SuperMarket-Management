@@ -9,21 +9,39 @@ import { environment } from 'src/environments/environment';
 
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { UserComponent } from './user/user.component';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+import { RouterModule } from '@angular/router';
+import { rootRouterConfig } from './app.routes';
+import { AuthService } from './core/auth.service';
+import { UserService } from './core/user.service';
+import { AuthGuard } from './core/auth.guard';
+import { HomeResolver } from './home/home.resolver';
+import { HeaderComponent } from './header/header.component';
+import { UserResolver } from './user/user.resolver';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    UserComponent,
+    RegisterComponent,
+    LoginComponent,
+    HomeComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule.forRoot(rootRouterConfig, { useHash: false }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule // imports firebase/auth, only needed for auth features
   ],
-  providers: [],
+  providers: [AuthService, UserService, UserResolver, AuthGuard, HomeResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
