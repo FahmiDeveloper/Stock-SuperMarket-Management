@@ -38,4 +38,16 @@ export class UserService {
       }, err => reject(err))
     })
   }
+
+  isAuthentificated() {
+    return new Promise<any>((resolve, reject) => {
+      var user = firebase.auth().onAuthStateChanged(function(user){
+        if (user) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      })
+    })
+  }
 }

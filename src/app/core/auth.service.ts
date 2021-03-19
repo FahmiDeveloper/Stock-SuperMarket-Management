@@ -3,13 +3,21 @@ import 'rxjs/add/operator/toPromise';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import firebase from 'firebase';
+import { BehaviorSubject } from "rxjs";
+import { UserService } from "./user.service";
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
+
 export class AuthService {
 
+  isConnected:BehaviorSubject<boolean>= new BehaviorSubject(false);
+
   constructor(
-   public afAuth: AngularFireAuth
- ){}
+   public afAuth: AngularFireAuth,
+   public userService:UserService
+ ){
+    this.userService.isAuthentificated().then(res=>this.isConnected.next(res));
+ }
 
   doFacebookLogin(){
     return new Promise<any>((resolve, reject) => {

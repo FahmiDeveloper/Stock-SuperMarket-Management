@@ -31,32 +31,37 @@ export class LoginComponent {
   tryFacebookLogin(){
     this.authService.doFacebookLogin()
     .then(res => {
-      this.router.navigate(['/home']);
+      this.onSuccess();
     })
   }
 
   tryTwitterLogin(){
     this.authService.doTwitterLogin()
     .then(res => {
-      this.router.navigate(['/home']);
+      this.onSuccess();
     })
   }
 
   tryGoogleLogin(){
     this.authService.doGoogleLogin()
     .then(res => {
-      this.router.navigate(['/home']);
+      this.onSuccess();
     })
   }
 
   tryLogin(value){
     this.authService.doLogin(value)
     .then(res => {
-      this.router.navigate(['/home']);
+      this.onSuccess();
     }, err => {
       console.log(err);
       this.errorMessage = err.message;
     })
+  }
+
+  onSuccess(){
+    this.router.navigate(['/home']);
+    this.authService.isConnected.next(true);
   }
 
 }

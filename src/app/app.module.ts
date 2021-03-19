@@ -41,7 +41,7 @@ import { UserResolver } from './user/user.resolver';
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule // imports firebase/auth, only needed for auth features
   ],
-  providers: [AuthService, UserService, UserResolver, AuthGuard, HomeResolver],
+  providers: [UserService, UserResolver, AuthGuard, HomeResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
