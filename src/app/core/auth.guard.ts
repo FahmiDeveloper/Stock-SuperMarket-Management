@@ -4,7 +4,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { UserService } from '../core/user.service';
 
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
+
 export class AuthGuard implements CanActivate {
 
   constructor(

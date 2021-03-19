@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-4 col-md-offset-4">
       <div class="card" style="width: 20rem;">
         <img class="card-img-top image" [src]="user.image" *ngIf="user.image" alt="User image">
@@ -19,4 +19,169 @@
         </div>
       </div>
     </div>
+</div> -->
+
+<div>
+  <h1 class="text-center">Welcome</h1>
+  <hr/>
+  <div class="row">
+    <div class="col-md-6">
+          <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+            <div class="row">
+              <div class="col-md-7 mt-2">
+                <h2 class="marginText">Employees</h2>
+                <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
+                <div>Date: {{ event?.time }}</div>
+                <div>Price: \${{ event?.price }}</div>
+                <div *ngIf="event?.location">
+                    <span>Location: {{ event?.location?.address }}</span>
+                    <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <img class="picture" src="/assets/pictures/employees.jpg"/>
+              </div>
+            </div> 
+          </div>
+    </div>
+    <div class="col-md-6">
+      <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+        <div class="row">
+          <div class="col-md-7 mt-2">
+            <h2 class="marginText">Products</h2>
+            <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
+            <div>Date: {{ event?.time }}</div>
+            <div>Price: \${{ event?.price }}</div>
+            <div *ngIf="event?.location">
+                <span>Location: {{ event?.location?.address }}</span>
+                <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <img class="picture" src="/assets/pictures/products.jpg"/>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-md-6">
+          <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+            <div class="row">
+              <div class="col-md-7 mt-2">
+                <h2 class="marginText">Categories</h2>
+                <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
+                <div>Date: {{ event?.time }}</div>
+                <div>Price: \${{ event?.price }}</div>
+                <div *ngIf="event?.location">
+                    <span>Location: {{ event?.location?.address }}</span>
+                    <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <img class="picture" src="/assets/pictures/categories.PNG"/>
+              </div>
+            </div> 
+          </div>
+    </div>
+    <div class="col-md-6">
+      <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+        <div class="row">
+          <div class="col-md-7 mt-2">
+            <h2 class="marginText">Stock</h2>
+            <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
+            <div>Date: {{ event?.time }}</div>
+            <div>Price: \${{ event?.price }}</div>
+            <div *ngIf="event?.location">
+                <span>Location: {{ event?.location?.address }}</span>
+                <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <img class="picture" src="/assets/pictures/stock.jpg"/>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-md-6">
+          <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+            <div class="row">
+              <div class="col-md-7 mt-2">
+                <h2 class="marginText">Suppliers</h2>
+                <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
+                <div>Date: {{ event?.time }}</div>
+                <div>Price: \${{ event?.price }}</div>
+                <div *ngIf="event?.location">
+                    <span>Location: {{ event?.location?.address }}</span>
+                    <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <img class="picture" src="/assets/pictures/suppliers.jpg"/>
+              </div>
+            </div> 
+          </div>
+    </div>
+    <div class="col-md-6">
+      <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+        <div class="row">
+          <div class="col-md-7 mt-2">
+            <h2 class="marginText">Invoices</h2>
+            <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
+            <div>Date: {{ event?.time }}</div>
+            <div>Price: \${{ event?.price }}</div>
+            <div *ngIf="event?.location">
+                <span>Location: {{ event?.location?.address }}</span>
+                <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <img class="picture" src="/assets/pictures/invoices.jpg"/>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="well hoverwell thumbnail styleDiv">
+        <h4>ABOUT THE COMPANY</h4>
+        <div>
+          This is my first application Using Angular with database Firebase, 
+          it included every thing related to management of stock in a super 
+          market and i hope that it will success
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+        <h4>USEFUL LINKS</h4>
+        <div><a routerLink="/profileser">Your Account</a></div>
+        <div><a routerLink="/profileser">About Us</a></div>
+        <div><a routerLink="/profileser">Terms & Conditions</a></div>
+        <div><a routerLink="/profileser">Help</a></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div routerLink="/user" class="well hoverwell thumbnail styleDiv">
+        <h4>CONTACT</h4>
+        <div><i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Route Gabes,  4130 North Medenine</div>
+        <div><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;SuperMarket@gmail.com</div>
+        <div><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;71 600 307</div>
+        <div><i class="fa fa-fax" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;71 600 310</div>
+      </div>
+    </div>
+  </div>
+
 </div>
