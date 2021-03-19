@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public authService: AuthService,private location : Location) { }
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
   }
@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   logout(){
     this.authService.doLogout()
     .then((res) => {
-      this.location.back();
+      this.router.navigate(['/login']);
     }, (error) => {
       console.log("Logout error", error);
     });

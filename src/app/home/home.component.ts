@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { FirebaseUserModel } from '../core/user.model';
 import { UserService } from '../core/user.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +19,6 @@ export class HomeComponent implements OnInit {
     public userService: UserService,
     public authService: AuthService,
     private route: ActivatedRoute,
-    private location : Location,
     private fb: FormBuilder
   ) {
 
@@ -48,14 +46,4 @@ export class HomeComponent implements OnInit {
       console.log(res);
     }, err => console.log(err))
   }
-
-  logout(){
-    this.authService.doLogout()
-    .then((res) => {
-      this.location.back();
-    }, (error) => {
-      console.log("Logout error", error);
-    });
-  }
-
 }
