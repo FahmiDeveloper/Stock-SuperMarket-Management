@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
 
   user: FirebaseUserModel = new FirebaseUserModel();
   profileForm: FormGroup;
-  event: {};
+  event: any;
 
   constructor(
     public userService: UserService,
