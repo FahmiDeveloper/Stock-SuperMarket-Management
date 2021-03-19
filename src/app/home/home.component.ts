@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { FirebaseUserModel } from '../core/user.model';
 import { UserService } from '../core/user.service';
@@ -19,7 +19,8 @@ export class HomeComponent implements OnInit {
     public userService: UserService,
     public authService: AuthService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder, 
+    private router: Router
   ) {
 
   }
@@ -45,5 +46,14 @@ export class HomeComponent implements OnInit {
     .then(res => {
       console.log(res);
     }, err => console.log(err))
+  }
+
+  logout(){
+    this.authService.doLogout()
+    .then((res) => {
+      this.router.navigate(['/login']);
+    }, (error) => {
+      console.log("Logout error", error);
+    });
   }
 }

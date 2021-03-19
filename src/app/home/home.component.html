@@ -6,6 +6,7 @@
         <div *ngIf='user.provider != "password"'class="card-body">
           <h4 class="card-title">{{user.name}}</h4>
           <p class="card-text">This is an example of Social Authentication using Firebase in an Angular 7 web app. </p>
+          <a (click)="logout()" style="cursor: pointer;">Welcome John</a>
         </div>
         <div *ngIf='user.provider == "password"'class="card-body">
           <form [formGroup]="profileForm">
