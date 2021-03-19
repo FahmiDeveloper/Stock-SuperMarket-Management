@@ -3,7 +3,8 @@ import { Resolve, ActivatedRouteSnapshot, Router } from "@angular/router";
 import { UserService } from '../core/user.service';
 import { FirebaseUserModel } from '../core/user.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
+
 export class UserResolver implements Resolve<FirebaseUserModel> {
 
   constructor(public userService: UserService, private router: Router) { }
