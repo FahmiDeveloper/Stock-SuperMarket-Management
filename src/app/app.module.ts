@@ -21,6 +21,7 @@ import { AuthGuard } from './core/auth.guard';
 import { HomeResolver } from './home/home.resolver';
 import { HeaderComponent } from './header/header.component';
 import { UserResolver } from './user/user.resolver';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { UserResolver } from './user/user.resolver';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: false }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
