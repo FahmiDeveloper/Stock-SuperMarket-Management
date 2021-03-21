@@ -11,6 +11,7 @@ import { FirebaseUserModel } from "./user.model";
 
 export class UserService {
 
+  userName: string;
 
   constructor(
    public db: AngularFirestore,
@@ -57,10 +58,19 @@ export class UserService {
   }
 
   save(user:firebase.User) {
-    this.dataBase.object('/users/' + user.uid).update({
-      name: user.displayName,
-      email: user.email
-    });
+    if(user.displayName) {
+      this.dataBase.object('/users/' + user.uid).update({
+        name: user.displayName,
+        email: user.email
+      });
+    } else {
+      this.userName = user.email.substring(0, user.email.lastIndexOf("@"));
+      this.dataBase.object('/users/' + user.uid).update({
+        name: this.userName,
+        email: user.email
+      });
+    }
+    
  }
 
  get(uid: string): AngularFireObject<FirebaseUserModel> {
