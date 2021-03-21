@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { FirebaseUserModel } from '../core/user.model';
 import { UserService } from '../core/user.service';
@@ -10,53 +11,39 @@ import { UserService } from '../core/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   user: FirebaseUserModel = new FirebaseUserModel();
-  profileForm: FormGroup;
   event: any;
+  subscripton: Subscription;
 
   constructor(
     public userService: UserService,
     public authService: AuthService,
     private route: ActivatedRoute,
-    private fb: FormBuilder, 
     private router: Router
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(routeData => {
-      let data = routeData['data'];
-      if (data) {
-        this.user = data;
-        this.createForm(this.user.name);
-      }
-    })
+    this.getRolesUser();
     this.loadEvent();
   }
-
-  createForm(name) {
-    this.profileForm = this.fb.group({
-      name: [name, Validators.required ]
-    });
+  getRolesUser() {
+    this.subscripton = this.authService.isConnected.subscribe(res=>{
+      if(res) {
+        this.userService.getCurrentUser().then(user=>{
+          if(user) {
+            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+              this.user = dataUser;
+            });
+          }
+        });   
+      }
+    })
   }
 
-  save(value){
-    this.userService.updateCurrentUser(value)
-    .then(res => {
-      console.log(res);
-    }, err => console.log(err))
-  }
-
-  logout(){
-    this.authService.doLogout()
-    .then((res) => {
-      this.router.navigate(['/login']);
-    }, (error) => {
-      console.log("Logout error", error);
-    });
+  enterInterfaceEmployees() {
+    if(this.user.isAdmin) this.router.navigate(['/user']);
   }
 
   loadEvent() {
@@ -73,5 +60,9 @@ export class HomeComponent implements OnInit {
           country: 'England'
         }   
     }
+  }
+
+  ngOnDestroy() {
+    this.subscripton.unsubscribe();
   }
 }

@@ -73,8 +73,6 @@ export class AuthService {
 
   doRegister(value){
     return new Promise<any>((resolve, reject) => {
-      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
-      localStorage.setItem('returnUrl',returnUrl);
       firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
       .then(res => {
         resolve(res);
