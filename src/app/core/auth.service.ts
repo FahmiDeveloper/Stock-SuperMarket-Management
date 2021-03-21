@@ -23,6 +23,8 @@ export class AuthService {
 
   doFacebookLogin(){
     return new Promise<any>((resolve, reject) => {
+      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
+      localStorage.setItem('returnUrl',returnUrl);
       let provider = new firebase.auth.FacebookAuthProvider();
       this.afAuth
       .signInWithPopup(provider)
@@ -37,6 +39,8 @@ export class AuthService {
 
   doTwitterLogin(){
     return new Promise<any>((resolve, reject) => {
+      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
+      localStorage.setItem('returnUrl',returnUrl);
       let provider = new firebase.auth.TwitterAuthProvider();
       this.afAuth
       .signInWithPopup(provider)
@@ -69,6 +73,8 @@ export class AuthService {
 
   doRegister(value){
     return new Promise<any>((resolve, reject) => {
+      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
+      localStorage.setItem('returnUrl',returnUrl);
       firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
       .then(res => {
         resolve(res);
@@ -78,6 +84,8 @@ export class AuthService {
 
   doLogin(value){
     return new Promise<any>((resolve, reject) => {
+      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
+      localStorage.setItem('returnUrl',returnUrl);
       firebase.auth().signInWithEmailAndPassword(value.email, value.password)
       .then(res => {
         resolve(res);
