@@ -51,7 +51,7 @@ export class AuthService {
 
   doGoogleLogin(){
     return new Promise<any>((resolve, reject) => {
-      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
       localStorage.setItem('returnUrl',returnUrl);
       let provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('profile');

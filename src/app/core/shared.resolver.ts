@@ -5,7 +5,7 @@ import { FirebaseUserModel } from '../core/user.model';
 
 @Injectable({ providedIn: 'root' })
 
-export class HomeResolver implements Resolve<FirebaseUserModel> {
+export class SharedResolver implements Resolve<FirebaseUserModel> {
 
   constructor(public userService: UserService, private router: Router) { }
 
