@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Router } from "@angular/router";
+import { Resolve, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
 import { UserService } from '../core/user.service';
 import { FirebaseUserModel } from '../core/user.model';
 
@@ -9,7 +9,7 @@ export class UserResolver implements Resolve<FirebaseUserModel> {
 
   constructor(public userService: UserService, private router: Router) { }
 
-  resolve(route: ActivatedRouteSnapshot) : Promise<FirebaseUserModel> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Promise<FirebaseUserModel> {
 
     let user = new FirebaseUserModel();
 
@@ -29,7 +29,7 @@ export class UserResolver implements Resolve<FirebaseUserModel> {
           return resolve(user);
         }
       }, err => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login'], {queryParams: { returnUrl: state.url}});
         return reject(err);
       })
     })

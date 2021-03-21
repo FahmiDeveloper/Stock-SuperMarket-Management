@@ -10,8 +10,10 @@ import { HomeResolver } from './home/home.resolver';
 
 export const rootRouterConfig: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
+  
   { path: 'user', component: UserComponent,  resolve: { data: UserResolver}},
   { path: 'home', component: HomeComponent,  resolve: { data: HomeResolver}}
 ]; 
