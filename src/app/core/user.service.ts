@@ -3,6 +3,7 @@ import 'rxjs/add/operator/toPromise';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 
 @Injectable({ providedIn: 'root' })
@@ -11,7 +12,8 @@ export class UserService {
 
   constructor(
    public db: AngularFirestore,
-   public afAuth: AngularFireAuth
+   public afAuth: AngularFireAuth,
+   private dataBase: AngularFireDatabase
  ){
  }
 
@@ -51,4 +53,11 @@ export class UserService {
       })
     })
   }
+
+  save(user:firebase.User) {
+    this.dataBase.object('/users/' + user.uid).update({
+      name: user.displayName,
+      email: user.email
+    });
+ }
 }
