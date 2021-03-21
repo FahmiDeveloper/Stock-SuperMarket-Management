@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { FirebaseUserModel } from '../core/user.model';
@@ -13,50 +13,31 @@ import { UserService } from '../core/user.service';
 export class HomeComponent implements OnInit {
 
   user: FirebaseUserModel = new FirebaseUserModel();
-  profileForm: FormGroup;
   event: any;
 
   constructor(
     public userService: UserService,
     public authService: AuthService,
     private route: ActivatedRoute,
-    private fb: FormBuilder, 
     private router: Router
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(routeData => {
-      let data = routeData['data'];
-      if (data) {
-        this.user = data;
-        this.createForm(this.user.name);
-      }
-    })
+    this.getRolesUser();
     this.loadEvent();
   }
-
-  createForm(name) {
-    this.profileForm = this.fb.group({
-      name: [name, Validators.required ]
-    });
-  }
-
-  save(value){
-    this.userService.updateCurrentUser(value)
-    .then(res => {
-      console.log(res);
-    }, err => console.log(err))
-  }
-
-  logout(){
-    this.authService.doLogout()
-    .then((res) => {
-      this.router.navigate(['/login']);
-    }, (error) => {
-      console.log("Logout error", error);
-    });
+  getRolesUser() {
+    this.authService.isConnected.subscribe(res=>{
+      if(res) {
+        this.userService.getCurrentUser().then(user=>{
+          if(user) {
+            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+              this.user = dataUser;
+            });
+          }
+        });   
+      }
+    })
   }
 
   loadEvent() {

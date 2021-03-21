@@ -3,12 +3,14 @@ import 'rxjs/add/operator/toPromise';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
+import { FirebaseUserModel } from "./user.model";
 
 
 @Injectable({ providedIn: 'root' })
 
 export class UserService {
+
 
   constructor(
    public db: AngularFirestore,
@@ -60,4 +62,8 @@ export class UserService {
       email: user.email
     });
  }
+
+ get(uid: string): AngularFireObject<FirebaseUserModel> {
+  return this.dataBase.object('/users/' + uid);
+}
 }
