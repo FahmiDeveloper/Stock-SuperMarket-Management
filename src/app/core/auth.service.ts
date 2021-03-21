@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase';
 import { BehaviorSubject } from "rxjs";
 import { UserService } from "./user.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 
@@ -14,7 +15,8 @@ export class AuthService {
 
   constructor(
    public afAuth: AngularFireAuth,
-   public userService:UserService
+   public userService:UserService,
+   private route: ActivatedRoute
  ){
     this.userService.isAuthentificated().then(res=>this.isConnected.next(res));
  }
@@ -49,6 +51,8 @@ export class AuthService {
 
   doGoogleLogin(){
     return new Promise<any>((resolve, reject) => {
+      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
+      localStorage.setItem('returnUrl',returnUrl);
       let provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('profile');
       provider.addScope('email');

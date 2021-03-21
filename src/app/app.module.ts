@@ -18,9 +18,7 @@ import { rootRouterConfig } from './app.routes';
 import { AuthService } from './core/auth.service';
 import { UserService } from './core/user.service';
 import { AuthGuard } from './core/auth.guard';
-import { HomeResolver } from './home/home.resolver';
 import { HeaderComponent } from './header/header.component';
-import { UserResolver } from './user/user.resolver';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({

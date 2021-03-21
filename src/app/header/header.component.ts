@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,16 +11,17 @@ import firebase from 'firebase';
   styleUrls: ['./header.component.scss']
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   isConnected:boolean;
   user: firebase.User;
   userName: string;
+  subscriptipn: Subscription;
 
   constructor(private afAuth: AngularFireAuth, public authService: AuthService, private router: Router) {
-    afAuth.authState.subscribe(user => {
+    this.subscriptipn = afAuth.authState.subscribe(user => {
       this.user = user;
-      if(!this.user.displayName) {
+      if(this.user && !this.user.displayName) {
         this.getNameFromEmail(this.user.email);
       }
     })
@@ -43,6 +45,10 @@ export class HeaderComponent implements OnInit {
 
   getNameFromEmail(email) {
     this.userName = email.substring(0, email.lastIndexOf("@"));
+  }
+
+  ngOnDestroy() {
+    this.subscriptipn.unsubscribe();
   }
 
 }
