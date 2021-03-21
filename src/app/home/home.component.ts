@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { FirebaseUserModel } from '../core/user.model';
 import { UserService } from '../core/user.service';
@@ -10,10 +11,11 @@ import { UserService } from '../core/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   user: FirebaseUserModel = new FirebaseUserModel();
   event: any;
+  subscripton: Subscription;
 
   constructor(
     public userService: UserService,
@@ -27,7 +29,7 @@ export class HomeComponent implements OnInit {
     this.loadEvent();
   }
   getRolesUser() {
-    this.authService.isConnected.subscribe(res=>{
+    this.subscripton = this.authService.isConnected.subscribe(res=>{
       if(res) {
         this.userService.getCurrentUser().then(user=>{
           if(user) {
@@ -38,6 +40,10 @@ export class HomeComponent implements OnInit {
         });   
       }
     })
+  }
+
+  enterInterfaceEmployees() {
+    if(this.user.isAdmin) this.router.navigate(['/user']);
   }
 
   loadEvent() {
@@ -54,5 +60,9 @@ export class HomeComponent implements OnInit {
           country: 'England'
         }   
     }
+  }
+
+  ngOnDestroy() {
+    this.subscripton.unsubscribe();
   }
 }

@@ -1,10 +1,10 @@
 <div>
   <h1 class="text-center text-primary" style="padding-top: 60px;">Welcome</h1>
   <hr class="bg-dark"/>
-  <div class="row" *ngIf="user.isAdmin">
+  <div class="row">
     <div class="container">
       <div class="row gx-5">
-        <div class="col" routerLink="/user" >
+        <div class="col" (click)="enterInterfaceEmployees()" >
          <div class="p-3 border bg-light">
           <div class="row mt-1">
             <div class="col-md-7 mt-2">
