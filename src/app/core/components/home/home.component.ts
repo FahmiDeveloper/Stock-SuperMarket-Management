@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../core/auth.service';
-import { FirebaseUserModel } from '../core/user.model';
-import { UserService } from '../core/user.service';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-home',

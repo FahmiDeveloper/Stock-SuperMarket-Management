@@ -10,16 +10,15 @@ import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { UserComponent } from './user/user.component';
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
+
 import { RouterModule } from '@angular/router';
 import { rootRouterConfig } from './app.routes';
-import { AuthService } from './core/auth.service';
-import { UserService } from './core/user.service';
-import { AuthGuard } from './core/auth.guard';
-import { HeaderComponent } from './header/header.component';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HeaderComponent } from './core/components/header/header.component';
+import { HomeComponent } from './core/components/home/home.component';
+import { LoginComponent } from './core/components/login/login.component';
+import { RegisterComponent } from './core/components/register/register.component';
 
 @NgModule({
   declarations: [
