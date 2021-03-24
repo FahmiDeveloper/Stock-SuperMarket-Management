@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-
-import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './core/components/home/home.component';
+import { LoginComponent } from './core/components/login/login.component';
+import { RegisterComponent } from './core/components/register/register.component';
+import { AuthGuard } from './shared/services/auth.guard';
+import { SharedResolver } from './shared/services/shared.resolver';
 import { UserComponent } from './user/user.component';
-import { RegisterComponent } from './register/register.component';
-import { AuthGuard } from './core/auth.guard';
-import { HomeComponent } from './home/home.component';
-import { SharedResolver } from './core/shared.resolver';
+
 
 export const rootRouterConfig: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

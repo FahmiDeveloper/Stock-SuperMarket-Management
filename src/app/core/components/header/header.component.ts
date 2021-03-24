@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-header',
