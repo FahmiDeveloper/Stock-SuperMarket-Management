@@ -21,6 +21,19 @@ import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductFormComponent } from './products/product-form/product-form.component';
+import { EmployeesComponent } from './employees/employees.component';
+import { EmployeeFormComponent } from './employees/employee-form/employee-form.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CategoryFormComponent } from './categories/category-form/category-form.component';
+import { SuppliersComponent } from './suppliers/suppliers.component';
+import { SupplierFormComponent } from './suppliers/supplier-form/supplier-form.component';
+import { InvoicesComponent } from './invoices/invoices.component';
+import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
+import { StockMenuComponent } from './stock/stock-menu/stock-menu.component';
+import { StockInFormComponent } from './stock/stock-menu/stock-in/stock-in-form/stock-in-form.component';
+import { StockInComponent } from './stock/stock-menu/stock-in/stock-in.component';
+import { StockOutFormComponent } from './stock/stock-menu/stock-out/stock-out-form/stock-out-form.component';
+import { StockOutComponent } from './stock/stock-menu/stock-out/stock-out.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +44,20 @@ import { ProductFormComponent } from './products/product-form/product-form.compo
     HomeComponent,
     HeaderComponent,
     ProductFormComponent,
-    ProductsComponent
+    ProductsComponent,
+    EmployeesComponent,
+    EmployeeFormComponent,
+    CategoriesComponent,
+    CategoryFormComponent,
+    SuppliersComponent,
+    SupplierFormComponent,
+    StockInComponent,
+    StockOutComponent,
+    StockOutFormComponent,
+    StockInFormComponent,
+    InvoicesComponent,
+    InvoiceFormComponent,
+    StockMenuComponent
   ],
   imports: [
     BrowserModule,

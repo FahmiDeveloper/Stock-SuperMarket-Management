@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   enterInterfaceEmployees() {
-    if(this.user.isAdmin) this.router.navigate(['/user']);
+    if(this.user.isAdmin) this.router.navigate(['/employees']);
   }
 
   loadEvent() {
