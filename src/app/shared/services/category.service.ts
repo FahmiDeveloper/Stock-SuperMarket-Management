@@ -11,6 +11,10 @@ export class CategoryService {
 
   constructor(private db: AngularFireDatabase) { }
 
+  create(category) {
+    return this.db.list('/categories').push(category);
+  }
+
   getCategories(){
     this.aflCategories = this.db.list('/categories', category => category.orderByChild('name'));
     return this.aflCategories

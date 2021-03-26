@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SupplierService } from 'src/app/shared/services/supplier.service';
 
 @Component({
   selector: 'app-supplier-form',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SupplierFormComponent implements OnInit {
 
-  constructor() { }
+  constructor(private supplierService: SupplierService) { }
 
   ngOnInit(): void {
+  }
+
+  save(supplier) {
+    this.supplierService.create(supplier);
   }
 
 }
