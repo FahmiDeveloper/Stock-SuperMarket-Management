@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StockOutService } from 'src/app/shared/services/stock-out.service';
 
 @Component({
   selector: 'app-stock-out-form',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockOutFormComponent implements OnInit {
 
-  constructor() { }
+  constructor(private stockOutService: StockOutService) { }
+
 
   ngOnInit(): void {
+  }
+
+  save(stockOut) {
+    this.stockOutService.create(stockOut);
   }
 
 }

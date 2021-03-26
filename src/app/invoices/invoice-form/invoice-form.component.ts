@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InvoiceService } from 'src/app/shared/services/invoice.service';
 
 @Component({
   selector: 'app-invoice-form',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InvoiceFormComponent implements OnInit {
 
-  constructor() { }
+  constructor(private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
+  }
+
+  save(invoice) {
+    this.invoiceService.create(invoice);
   }
 
 }
