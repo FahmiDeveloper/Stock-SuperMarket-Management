@@ -36,6 +36,7 @@ import { StockOutFormComponent } from './stock/stock-menu/stock-out/stock-out-fo
 import { StockOutComponent } from './stock/stock-menu/stock-out/stock-out.component';
 import { SortPipe } from './shared/pipes/sort.pipe';
 import { CustomFormsModule } from 'ng2-validation';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { CustomFormsModule } from 'ng2-validation';
     CustomFormsModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: false }),
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule // imports firebase/auth, only needed for auth features
   ],
