@@ -34,6 +34,7 @@ import { StockInFormComponent } from './stock/stock-menu/stock-in/stock-in-form/
 import { StockInComponent } from './stock/stock-menu/stock-in/stock-in.component';
 import { StockOutFormComponent } from './stock/stock-menu/stock-out/stock-out-form/stock-out-form.component';
 import { StockOutComponent } from './stock/stock-menu/stock-out/stock-out.component';
+import { SortPipe } from './shared/pipes/sort.pipe';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { StockOutComponent } from './stock/stock-menu/stock-out/stock-out.compon
     StockInFormComponent,
     InvoicesComponent,
     InvoiceFormComponent,
-    StockMenuComponent
+    StockMenuComponent,
+    SortPipe
   ],
   imports: [
     BrowserModule,
