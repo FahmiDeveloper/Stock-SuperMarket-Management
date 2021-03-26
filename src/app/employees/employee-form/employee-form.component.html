@@ -2,31 +2,52 @@
     <form #f="ngForm" (ngSubmit)="save(f.value)">
         <div class="form-group">
             <label for="name">Name</label>
-            <input ngModel name="name" id="name" type="text" class="form-control">
+            <input #name="ngModel" ngModel name="name" id="name" type="text" class="form-control" required>
+            <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
+                Name is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="surName">SurName</label>
-            <input ngModel name="surName" id="surName" type="text" class="form-control">
+            <input #surName="ngModel" ngModel name="surName" id="surName" type="text" class="form-control" required>
+            <div class="alert alert-danger" *ngIf="surName.touched && surName.invalid">
+                SurName is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="date">Date</label>
-            <input ngModel name="date" id="date" type="date" class="form-control">
+            <input #date="ngModel" ngModel name="date" id="date" type="date" class="form-control" required>
+            <div class="alert alert-danger" *ngIf="date.touched && date.invalid">
+                Date is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="time">Time</label>
-            <input ngModel name="time" id="time" type="time" class="form-control">
+            <input #time="ngModel" ngModel name="time" id="time" type="time" class="form-control" required>
+            <div class="alert alert-danger" *ngIf="time.touched && time.invalid">
+                Time is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="cin">CIN</label>
-            <input ngModel name="cin" id="cin" type="number" class="form-control">
+            <input #cin="ngModel" ngModel name="cin" id="cin" type="number" class="form-control" required>
+            <div class="alert alert-danger" *ngIf="cin.touched && cin.invalid">
+                CIN is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="phone">Phone</label>
-            <input ngModel name="phone" id="phone" type="number" class="form-control">
+            <input #phone="ngModel" ngModel name="phone" id="phone" type="number" class="form-control" required>
+            <div class="alert alert-danger" *ngIf="phone.touched && phone.invalid">
+                Phone is required.
+            </div>
         </div>
         <div class="form-group">
             <label for="imageUrl">Image URL</label>
-            <input ngModel name="imageUrl" id="imageUrl" type="text" class="form-control">
+            <input #imageUrl="ngModel" ngModel name="imageUrl" id="imageUrl" type="text" class="form-control" required>
+            <div class="alert alert-danger" *ngIf="imageUrl.touched && imageUrl.invalid">
+                Image Url is required.
+            </div>
         </div>
         <button class="btn btn-primary">Save</button>
     </form>
