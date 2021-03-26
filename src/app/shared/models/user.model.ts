@@ -3,6 +3,12 @@ export class FirebaseUserModel {
     name: string;
     provider: string;
     isAdmin: boolean;
+    roleEmployee: boolean;
+    roleProduct: boolean;
+    roleCategory: boolean;
+    roleStock: boolean;
+    roleSupplier: boolean;
+    roleInvoice: boolean;
   
     constructor(){
       this.image = "";

@@ -42,8 +42,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  enterInterfaceEmployees() {
-    if(this.user.isAdmin) this.router.navigate(['/employees']);
+  ableToEnterToInterfaceEmployees() {
+    if(this.user.isAdmin || this.user.roleEmployee) {
+      this.router.navigate(['/employees']);
+    }
+  }
+
+  ableToEnterToInterfaceProducts() {
+    if(this.user.isAdmin || this.user.roleProduct) {
+      this.router.navigate(['/products']);
+    }
+  }
+
+  ableToEnterToInterfaceCategories() {
+    if(this.user.isAdmin || this.user.roleCategory) {
+      this.router.navigate(['/categories']);
+    }
+  }
+
+  ableToEnterToInterfaceStock() {
+    if(this.user.isAdmin || this.user.roleStock) {
+      this.router.navigate(['/stock-menu']);
+    }
+  }
+
+  ableToEnterToInterfaceSuppliers() {
+    if(this.user.isAdmin || this.user.roleSupplier) {
+      this.router.navigate(['/suppliers']);
+    }
+  }
+
+  ableToEnterToInterfaceInvoices() {
+    if(this.user.isAdmin || this.user.roleInvoice) {
+      this.router.navigate(['/invoices']);
+    }
   }
 
   loadEvent() {
