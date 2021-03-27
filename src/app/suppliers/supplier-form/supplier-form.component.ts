@@ -8,6 +8,8 @@ import { SupplierService } from 'src/app/shared/services/supplier.service';
 })
 export class SupplierFormComponent implements OnInit {
 
+  phoneMobileNumberPattern = "^((\\+91-?)|0)?[0-9]{8}$";
+
   constructor(private supplierService: SupplierService) { }
 
   ngOnInit(): void {

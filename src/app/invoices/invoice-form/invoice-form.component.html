@@ -1,13 +1,6 @@
 <div class="container margForm">
     <form #f="ngForm" (ngSubmit)="save(f.value)">
         <div class="form-group">
-            <label for="label">Label</label>
-            <input  #label="ngModel" ngModel name="label" id="label" type="text" class="form-control" required>
-            <div class="alert alert-danger" *ngIf="label.touched && label.invalid">
-                Label is required.
-            </div>
-        </div>
-        <div class="form-group">
             <label for="code">Code</label>
             <input  #code="ngModel" ngModel name="code" id="code" type="text" class="form-control" required>
             <div class="alert alert-danger" *ngIf="code.touched && code.invalid">
@@ -16,17 +9,11 @@
         </div>
         <div class="form-group">
             <label for="date">Date</label>
-            <input #date="ngModel" ngModel name="date" id="date" type="date" class="form-control" required>
-            <div class="alert alert-danger" *ngIf="date.touched && date.invalid">
-                Date is required.
-            </div>
+            <input #date="ngModel" ngModel name="date" id="date" type="date" class="form-control">
         </div>
         <div class="form-group">
             <label for="time">Time</label>
-            <input #time="ngModel" ngModel name="time" id="time" type="time" class="form-control" required>
-            <div class="alert alert-danger" *ngIf="time.touched && time.invalid">
-                Time is required.
-            </div>
+            <input #time="ngModel" ngModel name="time" id="time" type="time" class="form-control">
         </div>
         <button class="btn btn-primary">Save</button>
     </form>
