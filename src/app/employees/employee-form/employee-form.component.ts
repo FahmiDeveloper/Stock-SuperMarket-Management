@@ -17,6 +17,8 @@ export class EmployeeFormComponent implements OnInit {
 
   progressValue: Observable<number>;
 
+  cinPhoneNumberPattern = "^((\\+91-?)|0)?[0-9]{8}$";
+
   constructor(
     private employeeService: EmployeeService,
     private fireStorage: AngularFireStorage,

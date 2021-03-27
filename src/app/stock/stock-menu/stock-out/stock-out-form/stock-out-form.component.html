@@ -2,31 +2,23 @@
     <form #f="ngForm" (ngSubmit)="save(f.value)">
         <div class="form-group">
             <label for="name">Name</label>
-            <input #name="ngModel" ngModel name="name" id="name" type="text" class="form-control"required>
+            <input #name="ngModel" ngModel name="name" id="name" type="text" class="form-control" required [minlength]="3">
             <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
-                Name is required.
+                <div *ngIf="name.errors.required">Name is required.</div>
+                <div *ngIf="name.errors?.minlength">Name should contain at least 3 characters or higher.</div> 
             </div>
         </div>
         <div class="form-group">
             <label for="date">Date</label>
-            <input #date="ngModel" ngModel name="date" id="date" type="date" class="form-control" required>
-            <div class="alert alert-danger" *ngIf="date.touched && date.invalid">
-                Date is required.
-            </div>
+            <input #date="ngModel" ngModel name="date" id="date" type="date" class="form-control">
         </div>
         <div class="form-group">
             <label for="time">Time</label>
-            <input #time="ngModel" ngModel name="time" id="time" type="time" class="form-control" required>
-            <div class="alert alert-danger" *ngIf="time.touched && time.invalid">
-                Time is required.
-            </div>
+            <input #time="ngModel" ngModel name="time" id="time" type="time" class="form-control">
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <input #description="ngModel" ngModel name="description" id="description" type="text" class="form-control" required>
-            <div class="alert alert-danger" *ngIf="description.touched && description.invalid">
-                Description is required.
-            </div>
+            <input #description="ngModel"ngModel name="description" id="description" type="text" class="form-control">
         </div>
         <button class="btn btn-primary">Save</button>
     </form>
