@@ -19,7 +19,7 @@ export class EmployeeFormComponent implements OnInit {
 
   cinPhoneNumberPattern = "^((\\+91-?)|0)?[0-9]{8}$";
 
-  id;
+  employeeId;
   employee = {};
 
   constructor(
@@ -28,9 +28,9 @@ export class EmployeeFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
     ) {
-        this.id = this.route.snapshot.paramMap.get('id');
-        if (this.id) {
-          this.employeeService.getEmployeeId(this.id).pipe(take(1)).subscribe(employee => {
+        this.employeeId = this.route.snapshot.paramMap.get('id');
+        if (this.employeeId) {
+          this.employeeService.getEmployeeId(this.employeeId).pipe(take(1)).subscribe(employee => {
           this.employee = employee;
         });
       }

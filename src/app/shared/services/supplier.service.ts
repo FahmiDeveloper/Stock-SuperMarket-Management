@@ -22,4 +22,8 @@ export class SupplierService {
   create(supplier) {
     return this.db.list('/suppliers').push(supplier);
   }
+
+  getSupplierId(supplierId) {
+    return this.db.object('/suppliers/' + supplierId).valueChanges();
+  }
 }
