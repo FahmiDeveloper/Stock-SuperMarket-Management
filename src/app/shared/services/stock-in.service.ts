@@ -22,4 +22,8 @@ export class StockInService {
   create(stockIn) {
     return this.db.list('/stockIn').push(stockIn);
   }
+
+  getStockInId(stockInId) {
+    return this.db.object('/stockIn/' + stockInId).valueChanges();
+  }
 }

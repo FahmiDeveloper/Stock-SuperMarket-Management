@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ProductService } from 'src/app/shared/services/product.service';
 
@@ -17,16 +18,26 @@ export class ProductFormComponent implements OnInit {
   basePath = '/PicturesProducts';
   imageUrl = '';                      
   task: AngularFireUploadTask;
-
   progressValue: Observable<number>;
+
+  productId;
+  product = {};
 
   constructor(
     private categoryService: CategoryService, 
     private productService: ProductService, 
     private fireStorage: AngularFireStorage,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
     ) {
     this.categories$ = this.categoryService.getAll();
+
+    this.productId = this.route.snapshot.paramMap.get('id');
+        if (this.productId) {
+          this.productService.getProductId(this.productId).pipe(take(1)).subscribe(product => {
+          this.product = product;
+        });
+      }
   }
 
   ngOnInit(): void {

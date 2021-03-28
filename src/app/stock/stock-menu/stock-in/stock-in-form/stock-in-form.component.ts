@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { StockInService } from 'src/app/shared/services/stock-in.service';
 
 @Component({
@@ -9,7 +10,17 @@ import { StockInService } from 'src/app/shared/services/stock-in.service';
 })
 export class StockInFormComponent implements OnInit {
 
-  constructor(private stockInService: StockInService, private router: Router) { }
+  stockInId;
+  stockIn = {};
+
+  constructor(private stockInService: StockInService, private router: Router, private route: ActivatedRoute) {
+    this.stockInId = this.route.snapshot.paramMap.get('id');
+        if (this.stockInId) {
+          this.stockInService.getStockInId(this.stockInId).pipe(take(1)).subscribe(stockIn => {
+          this.stockIn = stockIn;
+        });
+      }
+   }
 
   ngOnInit(): void {
   }

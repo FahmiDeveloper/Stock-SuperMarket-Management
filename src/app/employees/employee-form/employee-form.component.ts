@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
 
 @Component({
@@ -14,16 +15,26 @@ export class EmployeeFormComponent implements OnInit {
   basePath = '/PicturesEmployees';
   imageUrl = '';                      
   task: AngularFireUploadTask;
-
   progressValue: Observable<number>;
 
   cinPhoneNumberPattern = "^((\\+91-?)|0)?[0-9]{8}$";
 
+  employeeId;
+  employee = {};
+
   constructor(
     private employeeService: EmployeeService,
     private fireStorage: AngularFireStorage,
-    private router: Router
-    ) { }
+    private router: Router,
+    private route: ActivatedRoute
+    ) {
+        this.employeeId = this.route.snapshot.paramMap.get('id');
+        if (this.employeeId) {
+          this.employeeService.getEmployeeId(this.employeeId).pipe(take(1)).subscribe(employee => {
+          this.employee = employee;
+        });
+      }
+    }
 
   ngOnInit(): void {
   }

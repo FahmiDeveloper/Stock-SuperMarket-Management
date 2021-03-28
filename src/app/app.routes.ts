@@ -31,26 +31,33 @@ export const rootRouterConfig: Routes = [
   { path: 'user', component: UserComponent,  resolve: { data: SharedResolver}},
   { path: 'home', component: HomeComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'employees', component: EmployeesComponent,  resolve: { data: SharedResolver}},
   { path: 'employees/new', component: EmployeeFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'employees/:id', component: EmployeeFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'employees', component: EmployeesComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'products', component: ProductsComponent,  resolve: { data: SharedResolver}},
   { path: 'products/new', component: ProductFormComponent,  resolve: { data: SharedResolver}},
-
-  { path: 'categories', component: CategoriesComponent,  resolve: { data: SharedResolver}},
+  { path: 'products/:id', component: ProductFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'products', component: ProductsComponent,  resolve: { data: SharedResolver}},
+  
   { path: 'categories/new', component: CategoryFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'categories/:id', component: CategoryFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'categories', component: CategoriesComponent,  resolve: { data: SharedResolver}},
 
   { path: 'stock-menu', component: StockMenuComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'stock-in', component: StockInComponent,  resolve: { data: SharedResolver}},
   { path: 'stock-in/new', component: StockInFormComponent,  resolve: { data: SharedResolver}},
-
-  { path: 'stock-out', component: StockOutComponent,  resolve: { data: SharedResolver}},
+  { path: 'stock-in/:id', component: StockInFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'stock-in', component: StockInComponent,  resolve: { data: SharedResolver}},
+  
   { path: 'stock-out/new', component: StockOutFormComponent,  resolve: { data: SharedResolver}},
-
-  { path: 'suppliers', component: SuppliersComponent,  resolve: { data: SharedResolver}},
+  { path: 'stock-out/:id', component: StockOutFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'stock-out', component: StockOutComponent,  resolve: { data: SharedResolver}},
+  
   { path: 'suppliers/new', component: SupplierFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'suppliers/:id', component: SupplierFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'suppliers', component: SuppliersComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'invoices', component: InvoicesComponent,  resolve: { data: SharedResolver}},
-  { path: 'invoices/new', component: InvoiceFormComponent,  resolve: { data: SharedResolver}}
+  { path: 'invoices/new', component: InvoiceFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'invoices/:id', component: InvoiceFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'invoices', component: InvoicesComponent,  resolve: { data: SharedResolver}}
 ]; 

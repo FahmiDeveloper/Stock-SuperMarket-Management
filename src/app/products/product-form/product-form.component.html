@@ -4,7 +4,7 @@
             <form #f="ngForm" (ngSubmit)="save(f.value)">
                 <div class="form-group">
                     <label for="nameProduct">Name</label>
-                    <input #nameProduct="ngModel" ngModel name="nameProduct" id="nameProduct" type="text" class="form-control" required [minlength]="3">
+                    <input #nameProduct="ngModel" [(ngModel)]="product['nameProduct']" name="nameProduct" id="nameProduct" type="text" class="form-control" required [minlength]="3">
                     <div class="alert alert-danger" *ngIf="nameProduct.touched && nameProduct.invalid">
                         <div *ngIf="nameProduct.errors.required"> Name is required.</div>
                         <div *ngIf="nameProduct.errors?.minlength">Name should contain at least 3 characters or higher.</div>  
@@ -14,7 +14,7 @@
                     <label for="price">Price</label>
                     <div class="input-group">
                         <span class="input-group-text">$</span>                
-                        <input #price="ngModel" ngModel name="price" id="price" type="number" class="form-control" required [min]="0">
+                        <input #price="ngModel" [(ngModel)]="product['price']" name="price" id="price" type="number" class="form-control" required [min]="0">
                     </div>
                     <div class="alert alert-danger" *ngIf="price.touched && price.invalid">
                         <div *ngIf="price.errors.required">Price is required.</div>
@@ -23,21 +23,21 @@
                 </div>
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <input #date="ngModel" ngModel name="date" id="date" type="date" class="form-control">
+                    <input #date="ngModel" [(ngModel)]="product['date']" name="date" id="date" type="date" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="time">Time</label>
-                    <input #time="ngModel" ngModel name="time" id="time" type="time" class="form-control">
+                    <input #time="ngModel" [(ngModel)]="product['time']" name="time" id="time" type="time" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select #category="ngModel" ngModel name="category" id="category" class="form-control" required>
+                    <label for="categoryId">Category</label>
+                    <select #categoryId="ngModel" [(ngModel)]="product['categoryId']" name="categoryId" id="categoryId" class="form-control" required>
                         <option value=""></option>
                         <option *ngFor="let c of (categories$ | async | sortBy: 'key')" [value]="c.key"> 
                             {{c.name}} 
                         </option>
                     </select>
-                    <div class="alert alert-danger" *ngIf="category.touched && category.invalid">
+                    <div class="alert alert-danger" *ngIf="categoryId.touched && categoryId.invalid">
                         Category is required.
                     </div>
                 </div>
@@ -59,11 +59,11 @@
         <div class="col-md-1"></div>
         <div class="col-md-5">
             <div class="card" style="width: 20rem;">
-                <img *ngIf="!imageUrl" class="card-img-top" src="/assets/pictures/NoImageAvailable.png">
-                <img *ngIf="imageUrl" class="card-img-top" [src]="imageUrl">
+                <img *ngIf="!product['imageUrl']" class="card-img-top" src="/assets/pictures/NoImageAvailable.png">
+                <img *ngIf="product['imageUrl']" class="card-img-top" [src]="product['imageUrl']">
                 <div class="card-body" *ngIf="nameProduct.value">
-                  <h5 class="card-title">{{ nameProduct.value }}</h5>
-                  <p class="card-text">{{ price.value | currency:'USD':true }}</p>
+                  <h5 class="card-title">{{ product['nameProduct'] }}</h5>
+                  <p class="card-text">{{ product['price'] | currency:'USD':true }}</p>
                 </div>
               </div>
         </div>

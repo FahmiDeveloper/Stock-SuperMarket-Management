@@ -22,4 +22,8 @@ export class InvoiceService {
   create(invoice) {
     return this.db.list('/invoices').push(invoice);
   }
+
+  getInvoiceId(invoiceId) {
+    return this.db.object('/invoices/' + invoiceId).valueChanges();
+  }
 }

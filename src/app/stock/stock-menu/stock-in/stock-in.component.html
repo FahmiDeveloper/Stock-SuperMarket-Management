@@ -8,6 +8,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>N°</th>
                 <th>Name</th>
                 <th>Date</th>
                 <th>Time</th>
@@ -16,7 +17,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let stockInProduct of (stockInProducts$ | async | sortBy: 'key')">
+            <tr *ngFor="let stockInProduct of (stockInProducts$ | async | sortBy: 'key'); let i=index;">
+                <td>{{ i+1 }}</td>
                 <td>{{ stockInProduct.name }}</td>
                 <td>{{ stockInProduct.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ stockInProduct.time }}</td>

@@ -8,6 +8,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>N°</th>
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Date</th>
@@ -19,7 +20,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let employee of (employees$ | async | sortBy: 'key')">
+            <tr *ngFor="let employee of (employees$ | async | sortBy: 'key'); let i=index;">
+                <td>{{ i+1 }}</td>
                 <td>{{ employee.name }}</td>
                 <td>{{ employee.surName }}</td>
                 <td>{{ employee.date | date: 'dd/MM/yyyy' }}</td>
