@@ -22,4 +22,8 @@ export class EmployeeService {
   create(employee) {
     return this.db.list('/employees').push(employee);
   }
+
+  getEmployeeId(employeeId) {
+    return this.db.object('/employees/' + employeeId).valueChanges();
+  }
 }
