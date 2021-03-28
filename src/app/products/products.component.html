@@ -1,3 +1,34 @@
-<div style="margin-top: 150px;">
-    <a routerLink="/products/new" class="btn btn-primary">New</a>
+<div class="row">
+    <p style="margin-top: 150px;">
+        <a routerLink="/products/new" class="btn btn-primary">New</a>
+    </p>
+</div>
+
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Picture</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products$ | async">
+                <td>{{ product.nameProduct }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ product.time }}</td>
+                <td>
+                    <img *ngIf="product.imageUrl" class="sizePicture" [src]="product.imageUrl">
+                </td>
+                <td>
+                    <a [routerLink]="['/products', product.key]">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
