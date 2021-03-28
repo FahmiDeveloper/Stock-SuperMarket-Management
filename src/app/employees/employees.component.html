@@ -1,3 +1,38 @@
-<div style="margin-top: 150px;">
-    <a routerLink="/employees/new" class="btn btn-primary">New</a>
+<div class="row">
+    <p style="margin-top: 150px;">
+        <a routerLink="/employees/new" class="btn btn-primary">New</a>
+    </p>
+</div>
+
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>CIN</th>
+                <th>Phone</th>
+                <th>Picture</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let employee of employees$ | async">
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.surName }}</td>
+                <td>{{ employee.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ employee.time }}</td>
+                <td>{{ employee.cin }}</td>
+                <td>{{ employee.phone }}</td>
+                <td>
+                    <img *ngIf="employee.imageUrl" class="sizePicture" [src]="employee.imageUrl">
+                </td>
+                <td>
+                    <a [routerLink]="['/employees', employee.key]">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

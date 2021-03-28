@@ -8,6 +8,10 @@ export class SupplierService {
 
   constructor(private db: AngularFireDatabase) { }
 
+  getAll() {
+    return this.db.list('/suppliers').valueChanges(); 
+  }
+
   create(supplier) {
     return this.db.list('/suppliers').push(supplier);
   }

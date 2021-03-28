@@ -8,6 +8,10 @@ export class StockInService {
 
   constructor(private db: AngularFireDatabase) { }
 
+  getAll() {
+    return this.db.list('/stockIn').valueChanges(); 
+  }
+
   create(stockIn) {
     return this.db.list('/stockIn').push(stockIn);
   }

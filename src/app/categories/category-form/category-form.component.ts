@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
@@ -8,13 +9,14 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 })
 export class CategoryFormComponent implements OnInit {
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   save(category) {
     this.categoryService.create(category);
+    this.router.navigate(['/categories']);
   }
 
 

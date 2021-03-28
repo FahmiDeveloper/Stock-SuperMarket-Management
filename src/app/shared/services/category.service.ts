@@ -7,19 +7,23 @@ import { map } from 'rxjs/operators';
 })
 export class CategoryService {
 
-  aflCategories: AngularFireList<any>;
+  // aflCategories: AngularFireList<any>;
 
   constructor(private db: AngularFireDatabase) { }
+
+  getAll() {
+    return this.db.list('/categories').valueChanges(); 
+  }
 
   create(category) {
     return this.db.list('/categories').push(category);
   }
 
-  getCategories(){
-    this.aflCategories = this.db.list('/categories', category => category.orderByChild('name'));
-    return this.aflCategories
-    .snapshotChanges()
-    .pipe(map(changes => changes
-    .map(c => ({ key: c.payload.key, ...c.payload.val() }))));
-  }
+  // getCategories(){
+  //   this.aflCategories = this.db.list('/categories', category => category.orderByChild('key'));
+  //   return this.aflCategories
+  //   .snapshotChanges()
+  //   .pipe(map(changes => changes
+  //   .map(c => ({ key: c.payload.key, ...c.payload.val() }))));
+  // }
 }

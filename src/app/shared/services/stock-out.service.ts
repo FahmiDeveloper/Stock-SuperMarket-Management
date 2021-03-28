@@ -8,6 +8,10 @@ export class StockOutService {
 
   constructor(private db: AngularFireDatabase) { }
 
+  getAll() {
+    return this.db.list('/stockOut').valueChanges(); 
+  }
+
   create(stockOut) {
     return this.db.list('/stockOut').push(stockOut);
   }

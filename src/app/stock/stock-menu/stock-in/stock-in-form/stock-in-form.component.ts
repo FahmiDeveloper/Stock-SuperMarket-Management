@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { StockInService } from 'src/app/shared/services/stock-in.service';
 
 @Component({
@@ -8,13 +9,14 @@ import { StockInService } from 'src/app/shared/services/stock-in.service';
 })
 export class StockInFormComponent implements OnInit {
 
-  constructor(private stockInService: StockInService) { }
+  constructor(private stockInService: StockInService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   save(stockIn) {
     this.stockInService.create(stockIn);
+    this.router.navigate(['/stock-in']);
   }
 
 }
