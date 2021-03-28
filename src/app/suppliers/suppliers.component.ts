@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SupplierService } from '../shared/services/supplier.service';
 
 @Component({
   selector: 'app-suppliers',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SuppliersComponent implements OnInit {
 
-  constructor() { }
+  suppliers$;
+
+  constructor(private supplierService: SupplierService) {
+    this.suppliers$ = this.supplierService.getAll();
+   }
 
   ngOnInit(): void {
   }

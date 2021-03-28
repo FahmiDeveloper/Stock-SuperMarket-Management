@@ -15,8 +15,8 @@ export class CategoryService {
     return this.db.list('/categories').push(category);
   }
 
-  getCategories(){
-    this.aflCategories = this.db.list('/categories', category => category.orderByChild('name'));
+  getAll(){
+    this.aflCategories = this.db.list('/categories', category => category.orderByChild('key'));
     return this.aflCategories
     .snapshotChanges()
     .pipe(map(changes => changes

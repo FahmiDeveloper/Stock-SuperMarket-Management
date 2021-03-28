@@ -1,3 +1,30 @@
-<div style="margin-top: 150px;">
-    <a routerLink="/categories/new" class="btn btn-primary">New</a>
+<div class="row">
+    <p style="margin-top: 150px;">
+        <a routerLink="/categories/new" class="btn btn-primary">New</a>
+    </p>
+</div>
+
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let category of (categories$ | async | sortBy: 'key')">
+                <td>{{ category.name }}</td>
+                <td>{{ category.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ category.time }}</td>
+                <td>{{ category.description }}</td>
+                <td>
+                    <a [routerLink]="['/categories', category.key]">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
