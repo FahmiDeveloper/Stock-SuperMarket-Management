@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let stockOutProduct of stockOutProducts$ | async">
+            <tr *ngFor="let stockOutProduct of (stockOutProducts$ | async | sortBy: 'key')">
                 <td>{{ stockOutProduct.name }}</td>
                 <td>{{ stockOutProduct.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ stockOutProduct.time }}</td>

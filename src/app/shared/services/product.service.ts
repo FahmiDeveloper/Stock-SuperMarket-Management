@@ -7,23 +7,20 @@ import { map } from 'rxjs/operators';
 })
 export class ProductService {
 
-  // listProducts: AngularFireList<any>;
+  aflistProducts: AngularFireList<any>;
 
   constructor(private db: AngularFireDatabase) { }
 
   getAll() {
-    return this.db.list('/products').valueChanges(); 
+    this.aflistProducts = this.db.list('/products', product => product.orderByChild('key'));
+    return this.aflistProducts
+    .snapshotChanges()
+    .pipe(map(changes => changes
+    .map(c => ({ key: c.payload.key, ...c.payload.val() }))));
   }
 
   create(product) {
     return this.db.list('/products').push(product);
   }
 
-  // getAll() {
-  //   this.listProducts = this.db.list('/products');
-  //   return this.listProducts
-  //    .snapshotChanges()
-  //    .pipe(map(changes => changes.reverse()
-  //    .map(c => ({ key: c.payload.key, ...c.payload.val() }))));
-  // }
 }

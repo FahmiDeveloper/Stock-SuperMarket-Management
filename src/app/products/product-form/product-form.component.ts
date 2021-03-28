@@ -26,7 +26,7 @@ export class ProductFormComponent implements OnInit {
     private fireStorage: AngularFireStorage,
     private router: Router
     ) {
-    this.categories$ = categoryService.getCategories();
+    this.categories$ = this.categoryService.getAll();
   }
 
   ngOnInit(): void {

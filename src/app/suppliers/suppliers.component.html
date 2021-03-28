@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let supplier of suppliers$ | async">
+            <tr *ngFor="let supplier of (suppliers$ | async | sortBy: 'key')">
                 <td>{{ supplier.name }}</td>
                 <td>{{ supplier.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ supplier.time }}</td>

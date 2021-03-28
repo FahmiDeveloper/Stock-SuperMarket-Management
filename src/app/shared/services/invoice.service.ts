@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceService {
 
+  aflInvoices: AngularFireList<any>;
+
   constructor(private db: AngularFireDatabase) { }
 
   getAll() {
-    return this.db.list('/invoices').valueChanges(); 
+    this.aflInvoices = this.db.list('/invoices', invoice => invoice.orderByChild('key'));
+    return this.aflInvoices
+    .snapshotChanges()
+    .pipe(map(changes => changes
+    .map(c => ({ key: c.payload.key, ...c.payload.val() }))));
   }
 
   create(invoice) {
