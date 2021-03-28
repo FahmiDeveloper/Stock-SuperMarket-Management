@@ -26,7 +26,8 @@ export class CategoryFormComponent implements OnInit {
   }
 
   save(category) {
-    this.categoryService.create(category);
+    if (this.categoryId) this.categoryService.update(this.categoryId, category);
+    else this.categoryService.create(category);
     this.router.navigate(['/categories']);
   }
 

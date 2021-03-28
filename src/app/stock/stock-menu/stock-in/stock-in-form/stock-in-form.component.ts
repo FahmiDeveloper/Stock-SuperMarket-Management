@@ -26,7 +26,8 @@ export class StockInFormComponent implements OnInit {
   }
 
   save(stockIn) {
-    this.stockInService.create(stockIn);
+    if (this.stockInId) this.stockInService.update(this.stockInId, stockIn);
+    else this.stockInService.create(stockIn);
     this.router.navigate(['/stock-in']);
   }
 

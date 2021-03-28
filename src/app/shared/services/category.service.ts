@@ -27,5 +27,9 @@ export class CategoryService {
     return this.db.object('/categories/' + categoryId).valueChanges();
   }
 
+  update(categoryId, category) {
+    return this.db.object('/categories/' + categoryId).update(category);
+  }
+
   
 }

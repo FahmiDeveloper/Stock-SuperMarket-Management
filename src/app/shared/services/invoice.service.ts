@@ -26,4 +26,8 @@ export class InvoiceService {
   getInvoiceId(invoiceId) {
     return this.db.object('/invoices/' + invoiceId).valueChanges();
   }
+
+  update(invoiceId, invoice) {
+    return this.db.object('/invoices/' + invoiceId).update(invoice);
+  }
 }

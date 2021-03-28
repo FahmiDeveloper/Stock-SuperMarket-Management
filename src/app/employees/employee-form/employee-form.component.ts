@@ -40,7 +40,8 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   save(employee) {
-    this.employeeService.create(employee);
+    if (this.employeeId) this.employeeService.update(this.employeeId, employee);
+    else this.employeeService.create(employee);
     this.router.navigate(['/employees']);
   }
 

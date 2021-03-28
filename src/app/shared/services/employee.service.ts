@@ -26,4 +26,8 @@ export class EmployeeService {
   getEmployeeId(employeeId) {
     return this.db.object('/employees/' + employeeId).valueChanges();
   }
+
+  update(employeeId, employee) {
+    return this.db.object('/employees/' + employeeId).update(employee);
+  }
 }

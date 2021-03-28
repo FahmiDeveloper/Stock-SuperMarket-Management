@@ -44,7 +44,8 @@ export class ProductFormComponent implements OnInit {
   }
 
   save(product) {
-    this.productService.create(product);
+    if (this.productId) this.productService.update(this.productId, product);
+    else this.productService.create(product);
     this.router.navigate(['/products']);
   }
 
