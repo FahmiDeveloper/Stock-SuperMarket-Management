@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
+import { StockIn } from '../models/stock-in.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class StockInService {
     return this.db.list('/stockIn').push(stockIn);
   }
 
-  getStockInId(stockInId) {
-    return this.db.object('/stockIn/' + stockInId).valueChanges();
+  getStockInId(stockInId: string): AngularFireObject<StockIn> {
+    return this.db.object('/stockIn/' + stockInId);
   }
 
   update(stockInId, stockin) {

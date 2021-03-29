@@ -14,7 +14,6 @@ export class CategoryFormComponent implements OnInit {
 
   categoryId;
   category: Category = new Category();
-  subscription: Subscription;
 
   constructor(private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) { 
     this.categoryId = this.route.snapshot.paramMap.get('id');
