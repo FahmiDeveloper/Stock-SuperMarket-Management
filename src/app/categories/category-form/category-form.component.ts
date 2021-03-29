@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { of, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Category } from 'src/app/shared/models/category.model';
 import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
@@ -11,12 +13,12 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 export class CategoryFormComponent implements OnInit {
 
   categoryId;
-  category = {};
+  category: Category = new Category();
 
   constructor(private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) { 
     this.categoryId = this.route.snapshot.paramMap.get('id');
         if (this.categoryId) {
-          this.categoryService.getCategoryId(this.categoryId).pipe(take(1)).subscribe(category => {
+          this.categoryService.getCategoryId(this.categoryId).valueChanges().pipe(take(1)).subscribe(category => {   
           this.category = category;
         });
       }
@@ -30,6 +32,7 @@ export class CategoryFormComponent implements OnInit {
     else this.categoryService.create(category);
     this.router.navigate(['/categories']);
   }
-
-
 }
+
+
+

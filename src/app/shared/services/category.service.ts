@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
+import { Category } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class CategoryService {
     return this.db.list('/categories').push(category);
   }
 
-  getCategoryId(categoryId) {
-    return this.db.object('/categories/' + categoryId).valueChanges();
+  getCategoryId(categoryId: string): AngularFireObject<Category> {
+    return this.db.object('/categories/' + categoryId);
   }
 
   update(categoryId, category) {

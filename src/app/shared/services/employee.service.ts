@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
+import { Employee } from '../models/employee.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class EmployeeService {
     return this.db.list('/employees').push(employee);
   }
 
-  getEmployeeId(employeeId) {
-    return this.db.object('/employees/' + employeeId).valueChanges();
+  getEmployeeId(employeeId: string): AngularFireObject<Employee> {
+    return this.db.object('/employees/' + employeeId);
   }
 
   update(employeeId, employee) {

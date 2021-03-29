@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Category } from '../shared/models/category.model';
 import { CategoryService } from '../shared/services/category.service';
 
 @Component({
@@ -9,12 +10,13 @@ import { CategoryService } from '../shared/services/category.service';
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
 
-  categories: any[];
+  categories: Category[];
   filteredCategories: any[];
   subscription: Subscription;
 
   constructor(private categoryService: CategoryService) { 
-    this.subscription = this.categoryService.getAll().subscribe(categories => this.filteredCategories = this.categories = categories);
+    this.subscription = this.categoryService.getAll()
+    .subscribe(categories => this.filteredCategories = this.categories = categories);
   }
 
   ngOnInit(): void {

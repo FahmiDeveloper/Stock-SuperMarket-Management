@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
+import { Invoice } from '../models/invoice.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class InvoiceService {
     return this.db.list('/invoices').push(invoice);
   }
 
-  getInvoiceId(invoiceId) {
-    return this.db.object('/invoices/' + invoiceId).valueChanges();
+  getInvoiceId(invoiceId: string): AngularFireObject<Invoice> {
+    return this.db.object('/invoices/' + invoiceId);
   }
 
   update(invoiceId, invoice) {
