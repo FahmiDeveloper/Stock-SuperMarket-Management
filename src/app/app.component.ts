@@ -17,11 +17,16 @@ export class AppComponent {
     this.authService.isConnected.subscribe(res=>{
       if(res) {
         this.userService.getCurrentUser().then(user=>{
-          if(user) this.userService.save(user);
+          if(!user) return;
+
+          this.userService.save(user);
+
+          let returnUrl = localStorage.getItem('returnUrl');
+          if(!returnUrl) return;
+
+          localStorage.removeItem('returnUrl');
+          router.navigateByUrl(returnUrl);
         });
-        
-        let returnUrl = localStorage.getItem('returnUrl');
-        router.navigateByUrl(returnUrl);
       }
     })
   }
