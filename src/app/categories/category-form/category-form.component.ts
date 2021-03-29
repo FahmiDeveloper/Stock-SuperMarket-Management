@@ -10,7 +10,7 @@ import { CategoryService } from 'src/app/shared/services/category.service';
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit, OnDestroy {
+export class CategoryFormComponent implements OnInit {
 
   categoryId;
   category: Category = new Category();
@@ -19,7 +19,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   constructor(private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) { 
     this.categoryId = this.route.snapshot.paramMap.get('id');
         if (this.categoryId) {
-          this.subscription = this.categoryService.getCategoryId(this.categoryId).valueChanges().subscribe(category => {   
+          this.categoryService.getCategoryId(this.categoryId).valueChanges().pipe(take(1)).subscribe(category => {   
           this.category = category;
         });
       }
@@ -33,10 +33,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     else this.categoryService.create(category);
     this.router.navigate(['/categories']);
   }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-
 }
+
+
+
