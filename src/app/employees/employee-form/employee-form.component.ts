@@ -3,6 +3,7 @@ import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Employee } from 'src/app/shared/models/employee.model';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
 
 @Component({
@@ -13,14 +14,13 @@ import { EmployeeService } from 'src/app/shared/services/employee.service';
 export class EmployeeFormComponent implements OnInit {
 
   basePath = '/PicturesEmployees';
-  imageUrl = '';                      
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
   cinPhoneNumberPattern = "^((\\+91-?)|0)?[0-9]{8}$";
 
   employeeId;
-  employee = {};
+  employee: Employee = new Employee();
 
   constructor(
     private employeeService: EmployeeService,
@@ -30,7 +30,7 @@ export class EmployeeFormComponent implements OnInit {
     ) {
         this.employeeId = this.route.snapshot.paramMap.get('id');
         if (this.employeeId) {
-          this.employeeService.getEmployeeId(this.employeeId).pipe(take(1)).subscribe(employee => {
+          this.employeeService.getEmployeeId(this.employeeId).valueChanges().pipe(take(1)).subscribe(employee => {
           this.employee = employee;
         });
       }
@@ -54,11 +54,11 @@ export class EmployeeFormComponent implements OnInit {
        // this.progress = this.snapTask.percentageChanges();
        this.progressValue = this.task.percentageChanges();
  
-       (await this.task).ref.getDownloadURL().then(url => {this.imageUrl = url; });  // <<< url is found here
+       (await this.task).ref.getDownloadURL().then(url => {this.employee.imageUrl = url; });  // <<< url is found here
  
      } else {  
        alert('No images selected');
-       this.imageUrl = '';
+       this.employee.imageUrl = '';
       }
    }
 

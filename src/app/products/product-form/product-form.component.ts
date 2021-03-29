@@ -17,7 +17,6 @@ export class ProductFormComponent implements OnInit {
   categories$;
 
   basePath = '/PicturesProducts';
-  imageUrl = '';                      
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
