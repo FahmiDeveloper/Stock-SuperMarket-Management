@@ -17,4 +17,10 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  delete(productId) {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+
+      this.productService.delete(productId);
+  }
+
 }

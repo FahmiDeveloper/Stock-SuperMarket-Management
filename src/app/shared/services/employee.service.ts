@@ -30,4 +30,8 @@ export class EmployeeService {
   update(employeeId, employee) {
     return this.db.object('/employees/' + employeeId).update(employee);
   }
+
+  delete(employeeId) {
+    return this.db.object('/employees/' + employeeId).remove();
+  }
 }

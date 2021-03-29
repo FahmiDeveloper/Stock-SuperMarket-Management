@@ -28,7 +28,8 @@
                     <img *ngIf="product.imageUrl" class="sizePicture" [src]="product.imageUrl">
                 </td>
                 <td>
-                    <a [routerLink]="['/products', product.key]">Edit</a>
+                    <button [routerLink]="['/products', product.key]" class="btn btn-success">Edit</button><br>
+                    <button type="button" (click)="delete(product.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

@@ -30,4 +30,8 @@ export class SupplierService {
   update(supplierId, supplier) {
     return this.db.object('/suppliers/' + supplierId).update(supplier);
   }
+
+  delete(supplierId) {
+    return this.db.object('/suppliers/' + supplierId).remove();
+  }
 }

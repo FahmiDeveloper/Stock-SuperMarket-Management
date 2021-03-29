@@ -22,7 +22,8 @@
                 <td>{{ invoice.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ invoice.time }}</td>
                 <td>
-                    <a [routerLink]="['/invoices', invoice.key]">Edit</a>
+                    <button [routerLink]="['/invoices', invoice.key]" class="btn btn-success">Edit</button>
+                    <button type="button" (click)="delete(invoice.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

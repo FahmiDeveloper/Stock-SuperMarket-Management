@@ -17,4 +17,10 @@ export class StockInComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  delete(stockInId) {
+    if (!confirm('Are you sure you want to delete this stock in?')) return;
+
+      this.stockInService.delete(stockInId);
+  }
+
 }

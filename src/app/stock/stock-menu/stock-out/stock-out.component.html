@@ -24,7 +24,8 @@
                 <td>{{ stockOutProduct.time }}</td>
                 <td>{{ stockOutProduct.description }}</td>
                 <td>
-                    <a [routerLink]="['/stock-out', stockOutProduct.key]">Edit</a>
+                    <button [routerLink]="['/stock-out', stockOutProduct.key]" class="btn btn-success">Edit</button>
+                    <button type="button" (click)="delete(stockOutProduct.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

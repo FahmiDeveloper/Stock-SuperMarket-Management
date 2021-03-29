@@ -17,4 +17,10 @@ export class SuppliersComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  delete(supplierId) {
+    if (!confirm('Are you sure you want to delete this supplier?')) return;
+
+      this.supplierService.delete(supplierId);
+  }
+
 }

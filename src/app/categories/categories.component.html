@@ -24,7 +24,8 @@
                 <td>{{ category.time }}</td>
                 <td>{{ category.description }}</td>
                 <td>
-                    <a [routerLink]="['/categories', category.key]">Edit</a>
+                    <button [routerLink]="['/categories', category.key]" class="btn btn-success">Edit</button>
+                    <button type="button" (click)="delete(category.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

@@ -30,4 +30,8 @@ export class StockOutService {
   update(stockOutId, stockout) {
     return this.db.object('/stockOut/' + stockOutId).update(stockout);
   }
+
+  delete(stockOutId) {
+    return this.db.object('/stockOut/' + stockOutId).remove();
+  }
 }

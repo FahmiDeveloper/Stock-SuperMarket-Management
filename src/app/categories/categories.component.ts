@@ -17,4 +17,10 @@ export class CategoriesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  delete(categoryId) {
+    if (!confirm('Are you sure you want to delete this category?')) return;
+
+      this.categoryService.delete(categoryId);
+  }
+
 }

@@ -30,4 +30,8 @@ export class InvoiceService {
   update(invoiceId, invoice) {
     return this.db.object('/invoices/' + invoiceId).update(invoice);
   }
+
+  delete(invoiceId) {
+    return this.db.object('/invoices/' + invoiceId).remove();
+  }
 }
