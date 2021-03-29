@@ -3,6 +3,7 @@ import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Product } from 'src/app/shared/models/product.model';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ProductService } from 'src/app/shared/services/product.service';
 
@@ -21,7 +22,7 @@ export class ProductFormComponent implements OnInit {
   progressValue: Observable<number>;
 
   productId;
-  product = {};
+  product: Product = new Product();
 
   constructor(
     private categoryService: CategoryService, 
@@ -34,7 +35,7 @@ export class ProductFormComponent implements OnInit {
 
     this.productId = this.route.snapshot.paramMap.get('id');
         if (this.productId) {
-          this.productService.getProductId(this.productId).pipe(take(1)).subscribe(product => {
+          this.productService.getProductId(this.productId).valueChanges().pipe(take(1)).subscribe(product => {
           this.product = product;
         });
       }
@@ -58,11 +59,11 @@ export class ProductFormComponent implements OnInit {
        // this.progress = this.snapTask.percentageChanges();
        this.progressValue = this.task.percentageChanges();
  
-       (await this.task).ref.getDownloadURL().then(url => {this.imageUrl = url; });  // <<< url is found here
+       (await this.task).ref.getDownloadURL().then(url => {this.product.imageUrl = url; });  // <<< url is found here
  
      } else {  
        alert('No images selected');
-       this.imageUrl = '';
+       this.product.imageUrl = '';
       }
    }
 
