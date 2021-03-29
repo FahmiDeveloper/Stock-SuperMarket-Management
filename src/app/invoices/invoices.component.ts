@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { InvoiceService } from '../shared/services/invoice.service';
 
 @Component({
@@ -6,12 +7,14 @@ import { InvoiceService } from '../shared/services/invoice.service';
   templateUrl: './invoices.component.html',
   styleUrls: ['./invoices.component.scss']
 })
-export class InvoicesComponent implements OnInit {
+export class InvoicesComponent implements OnInit, OnDestroy {
 
-  invoices$;
+  invoices: any[];
+  filteredInvoices: any[];
+  subscription: Subscription;
 
   constructor(private invoiceService: InvoiceService) {
-    this.invoices$ = this.invoiceService.getAll();
+    this.subscription = this.invoiceService.getAll().subscribe(invoices => this.filteredInvoices = this.invoices = invoices);;;
    }
 
   ngOnInit(): void {
@@ -22,5 +25,15 @@ export class InvoicesComponent implements OnInit {
 
       this.invoiceService.delete(invoiceId);
   }
+
+  filter(query: string) {
+    this.filteredInvoices = (query)
+       ? this.invoices.filter(invoice => invoice.code.toLowerCase().includes(query.toLowerCase()))
+       : this.invoices;
+ }
+
+ ngOnDestroy() {
+   this.subscription.unsubscribe();
+ }
 
 }

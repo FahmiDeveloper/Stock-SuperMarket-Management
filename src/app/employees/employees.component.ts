@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { EmployeeService } from '../shared/services/employee.service';
 
 @Component({
@@ -6,12 +7,14 @@ import { EmployeeService } from '../shared/services/employee.service';
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.scss']
 })
-export class EmployeesComponent implements OnInit {
+export class EmployeesComponent implements OnInit, OnDestroy {
 
-  employees$;
+  employees: any[];
+  filteredEmployees: any[];
+  subscription: Subscription;
 
   constructor(private employeeService: EmployeeService) { 
-    this.employees$ = this.employeeService.getAll();
+    this.subscription = this.employeeService.getAll().subscribe(employees => this.filteredEmployees = this.employees = employees);
   }
 
   ngOnInit(): void {
@@ -22,5 +25,15 @@ export class EmployeesComponent implements OnInit {
 
       this.employeeService.delete(employeeId);
   }
+
+  filter(query: string) {
+    this.filteredEmployees = (query)
+       ? this.employees.filter(employee => employee.name.toLowerCase().includes(query.toLowerCase()))
+       : this.employees;
+ }
+
+ ngOnDestroy() {
+   this.subscription.unsubscribe();
+ }
 
 }
