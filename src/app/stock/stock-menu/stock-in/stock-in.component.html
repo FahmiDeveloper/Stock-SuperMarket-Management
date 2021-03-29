@@ -1,7 +1,19 @@
-<div class="row">
-    <p style="margin-top: 150px;">
-        <a routerLink="/stock-in/new" class="btn btn-primary">New</a>
-    </p>
+<div class="row margDivSearchAdd">
+    <div class="col-md-11">
+        <p>
+            <input
+             #query
+             (keyup)="filter(query.value)"
+             type="text" 
+             class="form-control widhtInput" 
+             placeholder="Search...">
+        </p>
+    </div>
+    <div class="col-md-1">
+        <p>
+            <a routerLink="/stock-in/new" class="btn btn-primary">New</a>
+        </p>
+    </div> 
 </div>
 
 <div class="row">
@@ -17,7 +29,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let stockInProduct of (stockInProducts$ | async | sortBy: 'key'); let i=index;">
+            <tr *ngFor="let stockInProduct of (filteredStockInProducts | sortBy: 'key'); let i=index;">
                 <td>{{ i+1 }}</td>
                 <td>{{ stockInProduct.name }}</td>
                 <td>{{ stockInProduct.date | date: 'dd/MM/yyyy' }}</td>

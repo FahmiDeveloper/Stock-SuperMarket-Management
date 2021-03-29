@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { StockInService } from 'src/app/shared/services/stock-in.service';
 
 @Component({
@@ -6,12 +7,14 @@ import { StockInService } from 'src/app/shared/services/stock-in.service';
   templateUrl: './stock-in.component.html',
   styleUrls: ['./stock-in.component.scss']
 })
-export class StockInComponent implements OnInit {
+export class StockInComponent implements OnInit, OnDestroy {
   
-  stockInProducts$;
+  stockInProducts: any[];
+  filteredStockInProducts: any[];
+  subscription: Subscription;
 
   constructor(private stockInService: StockInService) { 
-    this.stockInProducts$ = this.stockInService.getAll();
+    this.subscription = this.stockInService.getAll().subscribe(stockInProducts => this.filteredStockInProducts = this.stockInProducts = stockInProducts);
   }
 
   ngOnInit(): void {
@@ -22,5 +25,15 @@ export class StockInComponent implements OnInit {
 
       this.stockInService.delete(stockInId);
   }
+
+  filter(query: string) {
+    this.filteredStockInProducts = (query)
+       ? this.stockInProducts.filter(stockInProduct => stockInProduct.name.toLowerCase().includes(query.toLowerCase()))
+       : this.stockInProducts;
+ }
+
+ ngOnDestroy() {
+   this.subscription.unsubscribe();
+ }
 
 }

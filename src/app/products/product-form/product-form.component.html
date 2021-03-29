@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group">
                     <label for="imageUrl">Picture</label>
-                    <input [(ngModel)]="product['imageUrl']" name="imageUrl" id="imageUrl" type="text" class="form-control" hidden>         
+                    <input [(ngModel)]="imageUrl" name="imageUrl" id="imageUrl" type="text" class="form-control" hidden>         
                     <input type="file" name="file" (input)="onFileChanged($event)" class="form-control" accept=".jpeg,.jpg,.png,.svg" />
                     <br>
                     <div *ngIf="progressValue | async as val">
@@ -60,7 +60,7 @@
         <div class="col-md-5">
             <div class="card" style="width: 20rem;">
                 <img *ngIf="!product['imageUrl']" class="card-img-top" src="/assets/pictures/NoImageAvailable.png">
-                <img *ngIf="product['imageUrl']" class="card-img-top" [src]="product['imageUrl']">
+                <img *ngIf="product['imageUrl']" class="card-img-top" [src]="imageUrl">
                 <div class="card-body" *ngIf="nameProduct.value">
                   <h5 class="card-title">{{ product['nameProduct'] }}</h5>
                   <p class="card-text">{{ product['price'] | currency:'USD':true }}</p>

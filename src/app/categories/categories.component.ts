@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CategoryService } from '../shared/services/category.service';
 
 @Component({
@@ -6,12 +7,14 @@ import { CategoryService } from '../shared/services/category.service';
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit, OnDestroy {
 
-  categories$;
+  categories: any[];
+  filteredCategories: any[];
+  subscription: Subscription;
 
   constructor(private categoryService: CategoryService) { 
-    this.categories$ = this.categoryService.getAll();
+    this.subscription = this.categoryService.getAll().subscribe(categories => this.filteredCategories = this.categories = categories);
   }
 
   ngOnInit(): void {
@@ -22,5 +25,15 @@ export class CategoriesComponent implements OnInit {
 
       this.categoryService.delete(categoryId);
   }
+
+  filter(query: string) {
+    this.filteredCategories = (query)
+       ? this.categories.filter(category => category.name.toLowerCase().includes(query.toLowerCase()))
+       : this.categories;
+ }
+
+ ngOnDestroy() {
+   this.subscription.unsubscribe();
+ }
 
 }

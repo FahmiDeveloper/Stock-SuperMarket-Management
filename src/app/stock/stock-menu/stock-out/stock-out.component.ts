@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { StockOutService } from 'src/app/shared/services/stock-out.service';
 
 @Component({
@@ -6,12 +7,14 @@ import { StockOutService } from 'src/app/shared/services/stock-out.service';
   templateUrl: './stock-out.component.html',
   styleUrls: ['./stock-out.component.scss']
 })
-export class StockOutComponent implements OnInit {
+export class StockOutComponent implements OnInit, OnDestroy {
   
-  stockOutProducts$;
+  stockOutProducts: any[];
+  filteredStockOutProducts: any[];
+  subscription: Subscription;
 
   constructor(private stockOutService: StockOutService) {
-    this.stockOutProducts$ = this.stockOutService.getAll();
+    this.subscription = this.stockOutService.getAll().subscribe(stockOutProducts => this.filteredStockOutProducts = this.stockOutProducts = stockOutProducts);
    }
 
   ngOnInit(): void {
@@ -22,5 +25,15 @@ export class StockOutComponent implements OnInit {
 
       this.stockOutService.delete(stockOutId);
   }
+
+  filter(query: string) {
+    this.filteredStockOutProducts = (query)
+       ? this.stockOutProducts.filter(stockOutProduct => stockOutProduct.name.toLowerCase().includes(query.toLowerCase()))
+       : this.stockOutProducts;
+ }
+
+ ngOnDestroy() {
+   this.subscription.unsubscribe();
+ }
 
 }
