@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Supplier } from '../shared/models/supplier.model';
 import { SupplierService } from '../shared/services/supplier.service';
 
 @Component({
@@ -9,12 +10,13 @@ import { SupplierService } from '../shared/services/supplier.service';
 })
 export class SuppliersComponent implements OnInit, OnDestroy {
 
-  suppliers: any[];
+  suppliers: Supplier[];
   filteredSuppliers: any[];
   subscription: Subscription;
 
   constructor(private supplierService: SupplierService) {
-    this.subscription = this.supplierService.getAll().subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);;;
+    this.subscription = this.supplierService.getAll()
+    .subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);;;
    }
 
   ngOnInit(): void {

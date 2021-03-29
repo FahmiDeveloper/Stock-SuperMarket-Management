@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
+import { Supplier } from '../models/supplier.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class SupplierService {
     return this.db.list('/suppliers').push(supplier);
   }
 
-  getSupplierId(supplierId) {
-    return this.db.object('/suppliers/' + supplierId).valueChanges();
+  getSupplierId(supplierId: string): AngularFireObject<Supplier> {
+    return this.db.object('/suppliers/' + supplierId);
   }
 
   update(supplierId, supplier) {
