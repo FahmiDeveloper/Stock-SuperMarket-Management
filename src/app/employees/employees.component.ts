@@ -17,4 +17,10 @@ export class EmployeesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  delete(employeeId) {
+    if (!confirm('Are you sure you want to delete this employee?')) return;
+
+      this.employeeService.delete(employeeId);
+  }
+
 }

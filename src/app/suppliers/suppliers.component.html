@@ -28,7 +28,8 @@
                 <td>{{ supplier.mobile }}</td>
                 <td>{{ supplier.address }}</td>
                 <td>
-                    <a [routerLink]="['/suppliers', supplier.key]">Edit</a>
+                    <button [routerLink]="['/suppliers', supplier.key]" class="btn btn-success">Edit</button>
+                    <button type="button" (click)="delete(supplier.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

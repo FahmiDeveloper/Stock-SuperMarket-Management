@@ -28,7 +28,8 @@ export class SupplierFormComponent implements OnInit {
   }
 
   save(supplier) {
-    this.supplierService.create(supplier);
+    if (this.supplierId) this.supplierService.update(this.supplierId, supplier);
+    else this.supplierService.create(supplier);
     this.router.navigate(['/suppliers']);
   }
 

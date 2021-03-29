@@ -27,7 +27,8 @@ export class StockOutFormComponent implements OnInit {
   }
 
   save(stockOut) {
-    this.stockOutService.create(stockOut);
+    if (this.stockOutId) this.stockOutService.update(this.stockOutId, stockOut);
+    else this.stockOutService.create(stockOut);
     this.router.navigate(['/stock-out']);
   }
 

@@ -26,7 +26,8 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   save(invoice) {
-    this.invoiceService.create(invoice);
+    if (this.invoiceId) this.invoiceService.update(this.invoiceId, invoice);
+    else this.invoiceService.create(invoice);
     this.router.navigate(['/invoices']);
   }
 

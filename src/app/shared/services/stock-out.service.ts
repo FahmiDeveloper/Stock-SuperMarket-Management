@@ -26,4 +26,12 @@ export class StockOutService {
   getStockOutId(stockOutId) {
     return this.db.object('/stockOut/' + stockOutId).valueChanges();
   }
+
+  update(stockOutId, stockout) {
+    return this.db.object('/stockOut/' + stockOutId).update(stockout);
+  }
+
+  delete(stockOutId) {
+    return this.db.object('/stockOut/' + stockOutId).remove();
+  }
 }
