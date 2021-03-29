@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { Invoice } from 'src/app/shared/models/invoice.model';
 import { InvoiceService } from 'src/app/shared/services/invoice.service';
 
 @Component({
@@ -11,12 +12,12 @@ import { InvoiceService } from 'src/app/shared/services/invoice.service';
 export class InvoiceFormComponent implements OnInit {
 
   invoiceId;
-  invoice = {};
+  invoice: Invoice = new Invoice();
 
   constructor(private invoiceService: InvoiceService, private router: Router, private route: ActivatedRoute) {
     this.invoiceId = this.route.snapshot.paramMap.get('id');
     if (this.invoiceId) {
-      this.invoiceService.getInvoiceId(this.invoiceId).pipe(take(1)).subscribe(invoice => {
+      this.invoiceService.getInvoiceId(this.invoiceId).valueChanges().pipe(take(1)).subscribe(invoice => {
       this.invoice = invoice;
     });
   }
