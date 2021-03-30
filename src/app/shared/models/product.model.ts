@@ -4,6 +4,7 @@ export class Product {
     date: string;
     time: string;
     categoryId: number;
+    nameCategory: string;// get name of category foreach product using categoryId
     imageUrl: string;
 
     constructor(){
@@ -12,6 +13,7 @@ export class Product {
       this.date = "";
       this.time = "";
       this.categoryId = null;
+      this.nameCategory = "";
       this.imageUrl = "";
     }
   }

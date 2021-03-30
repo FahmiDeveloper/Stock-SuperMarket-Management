@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { element } from 'protractor';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Product } from '../shared/models/product.model';
+import { CategoryService } from '../shared/services/category.service';
 import { ProductService } from '../shared/services/product.service';
 
 @Component({
@@ -11,12 +14,16 @@ import { ProductService } from '../shared/services/product.service';
 export class ProductsComponent implements OnInit, OnDestroy {
 
   products: Product[];
-  filteredProducts: any[];
-  subscription: Subscription;
+  filteredProducts: Product[];
+  subscriptionForGetAllProducts: Subscription;
+  subscriptionForGetCategoryName: Subscription;
 
-  constructor(private productService: ProductService) {
-    this.subscription = this.productService.getAll()
-    .subscribe(products => this.filteredProducts = this.products = products);
+  constructor(private productService: ProductService, private categoryService: CategoryService) {
+    this.subscriptionForGetAllProducts = this.productService.getAll()
+    .subscribe(products => {
+      this.filteredProducts = this.products = products;
+      this.getCategoryName();
+    });
    }
 
   ngOnInit(): void {
@@ -34,8 +41,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
         : this.products;
   }
 
+  getCategoryName() {
+    this.filteredProducts.forEach(element=>{
+      this.subscriptionForGetCategoryName =  this.categoryService
+      .getCategoryId(String(element.categoryId))
+      .valueChanges()
+      .subscribe(category => {   
+        if(category.name) element.nameCategory = category.name;
+      });
+    })
+  }
+
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptionForGetAllProducts.unsubscribe();
+    this.subscriptionForGetCategoryName.unsubscribe();
   }
 
 }
