@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 import { Supplier } from 'src/app/shared/models/supplier.model';
 import { SupplierService } from 'src/app/shared/services/supplier.service';
@@ -22,6 +23,9 @@ export class SupplierFormComponent implements OnInit {
       this.supplierService.getSupplierId(this.supplierId).valueChanges().pipe(take(1)).subscribe(supplier => {
       this.supplier = supplier;
     });
+   } else {
+    this.supplier.date = moment().format('YYYY-MM-DD');
+    this.supplier.time = moment().format('HH:mm');
   }
   }
 

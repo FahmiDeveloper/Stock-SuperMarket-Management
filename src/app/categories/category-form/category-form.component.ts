@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { of, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Category } from 'src/app/shared/models/category.model';
@@ -21,6 +22,9 @@ export class CategoryFormComponent implements OnInit {
           this.categoryService.getCategoryId(this.categoryId).valueChanges().pipe(take(1)).subscribe(category => {   
           this.category = category;
         });
+      } else {
+        this.category.date = moment().format('YYYY-MM-DD');
+        this.category.time = moment().format('HH:mm');
       }
   }
 

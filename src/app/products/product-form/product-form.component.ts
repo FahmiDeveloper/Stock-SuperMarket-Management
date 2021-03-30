@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Product } from 'src/app/shared/models/product.model';
@@ -37,6 +38,9 @@ export class ProductFormComponent implements OnInit {
           this.productService.getProductId(this.productId).valueChanges().pipe(take(1)).subscribe(product => {
           this.product = product;
         });
+      } else {
+        this.product.date = moment().format('YYYY-MM-DD');
+        this.product.time = moment().format('HH:mm');
       }
   }
 
