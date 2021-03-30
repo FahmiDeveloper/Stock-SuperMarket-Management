@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 import { Invoice } from 'src/app/shared/models/invoice.model';
 import { InvoiceService } from 'src/app/shared/services/invoice.service';
@@ -20,7 +21,10 @@ export class InvoiceFormComponent implements OnInit {
       this.invoiceService.getInvoiceId(this.invoiceId).valueChanges().pipe(take(1)).subscribe(invoice => {
       this.invoice = invoice;
     });
-  }
+    } else {
+      this.invoice.date = moment().format('YYYY-MM-DD');
+      this.invoice.time = moment().format('HH:mm');
+    }
    }
 
   ngOnInit(): void {

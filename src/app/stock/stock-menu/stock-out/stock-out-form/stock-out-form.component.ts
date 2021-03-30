@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 import { StockOut } from 'src/app/shared/models/stock-out.model';
 import { StockOutService } from 'src/app/shared/services/stock-out.service';
@@ -20,6 +21,9 @@ export class StockOutFormComponent implements OnInit {
           this.stockOutService.getStockOutId(this.stockOutId).valueChanges().pipe(take(1)).subscribe(stockOut => {
           this.stockOut = stockOut;
         });
+      } else {
+        this.stockOut.date = moment().format('YYYY-MM-DD');
+        this.stockOut.time = moment().format('HH:mm');
       }
   }
 

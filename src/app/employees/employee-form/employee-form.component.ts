@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Employee } from 'src/app/shared/models/employee.model';
@@ -33,6 +34,9 @@ export class EmployeeFormComponent implements OnInit {
           this.employeeService.getEmployeeId(this.employeeId).valueChanges().pipe(take(1)).subscribe(employee => {
           this.employee = employee;
         });
+      } else {
+        this.employee.date = moment().format('YYYY-MM-DD');
+        this.employee.time = moment().format('HH:mm');
       }
     }
 
