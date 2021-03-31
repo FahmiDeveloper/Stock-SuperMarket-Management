@@ -9,6 +9,16 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="quantity">Sorted Quantity</label>
+            <div class="input-group">
+                <span class="input-group-text">Box</span>                
+                <input #quantity="ngModel" [(ngModel)]="stockOut.quantity" name="quantity" id="quantity" type="number" class="form-control" required>
+            </div>
+            <div class="alert alert-danger" *ngIf="quantity.touched && quantity.invalid">
+                Sorted quantity is required.
+            </div>
+        </div>
+        <div class="form-group">
             <label for="date">Date</label>
             <input #date="ngModel" [(ngModel)]="stockOut.date" name="date" id="date" type="date" class="form-control">
         </div>

@@ -22,6 +22,7 @@
             <tr>
                 <th>N°</th>
                 <th>Product</th>
+                <th>Entered Quantity(box)</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Description</th>
@@ -32,6 +33,7 @@
             <tr *ngFor="let stockInProduct of (filteredStockInProducts | sortBy: 'key'); let i=index;">
                 <td>{{ i+1 }}</td>
                 <td>{{ stockInProduct.name }}</td>
+                <td>{{ stockInProduct.quantity }}</td>
                 <td>{{ stockInProduct.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ stockInProduct.time }}</td>
                 <td>{{ stockInProduct.description }}</td>

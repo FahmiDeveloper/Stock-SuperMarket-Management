@@ -37,7 +37,11 @@
                 <td>{{ product.price }}</td>
                 <td>{{ product.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ product.time }}</td>
-                <td>{{ product.nameCategory }}</td>
+                <td>
+                    <span *ngIf="product.categoryId">
+                        {{ product.nameCategory }}
+                    </span>
+                </td>
                 <td>
                     <img *ngIf="product.imageUrl" class="sizePicture" [src]="product.imageUrl">
                 </td>
