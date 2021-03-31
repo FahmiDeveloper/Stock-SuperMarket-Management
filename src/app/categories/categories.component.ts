@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Category } from '../shared/models/category.model';
 import { CategoryService } from '../shared/services/category.service';
+import { ListProductsComponent } from './list-products/list-products.component';
 
 @Component({
   selector: 'app-categories',
@@ -14,7 +16,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   filteredCategories: any[];
   subscription: Subscription;
 
-  constructor(private categoryService: CategoryService) { 
+  constructor(private categoryService: CategoryService, protected modalService: NgbModal) { 
     this.subscription = this.categoryService.getAll()
     .subscribe(categories => this.filteredCategories = this.categories = categories);
   }
@@ -33,6 +35,14 @@ export class CategoriesComponent implements OnInit, OnDestroy {
        ? this.categories.filter(category => category.name.toLowerCase().includes(query.toLowerCase()))
        : this.categories;
  }
+
+ openListProducts(category: Category) {
+  const modelref = this.modalService.open(ListProductsComponent as Component, { size: 'lg', centered: true });
+
+  modelref.componentInstance.category = category;
+  modelref.componentInstance.modelref = modelref;
+}
+
 
  ngOnDestroy() {
    this.subscription.unsubscribe();

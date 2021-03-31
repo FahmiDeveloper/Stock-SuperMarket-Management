@@ -26,6 +26,7 @@
                 <th>Time</th>
                 <th>Description</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,13 @@
                 <td>{{ category.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ category.time }}</td>
                 <td>{{ category.description }}</td>
+                <td>
+                    <button
+                    type="button" class="btn btn-info "
+                    (click)="openListProducts(category)">
+                    List Products
+                  </button>
+                </td>
                 <td>
                     <button [routerLink]="['/categories', category.key]" class="btn btn-success">Edit</button>
                     <button type="button" (click)="delete(category.key)" class="btn btn-danger">Delete</button>
