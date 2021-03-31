@@ -38,4 +38,8 @@ export class SupplierFormComponent implements OnInit {
     this.router.navigate(['/suppliers']);
   }
 
+  cancel() {
+    this.router.navigate(['/suppliers']);
+  }
+
 }

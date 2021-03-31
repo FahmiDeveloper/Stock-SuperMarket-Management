@@ -66,4 +66,8 @@ export class EmployeeFormComponent implements OnInit {
       }
    }
 
+   cancel() {
+    this.router.navigate(['/employees']);
+  }
+
 }

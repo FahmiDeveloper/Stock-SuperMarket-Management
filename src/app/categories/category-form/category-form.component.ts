@@ -36,6 +36,10 @@ export class CategoryFormComponent implements OnInit {
     else this.categoryService.create(category);
     this.router.navigate(['/categories']);
   }
+
+  cancel() {
+    this.router.navigate(['/categories']);
+  }
 }
 
 

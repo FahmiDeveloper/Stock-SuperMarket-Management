@@ -45,4 +45,8 @@ export class InvoiceFormComponent implements OnInit {
     this.router.navigate(['/invoices']);
   }
 
+  cancel() {
+    this.router.navigate(['/invoices']);
+  }
+
 }

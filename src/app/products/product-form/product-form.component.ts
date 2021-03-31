@@ -70,4 +70,8 @@ export class ProductFormComponent implements OnInit {
       }
    }
 
+   cancel() {
+    this.router.navigate(['/products']);
+  }
+
 }

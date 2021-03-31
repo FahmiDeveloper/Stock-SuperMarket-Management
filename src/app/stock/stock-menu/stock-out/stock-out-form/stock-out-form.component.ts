@@ -37,4 +37,8 @@ export class StockOutFormComponent implements OnInit {
     this.router.navigate(['/stock-out']);
   }
 
+  cancel() {
+    this.router.navigate(['/stock-out']);
+  }
+
 }
