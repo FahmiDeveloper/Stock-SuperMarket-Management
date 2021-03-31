@@ -1,7 +1,7 @@
 <div class="container margForm">
     <form #f="ngForm" (ngSubmit)="save(f.value)">
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Product</label>
             <input #name="ngModel" [(ngModel)]="stockIn.name" name="name" id="name" type="text" class="form-control" required [minlength]="3">
             <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
                 <div *ngIf="name.errors.required">Name is required.</div>

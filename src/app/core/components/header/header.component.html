@@ -12,7 +12,7 @@
         <li class="nav-item active" *ngIf="isConnected">
           <a class="nav-link" routerLink="/home">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li ngbDropdown class="nav-item dropdown">
+        <li ngbDropdown class="nav-item dropdown" hidden>
           <a ngbDropdownToggle class="nav-link dropdown-toggle white-text" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Services</a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
             <a class="dropdown-item" href="#">Action</a>
@@ -20,14 +20,11 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" hidden>
           <a class="nav-link" href="#">About Us</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
       </ul>
-      <form id="searchForm"  class="navbar-form navbar-right form-inline my-2 my-lg-0"  >
+      <form id="searchForm"  class="navbar-form navbar-right form-inline my-2 my-lg-0" hidden >
         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
