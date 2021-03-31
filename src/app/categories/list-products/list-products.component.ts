@@ -12,6 +12,7 @@ export class ListProductsComponent implements OnInit {
 
   category: Category = new Category();
   listProducts: Product[];
+  modelref: any;
   
   constructor(private productService: ProductService) { }
 
@@ -29,6 +30,10 @@ export class ListProductsComponent implements OnInit {
   getListProductsForCategory(products: Product[]) {
     this.listProducts = [];
     this.listProducts = products.filter(element=>element.categoryId==this.category.key);
+  }
+
+  closeModal() {
+    this.modelref.close();
   }
 
 }
