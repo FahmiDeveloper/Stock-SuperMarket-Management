@@ -37,6 +37,7 @@ import { StockOutComponent } from './stock/stock-menu/stock-out/stock-out.compon
 import { SortPipe } from './shared/pipes/sort.pipe';
 import { CustomFormsModule } from 'ng2-validation';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { ListProductsComponent } from './categories/list-products/list-products.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,11 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     InvoicesComponent,
     InvoiceFormComponent,
     StockMenuComponent,
-    SortPipe
+    SortPipe,
+    ListProductsComponent
+  ],
+  entryComponents: [
+    ListProductsComponent
   ],
   imports: [
     BrowserModule,

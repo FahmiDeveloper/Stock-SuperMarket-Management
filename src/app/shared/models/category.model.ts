@@ -1,4 +1,5 @@
 export class Category {
+    key: number;
     name: string;
     date: string;
     time: string;
