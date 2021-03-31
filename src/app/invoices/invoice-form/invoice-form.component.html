@@ -15,6 +15,18 @@
             <label for="time">Time</label>
             <input #time="ngModel" [(ngModel)]="invoice.time" name="time" id="time" type="time" class="form-control">
         </div>
+        <div class="form-group">
+            <label for="supplierId">Supplier</label>
+            <select #supplierId="ngModel" [(ngModel)]="invoice.supplierId" name="supplierId" id="supplierId" class="form-control" required>
+                <option value=""></option>
+                <option *ngFor="let supplier of (suppliers$ | async | sortBy: 'key')" [value]="supplier.key"> 
+                    {{supplier.name}} 
+                </option>
+            </select>
+            <div class="alert alert-danger" *ngIf="supplierId.touched && supplierId.invalid">
+                Supplier is required.
+            </div>
+        </div>
         <button class="btn btn-primary">Save</button>
     </form>
 </div>

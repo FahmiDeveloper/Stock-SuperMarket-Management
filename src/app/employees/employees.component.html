@@ -27,6 +27,7 @@
                 <th>Time</th>
                 <th>CIN</th>
                 <th>Phone</th>
+                <th>Salary(DT)</th>
                 <th>Picture</th>
                 <th></th>
             </tr>
@@ -40,6 +41,7 @@
                 <td>{{ employee.time }}</td>
                 <td>{{ employee.cin }}</td>
                 <td>{{ employee.phone }}</td>
+                <td>{{ employee.salary }}</td>
                 <td>
                     <img *ngIf="employee.imageUrl" class="sizePicture" [src]="employee.imageUrl">
                 </td>

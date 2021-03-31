@@ -24,6 +24,7 @@
                 <th>Code</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Supplier</th>
                 <th></th>
             </tr>
         </thead>
@@ -33,6 +34,11 @@
                 <td>{{ invoice.code }}</td>
                 <td>{{ invoice.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ invoice.time }}</td>
+                <td>
+                    <span *ngIf="invoice.supplierId">
+                        {{ invoice.nameSupplier }}
+                    </span>
+                </td>
                 <td>
                     <button [routerLink]="['/invoices', invoice.key]" class="btn btn-success">Edit</button>
                     <button type="button" (click)="delete(invoice.key)" class="btn btn-danger">Delete</button>

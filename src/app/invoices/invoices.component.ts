@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Invoice } from '../shared/models/invoice.model';
 import { InvoiceService } from '../shared/services/invoice.service';
+import { SupplierService } from '../shared/services/supplier.service';
 
 @Component({
   selector: 'app-invoices',
@@ -11,12 +12,16 @@ import { InvoiceService } from '../shared/services/invoice.service';
 export class InvoicesComponent implements OnInit, OnDestroy {
 
   invoices: Invoice[];
-  filteredInvoices: any[];
+  filteredInvoices: Invoice[];
   subscription: Subscription;
+  subscriptionForGetSupplierName: Subscription;
 
-  constructor(private invoiceService: InvoiceService) {
+  constructor(private invoiceService: InvoiceService, private supplierService: SupplierService) {
     this.subscription = this.invoiceService.getAll()
-    .subscribe(invoices => this.filteredInvoices = this.invoices = invoices);;;
+    .subscribe(invoices => {
+      this.filteredInvoices = this.invoices = invoices;
+      this.getSupplierName();
+    });
    }
 
   ngOnInit(): void {
@@ -34,8 +39,20 @@ export class InvoicesComponent implements OnInit, OnDestroy {
        : this.invoices;
  }
 
+ getSupplierName() {
+  this.filteredInvoices.forEach(element=>{
+    this.subscriptionForGetSupplierName =  this.supplierService
+    .getSupplierId(String(element.supplierId))
+    .valueChanges()
+    .subscribe(supplier => {   
+      if(supplier.name) element.nameSupplier = supplier.name;
+    });
+  })
+ }
+
  ngOnDestroy() {
    this.subscription.unsubscribe();
+   this.subscriptionForGetSupplierName.unsubscribe();
  }
 
 }

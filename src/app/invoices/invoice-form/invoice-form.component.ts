@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 import { Invoice } from 'src/app/shared/models/invoice.model';
 import { InvoiceService } from 'src/app/shared/services/invoice.service';
+import { SupplierService } from 'src/app/shared/services/supplier.service';
 
 @Component({
   selector: 'app-invoice-form',
@@ -14,8 +15,16 @@ export class InvoiceFormComponent implements OnInit {
 
   invoiceId;
   invoice: Invoice = new Invoice();
+  suppliers$;
 
-  constructor(private invoiceService: InvoiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private invoiceService: InvoiceService, 
+    private router: Router, 
+    private route: ActivatedRoute,
+    private supplierService: SupplierService
+    ) {
+    this.suppliers$ = this.supplierService.getAll();
+
     this.invoiceId = this.route.snapshot.paramMap.get('id');
     if (this.invoiceId) {
       this.invoiceService.getInvoiceId(this.invoiceId).valueChanges().pipe(take(1)).subscribe(invoice => {
