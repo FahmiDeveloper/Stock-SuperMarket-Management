@@ -28,6 +28,7 @@
                 <th>Mobile</th>
                 <th>Address</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,13 @@
                 <td>{{ supplier.phone }}</td>
                 <td>{{ supplier.mobile }}</td>
                 <td>{{ supplier.address }}</td>
+                <td>
+                    <button
+                    type="button" class="btn btn-info "
+                    (click)="openListInvoices(supplier)">
+                    List Invoices
+                  </button>
+                </td>
                 <td>
                     <button [routerLink]="['/suppliers', supplier.key]" class="btn btn-success">Edit</button>
                     <button type="button" (click)="delete(supplier.key)" class="btn btn-danger">Delete</button>

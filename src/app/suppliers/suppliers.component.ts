@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Supplier } from '../shared/models/supplier.model';
 import { SupplierService } from '../shared/services/supplier.service';
+import { ListInvoicesComponent } from './list-invoices/list-invoices.component';
 
 @Component({
   selector: 'app-suppliers',
@@ -14,7 +16,7 @@ export class SuppliersComponent implements OnInit, OnDestroy {
   filteredSuppliers: any[];
   subscription: Subscription;
 
-  constructor(private supplierService: SupplierService) {
+  constructor(private supplierService: SupplierService, protected modalService: NgbModal) {
     this.subscription = this.supplierService.getAll()
     .subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);;;
    }
@@ -33,6 +35,13 @@ export class SuppliersComponent implements OnInit, OnDestroy {
        ? this.suppliers.filter(supplier => supplier.name.toLowerCase().includes(query.toLowerCase()))
        : this.suppliers;
  }
+
+ openListInvoices(supplier: Supplier) {
+  const modelref = this.modalService.open(ListInvoicesComponent as Component, { size: 'lg', centered: true });
+
+  modelref.componentInstance.supplier = supplier;
+  modelref.componentInstance.modelref = modelref;
+}
 
  ngOnDestroy() {
    this.subscription.unsubscribe();
