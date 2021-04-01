@@ -1,4 +1,5 @@
 export class Supplier {
+    key: number;
     name: string;
     date: string;
     time: string;
