@@ -4,6 +4,8 @@ export class StockOut {
     date: string;
     time: string;
     description: string;
+    productId: string;
+    productName: string;
 
     constructor(){
       this.name = "";
@@ -11,5 +13,7 @@ export class StockOut {
       this.date = "";
       this.time = "";
       this.description = "";
+      this.productId = "";
+      this.productName = "";
     }
   }
