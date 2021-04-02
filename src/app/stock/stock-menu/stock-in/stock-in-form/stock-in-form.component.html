@@ -1,11 +1,15 @@
 <div class="container margForm">
     <form #f="ngForm" (ngSubmit)="save(f.value)">
         <div class="form-group">
-            <label for="name">Product</label>
-            <input #name="ngModel" [(ngModel)]="stockIn.name" name="name" id="name" type="text" class="form-control" required [minlength]="3">
-            <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
-                <div *ngIf="name.errors.required">Name is required.</div>
-                <div *ngIf="name.errors?.minlength">Name should contain at least 3 characters or higher.</div> 
+            <label for="productId">Product</label>
+            <select #productId="ngModel" [(ngModel)]="stockIn.productId" name="productId" id="productId" class="form-control" required>
+                <option value=""></option>
+                <option *ngFor="let product of (products$ | async | sortBy: 'key')" [value]="product.key"> 
+                    {{product.nameProduct}} 
+                </option>
+            </select>
+            <div class="alert alert-danger" *ngIf="productId.touched && productId.invalid">
+                Product is required.
             </div>
         </div>
         <div class="form-group">

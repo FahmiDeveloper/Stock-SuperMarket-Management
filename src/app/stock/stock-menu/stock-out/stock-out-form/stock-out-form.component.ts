@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 import { StockOut } from 'src/app/shared/models/stock-out.model';
+import { ProductService } from 'src/app/shared/services/product.service';
 import { StockOutService } from 'src/app/shared/services/stock-out.service';
 
 @Component({
@@ -14,8 +15,16 @@ export class StockOutFormComponent implements OnInit {
 
   stockOutId;
   stockOut: StockOut = new StockOut();
+  products$;
 
-  constructor(private stockOutService: StockOutService, private router: Router, private route: ActivatedRoute) { 
+  constructor(
+    private stockOutService: StockOutService, 
+    private router: Router, 
+    private route: ActivatedRoute,
+    private productService: ProductService
+    ) {
+    this.products$ = this.productService.getAll();
+
     this.stockOutId = this.route.snapshot.paramMap.get('id');
         if (this.stockOutId) {
           this.stockOutService.getStockOutId(this.stockOutId).valueChanges().pipe(take(1)).subscribe(stockOut => {
