@@ -16,6 +16,8 @@ export class StockInComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   subscriptionForGetProductName: Subscription;
 
+  p: number = 1;
+
   constructor(private stockInService: StockInService, private productService: ProductService) { 
     this.subscription = this.stockInService.getAll()
     .subscribe(stockInProducts => {

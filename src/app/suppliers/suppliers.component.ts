@@ -16,6 +16,8 @@ export class SuppliersComponent implements OnInit, OnDestroy {
   filteredSuppliers: any[];
   subscription: Subscription;
 
+  p: number = 1;
+
   constructor(private supplierService: SupplierService, protected modalService: NgbModal) {
     this.subscription = this.supplierService.getAll()
     .subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);;;
