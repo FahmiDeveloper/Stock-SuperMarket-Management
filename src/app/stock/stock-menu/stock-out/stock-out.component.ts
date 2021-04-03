@@ -16,6 +16,8 @@ export class StockOutComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   subscriptionForGetProductName: Subscription;
 
+  p: number = 1;
+
   constructor(private stockOutService: StockOutService, private productService: ProductService) {
     this.subscription = this.stockOutService.getAll()
     .subscribe(stockOutProducts => {
