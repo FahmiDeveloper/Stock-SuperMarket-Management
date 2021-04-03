@@ -20,12 +20,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   p: number = 1;
 
+  categories$;
+  categoryId: string;
+
   constructor(private productService: ProductService, private categoryService: CategoryService) {
     this.subscriptionForGetAllProducts = this.productService.getAll()
     .subscribe(products => {
       this.filteredProducts = this.products = products;
       this.getCategoryName();
     });
+    this.categories$ = this.categoryService.getAll();
    }
 
   ngOnInit(): void {
@@ -52,6 +56,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
         if(category.name) element.nameCategory = category.name;
       });
     })
+  }
+
+  filetrByCategory() {
+    this.filteredProducts = (this.categoryId)
+        ? this.products.filter(element=>element.categoryId==this.categoryId)
+        : this.products;
   }
 
   ngOnDestroy() {

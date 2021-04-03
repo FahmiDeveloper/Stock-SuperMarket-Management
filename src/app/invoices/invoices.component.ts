@@ -18,12 +18,16 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   p: number = 1;
 
+  suppliers$;
+  supplierId: string;
+
   constructor(private invoiceService: InvoiceService, private supplierService: SupplierService) {
     this.subscription = this.invoiceService.getAll()
     .subscribe(invoices => {
       this.filteredInvoices = this.invoices = invoices;
       this.getSupplierName();
     });
+    this.suppliers$ = this.supplierService.getAll();
    }
 
   ngOnInit(): void {
@@ -51,6 +55,12 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     });
   })
  }
+
+ filetrBySupplier() {
+  this.filteredInvoices = (this.supplierId)
+      ? this.invoices.filter(element=>element.supplierId==this.supplierId)
+      : this.invoices;
+}
 
  ngOnDestroy() {
    this.subscription.unsubscribe();
