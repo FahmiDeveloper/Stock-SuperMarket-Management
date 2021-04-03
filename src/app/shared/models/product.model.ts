@@ -3,7 +3,7 @@ export class Product {
     price: number;
     date: string;
     time: string;
-    categoryId: number;
+    categoryId: string;
     nameCategory: string;// get name of category foreach product using categoryId
     imageUrl: string;
 
@@ -12,7 +12,7 @@ export class Product {
       this.price = null;
       this.date = "";
       this.time = "";
-      this.categoryId = null;
+      this.categoryId = "";
       this.nameCategory = "";
       this.imageUrl = "";
     }
