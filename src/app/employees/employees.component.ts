@@ -14,6 +14,8 @@ export class EmployeesComponent implements OnInit, OnDestroy {
   filteredEmployees: any[];
   subscription: Subscription;
 
+  p: number = 1;
+
   constructor(private employeeService: EmployeeService) { 
     this.subscription = this.employeeService.getAll()
     .subscribe(employees => this.filteredEmployees = this.employees = employees);

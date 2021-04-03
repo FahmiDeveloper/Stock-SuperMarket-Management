@@ -16,6 +16,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   filteredCategories: any[];
   subscription: Subscription;
 
+  p: number = 1;
+
   constructor(private categoryService: CategoryService, protected modalService: NgbModal) { 
     this.subscription = this.categoryService.getAll()
     .subscribe(categories => this.filteredCategories = this.categories = categories);

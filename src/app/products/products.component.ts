@@ -18,6 +18,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   subscriptionForGetAllProducts: Subscription;
   subscriptionForGetCategoryName: Subscription;
 
+  p: number = 1;
+
   constructor(private productService: ProductService, private categoryService: CategoryService) {
     this.subscriptionForGetAllProducts = this.productService.getAll()
     .subscribe(products => {

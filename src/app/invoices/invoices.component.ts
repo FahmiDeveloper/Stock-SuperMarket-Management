@@ -16,6 +16,8 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   subscriptionForGetSupplierName: Subscription;
 
+  p: number = 1;
+
   constructor(private invoiceService: InvoiceService, private supplierService: SupplierService) {
     this.subscription = this.invoiceService.getAll()
     .subscribe(invoices => {
