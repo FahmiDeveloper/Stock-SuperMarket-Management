@@ -39,6 +39,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ListProductsComponent } from './categories/list-products/list-products.component';
 import { ListInvoicesComponent } from './suppliers/list-invoices/list-invoices.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { ListInvoicesComponent } from './suppliers/list-invoices/list-invoices.c
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    NgxPaginationModule,
     CustomFormsModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: false }),
     AngularFireModule.initializeApp(environment.firebase),
