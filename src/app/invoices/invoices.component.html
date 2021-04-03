@@ -1,5 +1,5 @@
-<div class="row margDivSearchAdd">
-    <div class="col-md-11">
+<div class="gridForSearch margDivSearchAdd">
+    <div>
         <p>
             <input
              #query
@@ -9,10 +9,19 @@
              placeholder="Search by code...">
         </p>
     </div>
-    <div class="col-md-1">
-        <p>
-            <a routerLink="/invoices/new" class="btn btn-primary">New</a>
-        </p>
+    <div>
+        <label for="supplierId" class="margLabel">Filter by supplier</label>
+    </div>
+    <div>
+        <select [(ngModel)]="supplierId" name="supplierId" id="supplierId" class="form-control" (click)="filetrBySupplier()">
+            <option value=""></option>
+            <option *ngFor="let supplier of (suppliers$ | async | sortBy: 'key')" [value]="supplier.key"> 
+                {{supplier.name}} 
+            </option>
+        </select>
+    </div>
+    <div>
+        <a routerLink="/invoices/new" class="btn btn-primary btnNew">New</a>
     </div> 
 </div>
 

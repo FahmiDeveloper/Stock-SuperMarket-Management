@@ -14,11 +14,11 @@ td {
 .margDivSearchAdd {
     margin-top: 150px;
 }
-.gridForLegend {
+.gridForSearch {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 }
-.buttons{
+.btnNew{
     position: absolute;
     right: 110px;
 }

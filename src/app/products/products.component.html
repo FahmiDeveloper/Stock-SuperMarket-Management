@@ -1,29 +1,29 @@
-    <div class="gridForLegend margDivSearchAdd">
-        <div>
-            <p>
-                <input
-                 #query
-                 (keyup)="filter(query.value)"
-                 type="text" 
-                 class="form-control widhtInput" 
-                 placeholder="Search by name...">
-            </p>
-        </div>
-        <div>
-            <label for="categoryId" class="margLabel">Filter By Category</label>
-        </div>
-        <div>
-            <select [(ngModel)]="categoryId" name="categoryId" id="categoryId" class="form-control" (click)="filetrByCategory()">
-                <option value=""></option>
-                <option *ngFor="let c of (categories$ | async | sortBy: 'key')" [value]="c.key"> 
-                    {{c.name}} 
-                </option>
-            </select>
-        </div>
-        <div>
-            <a routerLink="/products/new" class="btn btn-primary buttons">New</a>
-        </div> 
+<div class="gridForSearch margDivSearchAdd">
+    <div>
+        <p>
+            <input
+                #query
+                (keyup)="filter(query.value)"
+                type="text" 
+                class="form-control widhtInput" 
+                placeholder="Search by name...">
+        </p>
     </div>
+    <div>
+        <label for="categoryId" class="margLabel">Filter by category</label>
+    </div>
+    <div>
+        <select [(ngModel)]="categoryId" name="categoryId" id="categoryId" class="form-control" (click)="filetrByCategory()">
+            <option value=""></option>
+            <option *ngFor="let c of (categories$ | async | sortBy: 'key')" [value]="c.key"> 
+                {{c.name}} 
+            </option>
+        </select>
+    </div>
+    <div>
+        <a routerLink="/products/new" class="btn btn-primary btnNew">New</a>
+    </div> 
+</div>
     
     
     
