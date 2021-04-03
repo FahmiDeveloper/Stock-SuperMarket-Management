@@ -9,8 +9,19 @@ td {
     vertical-align: middle;
 }
 .widhtInput {
-    width: 30%;
+    width: 60%;
 }
 .margDivSearchAdd {
     margin-top: 150px;
+}
+.gridForLegend {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.buttons{
+    position: absolute;
+    right: 110px;
+}
+.margLabel {
+    margin-left: 140px;
 }
