@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Employee } from 'src/app/shared/models/employee.model';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-employee-form',
@@ -44,8 +45,22 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   save(employee) {
-    if (this.employeeId) this.employeeService.update(this.employeeId, employee);
-    else this.employeeService.create(employee);
+    if (this.employeeId) {
+      this.employeeService.update(this.employeeId, employee);
+      Swal.fire(
+        'Employee data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.employeeService.create(employee);
+      Swal.fire(
+        'New employee added successfully',
+        '',
+        'success'
+      )
+    }
     this.router.navigate(['/employees']);
   }
 

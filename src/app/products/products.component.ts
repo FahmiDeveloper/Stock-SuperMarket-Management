@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { element } from 'protractor';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 import { Product } from '../shared/models/product.model';
 import { CategoryService } from '../shared/services/category.service';
 import { ProductService } from '../shared/services/product.service';
@@ -36,9 +37,23 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   delete(productId) {
-    if (!confirm('Are you sure you want to delete this product?')) return;
-
-      this.productService.delete(productId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this product!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.productService.delete(productId);
+        Swal.fire(
+          'Product has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   filter(query: string) {

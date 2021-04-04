@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Supplier } from '../shared/models/supplier.model';
 import { SupplierService } from '../shared/services/supplier.service';
 import { ListInvoicesComponent } from './list-invoices/list-invoices.component';
@@ -27,9 +28,23 @@ export class SuppliersComponent implements OnInit, OnDestroy {
   }
 
   delete(supplierId) {
-    if (!confirm('Are you sure you want to delete this supplier?')) return;
-
-      this.supplierService.delete(supplierId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this supplier!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.supplierService.delete(supplierId);
+        Swal.fire(
+          'Supplier has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   filter(query: string) {

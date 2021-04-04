@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { Invoice } from 'src/app/shared/models/invoice.model';
 import { InvoiceService } from 'src/app/shared/services/invoice.service';
 import { SupplierService } from 'src/app/shared/services/supplier.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-invoice-form',
@@ -40,8 +41,22 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   save(invoice) {
-    if (this.invoiceId) this.invoiceService.update(this.invoiceId, invoice);
-    else this.invoiceService.create(invoice);
+    if (this.invoiceId) {
+      this.invoiceService.update(this.invoiceId, invoice);
+      Swal.fire(
+        'Invoice data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.invoiceService.create(invoice);
+      Swal.fire(
+        'New invoice added successfully',
+        '',
+        'success'
+      )
+    }
     this.router.navigate(['/invoices']);
   }
 

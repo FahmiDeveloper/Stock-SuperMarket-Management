@@ -7,6 +7,7 @@ import { take } from 'rxjs/operators';
 import { Product } from 'src/app/shared/models/product.model';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ProductService } from 'src/app/shared/services/product.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-form',
@@ -48,8 +49,22 @@ export class ProductFormComponent implements OnInit {
   }
 
   save(product) {
-    if (this.productId) this.productService.update(this.productId, product);
-    else this.productService.create(product);
+    if (this.productId) {
+      this.productService.update(this.productId, product);
+      Swal.fire(
+        'Product data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.productService.create(product);
+      Swal.fire(
+        'New product added successfully',
+        '',
+        'success'
+      )
+    }
     this.router.navigate(['/products']);
   }
 
