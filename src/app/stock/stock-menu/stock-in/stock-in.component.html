@@ -24,7 +24,7 @@
                 <th>Entered Quantity(box)</th>
                 <th>Date</th>
                 <th>Time</th>
-                <th>Description</th>
+                <th>Note</th>
                 <th></th>
             </tr>
         </thead>
@@ -34,7 +34,7 @@
                 <td>{{ stockInProduct.quantity }}</td>
                 <td>{{ stockInProduct.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ stockInProduct.time }}</td>
-                <td>{{ stockInProduct.description }}</td>
+                <td>{{ stockInProduct.note }}</td>
                 <td>
                     <button [routerLink]="['/stock-in', stockInProduct.key]" class="btn btn-success">Edit</button>
                     <button type="button" (click)="delete(stockInProduct.key)" class="btn btn-danger">Delete</button>

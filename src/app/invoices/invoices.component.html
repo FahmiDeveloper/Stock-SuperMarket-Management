@@ -33,6 +33,7 @@
                 <th>Date</th>
                 <th>Time</th>
                 <th>Supplier</th>
+                <th>Note</th>
                 <th></th>
             </tr>
         </thead>
@@ -46,6 +47,7 @@
                         {{ invoice.nameSupplier }}
                     </span>
                 </td>
+                <td>{{ invoice.note }}</td>
                 <td>
                     <button [routerLink]="['/invoices', invoice.key]" class="btn btn-success">Edit</button>
                     <button type="button" (click)="delete(invoice.key)" class="btn btn-danger">Delete</button>

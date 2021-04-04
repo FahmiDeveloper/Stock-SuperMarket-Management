@@ -4,6 +4,7 @@ export class Invoice {
     time: string;
     supplierId: string;
     nameSupplier: string;// get name of supplier foreach invoice using supplierId
+    note: string;
 
     constructor(){
       this.code = "";
@@ -11,5 +12,6 @@ export class Invoice {
       this.time = "";
       this.supplierId = "";
       this.nameSupplier = "";
+      this.note = "";
     }
   }
