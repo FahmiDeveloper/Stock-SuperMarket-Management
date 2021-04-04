@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Invoice } from '../shared/models/invoice.model';
 import { InvoiceService } from '../shared/services/invoice.service';
 import { SupplierService } from '../shared/services/supplier.service';
@@ -34,9 +35,23 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   }
 
   delete(invoiceId) {
-    if (!confirm('Are you sure you want to delete this invoice?')) return;
-
-      this.invoiceService.delete(invoiceId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this invoice!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.invoiceService.delete(invoiceId);
+        Swal.fire(
+          'Invoice has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   filter(query: string) {

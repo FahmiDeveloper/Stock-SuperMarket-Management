@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 import { Supplier } from 'src/app/shared/models/supplier.model';
 import { SupplierService } from 'src/app/shared/services/supplier.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-supplier-form',
@@ -33,8 +34,22 @@ export class SupplierFormComponent implements OnInit {
   }
 
   save(supplier) {
-    if (this.supplierId) this.supplierService.update(this.supplierId, supplier);
-    else this.supplierService.create(supplier);
+    if (this.supplierId) {
+      this.supplierService.update(this.supplierId, supplier);
+      Swal.fire(
+        'Supplier data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.supplierService.create(supplier);
+      Swal.fire(
+        'New supplier added successfully',
+        '',
+        'success'
+      )
+    }
     this.router.navigate(['/suppliers']);
   }
 

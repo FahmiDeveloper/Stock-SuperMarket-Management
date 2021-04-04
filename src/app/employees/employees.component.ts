@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Employee } from '../shared/models/employee.model';
 import { EmployeeService } from '../shared/services/employee.service';
 
@@ -25,9 +26,23 @@ export class EmployeesComponent implements OnInit, OnDestroy {
   }
 
   delete(employeeId) {
-    if (!confirm('Are you sure you want to delete this employee?')) return;
-
-      this.employeeService.delete(employeeId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this employee!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.employeeService.delete(employeeId);
+        Swal.fire(
+          'Employee has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   filter(query: string) {

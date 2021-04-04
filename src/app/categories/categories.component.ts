@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 import { Category } from '../shared/models/category.model';
 import { CategoryService } from '../shared/services/category.service';
 import { ListProductsComponent } from './list-products/list-products.component';
@@ -27,9 +28,23 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   }
 
   delete(categoryId) {
-    if (!confirm('Are you sure you want to delete this category?')) return;
-
-      this.categoryService.delete(categoryId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this category!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.categoryService.delete(categoryId);
+        Swal.fire(
+          'Category has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   filter(query: string) {

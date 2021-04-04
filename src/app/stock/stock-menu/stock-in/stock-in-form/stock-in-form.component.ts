@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { StockIn } from 'src/app/shared/models/stock-in.model';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { StockInService } from 'src/app/shared/services/stock-in.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-stock-in-form',
@@ -40,8 +41,22 @@ export class StockInFormComponent implements OnInit {
   }
 
   save(stockIn) {
-    if (this.stockInId) this.stockInService.update(this.stockInId, stockIn);
-    else this.stockInService.create(stockIn);
+    if (this.stockInId) {
+      this.stockInService.update(this.stockInId, stockIn);
+      Swal.fire(
+        'Stock in data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.stockInService.create(stockIn);
+      Swal.fire(
+        'New stock in added successfully',
+        '',
+        'success'
+      )
+    }
     this.router.navigate(['/stock-in']);
   }
 

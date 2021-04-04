@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { StockOut } from 'src/app/shared/models/stock-out.model';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { StockOutService } from 'src/app/shared/services/stock-out.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-stock-out-form',
@@ -41,8 +42,22 @@ export class StockOutFormComponent implements OnInit {
   }
 
   save(stockOut) {
-    if (this.stockOutId) this.stockOutService.update(this.stockOutId, stockOut);
-    else this.stockOutService.create(stockOut);
+    if (this.stockOutId) {
+      this.stockOutService.update(this.stockOutId, stockOut);
+      Swal.fire(
+        'Stock out data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.stockOutService.create(stockOut);
+      Swal.fire(
+        'New stock out added successfully',
+        '',
+        'success'
+      )
+    }
     this.router.navigate(['/stock-out']);
   }
 

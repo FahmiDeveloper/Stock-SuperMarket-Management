@@ -37,6 +37,7 @@
     "path": "^0.12.7",
     "rxjs": "~6.6.0",
     "rxjs-compat": "^6.6.6",
+    "sweetalert2": "^10.15.7",
     "tslib": "^2.0.0",
     "typescript": "~4.0.2",
     "zone.js": "~0.10.2"

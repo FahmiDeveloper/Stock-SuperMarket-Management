@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { StockIn } from 'src/app/shared/models/stock-in.model';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { StockInService } from 'src/app/shared/services/stock-in.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-stock-in',
@@ -30,9 +31,23 @@ export class StockInComponent implements OnInit, OnDestroy {
   }
 
   delete(stockInId) {
-    if (!confirm('Are you sure you want to delete this stock in?')) return;
-
-      this.stockInService.delete(stockInId);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this stock in!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.stockInService.delete(stockInId);
+        Swal.fire(
+          'Stock in has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   filter(query: string) {

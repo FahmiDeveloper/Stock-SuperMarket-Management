@@ -5,6 +5,7 @@ import { of, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Category } from 'src/app/shared/models/category.model';
 import { CategoryService } from 'src/app/shared/services/category.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category-form',
@@ -32,8 +33,22 @@ export class CategoryFormComponent implements OnInit {
   }
 
   save(category) {
-    if (this.categoryId) this.categoryService.update(this.categoryId, category);
-    else this.categoryService.create(category);
+    if (this.categoryId) {
+      this.categoryService.update(this.categoryId, category);
+      Swal.fire(
+        'Category data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.categoryService.create(category);
+      Swal.fire(
+        'New category added successfully',
+        '',
+        'success'
+      )
+    }
     this.router.navigate(['/categories']);
   }
 
