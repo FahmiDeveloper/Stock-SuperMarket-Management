@@ -38,6 +38,9 @@ export class InvoiceFormComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    if (!this.invoiceId) {
+    this.generateCode();
+    }
   }
 
   save(invoice) {
@@ -62,6 +65,23 @@ export class InvoiceFormComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/invoices']);
+  }
+
+  generateCode(){
+    this.invoiceService.getAll()
+    .subscribe((invoices: Invoice[]) => {
+        if (invoices.length > 0) {
+          for (let i = 0; i < invoices.length; i++) {
+            if(invoices[i].code) {
+              const code = invoices[i].code.split('Invoice_')[1].split('_');
+              let newCode = (Number(code[0]) + 1).toString();
+              this.invoice.code = "Invoice_" + newCode + "_" + moment().year();
+            }
+          }      
+      } else {
+        this.invoice.code = "Invoice_" + "1" + "_" + moment().year();
+      }  
+    });
   }
 
 }

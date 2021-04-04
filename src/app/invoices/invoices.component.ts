@@ -105,7 +105,7 @@ getRolesUser() {
 
  ngOnDestroy() {
    this.subscription.unsubscribe();
-   this.subscriptionForGetSupplierName.unsubscribe();
+   if(this.subscriptionForGetSupplierName) this.subscriptionForGetSupplierName.unsubscribe();
  }
 
 }
