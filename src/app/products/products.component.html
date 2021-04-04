@@ -37,6 +37,7 @@
                 <th>Date</th>
                 <th>Time</th>
                 <th>Category</th>
+                <th>Note</th>
                 <th>Picture</th>
                 <th></th>
             </tr>
@@ -52,6 +53,7 @@
                         {{ product.nameCategory }}
                     </span>
                 </td>
+                <td>{{ product.note }}</td>
                 <td>
                     <img *ngIf="product.imageUrl" class="sizePicture" [src]="product.imageUrl">
                 </td>

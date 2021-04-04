@@ -6,6 +6,7 @@ export class Supplier {
     phone: number;
     mobile: number;
     address: string;
+    note: string;
 
     constructor(){
       this.name = "";
@@ -14,5 +15,6 @@ export class Supplier {
       this.phone = null;
       this.mobile = null;
       this.address = "";
+      this.note = "";
     }
   }

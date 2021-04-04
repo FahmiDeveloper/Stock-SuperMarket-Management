@@ -6,6 +6,7 @@ export class Employee {
     cin: number;
     phone: number;
     salary: number;
+    note: string;
     imageUrl: string;
 
     constructor(){
@@ -16,6 +17,7 @@ export class Employee {
       this.cin = null;
       this.phone = null;
       this.salary = null;
+      this.note = "";
       this.imageUrl = "";
     }
   }

@@ -24,7 +24,7 @@
                 <th>Sorted Quantity(box)</th>
                 <th>Date</th>
                 <th>Time</th>
-                <th>Description</th>
+                <th>Note</th>
                 <th></th>
             </tr>
         </thead>
@@ -34,7 +34,7 @@
                 <td>{{ stockOutProduct.quantity }}</td>
                 <td>{{ stockOutProduct.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ stockOutProduct.time }}</td>
-                <td>{{ stockOutProduct.description }}</td>
+                <td>{{ stockOutProduct.note }}</td>
                 <td>
                     <button [routerLink]="['/stock-out', stockOutProduct.key]" class="btn btn-success">Edit</button>
                     <button type="button" (click)="delete(stockOutProduct.key)" class="btn btn-danger">Delete</button>

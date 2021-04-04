@@ -31,8 +31,8 @@
             <input #time="ngModel" [(ngModel)]="stockIn.time" name="time" id="time" type="time" class="form-control">
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
-            <input #description="ngModel" [(ngModel)]="stockIn.description" name="description" id="description" type="text" class="form-control">
+            <label for="note">Note</label>
+            <input  #note="ngModel" [(ngModel)]="stockIn.note" name="note" id="note" type="text" class="form-control">
         </div>
         <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>&nbsp;
         <button class="btn btn-primary" [disabled]="f.invalid">Save</button>

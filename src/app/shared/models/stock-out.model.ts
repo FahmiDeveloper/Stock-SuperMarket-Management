@@ -3,7 +3,7 @@ export class StockOut {
     quantity: number;
     date: string;
     time: string;
-    description: string;
+    note: string;
     productId: string;
     productName: string;
 
@@ -12,7 +12,7 @@ export class StockOut {
       this.quantity = null;
       this.date = "";
       this.time = "";
-      this.description = "";
+      this.note = "";
       this.productId = "";
       this.productName = "";
     }
