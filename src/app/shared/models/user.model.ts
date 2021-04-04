@@ -9,6 +9,9 @@ export class FirebaseUserModel {
     roleStock: boolean;
     roleSupplier: boolean;
     roleInvoice: boolean;
+    roleAdd: boolean;
+    roleUpdate: boolean;
+    roleDelete: boolean;
   
     constructor(){
       this.image = "";

@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { StockOut } from 'src/app/shared/models/stock-out.model';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { StockOutService } from 'src/app/shared/services/stock-out.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,10 +19,18 @@ export class StockOutComponent implements OnInit, OnDestroy {
   filteredStockOutProducts: StockOut[];
   subscription: Subscription;
   subscriptionForGetProductName: Subscription;
+  subscriptionForUser: Subscription;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
 
   p: number = 1;
 
-  constructor(private stockOutService: StockOutService, private productService: ProductService) {
+  constructor(
+    private stockOutService: StockOutService, 
+    private productService: ProductService,
+    public userService: UserService,
+    public authService: AuthService
+    ) {
     this.subscription = this.stockOutService.getAll()
     .subscribe(stockOutProducts => {
       this.filteredStockOutProducts = this.stockOutProducts = stockOutProducts;
@@ -28,6 +39,7 @@ export class StockOutComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    this.getRolesUser();
   }
 
   delete(stockOutId) {
@@ -66,6 +78,20 @@ export class StockOutComponent implements OnInit, OnDestroy {
     });
   })
  }
+
+ getRolesUser() {
+  this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
+    if(res) {
+      this.userService.getCurrentUser().then(user=>{
+        if(user) {
+          this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+            this.user = dataUser;
+          });
+        }
+      });   
+    }
+  })
+}
 
  ngOnDestroy() {
    this.subscription.unsubscribe();

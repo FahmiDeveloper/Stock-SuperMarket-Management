@@ -10,7 +10,7 @@
         </p>
     </div>
     <div class="col-md-1">
-        <p>
+        <p *ngIf="user.roleAdd">
             <a routerLink="/stock-in/new" class="btn btn-primary">New</a>
         </p>
     </div> 
@@ -36,8 +36,8 @@
                 <td>{{ stockInProduct.time }}</td>
                 <td>{{ stockInProduct.note }}</td>
                 <td>
-                    <button [routerLink]="['/stock-in', stockInProduct.key]" class="btn btn-success">Edit</button>
-                    <button type="button" (click)="delete(stockInProduct.key)" class="btn btn-danger">Delete</button>
+                    <button *ngIf="user.roleUpdate" [routerLink]="['/stock-in', stockInProduct.key]" class="btn btn-success">Edit</button>
+                    <button *ngIf="user.roleDelete" type="button" (click)="delete(stockInProduct.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

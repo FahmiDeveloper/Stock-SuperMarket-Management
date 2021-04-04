@@ -21,7 +21,7 @@
         </select>
     </div>
     <div>
-        <a routerLink="/invoices/new" class="btn btn-primary btnNew">New</a>
+        <a *ngIf="user.roleAdd" routerLink="/invoices/new" class="btn btn-primary btnNew">New</a>
     </div> 
 </div>
 
@@ -49,8 +49,8 @@
                 </td>
                 <td>{{ invoice.note }}</td>
                 <td>
-                    <button [routerLink]="['/invoices', invoice.key]" class="btn btn-success">Edit</button>
-                    <button type="button" (click)="delete(invoice.key)" class="btn btn-danger">Delete</button>
+                    <button *ngIf="user.roleUpdate" [routerLink]="['/invoices', invoice.key]" class="btn btn-success">Edit</button>
+                    <button *ngIf="user.roleDelete" type="button" (click)="delete(invoice.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

@@ -3,7 +3,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Category } from '../shared/models/category.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
+import { AuthService } from '../shared/services/auth.service';
 import { CategoryService } from '../shared/services/category.service';
+import { UserService } from '../shared/services/user.service';
 import { ListProductsComponent } from './list-products/list-products.component';
 
 @Component({
@@ -16,15 +19,24 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   categories: Category[];
   filteredCategories: any[];
   subscription: Subscription;
+  subscriptionForUser: Subscription;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
 
   p: number = 1;
 
-  constructor(private categoryService: CategoryService, protected modalService: NgbModal) { 
+  constructor(
+    private categoryService: CategoryService, 
+    protected modalService: NgbModal,
+    public userService: UserService,
+    public authService: AuthService
+    ) { 
     this.subscription = this.categoryService.getAll()
     .subscribe(categories => this.filteredCategories = this.categories = categories);
   }
 
   ngOnInit(): void {
+    this.getRolesUser();
   }
 
   delete(categoryId) {
@@ -58,6 +70,20 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   modelref.componentInstance.category = category;
   modelref.componentInstance.modelref = modelref;
+}
+
+getRolesUser() {
+  this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
+    if(res) {
+      this.userService.getCurrentUser().then(user=>{
+        if(user) {
+          this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+            this.user = dataUser;
+          });
+        }
+      });   
+    }
+  })
 }
 
 

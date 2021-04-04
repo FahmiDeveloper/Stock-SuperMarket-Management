@@ -2,8 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Invoice } from '../shared/models/invoice.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
+import { AuthService } from '../shared/services/auth.service';
 import { InvoiceService } from '../shared/services/invoice.service';
 import { SupplierService } from '../shared/services/supplier.service';
+import { UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-invoices',
@@ -16,13 +19,21 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   filteredInvoices: Invoice[];
   subscription: Subscription;
   subscriptionForGetSupplierName: Subscription;
+  subscriptionForUser: Subscription;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
 
   p: number = 1;
 
   suppliers$;
   supplierId: string;
 
-  constructor(private invoiceService: InvoiceService, private supplierService: SupplierService) {
+  constructor(
+    private invoiceService: InvoiceService, 
+    private supplierService: SupplierService,
+    public userService: UserService,
+    public authService: AuthService
+    ) {
     this.subscription = this.invoiceService.getAll()
     .subscribe(invoices => {
       this.filteredInvoices = this.invoices = invoices;
@@ -32,6 +43,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    this.getRolesUser();
   }
 
   delete(invoiceId) {
@@ -75,6 +87,20 @@ export class InvoicesComponent implements OnInit, OnDestroy {
   this.filteredInvoices = (this.supplierId)
       ? this.invoices.filter(element=>element.supplierId==this.supplierId)
       : this.invoices;
+}
+
+getRolesUser() {
+  this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
+    if(res) {
+      this.userService.getCurrentUser().then(user=>{
+        if(user) {
+          this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+            this.user = dataUser;
+          });
+        }
+      });   
+    }
+  })
 }
 
  ngOnDestroy() {
