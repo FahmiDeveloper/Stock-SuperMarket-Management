@@ -4,8 +4,11 @@ import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Product } from '../shared/models/product.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
+import { AuthService } from '../shared/services/auth.service';
 import { CategoryService } from '../shared/services/category.service';
 import { ProductService } from '../shared/services/product.service';
+import { UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-products',
@@ -18,13 +21,21 @@ export class ProductsComponent implements OnInit, OnDestroy {
   filteredProducts: Product[];
   subscriptionForGetAllProducts: Subscription;
   subscriptionForGetCategoryName: Subscription;
+  subscriptionForUser: Subscription;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
 
   p: number = 1;
 
   categories$;
   categoryId: string;
 
-  constructor(private productService: ProductService, private categoryService: CategoryService) {
+  constructor(
+    private productService: ProductService, 
+    private categoryService: CategoryService,
+    public userService: UserService,
+    public authService: AuthService
+    ) {
     this.subscriptionForGetAllProducts = this.productService.getAll()
     .subscribe(products => {
       this.filteredProducts = this.products = products;
@@ -34,6 +45,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    this.getRolesUser();
   }
 
   delete(productId) {
@@ -77,6 +89,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.filteredProducts = (this.categoryId)
         ? this.products.filter(element=>element.categoryId==this.categoryId)
         : this.products;
+  }
+
+  getRolesUser() {
+    this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
+      if(res) {
+        this.userService.getCurrentUser().then(user=>{
+          if(user) {
+            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+              this.user = dataUser;
+            });
+          }
+        });   
+      }
+    })
   }
 
   ngOnDestroy() {
