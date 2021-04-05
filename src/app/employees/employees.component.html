@@ -43,7 +43,7 @@
                 <td>{{ employee.salary }}</td>
                 <td>{{ employee.note }}</td>
                 <td>
-                    <img *ngIf="employee.imageUrl" class="sizePicture" [src]="employee.imageUrl">
+                    <show-employee-picture [employee]="employee"></show-employee-picture>
                 </td>
                 <td>
                     <button *ngIf="user.roleUpdate" [routerLink]="['/employees', employee.key]" class="btn btn-success">Edit</button>

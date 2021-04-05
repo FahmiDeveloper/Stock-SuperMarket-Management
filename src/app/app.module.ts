@@ -41,6 +41,7 @@ import { ListProductsComponent } from './categories/list-products/list-products.
 import { ListInvoicesComponent } from './suppliers/list-invoices/list-invoices.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ShowProductPictureComponent } from './products/show-product-picture/show-product-picture.component';
+import { ShowEmployeePictureComponent } from './employees/show-employee-picture/show-employee-picture.component';
 
 @NgModule({
   declarations: [
@@ -68,12 +69,14 @@ import { ShowProductPictureComponent } from './products/show-product-picture/sho
     SortPipe,
     ListProductsComponent,
     ListInvoicesComponent,
-    ShowProductPictureComponent
+    ShowProductPictureComponent,
+    ShowEmployeePictureComponent
   ],
   entryComponents: [
     ListProductsComponent,
     ListInvoicesComponent,
-    ShowProductPictureComponent
+    ShowProductPictureComponent,
+    ShowEmployeePictureComponent
   ],
   imports: [
     BrowserModule,
