@@ -55,7 +55,7 @@
                 </td>
                 <td>{{ product.note }}</td>
                 <td>
-                    <img *ngIf="product.imageUrl" class="sizePicture" [src]="product.imageUrl">
+                    <show-product-picture [product]="product"></show-product-picture>
                 </td>
                 <td>
                     <button *ngIf="user.roleUpdate" [routerLink]="['/products', product.key]" class="btn btn-success">Edit</button><br>
