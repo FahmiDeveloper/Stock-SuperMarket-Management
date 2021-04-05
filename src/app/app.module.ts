@@ -40,6 +40,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ListProductsComponent } from './categories/list-products/list-products.component';
 import { ListInvoicesComponent } from './suppliers/list-invoices/list-invoices.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ShowProductPictureComponent } from './products/show-product-picture/show-product-picture.component';
 
 @NgModule({
   declarations: [
@@ -66,11 +67,13 @@ import { NgxPaginationModule } from 'ngx-pagination';
     StockMenuComponent,
     SortPipe,
     ListProductsComponent,
-    ListInvoicesComponent
+    ListInvoicesComponent,
+    ShowProductPictureComponent
   ],
   entryComponents: [
     ListProductsComponent,
-    ListInvoicesComponent
+    ListInvoicesComponent,
+    ShowProductPictureComponent
   ],
   imports: [
     BrowserModule,
