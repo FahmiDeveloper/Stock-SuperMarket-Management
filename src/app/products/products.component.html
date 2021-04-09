@@ -1,3 +1,5 @@
+<h1 class="text-center text-warning titleTextInterface">Products</h1>
+
 <div class="gridForSearch margDivSearchAdd">
     <div>
         <p>
@@ -30,7 +32,7 @@
 
 <div class="row">
     <table class="table table-striped">
-        <thead>
+        <thead class="colorHeaderTable">
             <tr>
                 <th>Name</th>
                 <th>Price</th>
@@ -58,7 +60,7 @@
                     <show-product-picture [product]="product"></show-product-picture>
                 </td>
                 <td>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/products', product.key]" class="btn btn-success">Edit</button><br>
+                    <button *ngIf="user.roleUpdate" [routerLink]="['/products', product.key]" class="btn btn-success">Edit</button>
                     <button *ngIf="user.roleDelete" type="button" (click)="delete(product.key)" class="btn btn-danger">Delete</button>
                 </td>
             </tr>

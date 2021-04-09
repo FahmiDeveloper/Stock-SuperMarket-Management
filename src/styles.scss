@@ -11,3 +11,21 @@
   display:flex;
   justify-content:center;
 }
+
+.table thead th {
+  text-align: center;
+}
+.table tbody td {
+  text-align: center;
+  vertical-align: middle;
+}
+.margDivSearchAdd {
+  margin-top: 80px;
+}
+.colorHeaderTable {
+  background-color:rgb(91, 89, 241);
+  color: white;
+}
+.titleTextInterface {
+  padding-top: 60px;
+}
