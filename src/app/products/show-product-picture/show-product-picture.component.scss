@@ -1,5 +1,11 @@
 .sizePicture {
-    width: 150px;
+    border: 1px solid #4d4c4c;
+    height: 120px;
+    width: 120px;
+    color: coral;
+    font-weight: bold;
+    background-size: cover;
+    border-radius: 50%;
     cursor: pointer;
 }
 .imageProduct {
@@ -23,4 +29,8 @@
     color:rgb(1, 153, 34);  
     font-size: 17px; 
     font-weight: 410;
+}
+.sizePictureForGirid {
+    width: 150px;
+    cursor: pointer;
 }
