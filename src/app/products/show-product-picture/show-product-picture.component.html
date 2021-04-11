@@ -1,4 +1,7 @@
-<img *ngIf="product.imageUrl" class="sizePicture" [src]="product.imageUrl" (click)="showProductImage(contentProductPicture)">
+<img *ngIf="product.imageUrl && !isGrid" class="sizePicture" [src]="product.imageUrl"
+    (click)="showProductImage(contentProductPicture)">
+<img *ngIf="product.imageUrl && isGrid" [src]="product.imageUrl" class="card-img-top sizePictureForGrid"
+    (click)="showProductImage(contentProductPicture)">
 
 <ng-template #contentProductPicture let-modal let-c="close" let-d="dismiss">
     <div class="modal-header">

@@ -42,6 +42,7 @@ import { ListInvoicesComponent } from './suppliers/list-invoices/list-invoices.c
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ShowProductPictureComponent } from './products/show-product-picture/show-product-picture.component';
 import { ShowEmployeePictureComponent } from './employees/show-employee-picture/show-employee-picture.component';
+import { VersionGridComponent } from './products/version-grid/version-grid.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { ShowEmployeePictureComponent } from './employees/show-employee-picture/
     ListProductsComponent,
     ListInvoicesComponent,
     ShowProductPictureComponent,
-    ShowEmployeePictureComponent
+    ShowEmployeePictureComponent,
+    VersionGridComponent
   ],
   entryComponents: [
     ListProductsComponent,

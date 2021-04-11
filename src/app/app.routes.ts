@@ -10,6 +10,7 @@ import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.compo
 import { InvoicesComponent } from './invoices/invoices.component';
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { ProductsComponent } from './products/products.component';
+import { VersionGridComponent } from './products/version-grid/version-grid.component';
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
 import { StockInFormComponent } from './stock/stock-menu/stock-in/stock-in-form/stock-in-form.component';
@@ -38,6 +39,7 @@ export const rootRouterConfig: Routes = [
   { path: 'products/new', component: ProductFormComponent,  resolve: { data: SharedResolver}},
   { path: 'products/:id', component: ProductFormComponent,  resolve: { data: SharedResolver}},
   { path: 'products', component: ProductsComponent,  resolve: { data: SharedResolver}},
+  { path: 'products-for-grid', component: VersionGridComponent,  resolve: { data: SharedResolver}},
   
   { path: 'categories/new', component: CategoryFormComponent,  resolve: { data: SharedResolver}},
   { path: 'categories/:id', component: CategoryFormComponent,  resolve: { data: SharedResolver}},

@@ -13,6 +13,7 @@ import { ProductService } from 'src/app/shared/services/product.service';
 export class ShowProductPictureComponent implements OnInit {
 
   @Input() product: Product = new Product();
+  @Input() isGrid: boolean;
   pictureProduct: string;
   basePath = '/PicturesProducts';
   task: AngularFireUploadTask;
