@@ -25,21 +25,40 @@ export class StockInComponent implements OnInit, OnDestroy {
 
   p: number = 1;
 
+  queryDate: string = "";
+
   constructor(
     private stockInService: StockInService, 
     private productService: ProductService,
     public userService: UserService,
     public authService: AuthService
-    ) { 
+    ) {}
+
+  ngOnInit() {
+    this.getRolesUser();
+    this.loadAllProductsInStock();
+  }
+
+  getRolesUser() {
+    this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
+      if(res) {
+        this.userService.getCurrentUser().then(user=>{
+          if(user) {
+            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+              this.user = dataUser;
+            });
+          }
+        });   
+      }
+    })
+  }
+
+  loadAllProductsInStock() {
     this.subscription = this.stockInService.getAll()
     .subscribe(stockInProducts => {
       this.filteredStockInProducts = this.stockInProducts = stockInProducts;
       this.getProductName();
     });
-  }
-
-  ngOnInit(): void {
-    this.getRolesUser();
   }
 
   delete(stockInId) {
@@ -79,18 +98,15 @@ export class StockInComponent implements OnInit, OnDestroy {
   })
  }
 
- getRolesUser() {
-  this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
-    if(res) {
-      this.userService.getCurrentUser().then(user=>{
-        if(user) {
-          this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-            this.user = dataUser;
-          });
-        }
-      });   
-    }
-  })
+filterByDate() {
+  this.filteredStockInProducts = (this.queryDate)
+    ? this.stockInProducts.filter(invoice => invoice.date.includes(this.queryDate))
+    : this.stockInProducts;
+}
+
+clear() {
+  this.queryDate = "";
+  this.loadAllProductsInStock();
 }
 
  ngOnDestroy() {

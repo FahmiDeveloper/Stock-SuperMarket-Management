@@ -10,6 +10,14 @@
              class="form-control widhtInput" 
              placeholder="Search by product...">
         </p>
+        <p>
+            <input
+             [(ngModel)]="queryDate"           
+             type="date" 
+             class="form-control widhtInput" >
+             <button class="btn btn-primary" (click)="filterByDate()">Search</button>
+             <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
+        </p>
     </div>
     <div class="col-md-1">
         <p *ngIf="user.roleAdd">
