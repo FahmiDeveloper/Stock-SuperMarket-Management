@@ -1,137 +1,71 @@
-<div>
-  <h1 class="text-center text-primary" style="padding-top: 60px;">Welcome</h1>
-  <hr class="bg-dark"/>
-  <div class="row">
-    <div class="container">
-      <div class="row gx-5">
-        <div class="col" (click)="ableToEnterToInterfaceEmployees()" >
-         <div class="p-3 border bg-light">
-          <div class="row mt-1">
-            <div class="col-md-7 mt-2">
-              <h2 class="marginText">Employees</h2>
-              <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
-              <div>Time: {{ event?.time }}</div>
-              <div>Price: \${{ event?.price }}</div>
-              <div *ngIf="event?.location">
-                  <span>Location: {{ event?.location?.address }}</span>
-                  <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <img class="picture" src="/assets/pictures/employees.jpg"/>
-            </div>
-          </div> 
-         </div>
+<h1 class="text-center text-primary" style="padding-top: 60px;">Welcome</h1>
+<hr class="bg-dark"/>
+<div class="container mx-auto" style="margin-top: 300px;">
+  <div class="row" style="margin-top: -255px;cursor: pointer;">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleEmployee" routerLink="/employees">
+      <div class="card gr-1">
+        <div class="txt">
+          <h1>Employees</h1>
+          <p>{{ (employees | async)?.length }}</p>
         </div>
-        <div class="col" (click)="ableToEnterToInterfaceProducts()">
-          <div class="p-3 border bg-light">
-           <div class="row mt-1">
-             <div class="col-md-7 mt-2">
-               <h2 class="marginText">Products</h2>
-               <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
-               <div>Time: {{ event?.time }}</div>
-               <div>Price: \${{ event?.price }}</div>
-               <div *ngIf="event?.location">
-                   <span>Location: {{ event?.location?.address }}</span>
-                   <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
-               </div>
-             </div>
-             <div class="col-md-5">
-               <img class="picture" src="/assets/pictures/products.jpg"/>
-             </div>
-           </div> 
-          </div>
-         </div>
+        <div class="ico-card">
+        <i class="fa fa-users"></i>
+      </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="container">
-      <div class="row gx-5">
-        <div class="col" (click)="ableToEnterToInterfaceCategories()">
-         <div class="p-3 border bg-light">
-          <div class="row mt-1">
-            <div class="col-md-7 mt-2">
-              <h2 class="marginText">Categories</h2>
-              <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
-              <div>Time: {{ event?.time }}</div>
-              <div>Price: \${{ event?.price }}</div>
-              <div *ngIf="event?.location">
-                  <span>Location: {{ event?.location?.address }}</span>
-                  <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <img class="picture" src="/assets/pictures/categories.jpg"/>
-            </div>
-          </div> 
-         </div>
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleProduct" routerLink="/products">
+      <div class="card gr-2">
+        <div class="txt">
+          <h1>Products</h1>
+          <p>{{ (products | async)?.length }}</p>
         </div>
-        <div class="col" (click)="ableToEnterToInterfaceStock()">
-          <div class="p-3 border bg-light">
-           <div class="row mt-1">
-             <div class="col-md-7 mt-2">
-               <h2 class="marginText">Stock</h2>
-               <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
-               <div>Time: {{ event?.time }}</div>
-               <div>Price: \${{ event?.price }}</div>
-               <div *ngIf="event?.location">
-                   <span>Location: {{ event?.location?.address }}</span>
-                   <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
-               </div>
-             </div>
-             <div class="col-md-5">
-               <img class="picture" src="/assets/pictures/stock.jpg"/>
-             </div>
-           </div> 
-          </div>
-         </div>
+      <div class="ico-card">
+        <i class="fa fa-product-hunt"></i>
+      </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="container">
-      <div class="row gx-5">
-        <div class="col" (click)="ableToEnterToInterfaceSuppliers()">
-         <div class="p-3 border bg-light">
-          <div class="row mt-1">
-            <div class="col-md-7 mt-2">
-              <h2 class="marginText">Suppliers</h2>
-              <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
-              <div>Time: {{ event?.time }}</div>
-              <div>Price: \${{ event?.price }}</div>
-              <div *ngIf="event?.location">
-                  <span>Location: {{ event?.location?.address }}</span>
-                  <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <img class="picture" src="/assets/pictures/suppliers.jpg"/>
-            </div>
-          </div> 
-         </div>
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleCategory" routerLink="/categories">
+      <div class="card gr-3">
+        <div class="txt">
+          <h1>Categories</h1>
+          <p>{{ (categories | async)?.length }}</p>
         </div>
-        <div class="col" (click)="ableToEnterToInterfaceInvoices()">
-          <div class="p-3 border bg-light">
-           <div class="row mt-1">
-             <div class="col-md-7 mt-2">
-               <h2 class="marginText">Invoices</h2>
-               <div>Date: {{ event?.date | date: 'dd/MM/yyyy' }}</div>
-               <div>Time: {{ event?.time }}</div>
-               <div>Price: \${{ event?.price }}</div>
-               <div *ngIf="event?.location">
-                   <span>Location: {{ event?.location?.address }}</span>
-                   <span class="pad-left">{{ event?.location?.city }}, {{ event?.location?.country }}</span>
-               </div>
-             </div>
-             <div class="col-md-5">
-               <img class="picture" src="/assets/pictures/invoices.jpg"/>
-             </div>
-           </div> 
-          </div>
-         </div>
+      <div class="ico-card">
+        <i class="fa fa-list-alt"></i>
+      </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleStock" routerLink="/stock-menu">
+      <div class="card gr-4">
+        <div class="txt">
+          <h1>Stock</h1>
+          <p>In:&nbsp;{{ (stockInProducts | async)?.length }}&nbsp;/&nbsp;Out:&nbsp;{{ (stockOutProducts | async)?.length }}</p>
+        </div>
+        <div class="ico-card">
+        <i class="fa fa-houzz"></i>
+      </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleSupplier" routerLink="/suppliers"> 
+      <div class="card gr-5">
+        <div class="txt">
+          <h1>Suppliers</h1>
+          <p>{{ (suppliers | async)?.length }}</p>
+        </div>
+      <div class="ico-card">
+        <i class="fa fa-truck"></i>
+      </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleInvoice" routerLink="/invoices">
+      <div class="card gr-6">
+        <div class="txt">
+          <h1>Invoices</h1>
+          <p>{{ (invoices | async)?.length }}</p>
+        </div>
+      <div class="ico-card">
+        <i class="fa fa-file-invoice"></i>
+      </div>
       </div>
     </div>
   </div>

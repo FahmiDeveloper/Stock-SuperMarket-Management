@@ -30,22 +30,45 @@ export class ProductsComponent implements OnInit, OnDestroy {
   categories$;
   categoryId: string;
 
+  queryDate: string = "";
+
   constructor(
     private productService: ProductService, 
     private categoryService: CategoryService,
     public userService: UserService,
     public authService: AuthService
-    ) {
+    ) {}
+
+  ngOnInit() {
+    this.getRolesUser();
+    this.loadAllProducts();
+    this.loadListCategories();
+  }
+
+  getRolesUser() {
+    this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
+      if(res) {
+        this.userService.getCurrentUser().then(user=>{
+          if(user) {
+            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+              this.user = dataUser;
+            });
+          }
+        });   
+      }
+    })
+  }
+
+  loadAllProducts() {
     this.subscriptionForGetAllProducts = this.productService.getAll()
     .subscribe(products => {
       this.filteredProducts = this.products = products;
       this.getCategoryName();
     });
-    this.categories$ = this.categoryService.getAll();
-   }
+  }
 
-  ngOnInit(): void {
-    this.getRolesUser();
+  loadListCategories() {
+    this.categories$ = this.categoryService.getAll();
   }
 
   delete(productId) {
@@ -91,18 +114,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
         : this.products;
   }
 
-  getRolesUser() {
-    this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
-      if(res) {
-        this.userService.getCurrentUser().then(user=>{
-          if(user) {
-            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-              this.user = dataUser;
-            });
-          }
-        });   
-      }
-    })
+  filterByDate() {
+    this.filteredProducts = (this.queryDate)
+      ? this.products.filter(product => product.date.includes(this.queryDate))
+      : this.products;
+  }
+
+  clear() {
+    this.queryDate = "";
+    this.loadAllProducts();
   }
 
   ngOnDestroy() {
