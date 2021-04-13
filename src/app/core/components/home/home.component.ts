@@ -1,9 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { Category } from 'src/app/shared/models/category.model';
+import { Employee } from 'src/app/shared/models/employee.model';
+import { Invoice } from 'src/app/shared/models/invoice.model';
+import { Product } from 'src/app/shared/models/product.model';
+import { StockIn } from 'src/app/shared/models/stock-in.model';
+import { StockOut } from 'src/app/shared/models/stock-out.model';
+import { Supplier } from 'src/app/shared/models/supplier.model';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { CategoryService } from 'src/app/shared/services/category.service';
+import { EmployeeService } from 'src/app/shared/services/employee.service';
+import { InvoiceService } from 'src/app/shared/services/invoice.service';
+import { ProductService } from 'src/app/shared/services/product.service';
+import { StockInService } from 'src/app/shared/services/stock-in.service';
+import { StockOutService } from 'src/app/shared/services/stock-out.service';
+import { SupplierService } from 'src/app/shared/services/supplier.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
@@ -14,19 +26,31 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class HomeComponent implements OnInit, OnDestroy {
 
   user: FirebaseUserModel = new FirebaseUserModel();
-  event: any;
   subscripton: Subscription;
+
+  employees: Observable<Employee[]>;
+  products: Observable<Product[]>;
+  categories: Observable<Category[]>;
+  stockInProducts: Observable<StockIn[]>;
+  stockOutProducts: Observable<StockOut[]>;
+  suppliers: Observable<Supplier[]>;
+  invoices: Observable<Invoice[]>;
 
   constructor(
     public userService: UserService,
     public authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router
+    private employeeService: EmployeeService,
+    private productService: ProductService, 
+    private categoryService: CategoryService, 
+    private stockInService: StockInService, 
+    private stockOutService: StockOutService, 
+    private supplierService: SupplierService, 
+    private invoiceService: InvoiceService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getRolesUser();
-    this.loadEvent();
+    this.loadData();
   }
   getRolesUser() {
     this.subscripton = this.authService.isConnected.subscribe(res=>{
@@ -42,56 +66,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  ableToEnterToInterfaceEmployees() {
-    if(this.user.isAdmin || this.user.roleEmployee) {
-      this.router.navigate(['/employees']);
-    }
-  }
-
-  ableToEnterToInterfaceProducts() {
-    if(this.user.isAdmin || this.user.roleProduct) {
-      this.router.navigate(['/products']);
-    }
-  }
-
-  ableToEnterToInterfaceCategories() {
-    if(this.user.isAdmin || this.user.roleCategory) {
-      this.router.navigate(['/categories']);
-    }
-  }
-
-  ableToEnterToInterfaceStock() {
-    if(this.user.isAdmin || this.user.roleStock) {
-      this.router.navigate(['/stock-menu']);
-    }
-  }
-
-  ableToEnterToInterfaceSuppliers() {
-    if(this.user.isAdmin || this.user.roleSupplier) {
-      this.router.navigate(['/suppliers']);
-    }
-  }
-
-  ableToEnterToInterfaceInvoices() {
-    if(this.user.isAdmin || this.user.roleInvoice) {
-      this.router.navigate(['/invoices']);
-    }
-  }
-
-  loadEvent() {
-    this.event = {
-        id: 1,
-        name: 'Angular Connect',
-        date: new Date('9/26/2036'),
-        time: '10:00 am',
-        price: 599.99,
-        imageUrl: '/assets/images/angularconnect-shield.png',
-        location: {
-          address: '1057 DT',
-          city: 'London',
-          country: 'England'
-        }   
-    }
+  loadData() {
+    this.employees = this.employeeService.getAll();
+    this.products = this.productService.getAll();
+    this.categories = this.categoryService.getAll();
+    this.stockInProducts = this.stockInService.getAll();
+    this.stockOutProducts = this.stockOutService.getAll();
+    this.suppliers = this.supplierService.getAll();
+    this.invoices = this.invoiceService.getAll();  
   }
 
   ngOnDestroy() {
