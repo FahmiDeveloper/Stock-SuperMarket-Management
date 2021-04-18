@@ -10,7 +10,7 @@ export class EmployeeService {
 
   aflEmployees: AngularFireList<any>;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase) {}
 
   getAll() {
     this.aflEmployees = this.db.list('/employees', employee => employee.orderByChild('key'));

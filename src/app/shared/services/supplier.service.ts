@@ -10,7 +10,7 @@ export class SupplierService {
 
   aflSuppliers: AngularFireList<any>;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase) {}
 
   getAll() {
     this.aflSuppliers = this.db.list('/suppliers', supplier => supplier.orderByChild('key'));

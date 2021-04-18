@@ -10,7 +10,7 @@ export class ProductService {
 
   aflistProducts: AngularFireList<any>;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase) {}
 
   getAll() {
     this.aflistProducts = this.db.list('/products', product => product.orderByChild('key'));
@@ -35,5 +35,4 @@ export class ProductService {
   delete(productId) {
     return this.db.object('/products/' + productId).remove();
   }
-
 }

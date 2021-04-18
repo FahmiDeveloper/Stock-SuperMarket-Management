@@ -10,7 +10,7 @@ export class StockInService {
 
   aflStockInProducts: AngularFireList<any>;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase) {}
 
   getAll() {
     this.aflStockInProducts = this.db.list('/stockIn', stockin => stockin.orderByChild('key'));

@@ -10,7 +10,7 @@ export class CategoryService {
 
   aflCategories: AngularFireList<any>;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase) {}
 
   getAll(){
     this.aflCategories = this.db.list('/categories', category => category.orderByChild('key'));
@@ -35,6 +35,4 @@ export class CategoryService {
   delete(categoryId) {
     return this.db.object('/categories/' + categoryId).remove();
   }
-
-  
 }

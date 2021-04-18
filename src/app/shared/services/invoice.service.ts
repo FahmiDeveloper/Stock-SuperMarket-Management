@@ -10,7 +10,7 @@ export class InvoiceService {
 
   aflInvoices: AngularFireList<any>;
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase) {}
 
   getAll() {
     this.aflInvoices = this.db.list('/invoices', invoice => invoice.orderByChild('key'));
