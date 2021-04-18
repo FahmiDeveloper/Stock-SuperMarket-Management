@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { Employee } from 'src/app/shared/models/employee.model';
+
 import { EmployeeService } from 'src/app/shared/services/employee.service';
+
+import { Employee } from 'src/app/shared/models/employee.model';
 
 @Component({
   selector: 'show-employee-picture',
@@ -13,14 +16,19 @@ import { EmployeeService } from 'src/app/shared/services/employee.service';
 export class ShowEmployeePictureComponent implements OnInit {
 
   @Input() employee: Employee = new Employee();
+
   pictureEmployee: string;
   basePath = '/PicturesEmployees';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
-  constructor(public modalService: NgbModal, private fireStorage: AngularFireStorage, private employeeService: EmployeeService) { }
+  constructor(
+    public modalService: NgbModal, 
+    private fireStorage: AngularFireStorage, 
+    private employeeService: EmployeeService
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
   showEmployeeImage(contentEmployeePicture) {
@@ -31,21 +39,21 @@ export class ShowEmployeePictureComponent implements OnInit {
   async onFileChanged(event) {
     const file = event.target.files[0];
     if (file) {
-       const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
-       this.task =  this.fireStorage.upload(filePath, file);    // upload task
- 
-       // this.progress = this.snapTask.percentageChanges();
-       this.progressValue = this.task.percentageChanges();
- 
-       (await this.task).ref.getDownloadURL().then(url => {
-         this.pictureEmployee = this.employee.imageUrl = url;
-         this.employeeService.update(this.employee.key, this.employee);
-         this.modalService.dismissAll();
-        });  // <<< url is found here
- 
-     } else {  
-       alert('No images selected');
-       this.pictureEmployee = '';
-      }
-   }
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {
+        this.pictureEmployee = this.employee.imageUrl = url;
+        this.employeeService.update(this.employee.key, this.employee);
+        this.modalService.dismissAll();
+      });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.pictureEmployee = '';
+    }
+  }
 }

@@ -4,30 +4,35 @@
             <form #f="ngForm" (ngSubmit)="save(f.value)">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input #name="ngModel" [(ngModel)]="employee.name" name="name" id="name" type="text" class="form-control" required [minlength]="3">
+                    <input #name="ngModel" [(ngModel)]="employee.name" name="name" id="name" type="text"
+                        class="form-control" required [minlength]="3">
                     <div class="alert alert-danger" *ngIf="name.touched && name.invalid">
                         <div *ngIf="name.errors.required">Name is required.</div>
-                        <div *ngIf="name.errors?.minlength">Name should contain at least 3 characters or higher.</div> 
+                        <div *ngIf="name.errors?.minlength">Name should contain at least 3 characters or higher.</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="surName">SurName</label>
-                    <input #surName="ngModel" [(ngModel)]="employee.surName" name="surName" id="surName" type="text" class="form-control" required>
+                    <input #surName="ngModel" [(ngModel)]="employee.surName" name="surName" id="surName" type="text"
+                        class="form-control" required>
                     <div class="alert alert-danger" *ngIf="surName.touched && surName.invalid">
                         SurName is required.
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <input #date="ngModel" [(ngModel)]="employee.date" name="date" id="date" type="date" class="form-control">
+                    <input #date="ngModel" [(ngModel)]="employee.date" name="date" id="date" type="date"
+                        class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="time">Time</label>
-                    <input #time="ngModel" [(ngModel)]="employee.time" name="time" id="time" type="time" class="form-control">
+                    <input #time="ngModel" [(ngModel)]="employee.time" name="time" id="time" type="time"
+                        class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="cin">CIN</label>
-                    <input #cin="ngModel" [(ngModel)]="employee.cin" name="cin" id="cin" type="number" class="form-control" required [pattern]="cinPhoneNumberPattern">
+                    <input #cin="ngModel" [(ngModel)]="employee.cin" name="cin" id="cin" type="number"
+                        class="form-control" required [pattern]="cinPhoneNumberPattern">
                     <div class="alert alert-danger" *ngIf="cin.touched && cin.invalid">
                         <div *ngIf="cin.errors.required">CIN is required.</div>
                         <div *ngIf="cin.errors?.pattern">CIN number not valid.</div>
@@ -35,7 +40,8 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input #phone="ngModel" [(ngModel)]="employee.phone" name="phone" id="phone" type="number" class="form-control" required [pattern]="cinPhoneNumberPattern">
+                    <input #phone="ngModel" [(ngModel)]="employee.phone" name="phone" id="phone" type="number"
+                        class="form-control" required [pattern]="cinPhoneNumberPattern">
                     <div class="alert alert-danger" *ngIf="phone.touched && phone.invalid">
                         <div *ngIf="phone.errors.required">Phone is required.</div>
                         <div *ngIf="phone.errors?.pattern">Phone number not valid.</div>
@@ -44,29 +50,33 @@
                 <div class="form-group">
                     <label for="salary">Salary</label>
                     <div class="input-group">
-                        <span class="input-group-text">DT</span>                
-                        <input #salary="ngModel" [(ngModel)]="employee.salary" name="salary" id="salary" type="number" class="form-control" required [min]="200">
+                        <span class="input-group-text">DT</span>
+                        <input #salary="ngModel" [(ngModel)]="employee.salary" name="salary" id="salary" type="number"
+                            class="form-control" required [min]="200">
                     </div>
                     <div class="alert alert-danger" *ngIf="salary.touched && salary.invalid">
                         <div *ngIf="salary.errors.required">Salary is required.</div>
-                        <div *ngIf="salary.errors?.min">Salary should be 200 or higher.</div>  
+                        <div *ngIf="salary.errors?.min">Salary should be 200 or higher.</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="note">Note</label>
-                    <input  #note="ngModel" [(ngModel)]="employee.note" name="note" id="note" type="text" class="form-control">
+                    <input #note="ngModel" [(ngModel)]="employee.note" name="note" id="note" type="text"
+                        class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="imageUrl">Picture</label>
-                    <input [(ngModel)]="employee.imageUrl" name="imageUrl" id="imageUrl" type="text" class="form-control" hidden>         
-                    <input type="file" name="file" (input)="onFileChanged($event)" class="form-control" accept=".jpeg,.jpg,.png,.svg" />
+                    <input [(ngModel)]="employee.imageUrl" name="imageUrl" id="imageUrl" type="text"
+                        class="form-control" hidden>
+                    <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
+                        accept=".jpeg,.jpg,.png,.svg" />
                     <br>
                     <div *ngIf="progressValue | async as val">
-                        <progress type="warning"  [value]="val" class="styleProgress" max="100" ></progress>
+                        <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
                         <br />
                         <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
                         <span *ngIf="val == 100" class="progressComplete">Completed !</span>
-                    </div>  
+                    </div>
                 </div>
                 <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>&nbsp;
                 <button class="btn btn-primary" [disabled]="f.invalid">Save</button>
@@ -77,7 +87,7 @@
             <div class="card" style="width: 20rem;">
                 <img *ngIf="!employee.imageUrl" class="card-img-top" src="/assets/pictures/NoImageAvailable.png">
                 <img *ngIf="employee.imageUrl" class="card-img-top" [src]="employee.imageUrl">
-              </div>
+            </div>
         </div>
     </div>
 </div>

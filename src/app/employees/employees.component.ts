@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Employee } from '../shared/models/employee.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
+
 import { AuthService } from '../shared/services/auth.service';
 import { EmployeeService } from '../shared/services/employee.service';
 import { UserService } from '../shared/services/user.service';
+
+import { Employee } from '../shared/models/employee.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
+
 
 @Component({
   selector: 'app-employees',
@@ -16,6 +20,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
 
   employees: Employee[];
   filteredEmployees: any[];
+
   subscription: Subscription;
   subscriptionForUser: Subscription;
 
@@ -27,13 +32,31 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     public userService: UserService,
     public authService: AuthService
-    ) { 
-    this.subscription = this.employeeService.getAll()
-    .subscribe(employees => this.filteredEmployees = this.employees = employees);
+  ) {}
+
+  ngOnInit() {
+    this.getAllEmployees();
+    this.getRolesUser();
   }
 
-  ngOnInit(): void {
-    this.getRolesUser();
+  getAllEmployees() {
+    this.subscription = this.employeeService
+      .getAll()
+      .subscribe(employees => this.filteredEmployees = this.employees = employees);
+  }
+
+  getRolesUser() {
+    this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
+      if(res) {
+        this.userService.getCurrentUser().then(user=>{
+          if(user) {
+            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
+              this.user = dataUser;
+            });
+          }
+        });   
+      }
+    })
   }
 
   delete(employeeId) {
@@ -60,24 +83,9 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     this.filteredEmployees = (query)
        ? this.employees.filter(employee => employee.name.toLowerCase().includes(query.toLowerCase()))
        : this.employees;
- }
+  }
 
- getRolesUser() {
-  this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
-    if(res) {
-      this.userService.getCurrentUser().then(user=>{
-        if(user) {
-          this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-            this.user = dataUser;
-          });
-        }
-      });   
-    }
-  })
-}
-
- ngOnDestroy() {
-   this.subscription.unsubscribe();
- }
-
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

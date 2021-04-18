@@ -1,4 +1,5 @@
-<img *ngIf="employee.imageUrl" class="sizePicture" [src]="employee.imageUrl" (click)="showEmployeeImage(contentEmployeePicture)">
+<img *ngIf="employee.imageUrl" class="sizePicture" [src]="employee.imageUrl"
+    (click)="showEmployeeImage(contentEmployeePicture)">
 
 <ng-template #contentEmployeePicture let-modal let-c="close" let-d="dismiss">
     <div class="modal-header">
@@ -10,13 +11,14 @@
     <div class="modal-body">
         <img [src]='pictureEmployee' *ngIf="pictureEmployee" class="imageEmployee">
         <br>
-        <input type="file" name="file" (input)="onFileChanged($event)" class="form-control" accept=".jpeg,.jpg,.png,.svg" />
+        <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
+            accept=".jpeg,.jpg,.png,.svg" />
         <br>
         <div *ngIf="progressValue | async as val">
-            <progress type="warning"  [value]="val" class="styleProgress" max="100" ></progress>
+            <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
             <br />
             <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
             <span *ngIf="val == 100" class="progressComplete">Completed !</span>
-        </div> 
+        </div>
     </div>
 </ng-template>
