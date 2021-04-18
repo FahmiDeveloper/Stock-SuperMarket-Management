@@ -1,13 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Category } from '../shared/models/category.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
+
+import { ListProductsComponent } from './list-products/list-products.component';
+
 import { AuthService } from '../shared/services/auth.service';
 import { CategoryService } from '../shared/services/category.service';
 import { UserService } from '../shared/services/user.service';
-import { ListProductsComponent } from './list-products/list-products.component';
+
+import { Category } from '../shared/models/category.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
+
 
 @Component({
   selector: 'app-categories',
@@ -18,6 +23,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   categories: Category[];
   filteredCategories: any[];
+
   subscription: Subscription;
   subscriptionForUser: Subscription;
 
@@ -30,13 +36,38 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     protected modalService: NgbModal,
     public userService: UserService,
     public authService: AuthService
-    ) { 
-    this.subscription = this.categoryService.getAll()
-    .subscribe(categories => this.filteredCategories = this.categories = categories);
+  ) {}
+
+  ngOnInit() {
+    this.getAllCategories();
+    this.getRolesUser();
   }
 
-  ngOnInit(): void {
-    this.getRolesUser();
+  getAllCategories() {
+    this.subscription = this.categoryService
+      .getAll()
+      .subscribe(categories => this.filteredCategories = this.categories = categories);
+  }
+
+  getRolesUser() {
+    this.subscriptionForUser = this.authService
+      .isConnected
+      .subscribe(res=>{
+        if(res) {
+          this.userService
+            .getCurrentUser()
+            .then(user=>{
+              if(user) {
+                this.userService
+                  .get(user.uid)
+                  .valueChanges()
+                  .subscribe(dataUser=>{
+                    this.user = dataUser;
+                  });
+                }
+            });   
+          }
+      })
   }
 
   delete(categoryId) {
@@ -63,32 +94,16 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.filteredCategories = (query)
        ? this.categories.filter(category => category.name.toLowerCase().includes(query.toLowerCase()))
        : this.categories;
- }
+  }
 
- openListProducts(category: Category) {
-  const modelref = this.modalService.open(ListProductsComponent as Component, { size: 'lg', centered: true });
+  openListProducts(category: Category) {
+    const modelref = this.modalService.open(ListProductsComponent as Component, { size: 'lg', centered: true });
 
-  modelref.componentInstance.category = category;
-  modelref.componentInstance.modelref = modelref;
-}
+    modelref.componentInstance.category = category;
+    modelref.componentInstance.modelref = modelref;
+  }
 
-getRolesUser() {
-  this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
-    if(res) {
-      this.userService.getCurrentUser().then(user=>{
-        if(user) {
-          this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-            this.user = dataUser;
-          });
-        }
-      });   
-    }
-  })
-}
-
-
- ngOnDestroy() {
-   this.subscription.unsubscribe();
- }
-
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
