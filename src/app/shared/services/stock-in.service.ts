@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StockIn } from '../models/stock-in.model';
 
@@ -34,5 +35,9 @@ export class StockInService {
 
   delete(stockInId) {
     return this.db.object('/stockIn/' + stockInId).remove();
+  }
+
+  countLengthStockIn(): Observable<number> {
+    return this.db.list('/stockIn').valueChanges().pipe(map(response => response.length));
   }
 }

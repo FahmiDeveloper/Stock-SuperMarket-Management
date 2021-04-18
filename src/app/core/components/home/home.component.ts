@@ -12,13 +12,6 @@ import { StockOutService } from 'src/app/shared/services/stock-out.service';
 import { SupplierService } from 'src/app/shared/services/supplier.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
-import { Category } from 'src/app/shared/models/category.model';
-import { Employee } from 'src/app/shared/models/employee.model';
-import { Invoice } from 'src/app/shared/models/invoice.model';
-import { Product } from 'src/app/shared/models/product.model';
-import { StockIn } from 'src/app/shared/models/stock-in.model';
-import { StockOut } from 'src/app/shared/models/stock-out.model';
-import { Supplier } from 'src/app/shared/models/supplier.model';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
@@ -32,13 +25,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   subscripton: Subscription;
 
-  employees: Observable<Employee[]>;
-  products: Observable<Product[]>;
-  categories: Observable<Category[]>;
-  stockInProducts: Observable<StockIn[]>;
-  stockOutProducts: Observable<StockOut[]>;
-  suppliers: Observable<Supplier[]>;
-  invoices: Observable<Invoice[]>;
+  lengthEmployees: Observable<number>;
+  lengthProducts: Observable<number>;
+  lengthCategories: Observable<number>;
+  lengthStockIn: Observable<number>;
+  lengthStockOut: Observable<number>;
+  lengthSuppliers: Observable<number>;
+  lengthInvoices: Observable<number>;
 
   constructor(
     public userService: UserService,
@@ -54,7 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getRolesUser();
-    this.loadData();
+    this.loadLengthData();
   }
   
   getRolesUser() {
@@ -78,14 +71,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  loadData() {
-    this.employees = this.employeeService.getAll();
-    this.products = this.productService.getAll();
-    this.categories = this.categoryService.getAll();
-    this.stockInProducts = this.stockInService.getAll();
-    this.stockOutProducts = this.stockOutService.getAll();
-    this.suppliers = this.supplierService.getAll();
-    this.invoices = this.invoiceService.getAll();  
+  loadLengthData() {
+    this.lengthEmployees = this.employeeService.countLengthEmployees();
+    this.lengthProducts = this.productService.countLengthProducts();
+    this.lengthCategories = this.categoryService.countLengthCategories();
+    this.lengthStockIn = this.stockInService.countLengthStockIn();
+    this.lengthStockOut = this.stockOutService.countLengthStockOut();
+    this.lengthSuppliers = this.supplierService.countLengthSuppliers();
+    this.lengthInvoices = this.invoiceService.countLengthInvoices();
   }
 
   ngOnDestroy() {

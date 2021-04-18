@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Employee } from '../models/employee.model';
 
@@ -34,5 +35,9 @@ export class EmployeeService {
 
   delete(employeeId) {
     return this.db.object('/employees/' + employeeId).remove();
+  }
+
+  countLengthEmployees(): Observable<number> {
+    return this.db.list('/employees').valueChanges().pipe(map(response => response.length));
   }
 }
