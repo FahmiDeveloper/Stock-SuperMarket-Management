@@ -1,23 +1,29 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Supplier } from '../shared/models/supplier.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
+
+import { ListInvoicesComponent } from './list-invoices/list-invoices.component';
+
 import { AuthService } from '../shared/services/auth.service';
 import { SupplierService } from '../shared/services/supplier.service';
 import { UserService } from '../shared/services/user.service';
-import { ListInvoicesComponent } from './list-invoices/list-invoices.component';
+
+import { Supplier } from '../shared/models/supplier.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
   styleUrls: ['./suppliers.component.scss']
 })
+
 export class SuppliersComponent implements OnInit, OnDestroy {
 
   suppliers: Supplier[];
   filteredSuppliers: any[];
+
   subscription: Subscription;
   subscriptionForUser: Subscription;
 
@@ -30,13 +36,38 @@ export class SuppliersComponent implements OnInit, OnDestroy {
     protected modalService: NgbModal,
     public userService: UserService,
     public authService: AuthService
-    ) {
-    this.subscription = this.supplierService.getAll()
-    .subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);;;
-   }
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.getAllSuppliers();
     this.getRolesUser();
+  }
+
+  getAllSuppliers() {
+    this.subscription = this.supplierService
+      .getAll()
+      .subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);
+  }
+
+  getRolesUser() {
+    this.subscriptionForUser = this.authService
+      .isConnected
+      .subscribe(res=>{
+        if(res) {
+          this.userService
+            .getCurrentUser()
+            .then(user=>{
+              if(user) {
+                this.userService
+                  .get(user.uid)
+                  .valueChanges()
+                  .subscribe(dataUser=>{
+                    this.user = dataUser;
+                });
+              }
+          });   
+        }
+    })
   }
 
   delete(supplierId) {
@@ -63,32 +94,17 @@ export class SuppliersComponent implements OnInit, OnDestroy {
     this.filteredSuppliers = (query)
        ? this.suppliers.filter(supplier => supplier.name.toLowerCase().includes(query.toLowerCase()))
        : this.suppliers;
- }
+  }
 
- openListInvoices(supplier: Supplier) {
-  const modelref = this.modalService.open(ListInvoicesComponent as Component, { size: 'lg', centered: true });
+  openListInvoices(supplier: Supplier) {
+    const modelref = this.modalService.open(ListInvoicesComponent as Component, { size: 'lg', centered: true });
 
-  modelref.componentInstance.supplier = supplier;
-  modelref.componentInstance.modelref = modelref;
-}
+    modelref.componentInstance.supplier = supplier;
+    modelref.componentInstance.modelref = modelref;
+  }
 
-getRolesUser() {
-  this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
-    if(res) {
-      this.userService.getCurrentUser().then(user=>{
-        if(user) {
-          this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-            this.user = dataUser;
-          });
-        }
-      });   
-    }
-  })
-}
-
- ngOnDestroy() {
-   this.subscription.unsubscribe();
-   this.subscriptionForUser.unsubscribe();
- }
-
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
+  }
 }

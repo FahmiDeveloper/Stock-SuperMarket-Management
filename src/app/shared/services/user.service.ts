@@ -17,8 +17,7 @@ export class UserService {
    public db: AngularFirestore,
    public afAuth: AngularFireAuth,
    private dataBase: AngularFireDatabase
- ){
- }
+  ) {}
 
 
   getCurrentUser(){
@@ -74,6 +73,6 @@ export class UserService {
  }
 
  get(uid: string): AngularFireObject<FirebaseUserModel> {
-  return this.dataBase.object('/users/' + uid);
-}
+   return this.dataBase.object('/users/' + uid);
+ }
 }

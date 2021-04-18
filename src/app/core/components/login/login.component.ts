@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
@@ -8,7 +9,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+
+export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
   errorMessage: string = '';
@@ -17,11 +19,13 @@ export class LoginComponent {
     public authService: AuthService,
     private router: Router,
     private fb: FormBuilder
-  ) {
-    this.createForm();
+  ) {}
+
+  ngOnInit() {
+    this.validateForm();
   }
 
-  createForm() {
+  validateForm() {
     this.loginForm = this.fb.group({
       email: ['', Validators.required ],
       password: ['',Validators.required]
@@ -63,5 +67,4 @@ export class LoginComponent {
     this.router.navigate(['/home']);
     this.authService.isConnected.next(true);
   }
-
 }

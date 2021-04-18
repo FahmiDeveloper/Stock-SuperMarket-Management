@@ -1,12 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { Invoice } from '../shared/models/invoice.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
+
 import { AuthService } from '../shared/services/auth.service';
 import { InvoiceService } from '../shared/services/invoice.service';
 import { SupplierService } from '../shared/services/supplier.service';
 import { UserService } from '../shared/services/user.service';
+
+import { Invoice } from '../shared/models/invoice.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
+
 
 @Component({
   selector: 'app-invoices',
@@ -17,6 +21,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   invoices: Invoice[];
   filteredInvoices: Invoice[];
+
   subscription: Subscription;
   subscriptionForGetSupplierName: Subscription;
   subscriptionForUser: Subscription;
@@ -38,31 +43,50 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     ) {}
 
   ngOnInit() {
+    this.getAllInvoices();
     this.getRolesUser();
-    this.loadAllInvoices();
     this.loadListSuppliers();
   }
 
-  getRolesUser() {
-    this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
-      if(res) {
-        this.userService.getCurrentUser().then(user=>{
-          if(user) {
-            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-              this.user = dataUser;
-            });
-          }
-        });   
-      }
+  getAllInvoices() {
+    this.subscription = this.invoiceService
+      .getAll()
+      .subscribe(invoices => {
+        this.filteredInvoices = this.invoices = invoices;
+        this.getSupplierName();
+    });
+  }
+
+  getSupplierName() {
+    this.filteredInvoices.forEach(element=>{
+      this.subscriptionForGetSupplierName =  this.supplierService
+      .getSupplierId(String(element.supplierId))
+      .valueChanges()
+      .subscribe(supplier => {   
+        if(supplier.name) element.nameSupplier = supplier.name;
+      });
     })
   }
 
-  loadAllInvoices() {
-    this.subscription = this.invoiceService.getAll()
-    .subscribe(invoices => {
-      this.filteredInvoices = this.invoices = invoices;
-      this.getSupplierName();
-    });
+  getRolesUser() {
+    this.subscriptionForUser = this.authService
+      .isConnected
+      .subscribe(res=>{
+        if(res) {
+          this.userService
+          .getCurrentUser()
+          .then(user=>{
+            if(user) {
+              this.userService
+              .get(user.uid)
+              .valueChanges()
+              .subscribe(dataUser=>{
+                this.user = dataUser;
+              });
+            }
+          });   
+        }
+    })
   }
 
   loadListSuppliers() {
@@ -95,22 +119,11 @@ export class InvoicesComponent implements OnInit, OnDestroy {
        : this.invoices;
   }
 
-  getSupplierName() {
-    this.filteredInvoices.forEach(element=>{
-      this.subscriptionForGetSupplierName =  this.supplierService
-      .getSupplierId(String(element.supplierId))
-      .valueChanges()
-      .subscribe(supplier => {   
-        if(supplier.name) element.nameSupplier = supplier.name;
-      });
-    })
-  }
-
   filetrBySupplier() {
     this.filteredInvoices = (this.supplierId)
         ? this.invoices.filter(element=>element.supplierId==this.supplierId)
         : this.invoices;
-    }
+  }
 
   filterByDate() {
     this.filteredInvoices = (this.queryDate)
@@ -120,7 +133,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryDate = "";
-    this.loadAllInvoices();
+    this.getAllInvoices();
   }
 
   ngOnDestroy() {

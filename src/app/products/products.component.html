@@ -1,45 +1,39 @@
 <h1 class="text-center text-warning titleTextInterface">Products</h1>
 <div style="justify-content: center;">
     <button routerLink="/products-for-grid" class="btn btn-secondary btnGrid">Version Grid</button>
-</div> 
+</div>
 
 <div class="gridForSearch margDivSearchAdd">
     <div>
         <p>
-            <input
-                #query
-                (keyup)="filter(query.value)"
-                type="text" 
-                class="form-control widhtInput" 
+            <input #query (keyup)="filter(query.value)" type="text" class="form-control widhtInput"
                 placeholder="Search by name...">
         </p>
         <p>
-            <input
-             [(ngModel)]="queryDate"           
-             type="date" 
-             class="form-control widhtInput" >
-             <button class="btn btn-primary" (click)="filterByDate()">Search</button>
-             <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
+            <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
+            <button class="btn btn-primary" (click)="filterByDate()">Search</button>
+            <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
         </p>
     </div>
     <div>
         <label for="categoryId" class="margLabel">Filter by category</label>
     </div>
     <div>
-        <select [(ngModel)]="categoryId" name="categoryId" id="categoryId" class="form-control" (click)="filetrByCategory()">
+        <select [(ngModel)]="categoryId" name="categoryId" id="categoryId" class="form-control"
+            (click)="filetrByCategory()">
             <option value=""></option>
-            <option *ngFor="let c of (categories$ | async | sortBy: 'key')" [value]="c.key"> 
-                {{c.name}} 
+            <option *ngFor="let c of (categories$ | async | sortBy: 'key')" [value]="c.key">
+                {{c.name}}
             </option>
         </select>
     </div>
     <div>
         <a *ngIf="user.roleAdd" routerLink="/products/new" class="btn btn-primary btnNew">New</a>
-    </div> 
+    </div>
 </div>
-    
-    
-    
+
+
+
 
 <div class="row">
     <table class="table table-striped">
@@ -56,7 +50,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let product of (filteredProducts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+            <tr
+                *ngFor="let product of (filteredProducts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
                 <td>{{ product.nameProduct }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.date | date: 'dd/MM/yyyy' }}</td>
@@ -71,8 +66,10 @@
                     <show-product-picture [product]="product"></show-product-picture>
                 </td>
                 <td>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/products', product.key]" class="btn btn-success">Edit</button>
-                    <button *ngIf="user.roleDelete" type="button" (click)="delete(product.key)" class="btn btn-danger">Delete</button>
+                    <button *ngIf="user.roleUpdate" [routerLink]="['/products', product.key]"
+                        class="btn btn-success">Edit</button>
+                    <button *ngIf="user.roleDelete" type="button" (click)="delete(product.key)"
+                        class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>

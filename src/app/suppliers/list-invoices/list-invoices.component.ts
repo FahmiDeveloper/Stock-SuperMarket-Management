@@ -1,29 +1,33 @@
 import { Component, OnInit } from '@angular/core';
+
+import { InvoiceService } from 'src/app/shared/services/invoice.service';
+
 import { Invoice } from 'src/app/shared/models/invoice.model';
 import { Supplier } from 'src/app/shared/models/supplier.model';
-import { InvoiceService } from 'src/app/shared/services/invoice.service';
 
 @Component({
   selector: 'app-list-invoices',
   templateUrl: './list-invoices.component.html',
   styleUrls: ['./list-invoices.component.scss']
 })
+
 export class ListInvoicesComponent implements OnInit {
 
   supplier: Supplier = new Supplier();
   listInvoices: Invoice[];
   modelref: any;
   
-  constructor(private invoiceService: InvoiceService) { }
+  constructor(private invoiceService: InvoiceService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadAllInvoices();
   }
 
   loadAllInvoices() {
-    this.invoiceService.getAll()
-    .subscribe((invoices: Invoice[]) => {
-        this.getListInvoicesForSupplier(invoices);
+    this.invoiceService
+      .getAll()
+      .subscribe((invoices: Invoice[]) => {
+          this.getListInvoicesForSupplier(invoices);
     });
   }
 
@@ -35,5 +39,4 @@ export class ListInvoicesComponent implements OnInit {
   closeModal() {
     this.modelref.close();
   }
-
 }

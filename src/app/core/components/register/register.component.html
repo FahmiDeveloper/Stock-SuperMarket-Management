@@ -1,4 +1,4 @@
-<div class="row textSignIn">
+<div class="row textSignOut">
   <h2>Sign Up</h2>
 </div>
 <br>
@@ -12,10 +12,11 @@
       <div class="form-group">
         <label>Password</label>
         <input type="password" class="form-control" formControlName="password">
-          <label class="error">{{errorMessage}}</label>
-          <label class="success">{{successMessage}}</label>
+        <label class="error">{{errorMessage}}</label>
+        <label class="success">{{successMessage}}</label>
       </div>
-      <button type="submit" (click)="tryRegister(registerForm.value)" class="btn btn-success styleBtnLogin">Register</button>
+      <button type="submit" (click)="tryRegister(registerForm.value)"
+        class="btn btn-success styleBtnRegister">Register</button>
     </form>
     <br>
     <label class="textForBtns">Or Sign Up Using</label>
@@ -36,7 +37,7 @@
         </button>
       </div>
     </div>
-  </div> 
+  </div>
 </div>
 <br>
 <div class="card styleCardFooter">

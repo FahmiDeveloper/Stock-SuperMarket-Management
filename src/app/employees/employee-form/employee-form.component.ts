@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { Employee } from 'src/app/shared/models/employee.model';
-import { EmployeeService } from 'src/app/shared/services/employee.service';
 import Swal from 'sweetalert2';
+
+import { EmployeeService } from 'src/app/shared/services/employee.service';
+
+import { Employee } from 'src/app/shared/models/employee.model';
 
 @Component({
   selector: 'app-employee-form',
@@ -29,19 +32,26 @@ export class EmployeeFormComponent implements OnInit {
     private fireStorage: AngularFireStorage,
     private router: Router,
     private route: ActivatedRoute
-    ) {
-        this.employeeId = this.route.snapshot.paramMap.get('id');
-        if (this.employeeId) {
-          this.employeeService.getEmployeeId(this.employeeId).valueChanges().pipe(take(1)).subscribe(employee => {
-          this.employee = employee;
-        });
-      } else {
-        this.employee.date = moment().format('YYYY-MM-DD');
-        this.employee.time = moment().format('HH:mm');
-      }
-    }
+    ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.getEmployeeData();
+  }
+
+  getEmployeeData() {
+    this.employeeId = this.route.snapshot.paramMap.get('id');
+    if (this.employeeId) {
+      this.employeeService
+        .getEmployeeId(this.employeeId)
+        .valueChanges()
+        .pipe(take(1))
+        .subscribe(employee => {
+        this.employee = employee;
+      });
+    } else {
+      this.employee.date = moment().format('YYYY-MM-DD');
+      this.employee.time = moment().format('HH:mm');
+    }
   }
 
   save(employee) {
@@ -75,14 +85,13 @@ export class EmployeeFormComponent implements OnInit {
  
        (await this.task).ref.getDownloadURL().then(url => {this.employee.imageUrl = url; });  // <<< url is found here
  
-     } else {  
-       alert('No images selected');
-       this.employee.imageUrl = '';
+    } else {  
+        alert('No images selected');
+        this.employee.imageUrl = '';
       }
-   }
-
-   cancel() {
-    this.router.navigate(['/employees']);
   }
 
+  cancel() {
+    this.router.navigate(['/employees']);
+  }
 }

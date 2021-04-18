@@ -1,13 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { Observable, Subscription } from 'rxjs';
-import { Category } from 'src/app/shared/models/category.model';
-import { Employee } from 'src/app/shared/models/employee.model';
-import { Invoice } from 'src/app/shared/models/invoice.model';
-import { Product } from 'src/app/shared/models/product.model';
-import { StockIn } from 'src/app/shared/models/stock-in.model';
-import { StockOut } from 'src/app/shared/models/stock-out.model';
-import { Supplier } from 'src/app/shared/models/supplier.model';
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
@@ -18,6 +12,15 @@ import { StockOutService } from 'src/app/shared/services/stock-out.service';
 import { SupplierService } from 'src/app/shared/services/supplier.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
+import { Category } from 'src/app/shared/models/category.model';
+import { Employee } from 'src/app/shared/models/employee.model';
+import { Invoice } from 'src/app/shared/models/invoice.model';
+import { Product } from 'src/app/shared/models/product.model';
+import { StockIn } from 'src/app/shared/models/stock-in.model';
+import { StockOut } from 'src/app/shared/models/stock-out.model';
+import { Supplier } from 'src/app/shared/models/supplier.model';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -26,6 +29,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 export class HomeComponent implements OnInit, OnDestroy {
 
   user: FirebaseUserModel = new FirebaseUserModel();
+
   subscripton: Subscription;
 
   employees: Observable<Employee[]>;
@@ -52,17 +56,25 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getRolesUser();
     this.loadData();
   }
+  
   getRolesUser() {
-    this.subscripton = this.authService.isConnected.subscribe(res=>{
-      if(res) {
-        this.userService.getCurrentUser().then(user=>{
-          if(user) {
-            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-              this.user = dataUser;
-            });
-          }
-        });   
-      }
+    this.subscripton = this.authService
+      .isConnected
+      .subscribe(res=>{
+        if(res) {
+          this.userService
+            .getCurrentUser()
+            .then(user=>{
+              if(user) {
+                this.userService
+                  .get(user.uid)
+                  .valueChanges()
+                  .subscribe(dataUser=>{
+                    this.user = dataUser;
+                });
+              }
+          });   
+        }
     })
   }
 

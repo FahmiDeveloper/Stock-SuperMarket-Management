@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { element } from 'protractor';
+
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { Product } from '../shared/models/product.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
+
 import { AuthService } from '../shared/services/auth.service';
 import { CategoryService } from '../shared/services/category.service';
 import { ProductService } from '../shared/services/product.service';
 import { UserService } from '../shared/services/user.service';
+
+import { Product } from '../shared/models/product.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-products',
@@ -19,6 +20,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   products: Product[];
   filteredProducts: Product[];
+
   subscriptionForGetAllProducts: Subscription;
   subscriptionForGetCategoryName: Subscription;
   subscriptionForUser: Subscription;
@@ -37,34 +39,53 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     public userService: UserService,
     public authService: AuthService
-    ) {}
+  ) {}
 
   ngOnInit() {
+    this.getAllProducts();
     this.getRolesUser();
-    this.loadAllProducts();
     this.loadListCategories();
   }
 
-  getRolesUser() {
-    this.subscriptionForUser = this.authService.isConnected.subscribe(res=>{
-      if(res) {
-        this.userService.getCurrentUser().then(user=>{
-          if(user) {
-            this.userService.get(user.uid).valueChanges().subscribe(dataUser=>{
-              this.user = dataUser;
-            });
-          }
-        });   
-      }
+  getAllProducts() {
+    this.subscriptionForGetAllProducts = this.productService
+      .getAll()
+      .subscribe(products => {
+        this.filteredProducts = this.products = products;
+        this.getCategoryName();
+    });
+  }
+
+  getCategoryName() {
+    this.filteredProducts.forEach(element=>{
+      this.subscriptionForGetCategoryName =  this.categoryService
+      .getCategoryId(String(element.categoryId))
+      .valueChanges()
+      .subscribe(category => {   
+        if(category.name) element.nameCategory = category.name;
+      });
     })
   }
 
-  loadAllProducts() {
-    this.subscriptionForGetAllProducts = this.productService.getAll()
-    .subscribe(products => {
-      this.filteredProducts = this.products = products;
-      this.getCategoryName();
-    });
+  getRolesUser() {
+    this.subscriptionForUser = this.authService
+      .isConnected
+      .subscribe(res=>{
+        if(res) {
+          this.userService
+            .getCurrentUser()
+            .then(user=>{
+              if(user) {
+                this.userService
+                  .get(user.uid)
+                  .valueChanges()
+                  .subscribe(dataUser=>{
+                    this.user = dataUser;
+                });
+              }
+          });   
+        }
+    })
   }
 
   loadListCategories() {
@@ -97,17 +118,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
         : this.products;
   }
 
-  getCategoryName() {
-    this.filteredProducts.forEach(element=>{
-      this.subscriptionForGetCategoryName =  this.categoryService
-      .getCategoryId(String(element.categoryId))
-      .valueChanges()
-      .subscribe(category => {   
-        if(category.name) element.nameCategory = category.name;
-      });
-    })
-  }
-
   filetrByCategory() {
     this.filteredProducts = (this.categoryId)
         ? this.products.filter(element=>element.categoryId==this.categoryId)
@@ -122,12 +132,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryDate = "";
-    this.loadAllProducts();
+    this.getAllProducts();
   }
 
   ngOnDestroy() {
     this.subscriptionForGetAllProducts.unsubscribe();
     this.subscriptionForGetCategoryName.unsubscribe();
   }
-
 }

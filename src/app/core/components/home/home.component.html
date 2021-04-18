@@ -1,5 +1,5 @@
 <h1 class="text-center text-primary" style="padding-top: 60px;">Welcome</h1>
-<hr class="bg-dark"/>
+<hr class="bg-dark" />
 <div class="container mx-auto" style="margin-top: 300px;">
   <div class="row" style="margin-top: -255px;cursor: pointer;">
     <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleEmployee" routerLink="/employees">
@@ -9,8 +9,8 @@
           <p>{{ (employees | async)?.length }}</p>
         </div>
         <div class="ico-card">
-        <i class="fa fa-users"></i>
-      </div>
+          <i class="fa fa-users"></i>
+        </div>
       </div>
     </div>
     <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleProduct" routerLink="/products">
@@ -19,9 +19,9 @@
           <h1>Products</h1>
           <p>{{ (products | async)?.length }}</p>
         </div>
-      <div class="ico-card">
-        <i class="fa fa-product-hunt"></i>
-      </div>
+        <div class="ico-card">
+          <i class="fa fa-product-hunt"></i>
+        </div>
       </div>
     </div>
     <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleCategory" routerLink="/categories">
@@ -30,31 +30,32 @@
           <h1>Categories</h1>
           <p>{{ (categories | async)?.length }}</p>
         </div>
-      <div class="ico-card">
-        <i class="fa fa-list-alt"></i>
-      </div>
+        <div class="ico-card">
+          <i class="fa fa-list-alt"></i>
+        </div>
       </div>
     </div>
     <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleStock" routerLink="/stock-menu">
       <div class="card gr-4">
         <div class="txt">
           <h1>Stock</h1>
-          <p>In:&nbsp;{{ (stockInProducts | async)?.length }}&nbsp;/&nbsp;Out:&nbsp;{{ (stockOutProducts | async)?.length }}</p>
+          <p>In:&nbsp;{{ (stockInProducts | async)?.length }}&nbsp;/&nbsp;Out:&nbsp;{{ (stockOutProducts |
+            async)?.length }}</p>
         </div>
         <div class="ico-card">
-        <i class="fa fa-houzz"></i>
-      </div>
+          <i class="fa fa-houzz"></i>
+        </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleSupplier" routerLink="/suppliers"> 
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleSupplier" routerLink="/suppliers">
       <div class="card gr-5">
         <div class="txt">
           <h1>Suppliers</h1>
           <p>{{ (suppliers | async)?.length }}</p>
         </div>
-      <div class="ico-card">
-        <i class="fa fa-truck"></i>
-      </div>
+        <div class="ico-card">
+          <i class="fa fa-truck"></i>
+        </div>
       </div>
     </div>
     <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleInvoice" routerLink="/invoices">
@@ -63,9 +64,9 @@
           <h1>Invoices</h1>
           <p>{{ (invoices | async)?.length }}</p>
         </div>
-      <div class="ico-card">
-        <i class="fa fa-file-invoice"></i>
-      </div>
+        <div class="ico-card">
+          <i class="fa fa-file-invoice"></i>
+        </div>
       </div>
     </div>
   </div>
