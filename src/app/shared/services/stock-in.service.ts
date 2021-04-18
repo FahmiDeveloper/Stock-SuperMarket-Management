@@ -40,4 +40,10 @@ export class StockInService {
   countLengthStockIn(): Observable<number> {
     return this.db.list('/stockIn').valueChanges().pipe(map(response => response.length));
   }
+
+  countLengthProductsInStockIn(productId: string): Observable<number> {
+    return this.db.list('/stockIn')
+      .valueChanges()
+      .pipe(map((response: StockIn[]) => response.filter(element => element.productId == productId).length));
+  }
 }

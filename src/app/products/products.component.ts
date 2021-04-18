@@ -10,6 +10,10 @@ import { UserService } from '../shared/services/user.service';
 
 import { Product } from '../shared/models/product.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { Router } from '@angular/router';
+import { StockInService } from '../shared/services/stock-in.service';
+import { StockOutService } from '../shared/services/stock-out.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-products',
@@ -38,7 +42,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private productService: ProductService, 
     private categoryService: CategoryService,
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    private stockInService: StockInService,
+    private stockOutService: StockOutService, 
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -62,7 +69,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       .getCategoryId(String(element.categoryId))
       .valueChanges()
       .subscribe(category => {   
-        if(category.name) element.nameCategory = category.name;
+        if(category) element.nameCategory = category.name;
       });
     })
   }
@@ -102,13 +109,57 @@ export class ProductsComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.productService.delete(productId);
-        Swal.fire(
-          'Product has been deleted successfully',
-          '',
-          'success'
-        )
+        this.checkIfProductExistInStockIn(productId);
       }
+    })
+  }
+
+  checkIfProductExistInStockIn(productId: string) {
+    this.stockInService
+      .countLengthProductsInStockIn(productId)
+      .pipe(take(1))
+      .subscribe((resStockIn: number) => {
+        let nbrProductInStockIn = resStockIn;
+        if(nbrProductInStockIn > 0) {
+          Swal.fire(
+            'You should delete this product from stock in',
+            '',
+            'warning'
+          ).then((result) => {
+            if (result.value) {
+              this.router.navigate(['/stock-in']);
+            }
+          })
+        } else {
+          this.checkIfProductExistInStockOut(productId);
+        }
+    });
+  }
+
+  checkIfProductExistInStockOut(productId: string) {
+    this.stockOutService
+      .countLengthProductsInStockOut(productId)
+      .pipe(take(1))
+      .subscribe((resStockOut: number) => {
+        let nbrProductInStockOut = resStockOut;
+        if(nbrProductInStockOut > 0) {
+          Swal.fire(
+            'You should delete this product from stock out',
+            '',
+            'warning'
+          ).then((result) => {
+            if (result.value) {
+              this.router.navigate(['/stock-out']);
+            }
+          })
+        } else {
+            this.productService.delete(productId);
+            Swal.fire(
+              'Product has been deleted successfully',
+              '',
+              'success'
+            )
+        }
     })
   }
 
