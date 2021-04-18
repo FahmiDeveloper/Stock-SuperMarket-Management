@@ -7,12 +7,20 @@
                 <div class="card-body">
                     <h5 class="card-title text-warning" style="text-align: center;">{{ product.nameProduct }}</h5>
                     <h6 class="card-subtitle mb-2 mt-2" style="color: white;">Price:&nbsp;{{ product.price }}</h6>
-                    <h6 class="card-subtitle mb-2 mt-2" style="color: white;">Date:&nbsp;{{ product.date | date: 'dd/MM/yyyy' }}</h6>
+                    <h6 class="card-subtitle mb-2 mt-2" style="color: white;">Date:&nbsp;{{ product.date | date:'dd/MM/yyyy' }}</h6>
                     <h6 class="card-subtitle mb-2 mt-2" style="color: white;">Time:&nbsp;{{ product.time }}</h6>
-                    <h6 *ngIf="product.categoryId" class="card-subtitle mb-2 mt-2" style="color: white;">Category:&nbsp;{{ product.nameCategory }}</h6>
+                    <h6 *ngIf="product.categoryId" class="card-subtitle mb-2 mt-2" style="color: white;">
+                        Category:&nbsp;{{ product.nameCategory }}
+                    </h6>
                     <h6 class="card-subtitle mb-2 mt-2" style="color: white;">Note:&nbsp;{{ product.note }}</h6>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/products', product.key]" class="btn ml-5 mr-2" style="text-decoration: none;">Edit</button>
-                    <button *ngIf="user.roleDelete" type="button" (click)="delete(product.key)" class="btn" style="text-decoration: none;">Delete</button>
+                    <button *ngIf="user.roleUpdate" [routerLink]="['/products', product.key]" class="btn ml-5 mr-2"
+                        style="text-decoration: none;">
+                        Edit
+                    </button>
+                    <button *ngIf="user.roleDelete" type="button" (click)="delete(product.key)" class="btn"
+                        style="text-decoration: none;">
+                        Delete
+                    </button>
                 </div>
             </div>
         </div>
