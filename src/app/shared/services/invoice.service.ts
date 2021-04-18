@@ -40,4 +40,10 @@ export class InvoiceService {
   countLengthInvoices(): Observable<number> {
     return this.db.list('/invoices').valueChanges().pipe(map(response => response.length));
   }
+
+  countLengthInvoicesForEachSupplier(supplierId: string): Observable<number> {
+    return this.db.list('/invoices')
+      .valueChanges()
+      .pipe(map((response: Invoice[]) => response.filter(element => element.supplierId == supplierId).length));
+  }
 }

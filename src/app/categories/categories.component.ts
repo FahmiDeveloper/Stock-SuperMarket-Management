@@ -12,6 +12,7 @@ import { UserService } from '../shared/services/user.service';
 
 import { Category } from '../shared/models/category.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { ProductService } from '../shared/services/product.service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService, 
     protected modalService: NgbModal,
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    private productService: ProductService
   ) {}
 
   ngOnInit() {
@@ -46,7 +48,16 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   getAllCategories() {
     this.subscription = this.categoryService
       .getAll()
-      .subscribe(categories => this.filteredCategories = this.categories = categories);
+      .subscribe(categories => {
+        this.filteredCategories = this.categories = categories;
+        this.getNbrProductsForEachCategory();
+      });
+  }
+
+  getNbrProductsForEachCategory() {
+    this.filteredCategories.forEach(element => {
+      element.nbrProductsForEachCateogry = this.productService.countLengthProductsForEachCategory(element.key);
+    })
   }
 
   getRolesUser() {

@@ -40,4 +40,10 @@ export class ProductService {
   countLengthProducts(): Observable<number> {
     return this.db.list('/products').valueChanges().pipe(map(response => response.length));
   }
+
+  countLengthProductsForEachCategory(categoryId: string): Observable<number> {
+    return this.db.list('/products')
+      .valueChanges()
+      .pipe(map((response: Product[]) => response.filter(element => element.categoryId == categoryId).length));
+  }
 }

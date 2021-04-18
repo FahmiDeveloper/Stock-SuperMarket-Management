@@ -12,6 +12,7 @@ import { UserService } from '../shared/services/user.service';
 
 import { Supplier } from '../shared/models/supplier.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { InvoiceService } from '../shared/services/invoice.service';
 
 @Component({
   selector: 'app-suppliers',
@@ -35,7 +36,8 @@ export class SuppliersComponent implements OnInit, OnDestroy {
     private supplierService: SupplierService, 
     protected modalService: NgbModal,
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    private invoiceService: InvoiceService
   ) {}
 
   ngOnInit() {
@@ -46,7 +48,16 @@ export class SuppliersComponent implements OnInit, OnDestroy {
   getAllSuppliers() {
     this.subscription = this.supplierService
       .getAll()
-      .subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);
+      .subscribe(suppliers => {
+        this.filteredSuppliers = this.suppliers = suppliers;
+        this.getNbrInvoicesForEachSupplier();
+      });
+  }
+
+  getNbrInvoicesForEachSupplier() {
+    this.filteredSuppliers.forEach(element => {
+      element.nbrInvoicesForEachSupplier = this.invoiceService.countLengthInvoicesForEachSupplier(element.key);
+    })
   }
 
   getRolesUser() {
