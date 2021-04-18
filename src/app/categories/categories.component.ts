@@ -12,6 +12,9 @@ import { UserService } from '../shared/services/user.service';
 
 import { Category } from '../shared/models/category.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { ProductService } from '../shared/services/product.service';
+import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -35,7 +38,9 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService, 
     protected modalService: NgbModal,
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    private productService: ProductService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -46,7 +51,16 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   getAllCategories() {
     this.subscription = this.categoryService
       .getAll()
-      .subscribe(categories => this.filteredCategories = this.categories = categories);
+      .subscribe(categories => {
+        this.filteredCategories = this.categories = categories;
+        this.getNbrProductsForEachCategory();
+    });
+  }
+
+  getNbrProductsForEachCategory() {
+    this.filteredCategories.forEach(element => {
+      element.nbrProductsForEachCateogry = this.productService.countLengthProductsForEachCategory(element.key);
+    })
   }
 
   getRolesUser() {
@@ -80,14 +94,36 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.categoryService.delete(categoryId);
-        Swal.fire(
-          'Category has been deleted successfully',
-          '',
-          'success'
-        )
+        this.checkIfCategoryhasProducts(categoryId);
       }
     })
+  }
+
+  checkIfCategoryhasProducts(categoryId: string) {
+    this.productService
+      .countLengthProductsForEachCategory(categoryId)
+      .pipe(take(1))
+      .subscribe((res: number) => {
+        let nbrProducts = res;
+        if(nbrProducts > 0) {
+          Swal.fire(
+            'You should delete first the products for this category',
+            '',
+            'warning'
+          ).then((result) => {
+            if (result.value) {
+              this.router.navigate(['/products']);
+            }
+          })
+        } else {
+          this.categoryService.delete(categoryId);
+          Swal.fire(
+            'Category has been deleted successfully',
+            '',
+            'success'
+          )
+        }
+    });
   }
 
   filter(query: string) {

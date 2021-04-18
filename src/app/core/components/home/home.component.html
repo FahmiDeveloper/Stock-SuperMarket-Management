@@ -6,7 +6,7 @@
       <div class="card gr-1">
         <div class="txt">
           <h1>Employees</h1>
-          <p>{{ (employees | async)?.length }}</p>
+          <p>{{ lengthEmployees | async }}</p>
         </div>
         <div class="ico-card">
           <i class="fa fa-users"></i>
@@ -17,7 +17,7 @@
       <div class="card gr-2">
         <div class="txt">
           <h1>Products</h1>
-          <p>{{ (products | async)?.length }}</p>
+          <p>{{ lengthProducts | async }}</p>
         </div>
         <div class="ico-card">
           <i class="fa fa-product-hunt"></i>
@@ -28,7 +28,7 @@
       <div class="card gr-3">
         <div class="txt">
           <h1>Categories</h1>
-          <p>{{ (categories | async)?.length }}</p>
+          <p>{{ lengthCategories | async }}</p>
         </div>
         <div class="ico-card">
           <i class="fa fa-list-alt"></i>
@@ -39,8 +39,7 @@
       <div class="card gr-4">
         <div class="txt">
           <h1>Stock</h1>
-          <p>In:&nbsp;{{ (stockInProducts | async)?.length }}&nbsp;/&nbsp;Out:&nbsp;{{ (stockOutProducts |
-            async)?.length }}</p>
+          <p>In:&nbsp;{{ lengthStockIn | async }}&nbsp;/&nbsp;Out:&nbsp;{{ lengthStockOut | async }}</p>
         </div>
         <div class="ico-card">
           <i class="fa fa-houzz"></i>
@@ -51,7 +50,7 @@
       <div class="card gr-5">
         <div class="txt">
           <h1>Suppliers</h1>
-          <p>{{ (suppliers | async)?.length }}</p>
+          <p>{{ lengthSuppliers | async }}</p>
         </div>
         <div class="ico-card">
           <i class="fa fa-truck"></i>
@@ -62,7 +61,7 @@
       <div class="card gr-6">
         <div class="txt">
           <h1>Invoices</h1>
-          <p>{{ (invoices | async)?.length }}</p>
+          <p>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
           <i class="fa fa-file-invoice"></i>

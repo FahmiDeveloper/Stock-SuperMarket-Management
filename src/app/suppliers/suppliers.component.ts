@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
@@ -12,6 +13,8 @@ import { UserService } from '../shared/services/user.service';
 
 import { Supplier } from '../shared/models/supplier.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { InvoiceService } from '../shared/services/invoice.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-suppliers',
@@ -35,7 +38,9 @@ export class SuppliersComponent implements OnInit, OnDestroy {
     private supplierService: SupplierService, 
     protected modalService: NgbModal,
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    private invoiceService: InvoiceService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -46,7 +51,16 @@ export class SuppliersComponent implements OnInit, OnDestroy {
   getAllSuppliers() {
     this.subscription = this.supplierService
       .getAll()
-      .subscribe(suppliers => this.filteredSuppliers = this.suppliers = suppliers);
+      .subscribe(suppliers => {
+        this.filteredSuppliers = this.suppliers = suppliers;
+        this.getNbrInvoicesForEachSupplier();
+      });
+  }
+
+  getNbrInvoicesForEachSupplier() {
+    this.filteredSuppliers.forEach(element => {
+      element.nbrInvoicesForEachSupplier = this.invoiceService.countLengthInvoicesForEachSupplier(element.key);
+    })
   }
 
   getRolesUser() {
@@ -70,7 +84,7 @@ export class SuppliersComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(supplierId) {
+  delete(supplierId: string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this supplier!',
@@ -80,14 +94,36 @@ export class SuppliersComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.supplierService.delete(supplierId);
-        Swal.fire(
-          'Supplier has been deleted successfully',
-          '',
-          'success'
-        )
+        this.checkIfSupplierHasInvoices(supplierId);   
       }
     })
+  }
+
+  checkIfSupplierHasInvoices(supplierId: string) {
+    this.invoiceService
+      .countLengthInvoicesForEachSupplier(supplierId)
+      .pipe(take(1))
+      .subscribe((res: number) => {
+        let nbrInvoices = res;
+        if(nbrInvoices > 0) {
+          Swal.fire(
+            'You should delete first the invoices for this supplier',
+            '',
+            'warning'
+          ).then((result) => {
+            if (result.value) {
+              this.router.navigate(['/invoices']);
+            }
+          })
+        } else {
+          this.supplierService.delete(supplierId);
+          Swal.fire(
+            'Supplier has been deleted successfully',
+            '',
+            'success'
+          )
+        }
+    });
   }
 
   filter(query: string) {

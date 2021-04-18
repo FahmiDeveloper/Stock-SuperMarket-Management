@@ -35,7 +35,7 @@
                 <td>{{ category.note }}</td>
                 <td>
                     <button type="button" class="btn btn-info " (click)="openListProducts(category)">
-                        List Products
+                        List Products&nbsp;<span class="badge badge-light">{{ category.nbrProductsForEachCateogry | async }}</span>
                     </button>
                 </td>
                 <td>

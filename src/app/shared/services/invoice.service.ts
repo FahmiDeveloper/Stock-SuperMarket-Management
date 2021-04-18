@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Invoice } from '../models/invoice.model';
 
@@ -34,5 +35,15 @@ export class InvoiceService {
 
   delete(invoiceId) {
     return this.db.object('/invoices/' + invoiceId).remove();
+  }
+
+  countLengthInvoices(): Observable<number> {
+    return this.db.list('/invoices').valueChanges().pipe(map(response => response.length));
+  }
+
+  countLengthInvoicesForEachSupplier(supplierId: string): Observable<number> {
+    return this.db.list('/invoices')
+      .valueChanges()
+      .pipe(map((response: Invoice[]) => response.filter(element => element.supplierId == supplierId).length));
   }
 }

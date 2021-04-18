@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Category } from '../models/category.model';
 
@@ -34,5 +35,9 @@ export class CategoryService {
 
   delete(categoryId) {
     return this.db.object('/categories/' + categoryId).remove();
+  }
+
+  countLengthCategories(): Observable<number> {
+    return this.db.list('/categories').valueChanges().pipe(map(response => response.length));
   }
 }

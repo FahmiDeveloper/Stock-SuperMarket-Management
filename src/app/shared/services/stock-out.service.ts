@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StockOut } from '../models/stock-out.model';
 
@@ -34,5 +35,15 @@ export class StockOutService {
 
   delete(stockOutId) {
     return this.db.object('/stockOut/' + stockOutId).remove();
+  }
+
+  countLengthStockOut(): Observable<number> {
+    return this.db.list('/stockOut').valueChanges().pipe(map(response => response.length));
+  }
+
+  countLengthProductsInStockOut(productId: string): Observable<number> {
+    return this.db.list('/stockOut')
+      .valueChanges()
+      .pipe(map((response: StockOut[]) => response.filter(element => element.productId == productId).length));
   }
 }

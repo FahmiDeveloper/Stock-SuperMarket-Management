@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 export class Supplier {
     key: string;
     name: string;
@@ -7,6 +9,7 @@ export class Supplier {
     mobile: number;
     address: string;
     note: string;
+    nbrInvoicesForEachSupplier: Observable<number>;
 
     constructor(){
       this.name = "";

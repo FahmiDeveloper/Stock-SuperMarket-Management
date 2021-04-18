@@ -41,7 +41,7 @@
                 <td>{{ supplier.note }}</td>
                 <td>
                     <button type="button" class="btn btn-info " (click)="openListInvoices(supplier)">
-                        List Invoices
+                        List Invoices&nbsp;<span class="badge badge-light">{{ supplier.nbrInvoicesForEachSupplier | async }}</span>
                     </button>
                 </td>
                 <td>

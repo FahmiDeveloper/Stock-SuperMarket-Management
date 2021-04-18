@@ -59,7 +59,7 @@ export class StockInComponent implements OnInit, OnDestroy {
       .getProductId(element.productId)
       .valueChanges()
       .subscribe(product => {   
-        if(product.nameProduct) element.productName = product.nameProduct;
+        if(product) element.productName = product.nameProduct;
       });
     })
   }
