@@ -63,7 +63,7 @@ export class InvoicesComponent implements OnInit, OnDestroy {
       .getSupplierId(String(element.supplierId))
       .valueChanges()
       .subscribe(supplier => {   
-        if(supplier.name) element.nameSupplier = supplier.name;
+        if(supplier) element.nameSupplier = supplier.name;
       });
     })
   }
