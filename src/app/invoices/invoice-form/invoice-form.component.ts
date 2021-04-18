@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import * as moment from 'moment';
 import { take } from 'rxjs/operators';
-import { Invoice } from 'src/app/shared/models/invoice.model';
+import Swal from 'sweetalert2';
+
 import { InvoiceService } from 'src/app/shared/services/invoice.service';
 import { SupplierService } from 'src/app/shared/services/supplier.service';
-import Swal from 'sweetalert2';
+
+import { Invoice } from 'src/app/shared/models/invoice.model';
 
 @Component({
   selector: 'app-invoice-form',
@@ -23,24 +26,52 @@ export class InvoiceFormComponent implements OnInit {
     private router: Router, 
     private route: ActivatedRoute,
     private supplierService: SupplierService
-    ) {
-    this.suppliers$ = this.supplierService.getAll();
+  ) {}
 
+  ngOnInit() {
+    this.getInvoiceData();
+    if (!this.invoiceId) {
+      this.generateCode();
+    }
+    this.loadListSuppliers();
+  }
+
+  getInvoiceData() {
     this.invoiceId = this.route.snapshot.paramMap.get('id');
     if (this.invoiceId) {
-      this.invoiceService.getInvoiceId(this.invoiceId).valueChanges().pipe(take(1)).subscribe(invoice => {
-      this.invoice = invoice;
-    });
+        this.invoiceService
+        .getInvoiceId(this.invoiceId)
+        .valueChanges()
+        .pipe(take(1))
+        .subscribe(invoice => {
+        this.invoice = invoice;
+      });
     } else {
       this.invoice.date = moment().format('YYYY-MM-DD');
       this.invoice.time = moment().format('HH:mm');
     }
-   }
+  }
 
-  ngOnInit(): void {
-    if (!this.invoiceId) {
-    this.generateCode();
-    }
+  generateCode(){
+    this.invoiceService
+      .getAll()
+      .subscribe((invoices: Invoice[]) => {
+          if (invoices.length > 0) {
+            for (let i = 0; i < invoices.length; i++) {
+              if(invoices[i].code) {
+                const code = invoices[i].code.split('Invoice_')[1].split('_');
+                let newCode = (Number(code[0]) + 1).toString();
+                this.invoice.code = "Invoice_" + newCode + "_" + moment().year();
+              }
+            }      
+        } else {
+          this.invoice.code = "Invoice_" + "1" + "_" + moment().year();
+        }  
+    });
+  }
+
+  loadListSuppliers() {
+    this.suppliers$ = this.supplierService.getAll();
   }
 
   save(invoice) {
@@ -66,22 +97,4 @@ export class InvoiceFormComponent implements OnInit {
   cancel() {
     this.router.navigate(['/invoices']);
   }
-
-  generateCode(){
-    this.invoiceService.getAll()
-    .subscribe((invoices: Invoice[]) => {
-        if (invoices.length > 0) {
-          for (let i = 0; i < invoices.length; i++) {
-            if(invoices[i].code) {
-              const code = invoices[i].code.split('Invoice_')[1].split('_');
-              let newCode = (Number(code[0]) + 1).toString();
-              this.invoice.code = "Invoice_" + newCode + "_" + moment().year();
-            }
-          }      
-      } else {
-        this.invoice.code = "Invoice_" + "1" + "_" + moment().year();
-      }  
-    });
-  }
-
 }
