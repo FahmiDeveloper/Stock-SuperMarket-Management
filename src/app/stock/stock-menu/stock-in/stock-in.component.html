@@ -3,27 +3,20 @@
 <div class="row margDivSearchAdd">
     <div class="col-md-11">
         <p>
-            <input
-             #query
-             (keyup)="filter(query.value)"
-             type="text" 
-             class="form-control widhtInput" 
-             placeholder="Search by product...">
+            <input #query (keyup)="filter(query.value)" type="text" class="form-control widhtInput"
+                placeholder="Search by product...">
         </p>
         <p>
-            <input
-             [(ngModel)]="queryDate"           
-             type="date" 
-             class="form-control widhtInput" >
-             <button class="btn btn-primary" (click)="filterByDate()">Search</button>
-             <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
+            <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
+            <button class="btn btn-primary" (click)="filterByDate()">Search</button>
+            <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
         </p>
     </div>
     <div class="col-md-1">
         <p *ngIf="user.roleAdd">
             <a routerLink="/stock-in/new" class="btn btn-primary">New</a>
         </p>
-    </div> 
+    </div>
 </div>
 
 <div class="row">
@@ -39,15 +32,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let stockInProduct of (filteredStockInProducts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+            <tr
+                *ngFor="let stockInProduct of (filteredStockInProducts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
                 <td>{{ stockInProduct.productName }}</td>
                 <td>{{ stockInProduct.quantity }}</td>
                 <td>{{ stockInProduct.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ stockInProduct.time }}</td>
                 <td>{{ stockInProduct.note }}</td>
                 <td>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/stock-in', stockInProduct.key]" class="btn btn-success">Edit</button>
-                    <button *ngIf="user.roleDelete" type="button" (click)="delete(stockInProduct.key)" class="btn btn-danger">Delete</button>
+                    <button *ngIf="user.roleUpdate" [routerLink]="['/stock-in', stockInProduct.key]"
+                        class="btn btn-success">Edit</button>
+                    <button *ngIf="user.roleDelete" type="button" (click)="delete(stockInProduct.key)"
+                        class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         </tbody>
