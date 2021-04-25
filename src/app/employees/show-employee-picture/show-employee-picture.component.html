@@ -1,15 +1,19 @@
 <img *ngIf="employee.imageUrl" class="sizePicture" [src]="employee.imageUrl"
     (click)="showEmployeeImage(contentEmployeePicture)">
 
+<img *ngIf="!employee.imageUrl" class="sizePicture" src="/assets/pictures/NoImageAvailable.png"
+(click)="showEmployeeImage(contentEmployeePicture)">
+
 <ng-template #contentEmployeePicture let-modal let-c="close" let-d="dismiss">
-    <div class="modal-header">
-        <div class="modal-title">Image Employee Preview</div>
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100">Employee Picture Preview</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
-        </button>
+        </button> 
     </div>
     <div class="modal-body">
         <img [src]='pictureEmployee' *ngIf="pictureEmployee" class="imageEmployee">
+        <img src="/assets/pictures/NoImageAvailable.png" *ngIf="!pictureEmployee" class="imageEmployee">
         <br>
         <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
             accept=".jpeg,.jpg,.png,.svg" />

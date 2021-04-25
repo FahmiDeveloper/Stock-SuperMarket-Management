@@ -1,17 +1,25 @@
 <img *ngIf="product.imageUrl && !isGrid" class="sizePicture" [src]="product.imageUrl"
     (click)="showProductImage(contentProductPicture)">
+
 <img *ngIf="product.imageUrl && isGrid" [src]="product.imageUrl" class="card-img-top sizePictureForGrid"
     (click)="showProductImage(contentProductPicture)">
 
+<img *ngIf="!product.imageUrl && !isGrid" src="/assets/pictures/NoImageAvailable.png" class="sizePicture"
+(click)="showProductImage(contentProductPicture)">
+
+<img *ngIf="!product.imageUrl && isGrid" src="/assets/pictures/NoImageAvailable.png" class="card-img-top sizePictureForGrid"
+    (click)="showProductImage(contentProductPicture)">
+
 <ng-template #contentProductPicture let-modal let-c="close" let-d="dismiss">
-    <div class="modal-header">
-        <div class="modal-title">Image Product Preview</div>
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100">Product Picture Preview</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
-        </button>
+        </button> 
     </div>
     <div class="modal-body">
         <img [src]='pictureProduct' *ngIf="pictureProduct" class="imageProduct">
+        <img src="/assets/pictures/NoImageAvailable.png" *ngIf="!pictureProduct" class="imageProduct">
         <br>
         <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
             accept=".jpeg,.jpg,.png,.svg" />

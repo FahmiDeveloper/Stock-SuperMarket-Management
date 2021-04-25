@@ -62,23 +62,40 @@ export class ProductFormComponent implements OnInit {
   }
 
   save(product) {
+    this.productService
+      .checkIfProductNameExistInTable(product.nameProduct)
+      .pipe(take(1))
+      .subscribe((res: number) => {
+          if(res) {
+            Swal.fire(
+              'Product name already exist!',
+              '',
+              'warning'
+            )
+          } else {
+            this.createOrUpdateProduct(product);
+          }
+    })
+  }
+
+  createOrUpdateProduct(product) {
     if (this.productId) {
-      this.productService.update(this.productId, product);
-      Swal.fire(
-        'Product data has been Updated successfully',
-        '',
-        'success'
-      )
-    }
-    else {
-      this.productService.create(product);
-      Swal.fire(
-        'New product added successfully',
-        '',
-        'success'
-      )
-    }
-    this.router.navigate(['/products']);
+        this.productService.update(this.productId, product);
+        Swal.fire(
+          'Product data has been Updated successfully',
+          '',
+          'success'
+        )
+      }
+      else {
+        this.productService.create(product);
+        Swal.fire(
+          'New product added successfully',
+          '',
+          'success'
+        )
+      }
+      this.router.navigate(['/products']);
   }
 
   async onFileChanged(event) {

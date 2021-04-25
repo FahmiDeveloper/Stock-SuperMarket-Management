@@ -46,4 +46,10 @@ export class ProductService {
       .valueChanges()
       .pipe(map((response: Product[]) => response.filter(element => element.categoryId == categoryId).length));
   }
+
+  checkIfProductNameExistInTable(productName: string): Observable<number> {
+    return this.db.list('/products')
+      .valueChanges()
+      .pipe(map((response: Product[]) => response.filter(element => element.nameProduct == productName).length));
+  }
 }
