@@ -8,6 +8,9 @@ import { EmployeeFormComponent } from './employees/employee-form/employee-form.c
 import { EmployeesComponent } from './employees/employees.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
 import { InvoicesComponent } from './invoices/invoices.component';
+import { MovieFormComponent } from './movies/movie-form/movie-form.component';
+import { MoviesComponent } from './movies/movies.component';
+import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { ProductsComponent } from './products/products.component';
 import { VersionGridComponent } from './products/version-grid/version-grid.component';
@@ -61,5 +64,10 @@ export const rootRouterConfig: Routes = [
 
   { path: 'invoices/new', component: InvoiceFormComponent,  resolve: { data: SharedResolver}},
   { path: 'invoices/:id', component: InvoiceFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'invoices', component: InvoicesComponent,  resolve: { data: SharedResolver}}
+  { path: 'invoices', component: InvoicesComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'movies/new', component: MovieFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies/:id', component: MovieFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies', component: MoviesComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies-for-grid', component: VersionGridMoviesComponent,  resolve: { data: SharedResolver}}
 ]; 

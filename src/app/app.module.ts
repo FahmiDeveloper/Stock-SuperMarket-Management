@@ -43,6 +43,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ShowProductPictureComponent } from './products/show-product-picture/show-product-picture.component';
 import { ShowEmployeePictureComponent } from './employees/show-employee-picture/show-employee-picture.component';
 import { VersionGridComponent } from './products/version-grid/version-grid.component';
+import { MoviesComponent } from './movies/movies.component';
+import { MovieFormComponent } from './movies/movie-form/movie-form.component';
+import { ShowMoviePictureComponent } from './movies/show-movie-picture/show-movie-picture.component';
+import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +76,11 @@ import { VersionGridComponent } from './products/version-grid/version-grid.compo
     ListInvoicesComponent,
     ShowProductPictureComponent,
     ShowEmployeePictureComponent,
-    VersionGridComponent
+    VersionGridComponent,
+    MoviesComponent,
+    MovieFormComponent,
+    ShowMoviePictureComponent,
+    VersionGridMoviesComponent
   ],
   entryComponents: [
     ListProductsComponent,
