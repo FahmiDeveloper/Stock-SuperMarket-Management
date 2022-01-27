@@ -8,8 +8,6 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
-import { Movie } from 'src/app/shared/models/movie.model';
-import { MovieService } from 'src/app/shared/services/movie.service';
 import { Anime } from 'src/app/shared/models/anime.model';
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
