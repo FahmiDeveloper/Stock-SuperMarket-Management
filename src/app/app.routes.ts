@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { AnimeFormComponent } from './animes/anime-form/anime-form.component';
+import { AnimesComponent } from './animes/animes.component';
+import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryFormComponent } from './categories/category-form/category-form.component';
 import { HomeComponent } from './core/components/home/home.component';
@@ -69,5 +72,10 @@ export const rootRouterConfig: Routes = [
   { path: 'movies/new', component: MovieFormComponent,  resolve: { data: SharedResolver}},
   { path: 'movies/:id', component: MovieFormComponent,  resolve: { data: SharedResolver}},
   { path: 'movies', component: MoviesComponent,  resolve: { data: SharedResolver}},
-  { path: 'movies-for-grid', component: VersionGridMoviesComponent,  resolve: { data: SharedResolver}}
+  { path: 'movies-for-grid', component: VersionGridMoviesComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'animes/new', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes/:id', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes', component: AnimesComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes-for-grid', component: VersionGridAnimesComponent,  resolve: { data: SharedResolver}}
 ]; 

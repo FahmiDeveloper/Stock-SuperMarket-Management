@@ -1,0 +1,18 @@
+.widhtInput {
+    width: 90%;
+}
+.gridForSearch {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+.btnNew{
+    position: absolute;
+    right: 110px;
+}
+.margLabel {
+    margin-left: 140px;
+}
+.btnGrid {
+    margin:0 auto;
+    display:block;
+}

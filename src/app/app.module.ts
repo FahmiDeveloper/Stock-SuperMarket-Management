@@ -47,6 +47,10 @@ import { MoviesComponent } from './movies/movies.component';
 import { MovieFormComponent } from './movies/movie-form/movie-form.component';
 import { ShowMoviePictureComponent } from './movies/show-movie-picture/show-movie-picture.component';
 import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
+import { AnimesComponent } from './animes/animes.component';
+import { AnimeFormComponent } from './animes/anime-form/anime-form.component';
+import { ShowAnimePictureComponent } from './animes/show-anime-picture/show-anime-picture.component';
+import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +84,11 @@ import { VersionGridMoviesComponent } from './movies/version-grid-movies/version
     MoviesComponent,
     MovieFormComponent,
     ShowMoviePictureComponent,
-    VersionGridMoviesComponent
+    VersionGridMoviesComponent,
+    AnimesComponent,
+    AnimeFormComponent,
+    ShowAnimePictureComponent,
+    VersionGridAnimesComponent
   ],
   entryComponents: [
     ListProductsComponent,

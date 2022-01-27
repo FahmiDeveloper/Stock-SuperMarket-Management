@@ -1,0 +1,60 @@
+import { Component, Input, OnInit } from '@angular/core';
+
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
+import { Anime } from 'src/app/shared/models/anime.model';
+import { AnimeService } from 'src/app/shared/services/anime.service';
+
+@Component({
+  selector: 'show-anime-picture',
+  templateUrl: './show-anime-picture.component.html',
+  styleUrls: ['./show-anime-picture.component.scss']
+})
+export class ShowAnimePictureComponent implements OnInit {
+
+  @Input() anime: Anime = new Anime();
+  @Input() isGrid: boolean;
+
+  pictureAnime: string;
+  basePath = '/PicturesAnimes';
+  task: AngularFireUploadTask;
+  progressValue: Observable<number>;
+
+  constructor(
+    public modalService: NgbModal, 
+    private fireStorage: AngularFireStorage, 
+    private animeService: AnimeService, 
+  ) {}
+
+  ngOnInit() {
+  }
+
+  showAnimeImage(contentAnimePicture) {
+    this.modalService.open(contentAnimePicture, { size: 'lg', centered: true });
+    this.pictureAnime = this.anime.imageUrl;
+  }
+
+  async onFileChanged(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {
+        this.pictureAnime = this.anime.imageUrl = url;
+        this.animeService.update(this.anime.key, this.anime);
+        this.modalService.dismissAll();
+      });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.pictureAnime = '';
+    }
+   }
+
+}
