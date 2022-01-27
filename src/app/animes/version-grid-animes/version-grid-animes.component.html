@@ -1,0 +1,27 @@
+<h1 class="text-center text-warning titleTextInterface">Animes</h1>
+<div class="container mx-auto" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-md-4" *ngFor="let anime of (filteredAnimes | sortBy: 'key')">
+            <div class="card bg-white" style="width: 18rem;">
+                <show-anime-picture [anime]="anime" [isGrid]="isGrid"></show-anime-picture>
+                <div class="card-body text-dark">
+                    <h5 class="card-title text-primary font-weight-bold text-center">{{ anime.nameAnime }}</h5>
+                    <h6 class="card-subtitle mb-2 mt-2">Date Creation:&nbsp;{{ anime.date | date:'dd/MM/yyyy' }}</h6>
+                    <h6 class="card-subtitle mb-2 mt-2">Time Creation:&nbsp;{{ anime.time }}</h6>
+                    <h6 *ngIf="anime.categoryId" class="card-subtitle mb-2 mt-2">
+                        Category:&nbsp;{{ anime.nameCategory }}
+                    </h6>
+                    <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ anime.note }}</h6>
+                    <button *ngIf="user.roleUpdate" [routerLink]="['/animes', anime.key]" class="btn btn-success ml-5 mr-2"
+                        style="text-decoration: none;">
+                        Edit
+                    </button>
+                    <button *ngIf="user.roleDelete" type="button" (click)="delete(anime.key)" class="btn btn-danger"
+                        style="text-decoration: none;">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

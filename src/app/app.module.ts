@@ -43,6 +43,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ShowProductPictureComponent } from './products/show-product-picture/show-product-picture.component';
 import { ShowEmployeePictureComponent } from './employees/show-employee-picture/show-employee-picture.component';
 import { VersionGridComponent } from './products/version-grid/version-grid.component';
+import { MoviesComponent } from './movies/movies.component';
+import { MovieFormComponent } from './movies/movie-form/movie-form.component';
+import { ShowMoviePictureComponent } from './movies/show-movie-picture/show-movie-picture.component';
+import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
+import { AnimesComponent } from './animes/animes.component';
+import { AnimeFormComponent } from './animes/anime-form/anime-form.component';
+import { ShowAnimePictureComponent } from './animes/show-anime-picture/show-anime-picture.component';
+import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +80,15 @@ import { VersionGridComponent } from './products/version-grid/version-grid.compo
     ListInvoicesComponent,
     ShowProductPictureComponent,
     ShowEmployeePictureComponent,
-    VersionGridComponent
+    VersionGridComponent,
+    MoviesComponent,
+    MovieFormComponent,
+    ShowMoviePictureComponent,
+    VersionGridMoviesComponent,
+    AnimesComponent,
+    AnimeFormComponent,
+    ShowAnimePictureComponent,
+    VersionGridAnimesComponent
   ],
   entryComponents: [
     ListProductsComponent,

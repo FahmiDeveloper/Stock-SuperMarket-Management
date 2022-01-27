@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { AnimeFormComponent } from './animes/anime-form/anime-form.component';
+import { AnimesComponent } from './animes/animes.component';
+import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryFormComponent } from './categories/category-form/category-form.component';
 import { HomeComponent } from './core/components/home/home.component';
@@ -8,6 +11,9 @@ import { EmployeeFormComponent } from './employees/employee-form/employee-form.c
 import { EmployeesComponent } from './employees/employees.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
 import { InvoicesComponent } from './invoices/invoices.component';
+import { MovieFormComponent } from './movies/movie-form/movie-form.component';
+import { MoviesComponent } from './movies/movies.component';
+import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { ProductsComponent } from './products/products.component';
 import { VersionGridComponent } from './products/version-grid/version-grid.component';
@@ -61,5 +67,15 @@ export const rootRouterConfig: Routes = [
 
   { path: 'invoices/new', component: InvoiceFormComponent,  resolve: { data: SharedResolver}},
   { path: 'invoices/:id', component: InvoiceFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'invoices', component: InvoicesComponent,  resolve: { data: SharedResolver}}
+  { path: 'invoices', component: InvoicesComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'movies/new', component: MovieFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies/:id', component: MovieFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies', component: MoviesComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies-for-grid', component: VersionGridMoviesComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'animes/new', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes/:id', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes', component: AnimesComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes-for-grid', component: VersionGridAnimesComponent,  resolve: { data: SharedResolver}}
 ]; 
