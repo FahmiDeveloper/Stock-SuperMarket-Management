@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { AuthService } from '../shared/services/auth.service';
-import { CategoryService } from '../shared/services/category.service';
 import { UserService } from '../shared/services/user.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
@@ -23,21 +22,16 @@ export class AnimesComponent implements OnInit, OnDestroy {
   filteredAnimes: Anime[];
 
   subscriptionForGetAllAnimes: Subscription;
-  subscriptionForGetCategoryName: Subscription;
   subscriptionForUser: Subscription;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
   p: number = 1;
 
-  categories$;
-  categoryId: string;
-
   queryDate: string = "";
 
   constructor(
     private animeService: AnimeService, 
-    private categoryService: CategoryService,
     public userService: UserService,
     public authService: AuthService
   ) {}
@@ -45,7 +39,6 @@ export class AnimesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getAllAnimes();
     this.getRolesUser();
-    this.loadListCategories();
   }
 
   getAllAnimes() {
@@ -53,19 +46,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
       .getAll()
       .subscribe(movies => {
         this.filteredAnimes = this.animes = movies;
-        this.getCategoryName();
     });
-  }
-
-  getCategoryName() {
-    this.filteredAnimes.forEach(element=>{
-      this.subscriptionForGetCategoryName =  this.categoryService
-      .getCategoryId(String(element.categoryId))
-      .valueChanges()
-      .subscribe(category => {   
-        if(category) element.nameCategory = category.name;
-      });
-    })
   }
 
   getRolesUser() {
@@ -87,10 +68,6 @@ export class AnimesComponent implements OnInit, OnDestroy {
           });   
         }
     })
-  }
-
-  loadListCategories() {
-    this.categories$ = this.categoryService.getAll();
   }
 
   delete(animeId) {
@@ -119,12 +96,6 @@ export class AnimesComponent implements OnInit, OnDestroy {
         : this.animes;
   }
 
-  filetrByCategory() {
-    this.filteredAnimes = (this.categoryId)
-        ? this.animes.filter(element=>element.categoryId==this.categoryId)
-        : this.animes;
-  }
-
   filterByDate() {
     this.filteredAnimes = (this.queryDate)
       ? this.animes.filter(anime => anime.date.includes(this.queryDate))
@@ -138,7 +109,6 @@ export class AnimesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
-    this.subscriptionForGetCategoryName.unsubscribe();
   }
 
 }
