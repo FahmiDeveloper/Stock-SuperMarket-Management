@@ -22,21 +22,16 @@ export class VersionGridAnimesComponent implements OnInit {
   filteredAnimes: Anime[];
 
   subscriptionForGetAllAnimes: Subscription;
-  subscriptionForGetCategoryName: Subscription;
   subscriptionForUser: Subscription;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
   p: number = 1;
 
-  categories$;
-  categoryId: string;
-
   isGrid: boolean = false;
 
   constructor(
     private animeService: AnimeService, 
-    private categoryService: CategoryService,
     public userService: UserService,
     public authService: AuthService
   ) {}
@@ -44,7 +39,6 @@ export class VersionGridAnimesComponent implements OnInit {
   ngOnInit() {
     this.getAllAnimes();
     this.getRolesUser();
-    this.loadListCategories();
     this.isGrid = true;
   }
 
@@ -53,19 +47,7 @@ export class VersionGridAnimesComponent implements OnInit {
       .getAll()
       .subscribe(movies => {
         this.filteredAnimes = this.animes = movies;
-        this.getCategoryName();
     });
-  }
-
-  getCategoryName() {
-    this.filteredAnimes.forEach(element=>{
-      this.subscriptionForGetCategoryName =  this.categoryService
-      .getCategoryId(String(element.categoryId))
-      .valueChanges()
-      .subscribe(category => {   
-        if(category.name) element.nameCategory = category.name;
-      });
-    })
   }
 
   getRolesUser() {
@@ -87,10 +69,6 @@ export class VersionGridAnimesComponent implements OnInit {
           });   
         }
     })
-  }
-
-  loadListCategories() {
-    this.categories$ = this.categoryService.getAll();
   }
 
   delete(animeId) {
@@ -119,15 +97,8 @@ export class VersionGridAnimesComponent implements OnInit {
         : this.animes;
   }
 
-  filetrByCategory() {
-    this.filteredAnimes = (this.categoryId)
-        ? this.animes.filter(element=>element.categoryId==this.categoryId)
-        : this.animes;
-  }
-
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
-    this.subscriptionForGetCategoryName.unsubscribe();
   }
 
 }

@@ -1,8 +1,8 @@
 <h1 class="text-center text-warning titleTextInterface">Movies</h1>
-<div class="container mx-auto" style="margin-top: 100px;">
+<div class="container mx-auto" style="margin-top: 50px;">
     <div class="row">
         <div class="col-md-4" *ngFor="let movie of (filteredMovies | sortBy: 'key')">
-            <div class="card bg-white" style="width: 18rem;">
+            <div class="card bg-white" style="width: 18rem;margin-inline: auto;">
                 <show-movie-picture [movie]="movie" [isGrid]="isGrid"></show-movie-picture>
                 <div class="card-body text-dark">
                     <h5 class="card-title text-primary font-weight-bold text-center">{{ movie.nameMovie }}</h5>

@@ -13,6 +13,7 @@ import { SupplierService } from 'src/app/shared/services/supplier.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   lengthSuppliers: Observable<number>;
   lengthInvoices: Observable<number>;
 
+  isMobile: boolean;
+
   constructor(
     public userService: UserService,
     public authService: AuthService,
@@ -42,12 +45,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     private stockInService: StockInService, 
     private stockOutService: StockOutService, 
     private supplierService: SupplierService, 
-    private invoiceService: InvoiceService
+    private invoiceService: InvoiceService,
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
     this.getRolesUser();
     this.loadLengthData();
+    this.isMobile = this.deviceService.isMobile();
   }
   
   getRolesUser() {
