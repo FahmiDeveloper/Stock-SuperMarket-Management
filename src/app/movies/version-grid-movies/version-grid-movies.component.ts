@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { CategoryService } from 'src/app/shared/services/category.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
@@ -22,21 +21,16 @@ export class VersionGridMoviesComponent implements OnInit {
   filteredMovies: Movie[];
 
   subscriptionForGetAllMovies: Subscription;
-  subscriptionForGetCategoryName: Subscription;
   subscriptionForUser: Subscription;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
   p: number = 1;
 
-  categories$;
-  categoryId: string;
-
   isGrid: boolean = false;
 
   constructor(
     private movieService: MovieService, 
-    private categoryService: CategoryService,
     public userService: UserService,
     public authService: AuthService
   ) {}
@@ -44,7 +38,6 @@ export class VersionGridMoviesComponent implements OnInit {
   ngOnInit() {
     this.getAllMovies();
     this.getRolesUser();
-    this.loadListCategories();
     this.isGrid = true;
   }
 
@@ -53,19 +46,7 @@ export class VersionGridMoviesComponent implements OnInit {
       .getAll()
       .subscribe(movies => {
         this.filteredMovies = this.movies = movies;
-        this.getCategoryName();
     });
-  }
-
-  getCategoryName() {
-    this.filteredMovies.forEach(element=>{
-      this.subscriptionForGetCategoryName =  this.categoryService
-      .getCategoryId(String(element.categoryId))
-      .valueChanges()
-      .subscribe(category => {   
-        if(category.name) element.nameCategory = category.name;
-      });
-    })
   }
 
   getRolesUser() {
@@ -87,10 +68,6 @@ export class VersionGridMoviesComponent implements OnInit {
           });   
         }
     })
-  }
-
-  loadListCategories() {
-    this.categories$ = this.categoryService.getAll();
   }
 
   delete(movieId) {
@@ -119,15 +96,8 @@ export class VersionGridMoviesComponent implements OnInit {
        : this.movies;
  }
 
- filetrByCategory() {
-   this.filteredMovies = (this.categoryId)
-       ? this.movies.filter(element=>element.categoryId==this.categoryId)
-       : this.movies;
- }
-
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
-    this.subscriptionForGetCategoryName.unsubscribe();
   }
 
 }
