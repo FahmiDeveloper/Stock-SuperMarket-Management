@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Observable } from 'rxjs';
 
 import { Movie } from 'src/app/shared/models/movie.model';
@@ -23,13 +24,17 @@ export class ShowMoviePictureComponent implements OnInit {
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
+  isMobile: boolean;
+
   constructor(
     public modalService: NgbModal, 
     private fireStorage: AngularFireStorage, 
-    private movieService: MovieService 
+    private movieService: MovieService,
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
+    this.isMobile = this.deviceService.isMobile();
   }
 
   showMovieImage(contentMoviePicture) {

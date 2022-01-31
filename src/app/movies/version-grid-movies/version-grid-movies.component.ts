@@ -29,6 +29,8 @@ export class VersionGridMoviesComponent implements OnInit {
 
   isGrid: boolean = false;
 
+  queryDate: string = "";
+
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
@@ -94,7 +96,18 @@ export class VersionGridMoviesComponent implements OnInit {
     this.filteredMovies = (query)
        ? this.movies.filter(movie => movie.nameMovie.toLowerCase().includes(query.toLowerCase()))
        : this.movies;
- }
+  }
+
+  filterByDate() {
+    this.filteredMovies = (this.queryDate)
+      ? this.movies.filter(product => product.date.includes(this.queryDate))
+      : this.movies;
+  }
+
+  clear() {
+    this.queryDate = "";
+    this.getAllMovies();
+  }
 
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();

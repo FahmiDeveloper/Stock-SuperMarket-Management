@@ -30,6 +30,8 @@ export class VersionGridAnimesComponent implements OnInit {
 
   isGrid: boolean = false;
 
+  queryDate: string = "";
+
   constructor(
     private animeService: AnimeService, 
     public userService: UserService,
@@ -95,6 +97,17 @@ export class VersionGridAnimesComponent implements OnInit {
      this.filteredAnimes = (query)
         ? this.animes.filter(anime => anime.nameAnime.toLowerCase().includes(query.toLowerCase()))
         : this.animes;
+  }
+
+  filterByDate() {
+    this.filteredAnimes = (this.queryDate)
+      ? this.animes.filter(product => product.date.includes(this.queryDate))
+      : this.animes;
+  }
+
+  clear() {
+    this.queryDate = "";
+    this.getAllAnimes();
   }
 
   ngOnDestroy() {

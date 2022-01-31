@@ -8,8 +8,6 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
-import { CategoryService } from 'src/app/shared/services/category.service';
-
 import { Anime } from 'src/app/shared/models/anime.model';
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
@@ -55,40 +53,24 @@ export class AnimeFormComponent implements OnInit {
   }
 
   save(anime) {
-    this.animeService
-      .checkIfMovieNameExistInTable(anime.nameAnime)
-      .pipe(take(1))
-      .subscribe((res: number) => {
-          if(res) {
-            Swal.fire(
-              'Anime name already exist!',
-              '',
-              'warning'
-            )
-          } else {
-            this.createOrUpdateAnime(anime);
-          }
-    })
-  }
-
-  createOrUpdateAnime(anime) {
     if (this.animeId) {
-        this.animeService.update(this.animeId, anime);
-        Swal.fire(
-          'Anime data has been Updated successfully',
-          '',
-          'success'
-        )
-      }
-      else {
-        this.animeService.create(anime);
-        Swal.fire(
-          'New Anime added successfully',
-          '',
-          'success'
-        )
-      }
-      this.router.navigate(['/animes']);
+      this.animeService.update(this.animeId, anime);
+      Swal.fire(
+        'Anime data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.animeService.create(anime);
+      Swal.fire(
+        'New Anime added successfully',
+        '',
+        'success'
+      )
+    }
+    this.router.navigate(['/animes']);
+
   }
 
   async onFileChanged(event) {

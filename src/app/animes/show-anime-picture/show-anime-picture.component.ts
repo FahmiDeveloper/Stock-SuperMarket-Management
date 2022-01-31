@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Observable } from 'rxjs';
 import { Anime } from 'src/app/shared/models/anime.model';
 import { AnimeService } from 'src/app/shared/services/anime.service';
@@ -22,13 +23,17 @@ export class ShowAnimePictureComponent implements OnInit {
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
+  isMobile: boolean;
+
   constructor(
     public modalService: NgbModal, 
     private fireStorage: AngularFireStorage, 
-    private animeService: AnimeService, 
+    private animeService: AnimeService,
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
+    this.isMobile = this.deviceService.isMobile();
   }
 
   showAnimeImage(contentAnimePicture) {
