@@ -46,10 +46,4 @@ export class AnimeService {
       .valueChanges()
       .pipe(map((response: Anime[]) => response.filter(element => element.categoryId == categoryId).length));
   }
-
-  checkIfMovieNameExistInTable(animeName: string): Observable<number> {
-    return this.db.list('/animes')
-      .valueChanges()
-      .pipe(map((response: Anime[]) => response.filter(element => element.nameAnime == animeName).length));
-  }
 }

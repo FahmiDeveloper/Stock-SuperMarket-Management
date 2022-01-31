@@ -18,8 +18,12 @@
         </button> 
     </div>
     <div class="modal-body">
-        <img [src]='pictureMovie' *ngIf="pictureMovie" class="imageMovie">
-        <img src="/assets/pictures/NoImageAvailable.png" *ngIf="!pictureMovie" class="imageMovie">
+        <img [src]='pictureMovie' *ngIf="pictureMovie && !isMobile" class="imageMovie">
+        <img [src]='pictureMovie' *ngIf="pictureMovie && isMobile" class="imageMovieMobile">
+
+        <img src="/assets/pictures/NoImageAvailable.png" *ngIf="!pictureMovie && !isMobile" class="imageMovie">
+        <img src="/assets/pictures/NoImageAvailable.png" *ngIf="!pictureMovie && isMobile" class="imageMovieMobile">
+
         <br>
         <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
             accept=".jpeg,.jpg,.png,.svg" />

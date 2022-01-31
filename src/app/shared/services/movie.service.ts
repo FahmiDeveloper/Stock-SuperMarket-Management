@@ -46,10 +46,4 @@ export class MovieService {
       .valueChanges()
       .pipe(map((response: Movie[]) => response.filter(element => element.categoryId == categoryId).length));
   }
-
-  checkIfMovieNameExistInTable(movieName: string): Observable<number> {
-    return this.db.list('/movies')
-      .valueChanges()
-      .pipe(map((response: Movie[]) => response.filter(element => element.nameMovie == movieName).length));
-  }
 }

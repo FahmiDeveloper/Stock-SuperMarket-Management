@@ -53,40 +53,23 @@ export class MovieFormComponent implements OnInit {
   }
 
   save(movie) {
-    this.movieService
-      .checkIfMovieNameExistInTable(movie.nameMovie)
-      .pipe(take(1))
-      .subscribe((res: number) => {
-          if(res) {
-            Swal.fire(
-              'Movir name already exist!',
-              '',
-              'warning'
-            )
-          } else {
-            this.createOrUpdateMovie(movie);
-          }
-    })
-  }
-
-  createOrUpdateMovie(movie) {
     if (this.movieId) {
-        this.movieService.update(this.movieId, movie);
-        Swal.fire(
-          'Movie data has been Updated successfully',
-          '',
-          'success'
-        )
-      }
-      else {
-        this.movieService.create(movie);
-        Swal.fire(
-          'New Movie added successfully',
-          '',
-          'success'
-        )
-      }
-      this.router.navigate(['/movies']);
+      this.movieService.update(this.movieId, movie);
+      Swal.fire(
+        'Movie data has been Updated successfully',
+        '',
+        'success'
+      )
+    }
+    else {
+      this.movieService.create(movie);
+      Swal.fire(
+        'New Movie added successfully',
+        '',
+        'success'
+      )
+    }
+    this.router.navigate(['/movies']);
   }
 
   async onFileChanged(event) {
