@@ -9,6 +9,8 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Movie } from 'src/app/shared/models/movie.model';
 import { MovieService } from 'src/app/shared/services/movie.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NewOrEditMovieComponent } from './new-or-edit-movie/new-or-edit-movie.component';
 
 @Component({
   selector: 'app-version-grid-movies',
@@ -34,7 +36,8 @@ export class VersionGridMoviesComponent implements OnInit {
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    protected modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -107,6 +110,19 @@ export class VersionGridMoviesComponent implements OnInit {
   clear() {
     this.queryDate = "";
     this.getAllMovies();
+  }
+
+  newMovie() {
+    const modalRef = this.modalService.open(NewOrEditMovieComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+  }
+
+  editMovie(movie?: Movie) {
+    const modalRef = this.modalService.open(NewOrEditMovieComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.movie = movie;
   }
 
   ngOnDestroy() {

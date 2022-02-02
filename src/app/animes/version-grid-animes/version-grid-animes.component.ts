@@ -10,6 +10,8 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Anime } from 'src/app/shared/models/anime.model';
 import { AnimeService } from 'src/app/shared/services/anime.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NewOrEditAnimeComponent } from './new-or-edit-anime/new-or-edit-anime.component';
 
 @Component({
   selector: 'app-version-grid-animes',
@@ -35,7 +37,8 @@ export class VersionGridAnimesComponent implements OnInit {
   constructor(
     private animeService: AnimeService, 
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    protected modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -109,6 +112,19 @@ export class VersionGridAnimesComponent implements OnInit {
     this.queryDate = "";
     this.getAllAnimes();
   }
+
+  newAnime() {
+    const modalRef = this.modalService.open(NewOrEditAnimeComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+  }
+
+  editAnime(anime?: Anime) {
+    const modalRef = this.modalService.open(NewOrEditAnimeComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.anime = anime;
+  }	
 
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
