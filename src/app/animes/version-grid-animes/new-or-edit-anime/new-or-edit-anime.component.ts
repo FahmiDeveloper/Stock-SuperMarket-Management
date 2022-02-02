@@ -1,0 +1,78 @@
+import { Component, OnInit } from '@angular/core';
+
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
+import { Observable } from 'rxjs';
+import { Anime } from 'src/app/shared/models/anime.model';
+
+import { AnimeService } from 'src/app/shared/services/anime.service';
+
+import Swal from 'sweetalert2';
+
+@Component({
+  selector: 'new-or-edit-anime',
+  templateUrl: './new-or-edit-anime.component.html',
+  styleUrls: ['./new-or-edit-anime.scss']
+})
+export class NewOrEditAnimeComponent implements OnInit {
+
+    basePath = '/PicturesAnimes';
+    task: AngularFireUploadTask;
+    progressValue: Observable<number>;
+
+    anime: Anime = new Anime();
+
+    modalRef: any;
+
+    constructor(
+        public modalService: NgbModal, 
+        private fireStorage: AngularFireStorage,
+        private animeService: AnimeService 
+    ) {}
+
+    ngOnInit() {
+      if (!this.anime.key) {
+        this.anime.date = moment().format('YYYY-MM-DD');
+        this.anime.time = moment().format('HH:mm');
+      }
+    }
+
+    save(anime) {
+      if (this.anime.key) {
+        this.animeService.update(this.anime.key, anime);
+        Swal.fire(
+          'Anime data has been Updated successfully',
+          '',
+          'success'
+        )
+      } else {
+        this.animeService.create(anime);
+        Swal.fire(
+        'New Anime added successfully',
+        '',
+        'success'
+        )
+      }
+      this.modalRef.close();
+    }
+    
+      async onFileChanged(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+          this.task =  this.fireStorage.upload(filePath, file);    // upload task
+    
+          // this.progress = this.snapTask.percentageChanges();
+          this.progressValue = this.task.percentageChanges();
+    
+          (await this.task).ref.getDownloadURL().then(url => {this.anime.imageUrl = url; });  // <<< url is found here
+    
+        } else {  
+          alert('No images selected');
+          this.anime.imageUrl = '';
+        }
+      }
+
+}

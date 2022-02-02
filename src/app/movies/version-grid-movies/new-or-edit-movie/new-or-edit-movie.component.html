@@ -1,0 +1,61 @@
+<div class="modal-header text-center">
+    <h4 class="modal-title w-100" *ngIf="!movie.key">New Movie</h4>
+    <h4 class="modal-title w-100" *ngIf="movie.key">Edit Movie</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modalRef.close()">
+        <span aria-hidden="true">&times;</span>
+    </button> 
+    </div>
+    
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form #f="ngForm" (ngSubmit)="save(f.value)">
+                        <div class="form-group">
+                            <label for="nameMovie">Name</label>
+                            <input #nameMovie="ngModel" [(ngModel)]="movie.nameMovie" name="nameMovie" id="nameMovie"
+                                type="text" class="form-control" required [minlength]="3">
+                            <div class="alert alert-danger" *ngIf="nameMovie.touched && nameMovie.invalid">
+                                <div *ngIf="nameMovie.errors.required"> Name is required.</div>
+                                <div *ngIf="nameMovie.errors?.minlength">Name should contain at least 3 characters or higher.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" hidden>
+                            <label for="date">Date</label>
+                            <input #date="ngModel" [(ngModel)]="movie.date" name="date" id="date" type="date"
+                                class="form-control">
+                        </div>
+                        <div class="form-group" hidden>
+                            <label for="time">Time</label>
+                            <input #time="ngModel" [(ngModel)]="movie.time" name="time" id="time" type="time"
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Note</label>
+                            <input #note="ngModel" [(ngModel)]="movie.note" name="note" id="note" type="text"
+                                class="form-control" required>
+                            <div class="alert alert-danger" *ngIf="note.touched && note.invalid">
+                                Note is required.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageUrl">Picture</label>
+                            <input [(ngModel)]="movie.imageUrl" name="imageUrl" id="imageUrl" type="text" class="form-control"
+                                hidden>
+                            <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
+                                accept=".jpeg,.jpg,.png,.svg" />
+                            <br>
+                            <div *ngIf="progressValue | async as val">
+                                <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
+                                <br />
+                                <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
+                                <span *ngIf="val == 100" class="progressComplete">Completed !</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" [disabled]="f.invalid">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

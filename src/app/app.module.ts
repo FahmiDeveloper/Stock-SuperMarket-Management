@@ -51,6 +51,8 @@ import { AnimesComponent } from './animes/animes.component';
 import { AnimeFormComponent } from './animes/anime-form/anime-form.component';
 import { ShowAnimePictureComponent } from './animes/show-anime-picture/show-anime-picture.component';
 import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
+import { NewOrEditMovieComponent } from './movies/version-grid-movies/new-or-edit-movie/new-or-edit-movie.component';
+import { NewOrEditAnimeComponent } from './animes/version-grid-animes/new-or-edit-anime/new-or-edit-anime.component';
 
 @NgModule({
   declarations: [
@@ -88,13 +90,17 @@ import { VersionGridAnimesComponent } from './animes/version-grid-animes/version
     AnimesComponent,
     AnimeFormComponent,
     ShowAnimePictureComponent,
-    VersionGridAnimesComponent
+    VersionGridAnimesComponent,
+    NewOrEditMovieComponent,
+    NewOrEditAnimeComponent
   ],
   entryComponents: [
     ListProductsComponent,
     ListInvoicesComponent,
     ShowProductPictureComponent,
-    ShowEmployeePictureComponent
+    ShowEmployeePictureComponent,
+    NewOrEditMovieComponent,
+    NewOrEditAnimeComponent
   ],
   imports: [
     BrowserModule,

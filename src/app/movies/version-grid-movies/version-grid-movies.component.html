@@ -2,6 +2,12 @@
 <div class="container mx-auto" style="margin-top: 50px;">
     <div class="row">
         <div class="col-md-4">
+            <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary float-right">New</a>        
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
             <input #query (keyup)="filter(query.value)" type="text" class="form-control" placeholder="Search by name...">
         </div>
     </div>
@@ -32,7 +38,7 @@
                         Category:&nbsp;{{ movie.nameCategory }}
                     </h6>
                     <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ movie.note }}</h6>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/movies', movie.key]" class="btn btn-success ml-5 mr-2"
+                    <button *ngIf="user.roleUpdate" (click)="editMovie(movie)" class="btn btn-success ml-5 mr-2"
                         style="text-decoration: none;">
                         Edit
                     </button>
