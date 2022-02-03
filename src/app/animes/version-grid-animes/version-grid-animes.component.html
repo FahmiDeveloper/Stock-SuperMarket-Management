@@ -27,6 +27,17 @@
     </div>
     <br>
     <div class="row">
+        <div class="col-md-4">
+            <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
+                <option value=""></option>
+                <option *ngFor="let statusAnime of statusAnimes" [value]="statusAnime.id">
+                    {{statusAnime.status}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-md-4" *ngFor="let anime of (filteredAnimes | sortBy: 'key')">
             <div class="card bg-white" style="width: 18rem;margin-inline: auto;">
                 <show-anime-picture [anime]="anime" [isGrid]="isGrid"></show-anime-picture>
@@ -34,8 +45,11 @@
                     <h5 class="card-title text-primary font-weight-bold text-center">{{ anime.nameAnime }}</h5>
                     <h6 class="card-subtitle mb-2 mt-2">Date Creation:&nbsp;{{ anime.date | date:'dd/MM/yyyy' }}</h6>
                     <h6 class="card-subtitle mb-2 mt-2">Time Creation:&nbsp;{{ anime.time }}</h6>
-                    <h6 *ngIf="anime.categoryId" class="card-subtitle mb-2 mt-2">
-                        Category:&nbsp;{{ anime.nameCategory }}
+                    <h6 *ngIf="anime.statusId" class="card-subtitle mb-2 mt-2">
+                        Status:&nbsp;{{ anime.status }}
+                    </h6>
+                    <h6 *ngIf="!anime.statusId" class="card-subtitle mb-2 mt-2">
+                        Status:&nbsp;-
                     </h6>
                     <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ anime.note }}</h6>
                     <button *ngIf="user.roleUpdate" (click)="editAnime(anime)" class="btn btn-success ml-5 mr-2"

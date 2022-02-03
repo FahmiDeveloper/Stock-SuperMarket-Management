@@ -3,22 +3,31 @@
 <br>
 <br>
 
+
 <div class="row">
     <div class="col-md-4">
         <input #query (keyup)="filter(query.value)" type="text" class="form-control widhtInput" placeholder="Search by name...">
     </div>
     <div class="col-md-4">
         <div class="row">
-            <div class="col-md6">
+            <div class="col-md-8">
                 <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
             </div>
-            <div class="col-md6">
+            <div class="col-md-4">
                 <button class="btn btn-primary" (click)="filterByDate()">Search</button>
                 <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
             </div>
         </div>     
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
+            <option value=""></option>
+            <option *ngFor="let statusAnime of statusAnimes" [value]="statusAnime.id">
+                {{statusAnime.status}}
+            </option>
+        </select>
+    </div>
+    <div class="col-md-1">
         <a *ngIf="user.roleAdd" routerLink="/animes/new" class="btn btn-primary float-right">New</a>
     </div>
 </div>
@@ -32,7 +41,8 @@
                 <th>Name</th>
                 <th>Date Creation</th>
                 <th>Time Creation</th>
-                <th>Note</th>
+                <th>Status</th>
+                <!-- <th>Note</th> -->
                 <th>Picture</th>
                 <th></th>
             </tr>
@@ -43,7 +53,11 @@
                 <td>{{ anime.nameAnime }}</td>
                 <td>{{ anime.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ anime.time }}</td>
-                <td>{{ anime.note }}</td>
+                <td>
+                    <span *ngIf="anime.statusId">{{ anime.status }}</span>
+                    <span *ngIf="!anime.statusId">-</span>
+                </td>
+                <!-- <td>{{ anime.note }}</td> -->
                 <td>
                     <show-anime-picture [anime]="anime"></show-anime-picture>
                 </td>

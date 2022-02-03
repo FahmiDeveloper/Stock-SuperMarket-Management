@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-header',
@@ -19,16 +20,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: firebase.User;
   userName: string;
   subscriptipn: Subscription;
+  isMobile: boolean;
 
   constructor(
     private afAuth: AngularFireAuth, 
     public authService: AuthService, 
-    private router: Router
+    private router: Router,
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
     this.getUserData();
     this.checkIfUserIsConnected();
+    this.isMobile = this.deviceService.isMobile();
   }
 
   getUserData() {

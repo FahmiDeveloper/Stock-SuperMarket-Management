@@ -26,6 +26,14 @@ export class NewOrEditMovieComponent implements OnInit {
 
     modalRef: any;
 
+    statusMovies: StatusMovies[] = [
+      {id: 1, status: 'Wait to sort'}, 
+      {id: 2, status: 'Not downloaded yet'}, 
+      {id: 3, status: 'Watched'}, 
+      {id: 4, status: 'Downloaded but not watched yet'},
+      {id: 5, status: 'To search about it'}
+    ];
+
     constructor(
         public modalService: NgbModal, 
         private fireStorage: AngularFireStorage, 
@@ -75,4 +83,9 @@ export class NewOrEditMovieComponent implements OnInit {
         }
       }
 
+}
+
+export interface StatusMovies {
+  id: number,
+  status: string
 }

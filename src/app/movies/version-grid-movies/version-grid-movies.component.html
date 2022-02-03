@@ -27,6 +27,17 @@
     </div>
     <br>
     <div class="row">
+        <div class="col-md-4"> 
+        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
+            <option value=""></option>
+            <option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
+                {{statusMovie.status}}
+            </option>
+        </select>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-md-4" *ngFor="let movie of (filteredMovies | sortBy: 'key')">
             <div class="card bg-white" style="width: 18rem;margin-inline: auto;">
                 <show-movie-picture [movie]="movie" [isGrid]="isGrid"></show-movie-picture>
@@ -34,8 +45,11 @@
                     <h5 class="card-title text-primary font-weight-bold text-center">{{ movie.nameMovie }}</h5>
                     <h6 class="card-subtitle mb-2 mt-2">Date Creation:&nbsp;{{ movie.date | date:'dd/MM/yyyy' }}</h6>
                     <h6 class="card-subtitle mb-2 mt-2">Time Creation:&nbsp;{{ movie.time }}</h6>
-                    <h6 *ngIf="movie.categoryId" class="card-subtitle mb-2 mt-2">
-                        Category:&nbsp;{{ movie.nameCategory }}
+                    <h6 *ngIf="movie.statusId" class="card-subtitle mb-2 mt-2">
+                        Status:&nbsp;{{ movie.status }}
+                    </h6>
+                    <h6 *ngIf="!movie.statusId" class="card-subtitle mb-2 mt-2">
+                        Status:&nbsp;-
                     </h6>
                     <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ movie.note }}</h6>
                     <button *ngIf="user.roleUpdate" (click)="editMovie(movie)" class="btn btn-success ml-5 mr-2"

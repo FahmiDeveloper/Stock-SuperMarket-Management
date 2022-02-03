@@ -7,6 +7,8 @@ export class Movie {
     nameCategory: string;// get name of category foreach product using categoryId
     note: string;
     imageUrl: string;
+    statusId: number;
+    status: string;// get name of status foreach movie using statusId
   
     constructor(){
       this.nameMovie = "";
@@ -16,5 +18,6 @@ export class Movie {
       this.nameCategory = "";
       this.note = "";
       this.imageUrl = "";
+      this.statusId = null;
     }
   }
