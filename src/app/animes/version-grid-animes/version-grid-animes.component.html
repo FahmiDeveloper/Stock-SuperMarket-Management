@@ -28,7 +28,7 @@
     <br>
     <div class="row">
         <div class="col-md-4">
-            <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
+            <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" ng-click="filetrByStatus()">
                 <option value=""></option>
                 <option *ngFor="let statusAnime of statusAnimes" [value]="statusAnime.id">
                     {{statusAnime.status}}
