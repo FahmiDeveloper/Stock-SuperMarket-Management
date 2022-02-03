@@ -25,6 +25,14 @@ export class MovieFormComponent implements OnInit {
   movieId;
   movie: Movie = new Movie();
 
+  statusMovies: StatusMovies[] = [
+    {id: 1, status: 'Wait to sort'}, 
+    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 3, status: 'Watched'}, 
+    {id: 4, status: 'Downloaded but not watched yet'},
+    {id: 5, status: 'To search about it'}
+  ];
+
   constructor(
     private movieService: MovieService, 
     private fireStorage: AngularFireStorage,
@@ -93,4 +101,9 @@ export class MovieFormComponent implements OnInit {
     this.router.navigate(['/movies']);
   }
 
+}
+
+export interface StatusMovies {
+  id: number,
+  status: string
 }

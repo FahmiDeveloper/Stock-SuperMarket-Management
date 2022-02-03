@@ -9,16 +9,24 @@
     </div>
     <div class="col-md-4">
         <div class="row">
-            <div class="col-md6">
+            <div class="col-md-8">
                 <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
             </div>
-            <div class="col-md6">
+            <div class="col-md-4">
                 <button class="btn btn-primary" (click)="filterByDate()">Search</button>
                 <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
             </div>
         </div>     
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
+            <option value=""></option>
+            <option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
+                {{statusMovie.status}}
+            </option>
+        </select>
+    </div>
+    <div class="col-md-1">
         <a *ngIf="user.roleAdd" routerLink="/movies/new" class="btn btn-primary float-right">New</a>
     </div>
 </div>
@@ -32,7 +40,8 @@
                 <th>Name</th>
                 <th>Date Creation</th>
                 <th>Time Creation</th>
-                <th>Note</th>
+                <th>Status</th>
+                <!-- <th>Note</th> -->
                 <th>Picture</th>
                 <th></th>
             </tr>
@@ -43,7 +52,11 @@
                 <td>{{ movie.nameMovie }}</td>
                 <td>{{ movie.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ movie.time }}</td>
-                <td>{{ movie.note }}</td>
+                <td>
+                    <span *ngIf="movie.statusId">{{ movie.status }}</span>
+                    <span *ngIf="!movie.statusId">-</span>
+                </td>
+                <!-- <td>{{ movie.note }}</td> -->
                 <td>
                     <show-movie-picture [movie]="movie"></show-movie-picture>
                 </td>

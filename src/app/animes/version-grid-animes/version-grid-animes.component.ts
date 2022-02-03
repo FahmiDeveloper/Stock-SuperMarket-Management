@@ -34,6 +34,16 @@ export class VersionGridAnimesComponent implements OnInit {
 
   queryDate: string = "";
 
+  statusId: number;
+  
+  statusAnimes: StatusAnimes[] = [
+    {id: 1, status: 'Wait to sort'}, 
+    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 3, status: 'Watched'}, 
+    {id: 4, status: 'Downloaded but not watched yet'},
+    {id: 5, status: 'To search about it'}
+  ];
+
   constructor(
     private animeService: AnimeService, 
     public userService: UserService,
@@ -52,6 +62,7 @@ export class VersionGridAnimesComponent implements OnInit {
       .getAll()
       .subscribe(movies => {
         this.filteredAnimes = this.animes = movies;
+        this.getStatusAnime();
     });
   }
 
@@ -124,10 +135,32 @@ export class VersionGridAnimesComponent implements OnInit {
 
     modalRef.componentInstance.modalRef = modalRef;
     modalRef.componentInstance.anime = anime;
-  }	
+  }
+
+  getStatusAnime() {
+    this.filteredAnimes.forEach(element=>{
+
+      this.statusAnimes.forEach(statusAnime => {
+        if (statusAnime.id == element.statusId) {
+             element.status = statusAnime.status;
+        }
+      })
+    })
+  }
+
+  filetrByStatus() {
+    this.filteredAnimes = (this.statusId)
+      ? this.animes.filter(anime => anime.statusId == this.statusId)
+      : this.animes;
+  }
 
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
   }
 
+}
+
+export interface StatusAnimes {
+  id: number,
+  status: string
 }

@@ -31,12 +31,24 @@
                             <input #time="ngModel" [(ngModel)]="movie.time" name="time" id="time" type="time"
                                 class="form-control">
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="note">Note</label>
                             <input #note="ngModel" [(ngModel)]="movie.note" name="note" id="note" type="text"
                                 class="form-control" required>
                             <div class="alert alert-danger" *ngIf="note.touched && note.invalid">
                                 Note is required.
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <label for="statusId">Status</label>
+                            <select #statusId="ngModel" [(ngModel)]="movie.statusId" name="statusId" id="statusId"
+                                class="form-control" required>
+                                <option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
+                                    {{statusMovie.status}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="statusId.touched && statusId.invalid">
+                                Status is required.
                             </div>
                         </div>
                         <div class="form-group">

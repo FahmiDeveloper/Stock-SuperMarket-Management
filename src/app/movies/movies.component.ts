@@ -30,6 +30,16 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   queryDate: string = "";
 
+  statusId: number;
+
+  statusMovies: StatusMovies[] = [
+    {id: 1, status: 'Wait to sort'}, 
+    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 3, status: 'Watched'}, 
+    {id: 4, status: 'Downloaded but not watched yet'},
+    {id: 5, status: 'To search about it'}
+  ];
+
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
@@ -46,6 +56,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
       .getAll()
       .subscribe(movies => {
         this.filteredMovies = this.movies = movies;
+        this.getStatusMovie();
     });
   }
 
@@ -107,8 +118,30 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.getAllMovies();
   }
 
+  getStatusMovie() {
+    this.filteredMovies.forEach(element=>{
+
+      this.statusMovies.forEach(statusMovie => {
+        if (statusMovie.id == element.statusId) {
+             element.status = statusMovie.status;
+        }
+      })
+    })
+  }
+
+  filetrByStatus() {
+    this.filteredMovies = (this.statusId)
+      ? this.movies.filter(movie => movie.statusId == this.statusId)
+      : this.movies;
+  }
+
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
   }
 
+}
+
+export interface StatusMovies {
+  id: number,
+  status: string
 }

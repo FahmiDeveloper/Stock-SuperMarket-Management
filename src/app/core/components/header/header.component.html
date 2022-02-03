@@ -1,10 +1,19 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 
   <div class="container">
-    <a class="navbar-brand" href="#" (click)="logout()">Angular</a>
+    <span *ngIf="isMobile && isConnected && user">
+
+      <img *ngIf="user.photoURL" [src]="user.photoURL" class="picture">&nbsp;
+      <img *ngIf="!user.photoURL" src="/src/assets/pictures/nopictureuser.jpg" class="picture">&nbsp;
+
+      <span *ngIf="user.displayName" style="color: white;font-weight: bold;">{{ user.displayName }}</span>
+      <span *ngIf="!user.displayName" style="color: white;font-weight: bold;">{{ userName }}</span>
+
+    </span>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="isMobile && isConnected" (click)="logout()">
+      <i class="fa fa-lg fa-power-off" aria-hidden="true" style="color: white;"></i>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -49,7 +58,7 @@
       </div>
       <div *ngIf="isConnected && user">
         <img *ngIf="user.photoURL" [src]="user.photoURL" class="picture">
-        <img *ngIf="!user.photoURL" src="/assets/pictures/nopictureuser.jpg" class="picture">
+        <img *ngIf="!user.photoURL" src="/src/assets/pictures/nopictureuser.jpg" class="picture">
       </div>
     </div>
     
