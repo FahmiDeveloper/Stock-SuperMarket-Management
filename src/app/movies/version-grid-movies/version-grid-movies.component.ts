@@ -147,9 +147,9 @@ export class VersionGridMoviesComponent implements OnInit {
     })
   }
 
-  filetrByStatus() {
-    this.filteredMovies = (this.statusId)
-      ? this.movies.filter(movie => movie.statusId == this.statusId)
+  filetrByStatus(statusId: number) {
+    this.filteredMovies = (statusId)
+      ? this.movies.filter(movie => movie.statusId == statusId)
       : this.movies;
   }
 

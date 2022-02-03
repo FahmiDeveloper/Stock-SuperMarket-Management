@@ -28,7 +28,8 @@
     <br>
     <div class="row">
         <div class="col-md-4"> 
-        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" ng-click="filetrByStatus()">
+        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" 
+        (ngModelChange)="filetrByStatus($event)" [ngModelOptions]="{standalone: true}">
             <option value=""></option>
             <option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
                 {{statusMovie.status}}
