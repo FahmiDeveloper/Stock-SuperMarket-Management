@@ -41,7 +41,7 @@
                 <th>Date Creation</th>
                 <th>Time Creation</th>
                 <th>Status</th>
-                <!-- <th>Note</th> -->
+                <th>Note</th>
                 <th>Picture</th>
                 <th></th>
             </tr>
@@ -56,7 +56,7 @@
                     <span *ngIf="movie.statusId">{{ movie.status }}</span>
                     <span *ngIf="!movie.statusId">-</span>
                 </td>
-                <!-- <td>{{ movie.note }}</td> -->
+                <td>{{ movie.note }}</td>
                 <td>
                     <show-movie-picture [movie]="movie"></show-movie-picture>
                 </td>

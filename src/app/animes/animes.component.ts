@@ -124,6 +124,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
       this.statusAnimes.forEach(statusAnime => {
         if (statusAnime.id == element.statusId) {
              element.status = statusAnime.status;
+             element.note = element.note ? element.note : '-';
         }
       })
     })

@@ -143,14 +143,15 @@ export class VersionGridAnimesComponent implements OnInit {
       this.statusAnimes.forEach(statusAnime => {
         if (statusAnime.id == element.statusId) {
              element.status = statusAnime.status;
+             element.note = element.note ? element.note : '-';
         }
       })
     })
   }
 
-  filetrByStatus() {
-    this.filteredAnimes = (this.statusId)
-      ? this.animes.filter(anime => anime.statusId == this.statusId)
+  filetrByStatus(statusId: number) {
+    this.filteredAnimes = (statusId)
+      ? this.animes.filter(anime => anime.statusId == statusId)
       : this.animes;
   }
 

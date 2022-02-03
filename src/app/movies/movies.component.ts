@@ -124,6 +124,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
       this.statusMovies.forEach(statusMovie => {
         if (statusMovie.id == element.statusId) {
              element.status = statusMovie.status;
+             element.note = element.note ? element.note : '-';
         }
       })
     })

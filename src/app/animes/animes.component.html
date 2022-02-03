@@ -42,7 +42,7 @@
                 <th>Date Creation</th>
                 <th>Time Creation</th>
                 <th>Status</th>
-                <!-- <th>Note</th> -->
+                <th>Note</th>
                 <th>Picture</th>
                 <th></th>
             </tr>
@@ -57,7 +57,7 @@
                     <span *ngIf="anime.statusId">{{ anime.status }}</span>
                     <span *ngIf="!anime.statusId">-</span>
                 </td>
-                <!-- <td>{{ anime.note }}</td> -->
+                <td>{{ anime.note }}</td>
                 <td>
                     <show-anime-picture [anime]="anime"></show-anime-picture>
                 </td>
