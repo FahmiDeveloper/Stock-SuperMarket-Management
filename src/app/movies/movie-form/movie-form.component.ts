@@ -61,6 +61,7 @@ export class MovieFormComponent implements OnInit {
   }
 
   save(movie) {
+    if (movie.statusId == 3 || movie.statusId == 4 || movie.statusId == 5) movie.path = "";
     if (this.movieId) {
       this.movieService.update(this.movieId, movie);
       Swal.fire(
