@@ -52,6 +52,7 @@
                 <td>{{ movie.nameMovie }}</td>
                 <td>{{ movie.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ movie.time }}</td>
+
                 <td>
                     <span *ngIf="movie.statusId">{{ movie.status }}</span>
                     <span *ngIf="!movie.statusId">-</span>
@@ -60,11 +61,29 @@
                 <td>
                     <show-movie-picture [movie]="movie"></show-movie-picture>
                 </td>
-                <td>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/movies', movie.key]"
-                        class="btn btn-success">Edit</button>
-                    <button *ngIf="user.roleDelete" type="button" (click)="delete(movie.key)"
-                        class="btn btn-danger">Delete</button>
+                <td style="text-align:center;">
+                    <div class="btnswrap">
+                        <button 
+                            *ngIf="user.roleUpdate" 
+                            [routerLink]="['/movies', movie.key]"
+                            class="btn btn-success">
+                            Edit
+                        </button>                        
+                        <a 
+                            *ngIf="movie.statusId == 1 || movie.statusId == 2" 
+                            href="{{ movie.path }}" 
+                            target="_blank" 
+                            class="btn btn-warning">
+                            Path
+                        </a>                        
+                        <button 
+                            *ngIf="user.roleDelete" 
+                            type="button" 
+                            (click)="delete(movie.key)"
+                            class="btn btn-danger">
+                            Delete
+                        </button>                    
+                    </div>
                 </td>
             </tr>
         </tbody>
