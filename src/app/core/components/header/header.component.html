@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" *ngIf="user && isConnected">
 
   <div class="container">
-    <span *ngIf="isMobile && isConnected && user">
+    <span *ngIf="isMobile">
 
       <img *ngIf="user.photoURL" [src]="user.photoURL" class="picture">&nbsp;
       <img *ngIf="!user.photoURL" src="/src/assets/pictures/nopictureuser.jpg" class="picture">&nbsp;
@@ -12,14 +12,19 @@
     </span>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="isMobile && isConnected" (click)="logout()">
+      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="isMobile" routerLink="/home">
+      <i class="fa fa-lg fa-home" aria-hidden="true" style="color: white;"></i>
+    </button>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="isMobile" (click)="logout()">
       <i class="fa fa-lg fa-power-off" aria-hidden="true" style="color: white;"></i>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active" *ngIf="isConnected">
-          <a class="nav-link" routerLink="/home">Home <span class="sr-only">(current)</span></a>
+        <li class="nav-item active">
+          <a class="nav-link font-weight-bold" routerLink="/home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li ngbDropdown class="nav-item dropdown" hidden>
           <a ngbDropdownToggle class="nav-link dropdown-toggle white-text" id="dropdown01" data-toggle="dropdown"
@@ -38,14 +43,14 @@
         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
-      <div class="navbar-header navbar-right" *ngIf="isConnected && user">
+      <div class="navbar-header navbar-right">
         <ul class="nav navbar-nav">
           <li ngbDropdown class="nav-item dropdown">
-            <a *ngIf="user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle" id="dropdown01"
+            <a *ngIf="user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold" id="dropdown01"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{ user.displayName }}
             </a>
-            <a *ngIf="!user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle" id="dropdown01"
+            <a *ngIf="!user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold" id="dropdown01"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{ userName }}
             </a>
@@ -56,7 +61,7 @@
           </li>
         </ul>
       </div>
-      <div *ngIf="isConnected && user">
+      <div>
         <img *ngIf="user.photoURL" [src]="user.photoURL" class="picture">
         <img *ngIf="!user.photoURL" src="/src/assets/pictures/nopictureuser.jpg" class="picture">
       </div>

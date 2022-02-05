@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -16,14 +17,18 @@ export class RegisterComponent implements OnInit{
   errorMessage: string = '';
   successMessage: string = '';
 
+  isMobile: boolean;
+
   constructor(
     public authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
     this.validateForm();
+    this.isMobile = this.deviceService.isMobile();
   }
 
   validateForm() {
