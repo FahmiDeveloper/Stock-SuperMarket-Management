@@ -16,10 +16,10 @@
 }
 .textSignOut {
   margin-top: 100px;
-  margin-left: 45%;
 }
 .styleBtnRegister {
   width: 100%;
+  font-weight: bold;
 }
 .btnFcb {
   background-color: #3b5998;
@@ -59,4 +59,21 @@
   font-weight: bold;
   height: 50px;
   margin-top: -3px;
+}
+
+// css mobile
+
+.styleCardMobile {
+  width: 95%;
+  background-color: aliceblue;
+  font-weight: bold;
+  margin-top: -5px;
+}
+
+.styleCardFooterMobile {
+  width: 95%;
+  background-color: aliceblue;
+  font-weight: bold;
+  height: 50px;
+  margin-top: -5px;
 }
