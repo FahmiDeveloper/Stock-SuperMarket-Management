@@ -61,11 +61,29 @@
                 <td>
                     <show-anime-picture [anime]="anime"></show-anime-picture>
                 </td>
-                <td>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/animes', anime.key]"
-                        class="btn btn-success">Edit</button>
-                    <button *ngIf="user.roleDelete" type="button" (click)="delete(anime.key)"
-                        class="btn btn-danger">Delete</button>
+                <td style="text-align:center;">
+                    <div class="btnswrap">
+                        <button 
+                            *ngIf="user.roleUpdate" 
+                            [routerLink]="['/animes', anime.key]"
+                            class="btn btn-success">
+                            Edit
+                        </button>                        
+                        <a 
+                            *ngIf="anime.statusId == 1 || anime.statusId == 2" 
+                            href="{{ anime.path }}" 
+                            target="_blank" 
+                            class="btn btn-warning">
+                            Path
+                        </a>                        
+                        <button 
+                            *ngIf="user.roleDelete" 
+                            type="button" 
+                            (click)="delete(anime.key)"
+                            class="btn btn-danger">
+                            Delete
+                        </button>                    
+                    </div>
                 </td>
             </tr>
         </tbody>

@@ -53,14 +53,30 @@
                         Status:&nbsp;-
                     </h6>
                     <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ movie.note }}</h6>
-                    <button *ngIf="user.roleUpdate" (click)="editMovie(movie)" class="btn btn-success ml-5 mr-2"
-                        style="text-decoration: none;">
-                        Edit
-                    </button>
-                    <button *ngIf="user.roleDelete" type="button" (click)="delete(movie.key)" class="btn btn-danger"
-                        style="text-decoration: none;">
-                        Delete
-                    </button>
+                    <div class="btnswrap row justify-content-center">
+                        <button 
+                            *ngIf="user.roleUpdate" 
+                            (click)="editMovie(movie)" 
+                            class="btn btn-success ml-1 mr-3"
+                            style="text-decoration: none;">
+                            Edit
+                        </button>
+                        <a 
+                            *ngIf="movie.statusId == 1 || movie.statusId == 2" 
+                            href="{{ movie.path }}" 
+                            target="_blank" 
+                            class="btn btn-warning ml-1 mr-4">
+                            Path
+                        </a>      
+                        <button 
+                            *ngIf="user.roleDelete" 
+                            type="button" 
+                            (click)="delete(movie.key)" 
+                            class="btn btn-danger"
+                            style="text-decoration: none;">
+                            Delete
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

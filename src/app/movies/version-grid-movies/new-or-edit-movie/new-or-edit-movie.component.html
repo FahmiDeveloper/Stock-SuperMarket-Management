@@ -47,6 +47,10 @@
                             <label for="note">Note</label>
                             <input #note="ngModel" [(ngModel)]="movie.note" name="note" id="note" type="text" class="form-control">
                         </div>
+                        <div class="form-group" *ngIf="movie.statusId && (movie.statusId == 1 || movie.statusId == 2)">
+                            <label for="path">Path</label>
+                            <input #path="ngModel" [(ngModel)]="movie.path" name="path" id="path" type="text" class="form-control">
+                        </div>
                         <div class="form-group">
                             <label for="imageUrl">Picture</label>
                             <input [(ngModel)]="movie.imageUrl" name="imageUrl" id="imageUrl" type="text" class="form-control"

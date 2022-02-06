@@ -52,15 +52,31 @@
                     <h6 *ngIf="!anime.statusId" class="card-subtitle mb-2 mt-2">
                         Status:&nbsp;-
                     </h6>
-                    <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ anime.note }}</h6>
-                    <button *ngIf="user.roleUpdate" (click)="editAnime(anime)" class="btn btn-success ml-5 mr-2"
-                        style="text-decoration: none;">
-                        Edit
-                    </button>
-                    <button *ngIf="user.roleDelete" type="button" (click)="delete(anime.key)" class="btn btn-danger"
-                        style="text-decoration: none;">
-                        Delete
-                    </button>
+                    <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ anime.note }}</h6>                        
+                    <div class="btnswrap row justify-content-center">
+                        <button 
+                            *ngIf="user.roleUpdate" 
+                            (click)="editAnime(anime)" 
+                            class="btn btn-success ml-1 mr-3"
+                            style="text-decoration: none;">
+                            Edit
+                        </button>
+                        <a 
+                            *ngIf="anime.statusId == 1 || anime.statusId == 2" 
+                            href="{{ anime.path }}" 
+                            target="_blank" 
+                            class="btn btn-warning ml-1 mr-4">
+                            Path
+                        </a>      
+                        <button 
+                            *ngIf="user.roleDelete" 
+                            type="button" 
+                            (click)="delete(anime.key)" 
+                            class="btn btn-danger"
+                            style="text-decoration: none;">
+                            Delete
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

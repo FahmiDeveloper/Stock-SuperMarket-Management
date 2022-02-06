@@ -48,6 +48,7 @@ export class NewOrEditAnimeComponent implements OnInit {
     }
 
     save(anime) {
+      if (anime.statusId == 3 || anime.statusId == 4 || anime.statusId == 5) anime.path = "";
       if (this.anime.key) {
         this.animeService.update(this.anime.key, anime);
         Swal.fire(
@@ -66,23 +67,22 @@ export class NewOrEditAnimeComponent implements OnInit {
       this.modalRef.close();
     }
     
-      async onFileChanged(event) {
-        const file = event.target.files[0];
-        if (file) {
-          const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
-          this.task =  this.fireStorage.upload(filePath, file);    // upload task
-    
-          // this.progress = this.snapTask.percentageChanges();
-          this.progressValue = this.task.percentageChanges();
-    
-          (await this.task).ref.getDownloadURL().then(url => {this.anime.imageUrl = url; });  // <<< url is found here
-    
-        } else {  
-          alert('No images selected');
-          this.anime.imageUrl = '';
-        }
+    async onFileChanged(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+        this.task =  this.fireStorage.upload(filePath, file);    // upload task
+  
+        // this.progress = this.snapTask.percentageChanges();
+        this.progressValue = this.task.percentageChanges();
+  
+        (await this.task).ref.getDownloadURL().then(url => {this.anime.imageUrl = url; });  // <<< url is found here
+  
+      } else {  
+        alert('No images selected');
+        this.anime.imageUrl = '';
       }
-
+    }
 }
 
 export interface StatusAnimes {

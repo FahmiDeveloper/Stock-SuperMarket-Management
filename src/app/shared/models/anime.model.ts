@@ -9,7 +9,7 @@ export class Anime {
     imageUrl: string;
     statusId: number;
     status: string;// get name of status foreach anime using statusId
-
+    path: string;
   
     constructor(){
       this.nameAnime = "";
@@ -20,5 +20,6 @@ export class Anime {
       this.note = "";
       this.imageUrl = "";
       this.statusId = null;
+      this.path = "";
     }
   }
