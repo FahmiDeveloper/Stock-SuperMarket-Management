@@ -53,6 +53,11 @@ import { ShowAnimePictureComponent } from './animes/show-anime-picture/show-anim
 import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
 import { NewOrEditMovieComponent } from './movies/version-grid-movies/new-or-edit-movie/new-or-edit-movie.component';
 import { NewOrEditAnimeComponent } from './animes/version-grid-animes/new-or-edit-anime/new-or-edit-anime.component';
+import { SeriesComponent } from './series/series.component';
+import { SerieFormComponent } from './series/serie-form/serie-form.component';
+import { ShowSeriePictureComponent } from './series/show-serie-picture/show-serie-picture.component';
+import { VersionGridSeriesComponent } from './series/version-grid-series/version-grid-series.component';
+import { NewOrEditSerieComponent } from './series/version-grid-series/new-or-edit-serie/new-or-edit-serie.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +97,12 @@ import { NewOrEditAnimeComponent } from './animes/version-grid-animes/new-or-edi
     ShowAnimePictureComponent,
     VersionGridAnimesComponent,
     NewOrEditMovieComponent,
-    NewOrEditAnimeComponent
+    NewOrEditAnimeComponent,
+    SeriesComponent,
+    SerieFormComponent,
+    ShowSeriePictureComponent,
+    VersionGridSeriesComponent,
+    NewOrEditSerieComponent
   ],
   entryComponents: [
     ListProductsComponent,
@@ -100,7 +110,8 @@ import { NewOrEditAnimeComponent } from './animes/version-grid-animes/new-or-edi
     ShowProductPictureComponent,
     ShowEmployeePictureComponent,
     NewOrEditMovieComponent,
-    NewOrEditAnimeComponent
+    NewOrEditAnimeComponent,
+    NewOrEditSerieComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,84 @@
+<h1 class="text-center text-warning titleTextInterface">Series</h1>
+<div class="container mx-auto" style="margin-top: 50px;">
+    <div class="row">
+        <div class="col-md-4">
+            <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary float-right">New</a>        
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <input #query (keyup)="filter(query.value)" type="text" class="form-control" placeholder="Search by name...">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <input [(ngModel)]="queryDate" type="date" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary" (click)="filterByDate()">Search</button>
+                    <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
+                </div>
+            </div>     
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4"> 
+        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" 
+        (ngModelChange)="filetrByStatus($event)" [ngModelOptions]="{standalone: true}">
+            <option value=""></option>
+            <option *ngFor="let statusSerie of statusSeries" [value]="statusSerie.id">
+                {{statusSerie.status}}
+            </option>
+        </select>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4" *ngFor="let serie of (filteredSeries | sortBy: 'key')">
+            <div class="card bg-white" style="width: 18rem;margin-inline: auto;">
+                <show-serie-picture [serie]="serie" [isGrid]="isGrid"></show-serie-picture>
+                <div class="card-body text-dark">
+                    <h5 class="card-title text-primary font-weight-bold text-center">{{ serie.nameSerie }}</h5>
+                    <h6 class="card-subtitle mb-2 mt-2">Date Creation:&nbsp;{{ serie.date | date:'dd/MM/yyyy' }}</h6>
+                    <h6 class="card-subtitle mb-2 mt-2">Time Creation:&nbsp;{{ serie.time }}</h6>
+                    <h6 *ngIf="serie.statusId" class="card-subtitle mb-2 mt-2">
+                        Status:&nbsp;{{ serie.status }}
+                    </h6>
+                    <h6 *ngIf="!serie.statusId" class="card-subtitle mb-2 mt-2">
+                        Status:&nbsp;-
+                    </h6>
+                    <h6 class="card-subtitle mb-2 mt-2">Note:&nbsp;{{ serie.note }}</h6>
+                    <div class="btnswrap row justify-content-center">
+                        <button 
+                            *ngIf="user.roleUpdate" 
+                            (click)="editSerie(serie)" 
+                            class="btn btn-success ml-1 mr-3"
+                            style="text-decoration: none;">
+                            Edit
+                        </button>
+                        <a 
+                            *ngIf="serie.statusId == 1 || serie.statusId == 2" 
+                            href="{{ serie.path }}" 
+                            target="_blank" 
+                            class="btn btn-warning ml-1 mr-4">
+                            Path
+                        </a>      
+                        <button 
+                            *ngIf="user.roleDelete" 
+                            type="button" 
+                            (click)="delete(serie.key)" 
+                            class="btn btn-danger"
+                            style="text-decoration: none;">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

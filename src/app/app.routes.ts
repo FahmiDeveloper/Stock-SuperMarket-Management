@@ -17,6 +17,9 @@ import { VersionGridMoviesComponent } from './movies/version-grid-movies/version
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { ProductsComponent } from './products/products.component';
 import { VersionGridComponent } from './products/version-grid/version-grid.component';
+import { SerieFormComponent } from './series/serie-form/serie-form.component';
+import { SeriesComponent } from './series/series.component';
+import { VersionGridSeriesComponent } from './series/version-grid-series/version-grid-series.component';
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
 import { StockInFormComponent } from './stock/stock-menu/stock-in/stock-in-form/stock-in-form.component';
@@ -77,5 +80,10 @@ export const rootRouterConfig: Routes = [
   { path: 'animes/new', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
   { path: 'animes/:id', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
   { path: 'animes', component: AnimesComponent,  resolve: { data: SharedResolver}},
-  { path: 'animes-for-grid', component: VersionGridAnimesComponent,  resolve: { data: SharedResolver}}
+  { path: 'animes-for-grid', component: VersionGridAnimesComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'series/new', component: SerieFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'series/:id', component: SerieFormComponent,  resolve: { data: SharedResolver}},
+  { path: 'series', component: SeriesComponent,  resolve: { data: SharedResolver}},
+  { path: 'series-for-grid', component: VersionGridSeriesComponent,  resolve: { data: SharedResolver}}
 ]; 

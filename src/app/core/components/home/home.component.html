@@ -68,6 +68,8 @@
         </div>
       </div>
     </div>
+
+    <!-------movies-->
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && !isMobile" routerLink="/movies">
       <div class="card gr-1">
         <div class="txt">
@@ -79,6 +81,8 @@
         </div>
       </div>
     </div>
+
+    <!-------animes-->
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && !isMobile" routerLink="/animes">
       <div class="card gr-4">
         <div class="txt">
@@ -90,6 +94,21 @@
         </div>
       </div>
     </div>
+
+    <!-------series-->
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleSeries && !isMobile" routerLink="/series">
+      <div class="card gr-2">
+        <div class="txt">
+          <h1>Series</h1>
+          <p hidden>{{ lengthInvoices | async }}</p>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-------grid movies-->
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && isMobile" routerLink="/movies-for-grid">
       <div class="card gr-1">
         <div class="txt">
@@ -101,10 +120,25 @@
         </div>
       </div>
     </div>
+
+    <!-------grid animes-->
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && isMobile" routerLink="/animes-for-grid">
       <div class="card gr-4">
         <div class="txt">
           <h1>Animes</h1>
+          <p hidden>{{ lengthInvoices | async }}</p>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-------grid series-->
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleSeries && isMobile" routerLink="/series-for-grid">
+      <div class="card gr-2">
+        <div class="txt">
+          <h1>Series</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">

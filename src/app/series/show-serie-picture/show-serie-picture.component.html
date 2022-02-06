@@ -1,0 +1,38 @@
+<img *ngIf="serie.imageUrl && !isGrid" class="sizePicture" [src]="serie.imageUrl"
+    (click)="showSerieImage(contentSeriePicture)">
+
+<img *ngIf="serie.imageUrl && isGrid" [src]="serie.imageUrl" class="card-img-top sizePictureForGrid"
+    (click)="showSerieImage(contentSeriePicture)">
+
+<img *ngIf="!serie.imageUrl && !isGrid" src="/assets/pictures/NoImageAvailable.png" class="sizePicture"
+(click)="showSerieImage(contentSeriePicture)">
+
+<img *ngIf="!serie.imageUrl && isGrid" src="/assets/pictures/NoImageAvailable.png" class="card-img-top sizePictureForGrid"
+(click)="showSerieImage(contentSeriePicture)">
+
+<ng-template #contentSeriePicture let-modal let-c="close" let-d="dismiss">
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100">Serie Picture Preview</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button> 
+    </div>
+    <div class="modal-body">
+        <img [src]='pictureSerie' *ngIf="pictureSerie && !isMobile" class="imageSerie">
+        <img [src]='pictureSerie' *ngIf="pictureSerie && isMobile" class="imageSerieMobile">
+
+        <img src="/assets/pictures/NoImageAvailable.png" *ngIf="!pictureSerie && !isMobile" class="imageSerie">
+        <img src="/assets/pictures/NoImageAvailable.png" *ngIf="!pictureSerie && isMobile" class="imageSerieMobile">
+
+        <br>
+        <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
+            accept=".jpeg,.jpg,.png,.svg" />
+        <br>
+        <div *ngIf="progressValue | async as val">
+            <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
+            <br />
+            <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
+            <span *ngIf="val == 100" class="progressComplete">Completed !</span>
+        </div>
+    </div>
+</ng-template>
