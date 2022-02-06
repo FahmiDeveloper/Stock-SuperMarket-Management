@@ -61,6 +61,7 @@ export class AnimeFormComponent implements OnInit {
   }
 
   save(anime) {
+    if (anime.statusId == 3 || anime.statusId == 4 || anime.statusId == 5) anime.path = "";
     if (this.animeId) {
       this.animeService.update(this.animeId, anime);
       Swal.fire(

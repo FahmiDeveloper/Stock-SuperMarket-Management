@@ -48,6 +48,7 @@ export class NewOrEditMovieComponent implements OnInit {
     }
 
     save(movie) {
+      if (movie.statusId == 3 || movie.statusId == 4 || movie.statusId == 5) movie.path = "";
       if (this.movie.key) {
         this.movieService.update(this.movie.key, movie);
         Swal.fire(
@@ -66,23 +67,22 @@ export class NewOrEditMovieComponent implements OnInit {
       this.modalRef.close();
     }
     
-      async onFileChanged(event) {
-        const file = event.target.files[0];
-        if (file) {
-          const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
-          this.task =  this.fireStorage.upload(filePath, file);    // upload task
-    
-          // this.progress = this.snapTask.percentageChanges();
-          this.progressValue = this.task.percentageChanges();
-    
-          (await this.task).ref.getDownloadURL().then(url => {this.movie.imageUrl = url; });  // <<< url is found here
-    
-        } else {  
-          alert('No images selected');
-          this.movie.imageUrl = '';
-        }
+    async onFileChanged(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+        this.task =  this.fireStorage.upload(filePath, file);    // upload task
+  
+        // this.progress = this.snapTask.percentageChanges();
+        this.progressValue = this.task.percentageChanges();
+  
+        (await this.task).ref.getDownloadURL().then(url => {this.movie.imageUrl = url; });  // <<< url is found here
+  
+      } else {  
+        alert('No images selected');
+        this.movie.imageUrl = '';
       }
-
+    }
 }
 
 export interface StatusMovies {
