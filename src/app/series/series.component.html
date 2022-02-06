@@ -1,1 +1,95 @@
-<p>series works!</p>
+<h1 class="text-center text-warning titleTextInterface">Series</h1>
+
+<br>
+<br>
+
+<div class="row">
+    <div class="col-md-4">
+        <input #query (keyup)="filter(query.value)" type="text" class="form-control widhtInput" placeholder="Search by name...">
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-8">
+                <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary" (click)="filterByDate()">Search</button>
+                <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
+            </div>
+        </div>     
+    </div>
+    <div class="col-md-3">
+        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
+            <option value=""></option>
+            <option *ngFor="let statusSerie of statusSeries" [value]="statusSerie.id">
+                {{statusSerie.status}}
+            </option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <a *ngIf="user.roleAdd" routerLink="/series/new" class="btn btn-primary float-right">New</a>
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+    <table class="table table-striped">
+        <thead class="colorHeaderTable">
+            <tr>
+                <th>Name</th>
+                <th>Date Creation</th>
+                <th>Time Creation</th>
+                <th>Status</th>
+                <th>Note</th>
+                <th>Picture</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let serie of (filteredSeries | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+                <td>{{ serie.nameSerie }}</td>
+                <td>{{ serie.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ serie.time }}</td>
+
+                <td>
+                    <span *ngIf="serie.statusId">{{ serie.status }}</span>
+                    <span *ngIf="!serie.statusId">-</span>
+                </td>
+                <td>{{ serie.note }}</td>
+                <td>
+                    <show-serie-picture [serie]="serie"></show-serie-picture>
+                </td>
+                <td style="text-align:center;">
+                    <div class="btnswrap">
+                        <button 
+                            *ngIf="user.roleUpdate" 
+                            [routerLink]="['/series', serie.key]"
+                            class="btn btn-success">
+                            Edit
+                        </button>                        
+                        <a 
+                            *ngIf="serie.statusId == 1 || serie.statusId == 2" 
+                            href="{{ serie.path }}" 
+                            target="_blank" 
+                            class="btn btn-warning">
+                            Path
+                        </a>                        
+                        <button 
+                            *ngIf="user.roleDelete" 
+                            type="button" 
+                            (click)="delete(serie.key)"
+                            class="btn btn-danger">
+                            Delete
+                        </button>                    
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>
