@@ -43,6 +43,10 @@ export class VersionGridMoviesComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  modalRefSearch: any;
+
+  queryName: string = "";
+
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
@@ -58,10 +62,21 @@ export class VersionGridMoviesComponent implements OnInit {
 
   getAllMovies() {
     this.subscriptionForGetAllMovies = this.movieService
-      .getAll()
-      .subscribe(movies => {
-        this.filteredMovies = this.movies = movies;
-        this.getStatusMovie();
+    .getAll()
+    .subscribe(movies => {
+      if (this.queryName) 
+      this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryDate) 
+      this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
+      
+      else if (this.statusId) 
+      this.filteredMovies = movies.filter(movie => movie.statusId == this.statusId);   
+      
+      else this.filteredMovies = movies;
+
+      this.getStatusMovie();
+      if (this.queryName || this.queryDate || this.statusId) this.modalRefSearch.close();
     });
   }
 
@@ -106,21 +121,12 @@ export class VersionGridMoviesComponent implements OnInit {
     })
   }
 
-  filter(query: string) {
-    this.filteredMovies = (query)
-       ? this.movies.filter(movie => movie.nameMovie.toLowerCase().includes(query.toLowerCase()))
-       : this.movies;
-  }
-
-  filterByDate() {
-    this.filteredMovies = (this.queryDate)
-      ? this.movies.filter(product => product.date.includes(this.queryDate))
-      : this.movies;
-  }
-
   clear() {
+    this.queryName = "";
     this.queryDate = "";
+    this.statusId = null;
     this.getAllMovies();
+    this.modalRefSearch.close();
   }
 
   newMovie() {
@@ -152,6 +158,11 @@ export class VersionGridMoviesComponent implements OnInit {
     this.filteredMovies = (statusId)
       ? this.movies.filter(movie => movie.statusId == statusId)
       : this.movies;
+    this.modalRefSearch.close();
+  }
+
+  openModalSearch(contentModalSearch) {
+    this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
   ngOnDestroy() {

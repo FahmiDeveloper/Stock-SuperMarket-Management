@@ -1,4 +1,4 @@
-<h1 class="text-center text-warning titleTextInterface">Animes</h1>
+<h1 class="text-center text-danger font-weight-bold titleTextInterface">Animes</h1>
 
 <br>
 <br>
@@ -14,21 +14,23 @@
                 <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary" (click)="filterByDate()">Search</button>
-                <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()">Clear</button>
+                <button class="btn btn-primary font-weight-bold" (click)="filterByDate()">Search</button>
+                <button *ngIf="queryDate" class="btn btn-danger font-weight-bold" (click)="clear()">Clear</button>
             </div>
         </div>     
     </div>
-    <div class="col-md-3">
-        <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
-            <option value=""></option>
-            <option *ngFor="let statusAnime of statusAnimes" [value]="statusAnime.id">
-                {{statusAnime.status}}
-            </option>
-        </select>
-    </div>
-    <div class="col-md-1">
-        <a *ngIf="user.roleAdd" routerLink="/animes/new" class="btn btn-primary float-right">New</a>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-2"><label for="statusId" class="font-weight-bold">Status</label></div>
+            <div class="col-md-10">
+                 <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="filetrByStatus()">
+                    <option value=""></option>
+                    <option *ngFor="let statusAnime of statusAnimes" [value]="statusAnime.id">
+                        {{statusAnime.status}}
+                    </option>
+                </select>
+            </div>
+        </div>     
     </div>
 </div>
 
@@ -39,12 +41,14 @@
         <thead class="colorHeaderTable">
             <tr>
                 <th>Name</th>
-                <th>Date Creation</th>
-                <th>Time Creation</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Status</th>
                 <th>Note</th>
                 <th>Picture</th>
-                <th></th>
+                <th class="text-center">
+                    <a *ngIf="user.roleAdd" routerLink="/animes/new" class="btn btn-primary font-weight-bold">New</a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -66,21 +70,21 @@
                         <button 
                             *ngIf="user.roleUpdate" 
                             [routerLink]="['/animes', anime.key]"
-                            class="btn btn-success">
+                            class="btn btn-secondary font-weight-bold">
                             Edit
                         </button>                        
                         <a 
                             *ngIf="anime.statusId == 1 || anime.statusId == 2" 
                             href="{{ anime.path }}" 
                             target="_blank" 
-                            class="btn btn-warning">
+                            class="btn btn-warning font-weight-bold">
                             Path
                         </a>                        
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
                             (click)="delete(anime.key)"
-                            class="btn btn-danger">
+                            class="btn btn-danger font-weight-bold">
                             Delete
                         </button>                    
                     </div>
