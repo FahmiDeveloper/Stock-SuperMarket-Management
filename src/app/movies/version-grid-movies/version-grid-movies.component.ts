@@ -61,20 +61,23 @@ export class VersionGridMoviesComponent implements OnInit {
   }
 
   getAllMovies() {
-    if (this.queryName) {
-        this.filteredMovies = this.movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
-        this.modalRefSearch.close();
-    } else if (this.queryDate) {
-        this.filteredMovies = this.movies.filter(movie => movie.date.includes(this.queryDate));
-        this.modalRefSearch.close();
-    } else {
-      this.subscriptionForGetAllMovies = this.movieService
-      .getAll()
-      .subscribe(movies => {
-        this.filteredMovies = this.movies = movies;
-        this.getStatusMovie();
-      });
-    }  
+    this.subscriptionForGetAllMovies = this.movieService
+    .getAll()
+    .subscribe(movies => {
+      if (this.queryName) 
+      this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryDate) 
+      this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
+      
+      else if (this.statusId) 
+      this.filteredMovies = movies.filter(movie => movie.statusId == this.statusId);   
+      
+      else this.filteredMovies = movies;
+
+      this.getStatusMovie();
+      if (this.queryName || this.queryDate || this.statusId) this.modalRefSearch.close();
+    });
   }
 
   getRolesUser() {

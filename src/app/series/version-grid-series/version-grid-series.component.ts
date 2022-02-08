@@ -63,20 +63,23 @@ export class VersionGridSeriesComponent implements OnInit {
   }
 
   getAllSeries() {
-    if (this.queryName) {
-        this.filteredSeries = this.series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
-        this.modalRefSearch.close();
-    } else if (this.queryDate) {
-        this.filteredSeries = this.series.filter(serie => serie.date.includes(this.queryDate));
-        this.modalRefSearch.close();
-    } else {
-      this.subscriptionForGetAllSeries = this.serieService
-      .getAll()
-      .subscribe(series => {
-        this.filteredSeries = this.series = series;
-        this.getStatusSerie();
-      });
-    }  
+    this.subscriptionForGetAllSeries = this.serieService
+    .getAll()
+    .subscribe(series => {
+      if (this.queryName) 
+      this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryDate) 
+      this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
+      
+      else if (this.statusId) 
+      this.filteredSeries = series.filter(serie => serie.statusId == this.statusId);   
+      
+      else this.filteredSeries = series;
+
+      this.getStatusSerie();
+      if (this.queryName || this.queryDate || this.statusId) this.modalRefSearch.close();
+    });
   }
 
   getRolesUser() {

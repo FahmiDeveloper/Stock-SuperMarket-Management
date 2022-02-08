@@ -105,14 +105,13 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <label for="statusId" class="font-weight-bold">Status</label>
-                    <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" 
-                    (ngModelChange)="filetrByStatus($event)" [ngModelOptions]="{standalone: true}">
-                        <option value=""></option>
-                        <option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
+                    <div *ngFor="let statusMovie of statusMovies">
+                        <label>
+                            <input type="radio" name="statusId" [(ngModel)]="statusId" id="statusId" 
+                            [value]="statusMovie.id" style="height:25px; width:25px; vertical-align: middle;">
                             {{statusMovie.status}}
-                        </option>
-                    </select>
+                        </label>
+                    </div>
                 </div>
             </div>
             <br>

@@ -62,20 +62,23 @@ export class VersionGridAnimesComponent implements OnInit {
   }
 
   getAllAnimes() {
-    if (this.queryName) {
-       this.filteredAnimes = this.animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
-       this.modalRefSearch.close();
-    } else if (this.queryDate) {
-       this.filteredAnimes = this.animes.filter(anime => anime.date.includes(this.queryDate));
-       this.modalRefSearch.close();
-    } else {
-      this.subscriptionForGetAllAnimes = this.animeService
-      .getAll()
-      .subscribe(movies => {
-        this.filteredAnimes = this.animes = movies;
-        this.getStatusAnime();
-      });
-    }
+    this.subscriptionForGetAllAnimes = this.animeService
+    .getAll()
+    .subscribe(animes => {
+      if (this.queryName) 
+      this.filteredAnimes = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryDate) 
+      this.filteredAnimes = animes.filter(anime => anime.date.includes(this.queryDate));
+      
+      else if (this.statusId) 
+      this.filteredAnimes = animes.filter(anime => anime.statusId == this.statusId);   
+      
+      else this.filteredAnimes = animes;
+
+      this.getStatusAnime();
+      if (this.queryName || this.queryDate || this.statusId) this.modalRefSearch.close();
+    });
   }
 
   getRolesUser() {
