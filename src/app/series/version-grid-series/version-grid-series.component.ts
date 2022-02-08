@@ -45,6 +45,10 @@ export class VersionGridSeriesComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  modalRefSearch: any;
+
+  queryName: string = "";
+
   constructor(
     private serieService: SerieService, 
     public userService: UserService,
@@ -59,12 +63,20 @@ export class VersionGridSeriesComponent implements OnInit {
   }
 
   getAllSeries() {
-    this.subscriptionForGetAllSeries = this.serieService
+    if (this.queryName) {
+        this.filteredSeries = this.series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+        this.modalRefSearch.close();
+    } else if (this.queryDate) {
+        this.filteredSeries = this.series.filter(serie => serie.date.includes(this.queryDate));
+        this.modalRefSearch.close();
+    } else {
+      this.subscriptionForGetAllSeries = this.serieService
       .getAll()
       .subscribe(series => {
         this.filteredSeries = this.series = series;
         this.getStatusSerie();
-    });
+      });
+    }  
   }
 
   getRolesUser() {
@@ -108,21 +120,12 @@ export class VersionGridSeriesComponent implements OnInit {
     })
   }
 
-  filter(query: string) {
-     this.filteredSeries = (query)
-        ? this.series.filter(serie => serie.nameSerie.toLowerCase().includes(query.toLowerCase()))
-        : this.series;
-  }
-
-  filterByDate() {
-    this.filteredSeries = (this.queryDate)
-      ? this.series.filter(serie => serie.date.includes(this.queryDate))
-      : this.series;
-  }
-
   clear() {
+    this.queryName = "";
     this.queryDate = "";
+    this.statusId = null;
     this.getAllSeries();
+    this.modalRefSearch.close();
   }
 
   newSerie() {
@@ -154,6 +157,11 @@ export class VersionGridSeriesComponent implements OnInit {
     this.filteredSeries = (statusId)
       ? this.series.filter(serie => serie.statusId == statusId)
       : this.series;
+      this.modalRefSearch.close();
+  }
+
+  openModalSearch(contentModalSearch) {
+    this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
   ngOnDestroy() {

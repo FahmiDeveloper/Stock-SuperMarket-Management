@@ -44,6 +44,10 @@ export class VersionGridAnimesComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  modalRefSearch: any;
+
+  queryName: string = "";
+
   constructor(
     private animeService: AnimeService, 
     public userService: UserService,
@@ -58,12 +62,20 @@ export class VersionGridAnimesComponent implements OnInit {
   }
 
   getAllAnimes() {
-    this.subscriptionForGetAllAnimes = this.animeService
+    if (this.queryName) {
+       this.filteredAnimes = this.animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
+       this.modalRefSearch.close();
+    } else if (this.queryDate) {
+       this.filteredAnimes = this.animes.filter(anime => anime.date.includes(this.queryDate));
+       this.modalRefSearch.close();
+    } else {
+      this.subscriptionForGetAllAnimes = this.animeService
       .getAll()
       .subscribe(movies => {
         this.filteredAnimes = this.animes = movies;
         this.getStatusAnime();
-    });
+      });
+    }
   }
 
   getRolesUser() {
@@ -107,21 +119,12 @@ export class VersionGridAnimesComponent implements OnInit {
     })
   }
 
-  filter(query: string) {
-     this.filteredAnimes = (query)
-        ? this.animes.filter(anime => anime.nameAnime.toLowerCase().includes(query.toLowerCase()))
-        : this.animes;
-  }
-
-  filterByDate() {
-    this.filteredAnimes = (this.queryDate)
-      ? this.animes.filter(product => product.date.includes(this.queryDate))
-      : this.animes;
-  }
-
   clear() {
+    this.queryName = "";
     this.queryDate = "";
+    this.statusId = null;
     this.getAllAnimes();
+    this.modalRefSearch.close();
   }
 
   newAnime() {
@@ -153,6 +156,11 @@ export class VersionGridAnimesComponent implements OnInit {
     this.filteredAnimes = (statusId)
       ? this.animes.filter(anime => anime.statusId == statusId)
       : this.animes;
+      this.modalRefSearch.close();
+  }
+
+  openModalSearch(contentModalSearch) {
+    this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
   ngOnDestroy() {
