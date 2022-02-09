@@ -65,7 +65,9 @@
                                 <span *ngIf="val == 100" class="progressComplete">Completed !</span>
                             </div>
                         </div>
-                        <button class="btn btn-primary" [disabled]="f.invalid">Save</button>
+                        <div class="row justify-content-center">
+                            <button class="btn btn-primary" [disabled]="f.invalid">Save</button>
+                        </div>                    
                     </form>
                 </div>
             </div>
