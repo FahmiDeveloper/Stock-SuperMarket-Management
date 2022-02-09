@@ -70,7 +70,8 @@
                         <button 
                             *ngIf="user.roleUpdate" 
                             (click)="editSerie(serie)"
-                            class="btn btn-secondary font-weight-bold">
+                            class="btn btn-secondary font-weight-bold"
+                            [hidden]="serie.statusId == 3">
                             Edit
                         </button>                        
                         <a 
@@ -84,7 +85,8 @@
                             *ngIf="user.roleDelete" 
                             type="button" 
                             (click)="delete(serie.key)"
-                            class="btn btn-danger font-weight-bold">
+                            class="btn btn-danger font-weight-bold"
+                            [hidden]="serie.statusId == 3">
                             Delete
                         </button>                    
                     </div>
