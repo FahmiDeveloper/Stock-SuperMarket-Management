@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 import { Anime } from 'src/app/shared/models/anime.model';
@@ -22,7 +20,6 @@ export class AnimeFormComponent implements OnInit {
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
-  animeId;
   anime: Anime = new Anime();
 
   statusAnimes: StatusAnimes[] = [
@@ -33,37 +30,24 @@ export class AnimeFormComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  modalRef: any;
+
   constructor(
     private animeService: AnimeService, 
-    private fireStorage: AngularFireStorage,
-    private router: Router,
-    private route: ActivatedRoute
-    ) {}
+    private fireStorage: AngularFireStorage
+  ) {}
 
   ngOnInit() {
-    this.getAnimeData();
-  }
-
-  getAnimeData() {
-    this.animeId = this.route.snapshot.paramMap.get('id');
-    if (this.animeId) {
-      this.animeService
-        .getAnimeId(this.animeId)
-        .valueChanges()
-        .pipe(take(1))
-        .subscribe(anime => {
-          this.anime = anime;
-      });
-    } else {
+    if (!this.anime.key) {
       this.anime.date = moment().format('YYYY-MM-DD');
       this.anime.time = moment().format('HH:mm');
-    }
+    }  
   }
 
   save(anime) {
     if (anime.statusId == 3 || anime.statusId == 4 || anime.statusId == 5) anime.path = "";
-    if (this.animeId) {
-      this.animeService.update(this.animeId, anime);
+    if (this.anime.key) {
+      this.animeService.update(this.anime.key, anime);
       Swal.fire(
         'Anime data has been Updated successfully',
         '',
@@ -78,8 +62,7 @@ export class AnimeFormComponent implements OnInit {
         'success'
       )
     }
-    this.router.navigate(['/animes']);
-
+    this.modalRef.close();
   }
 
   async onFileChanged(event) {
@@ -98,11 +81,6 @@ export class AnimeFormComponent implements OnInit {
       this.anime.imageUrl = '';
     }
   }
-
-  cancel() {
-    this.router.navigate(['/animes']);
-  }
-
 }
 
 export interface StatusAnimes {

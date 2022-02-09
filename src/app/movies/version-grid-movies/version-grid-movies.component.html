@@ -2,8 +2,10 @@
 <div class="container mx-auto" style="margin-top: 50px;">
     <div class="row">
         <div class="col-md-4">
-            <button class="btn btn-success font-weight-bold" (click)="openModalSearch(contentModalSearch)">Search</button>
-            <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary font-weight-bold float-right">New</a>  
+            <div style="width: 18rem;margin-inline: auto;">
+                <button class="btn btn-success font-weight-bold" (click)="openModalSearch(contentModalSearch)">Search</button>
+                <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary font-weight-bold float-right">New</a>  
+            </div> 
         </div>          
     </div>
 
@@ -52,7 +54,8 @@
                             *ngIf="user.roleUpdate" 
                             (click)="editMovie(movie)" 
                             class="btn btn-secondary ml-1 mr-3 font-weight-bold"
-                            style="text-decoration: none;">
+                            style="text-decoration: none;"
+                            [hidden]="movie.statusId == 3">
                             Edit
                         </button>
                         <a 
@@ -67,7 +70,8 @@
                             type="button" 
                             (click)="delete(movie.key)" 
                             class="btn btn-danger font-weight-bold"
-                            style="text-decoration: none;">
+                            style="text-decoration: none;"
+                            [hidden]="movie.statusId == 3">
                             Delete
                         </button>
                     </div>   

@@ -10,6 +10,8 @@ import { FirebaseUserModel } from '../shared/models/user.model';
 
 import { Movie } from '../shared/models/movie.model';
 import { MovieService } from '../shared/services/movie.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MovieFormComponent } from './movie-form/movie-form.component';
 
 @Component({
   selector: 'app-movies',
@@ -43,7 +45,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    protected modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -136,8 +139,22 @@ export class MoviesComponent implements OnInit, OnDestroy {
       : this.movies;
   }
 
+  newMovie() {
+    const modalRef = this.modalService.open(MovieFormComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+  }
+
+  editMovie(movie?: Movie) {
+    const modalRef = this.modalService.open(MovieFormComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.movie = movie;
+  }
+
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }

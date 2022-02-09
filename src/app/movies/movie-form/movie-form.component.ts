@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 import { Movie } from 'src/app/shared/models/movie.model';
@@ -22,7 +20,6 @@ export class MovieFormComponent implements OnInit {
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
-  movieId;
   movie: Movie = new Movie();
 
   statusMovies: StatusMovies[] = [
@@ -33,28 +30,15 @@ export class MovieFormComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  modalRef: any;
+
   constructor(
     private movieService: MovieService, 
-    private fireStorage: AngularFireStorage,
-    private router: Router,
-    private route: ActivatedRoute
-    ) {}
+    private fireStorage: AngularFireStorage
+  ) {}
 
   ngOnInit() {
-    this.getMovieData();
-  }
-
-  getMovieData() {
-    this.movieId = this.route.snapshot.paramMap.get('id');
-    if (this.movieId) {
-      this.movieService
-        .getMovieId(this.movieId)
-        .valueChanges()
-        .pipe(take(1))
-        .subscribe(movie => {
-          this.movie = movie;
-      });
-    } else {
+    if (!this.movie.key) {
       this.movie.date = moment().format('YYYY-MM-DD');
       this.movie.time = moment().format('HH:mm');
     }
@@ -62,23 +46,22 @@ export class MovieFormComponent implements OnInit {
 
   save(movie) {
     if (movie.statusId == 3 || movie.statusId == 4 || movie.statusId == 5) movie.path = "";
-    if (this.movieId) {
-      this.movieService.update(this.movieId, movie);
+    if (this.movie.key) {
+      this.movieService.update(this.movie.key, movie);
       Swal.fire(
         'Movie data has been Updated successfully',
         '',
         'success'
       )
-    }
-    else {
+    } else {
       this.movieService.create(movie);
       Swal.fire(
-        'New Movie added successfully',
-        '',
-        'success'
+      'New Movie added successfully',
+      '',
+      'success'
       )
     }
-    this.router.navigate(['/movies']);
+    this.modalRef.close();
   }
 
   async onFileChanged(event) {
@@ -97,11 +80,6 @@ export class MovieFormComponent implements OnInit {
       this.movie.imageUrl = '';
     }
   }
-
-  cancel() {
-    this.router.navigate(['/movies']);
-  }
-
 }
 
 export interface StatusMovies {

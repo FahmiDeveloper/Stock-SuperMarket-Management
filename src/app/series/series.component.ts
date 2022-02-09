@@ -10,6 +10,8 @@ import { FirebaseUserModel } from '../shared/models/user.model';
 
 import { Serie } from '../shared/models/serie.model';
 import { SerieService } from '../shared/services/serie.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SerieFormComponent } from './serie-form/serie-form.component';
 
 @Component({
   selector: 'app-series',
@@ -44,7 +46,8 @@ export class SeriesComponent implements OnInit, OnDestroy {
   constructor(
     private serieService: SerieService, 
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    protected modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -137,8 +140,22 @@ export class SeriesComponent implements OnInit, OnDestroy {
       : this.series;
   }
 
+  newSerie() {
+    const modalRef = this.modalService.open(SerieFormComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+  }
+
+  editSerie(serie?: Serie) {
+    const modalRef = this.modalService.open(SerieFormComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.serie = serie;
+  }
+
   ngOnDestroy() {
     this.subscriptionForGetAllSeries.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }

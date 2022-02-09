@@ -10,6 +10,8 @@ import { FirebaseUserModel } from '../shared/models/user.model';
 
 import { Anime } from '../shared/models/anime.model';
 import { AnimeService } from '../shared/services/anime.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnimeFormComponent } from './anime-form/anime-form.component';
 
 @Component({
   selector: 'app-animes',
@@ -43,7 +45,8 @@ export class AnimesComponent implements OnInit, OnDestroy {
   constructor(
     private animeService: AnimeService, 
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    protected modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -136,8 +139,22 @@ export class AnimesComponent implements OnInit, OnDestroy {
       : this.animes;
   }
 
+  newAnime() {
+    const modalRef = this.modalService.open(AnimeFormComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+  }
+
+  editAnime(anime?: Anime) {
+    const modalRef = this.modalService.open(AnimeFormComponent as Component, { size: 'lg', centered: true });
+
+    modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.anime = anime;
+  }
+
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }

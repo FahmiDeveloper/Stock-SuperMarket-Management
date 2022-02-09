@@ -167,6 +167,7 @@ export class VersionGridMoviesComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }

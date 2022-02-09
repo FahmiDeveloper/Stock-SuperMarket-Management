@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 
 import { Serie } from 'src/app/shared/models/serie.model';
@@ -22,7 +20,6 @@ export class SerieFormComponent implements OnInit {
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
 
-  serieId;
   serie: Serie = new Serie();
 
   statusSeries: StatusSeries[] = [
@@ -33,37 +30,24 @@ export class SerieFormComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  modalRef: any;
+
   constructor(
     private serieService: SerieService, 
-    private fireStorage: AngularFireStorage,
-    private router: Router,
-    private route: ActivatedRoute
-    ) {}
+    private fireStorage: AngularFireStorage
+  ) {}
 
   ngOnInit() {
-    this.getSerieData();
-  }
-
-  getSerieData() {
-    this.serieId = this.route.snapshot.paramMap.get('id');
-    if (this.serieId) {
-      this.serieService
-        .getSerieId(this.serieId)
-        .valueChanges()
-        .pipe(take(1))
-        .subscribe(serie => {
-          this.serie = serie;
-      });
-    } else {
+    if (!this.serie.key) {
       this.serie.date = moment().format('YYYY-MM-DD');
       this.serie.time = moment().format('HH:mm');
-    }
+    }  
   }
 
   save(serie) {
     if (serie.statusId == 3 || serie.statusId == 4 || serie.statusId == 5) serie.path = "";
-    if (this.serieId) {
-      this.serieService.update(this.serieId, serie);
+    if (this.serie.key) {
+      this.serieService.update(this.serie.key, serie);
       Swal.fire(
         'Serie data has been Updated successfully',
         '',
@@ -78,7 +62,7 @@ export class SerieFormComponent implements OnInit {
         'success'
       )
     }
-    this.router.navigate(['/series']);
+    this.modalRef.close();
   }
 
   async onFileChanged(event) {
@@ -97,11 +81,6 @@ export class SerieFormComponent implements OnInit {
       this.serie.imageUrl = '';
     }
   }
-
-  cancel() {
-    this.router.navigate(['/series']);
-  }
-
 }
 
 export interface StatusSeries {

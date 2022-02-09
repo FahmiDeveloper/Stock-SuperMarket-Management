@@ -168,6 +168,7 @@ export class VersionGridAnimesComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }
