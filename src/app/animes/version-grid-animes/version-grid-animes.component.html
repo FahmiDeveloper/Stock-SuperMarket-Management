@@ -59,7 +59,7 @@
                             Edit
                         </button>
                         <a 
-                            *ngIf="anime.statusId == 1 || anime.statusId == 2" 
+                            *ngIf="anime.path && (anime.statusId == 1 || anime.statusId == 2)" 
                             href="{{ anime.path }}" 
                             target="_blank" 
                             class="btn btn-warning ml-1 mr-4 font-weight-bold">

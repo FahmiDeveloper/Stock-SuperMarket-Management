@@ -59,7 +59,7 @@
                             Edit
                         </button>
                         <a 
-                            *ngIf="serie.statusId == 1 || serie.statusId == 2" 
+                            *ngIf="serie.path && (serie.statusId == 1 || serie.statusId == 2)" 
                             href="{{ serie.path }}" 
                             target="_blank" 
                             class="btn btn-warning ml-1 mr-4 font-weight-bold">

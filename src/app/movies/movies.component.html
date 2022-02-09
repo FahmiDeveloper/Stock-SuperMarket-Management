@@ -75,7 +75,7 @@
                             Edit
                         </button>                        
                         <a 
-                            *ngIf="movie.statusId == 1 || movie.statusId == 2" 
+                            *ngIf="movie.path && (movie.statusId == 1 || movie.statusId == 2)" 
                             href="{{ movie.path }}" 
                             target="_blank" 
                             class="btn btn-warning font-weight-bold">
