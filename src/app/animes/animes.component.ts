@@ -154,6 +154,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }

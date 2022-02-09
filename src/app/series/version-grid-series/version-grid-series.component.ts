@@ -169,6 +169,7 @@ export class VersionGridSeriesComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptionForGetAllSeries.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }

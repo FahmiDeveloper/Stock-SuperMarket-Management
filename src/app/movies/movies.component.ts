@@ -154,6 +154,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }

@@ -155,6 +155,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllSeries.unsubscribe();
+    this.subscriptionForUser.unsubscribe();
   }
 
 }
