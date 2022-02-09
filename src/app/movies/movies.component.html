@@ -1,4 +1,4 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface">Movies</h1>
+<h1 class="text-center text-warning titleTextInterface">Movies</h1>
 
 <br>
 <br>
@@ -46,7 +46,7 @@
                 <th>Note</th>
                 <th>Picture</th>
                 <th>
-                    <a *ngIf="user.roleAdd" routerLink="/movies/new" class="btn btn-primary font-weight-bold">New</a>
+                    <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary font-weight-bold">New</a>
                 </th>
             </tr>
         </thead>
@@ -69,7 +69,7 @@
                     <div class="btnswrap">
                         <button 
                             *ngIf="user.roleUpdate" 
-                            [routerLink]="['/movies', movie.key]"
+                            (click)="editMovie(movie)"
                             class="btn btn-secondary font-weight-bold">
                             Edit
                         </button>                        

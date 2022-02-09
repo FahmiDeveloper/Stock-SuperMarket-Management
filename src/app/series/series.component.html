@@ -46,7 +46,7 @@
                 <th>Note</th>
                 <th>Picture</th>
                 <th class="text-center">
-                    <a *ngIf="user.roleAdd" routerLink="/series/new" class="btn btn-primary font-weight-bold">New</a>
+                    <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary font-weight-bold">New</a>
                 </th>
             </tr>
         </thead>
@@ -69,7 +69,7 @@
                     <div class="btnswrap">
                         <button 
                             *ngIf="user.roleUpdate" 
-                            [routerLink]="['/series', serie.key]"
+                            (click)="editSerie(serie)"
                             class="btn btn-secondary font-weight-bold">
                             Edit
                         </button>                        
@@ -97,3 +97,5 @@
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>
 </div>
+
+
