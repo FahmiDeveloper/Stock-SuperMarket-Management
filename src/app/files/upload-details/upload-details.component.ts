@@ -51,7 +51,11 @@ export class UploadDetailsComponent implements OnInit {
   }
 
   viewOtherFileUpload(fileUpload: FileUpload, showFile) {
-    this.modalRefOtherFile = this.modalService.open(showFile as Component, { windowClass: 'my-class', centered: true });
+    if (this.isMobile) {
+      this.modalRefOtherFile = this.modalService.open(showFile as Component, { windowClass: 'my-class-mobile', centered: true });
+    } else {
+      this.modalRefOtherFile = this.modalService.open(showFile as Component, { windowClass: 'my-class', centered: true });
+    }
     if (fileUpload) {
       this.urlFile = fileUpload.url;
       this.FileName = fileUpload.name;

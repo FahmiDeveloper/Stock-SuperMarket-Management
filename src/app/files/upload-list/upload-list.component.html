@@ -41,7 +41,15 @@
         </table>
     </div>
 
-    <div class="pagination">
+    <div class="pagination" *ngIf="!isMobile">
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
+    <div class="row" *ngIf="isMobile">
+        <div class="col-md-4">
+            <div class="pagination">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
     </div>
 </div>
