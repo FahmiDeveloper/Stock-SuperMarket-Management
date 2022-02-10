@@ -9,6 +9,7 @@ import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
 import { EmployeeFormComponent } from './employees/employee-form/employee-form.component';
 import { EmployeesComponent } from './employees/employees.component';
+import { FilesComponent } from './files/files.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
 import { InvoicesComponent } from './invoices/invoices.component';
 import { MovieFormComponent } from './movies/movie-form/movie-form.component';
@@ -85,5 +86,8 @@ export const rootRouterConfig: Routes = [
   { path: 'series/new', component: SerieFormComponent,  resolve: { data: SharedResolver}},
   { path: 'series/:id', component: SerieFormComponent,  resolve: { data: SharedResolver}},
   { path: 'series', component: SeriesComponent,  resolve: { data: SharedResolver}},
-  { path: 'series-for-grid', component: VersionGridSeriesComponent,  resolve: { data: SharedResolver}}
+  { path: 'series-for-grid', component: VersionGridSeriesComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'files', component: FilesComponent,  resolve: { data: SharedResolver}}
+
 ]; 

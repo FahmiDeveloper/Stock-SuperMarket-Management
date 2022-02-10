@@ -147,5 +147,18 @@
       </div>
     </div>
 
+    <!-------files-->
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleFiles" routerLink="/files">
+      <div class="card gr-3">
+        <div class="txt">
+          <h1>Files</h1>
+          <p hidden>{{ lengthInvoices | async }}</p>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

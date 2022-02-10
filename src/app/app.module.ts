@@ -58,6 +58,11 @@ import { SerieFormComponent } from './series/serie-form/serie-form.component';
 import { ShowSeriePictureComponent } from './series/show-serie-picture/show-serie-picture.component';
 import { VersionGridSeriesComponent } from './series/version-grid-series/version-grid-series.component';
 import { NewOrEditSerieComponent } from './series/version-grid-series/new-or-edit-serie/new-or-edit-serie.component';
+import { FilesComponent } from './files/files.component';
+import { UploadFormComponent } from './files/upload-form/upload-form.component';
+import { UploadListComponent } from './files/upload-list/upload-list.component';
+import { UploadDetailsComponent } from './files/upload-details/upload-details.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 @NgModule({
   declarations: [
@@ -102,7 +107,11 @@ import { NewOrEditSerieComponent } from './series/version-grid-series/new-or-edi
     SerieFormComponent,
     ShowSeriePictureComponent,
     VersionGridSeriesComponent,
-    NewOrEditSerieComponent
+    NewOrEditSerieComponent,
+    FilesComponent,
+    UploadFormComponent,
+    UploadListComponent,
+    UploadDetailsComponent
   ],
   entryComponents: [
     ListProductsComponent,
@@ -125,7 +134,8 @@ import { NewOrEditSerieComponent } from './series/version-grid-series/new-or-edi
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-    AngularFireAuthModule // imports firebase/auth, only needed for auth features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
+    NgxDocViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
