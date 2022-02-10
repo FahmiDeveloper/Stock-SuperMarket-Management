@@ -62,6 +62,7 @@ import { FilesComponent } from './files/files.component';
 import { UploadFormComponent } from './files/upload-form/upload-form.component';
 import { UploadListComponent } from './files/upload-list/upload-list.component';
 import { UploadDetailsComponent } from './files/upload-details/upload-details.component';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { UploadDetailsComponent } from './files/upload-details/upload-details.co
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-    AngularFireAuthModule // imports firebase/auth, only needed for auth features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
+    NgxDocViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

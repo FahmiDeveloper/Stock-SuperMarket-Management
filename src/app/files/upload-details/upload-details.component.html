@@ -1,15 +1,59 @@
 <span>{{ fileUpload.name }}</span>
 
-<div class="btnswrap float-right">                       
-  <a 
-    href="{{ fileUpload.url }}" 
-    target="_blank" 
-    class="btn btn-warning font-weight-bold" >
-    View
-  </a>&nbsp;                    
+<div class="btnswrap float-right">  
+  <ng-container *ngIf="!checkIsImage(fileUpload.name)">
+    <button 
+        (click)="viewOtherFileUpload(fileUpload, showOtherFile)"
+        class="btn btn-success font-weight-bold" >
+        View
+    </button>&nbsp;
+  </ng-container>
+
+  <ng-container *ngIf="checkIsImage(fileUpload.name)">
+    <button
+        (click)="viewFilePictureUpload(fileUpload, showPicture)"
+        class="btn btn-success font-weight-bold" >
+        View
+    </button>&nbsp;
+  </ng-container>                    
+                                     
   <button 
     (click)="deleteFileUpload(fileUpload)"
     class="btn btn-danger font-weight-bold" >
     Delete
-  </button>                 
+  </button>               
 </div>
+
+<ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
+
+  <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
+
+      <button type="button" class="close" aria-label="Close" (click)="modalRefOtherFile.close()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+
+  <div class="modal-body">
+      <div class="container">
+          <div class="row">
+            <ngx-doc-viewer [url]="urlFile" viewer="google" style="width:100%;height:80vh;"></ngx-doc-viewer>
+          </div>  
+      </div>
+  </div>        
+</ng-template>
+
+<ng-template #showPicture let-modal let-c="close" let-d="dismiss">
+
+  <div class="modal-header text-center">
+    <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
+
+    <button type="button" class="close" aria-label="Close" (click)="modalRefPictureFile.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+  <div class="modal-body">
+      <img [src]='pictureFile' class="pictureFile">
+  </div>
+</ng-template>
