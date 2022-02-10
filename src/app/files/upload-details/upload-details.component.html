@@ -1,6 +1,6 @@
 <span>{{ fileUpload.name }}</span>
 
-<div class="btnswrap float-right">  
+<div [ngClass]="isMobile ? 'btnswrapForMobile' : 'btnswrap'">  
   <ng-container *ngIf="!checkIsImage(fileUpload.name)">
     <button 
         (click)="viewOtherFileUpload(fileUpload, showOtherFile)"

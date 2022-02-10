@@ -14,7 +14,8 @@ import Swal from 'sweetalert2';
 export class UploadDetailsComponent implements OnInit {
 
   @Input() fileUpload!: FileUpload;
-  
+  @Input() isMobile: boolean;
+
   urlFile: string;
   modalRefPictureFile: any;
   modalRefOtherFile: any;

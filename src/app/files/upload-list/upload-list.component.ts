@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
@@ -8,6 +8,8 @@ import { FileUploadService } from 'src/app/shared/services/file-upload.service';
   styleUrls: ['./upload-list.component.scss']
 })
 export class UploadListComponent implements OnInit {
+
+  @Input() isMobile: boolean;
 
   fileUploads?: any[];
   filteredFiles?: any[];

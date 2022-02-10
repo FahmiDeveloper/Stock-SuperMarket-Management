@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-files',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilesComponent implements OnInit {
 
-  constructor() { }
+  isMobile: boolean;
 
-  ngOnInit(): void {
+  constructor(private deviceService: DeviceDetectorService) { }
+
+  ngOnInit() {
+    this.isMobile = this.deviceService.isMobile();
   }
 
 }
