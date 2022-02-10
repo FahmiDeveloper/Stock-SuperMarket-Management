@@ -42,7 +42,7 @@ export class UploadDetailsComponent implements OnInit {
       if (result.value) {
         this.uploadService.deleteFile(fileUpload);
         Swal.fire(
-          'Movie has been deleted successfully',
+          'File has been deleted successfully',
           '',
           'success'
         )
