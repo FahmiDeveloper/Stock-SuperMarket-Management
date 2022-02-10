@@ -1,1 +1,29 @@
-<p>upload-list works!</p>
+<div class="row">
+    <div class="col-md-4">
+        <input #query (keyup)="filter(query.value)" type="text"  class="form-control widhtInput" placeholder="Search by name...">
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+    <table class="table table-striped">
+        <thead class="colorHeaderTable">
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let file of (filteredFiles | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+                <td>
+                    <app-upload-details [fileUpload]='file'></app-upload-details>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>
