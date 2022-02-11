@@ -16,6 +16,7 @@ export class FirebaseUserModel {
     roleAnimes: boolean;
     roleSeries: boolean;
     roleFiles: boolean;
+    roleDebts: boolean;
   
     constructor(){
       this.image = "";

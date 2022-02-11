@@ -63,6 +63,8 @@ import { UploadFormComponent } from './files/upload-form/upload-form.component';
 import { UploadListComponent } from './files/upload-list/upload-list.component';
 import { UploadDetailsComponent } from './files/upload-details/upload-details.component';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { DebtsComponent } from './debts/debts.component';
+import { DebtFormComponent } from './debts/debt-form/debt-form.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +113,9 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
     FilesComponent,
     UploadFormComponent,
     UploadListComponent,
-    UploadDetailsComponent
+    UploadDetailsComponent,
+    DebtsComponent,
+    DebtFormComponent
   ],
   entryComponents: [
     ListProductsComponent,
