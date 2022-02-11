@@ -1,0 +1,73 @@
+<h1 class="text-center text-danger font-weight-bold titleTextInterface">Debts</h1>
+
+<br>
+<br>
+
+<div class="row">
+    <!-- <div class="col-md-4">
+        <input #query (keyup)="filter(query.value)" type="text" class="form-control widhtInput" placeholder="Search by name...">
+    </div> -->
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-md-7">
+                <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
+            </div>
+            <div class="col-md-5">
+                <button class="btn btn-primary font-weight-bold" (click)="filterByDate()">Search</button>
+                <button *ngIf="queryDate" class="btn btn-danger font-weight-bold" (click)="clear()">Clear</button>
+            </div>
+        </div>     
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+    <table class="table table-striped">
+        <thead class="colorHeaderTable">
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Debtor&nbsp;(أعطى المال)</th>
+                <th>Creditor&nbsp;(قبض المال)</th>
+                <th>Debt&nbsp;(الدين)</th>
+                <th>Note</th>
+                <th>
+                    <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let debt of (filteredDebts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+                <td>{{ debt.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ debt.time }}</td>
+                <td>{{ debt.debtor }}</td>
+                <td>{{ debt.creditor }}</td>
+                <td>{{ debt.financialDebt }}</td>
+                <td>{{ debt.note }}</td>
+                <td style="text-align:center;">
+                    <div class="btnswrap">
+                        <button 
+                            *ngIf="user.roleUpdate" 
+                            (click)="editDebt(debt)"
+                            class="btn btn-secondary font-weight-bold">
+                            Edit
+                        </button>&nbsp;                                              
+                        <button 
+                            *ngIf="user.roleDelete" 
+                            type="button" 
+                            (click)="delete(debt.key)"
+                            class="btn btn-danger font-weight-bold">
+                            Delete
+                        </button>                    
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>

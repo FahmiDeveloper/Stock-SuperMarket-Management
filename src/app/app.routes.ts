@@ -7,6 +7,8 @@ import { CategoryFormComponent } from './categories/category-form/category-form.
 import { HomeComponent } from './core/components/home/home.component';
 import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
+import { DebtsForGridComponent } from './debts/debts-for-grid/debts-for-grid.component';
+import { DebtsComponent } from './debts/debts.component';
 import { EmployeeFormComponent } from './employees/employee-form/employee-form.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { FilesComponent } from './files/files.component';
@@ -88,6 +90,9 @@ export const rootRouterConfig: Routes = [
   { path: 'series', component: SeriesComponent,  resolve: { data: SharedResolver}},
   { path: 'series-for-grid', component: VersionGridSeriesComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'files', component: FilesComponent,  resolve: { data: SharedResolver}}
+  { path: 'files', component: FilesComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'debts', component: DebtsComponent,  resolve: { data: SharedResolver}},
+  { path: 'debts-for-grid', component: DebtsForGridComponent,  resolve: { data: SharedResolver}},
 
 ]; 

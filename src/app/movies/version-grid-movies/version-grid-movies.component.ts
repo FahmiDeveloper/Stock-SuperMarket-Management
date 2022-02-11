@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -17,7 +17,8 @@ import { NewOrEditMovieComponent } from './new-or-edit-movie/new-or-edit-movie.c
   templateUrl: './version-grid-movies.component.html',
   styleUrls: ['./version-grid-movies.component.scss']
 })
-export class VersionGridMoviesComponent implements OnInit {
+
+export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
   movies: Movie[];
   filteredMovies: Movie[];

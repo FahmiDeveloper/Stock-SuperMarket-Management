@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -19,7 +19,8 @@ import { NewOrEditSerieComponent } from './new-or-edit-serie/new-or-edit-serie.c
   templateUrl: './version-grid-series.component.html',
   styleUrls: ['./version-grid-series.component.scss']
 })
-export class VersionGridSeriesComponent implements OnInit {
+
+export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   series: Serie[];
   filteredSeries: Serie[];
