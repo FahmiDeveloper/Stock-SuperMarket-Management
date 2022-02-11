@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -18,7 +18,8 @@ import { NewOrEditAnimeComponent } from './new-or-edit-anime/new-or-edit-anime.c
   templateUrl: './version-grid-animes.component.html',
   styleUrls: ['./version-grid-animes.component.scss']
 })
-export class VersionGridAnimesComponent implements OnInit {
+
+export class VersionGridAnimesComponent implements OnInit, OnDestroy {
 
   animes: Anime[];
   filteredAnimes: Anime[];

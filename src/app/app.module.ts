@@ -65,8 +65,25 @@ import { UploadDetailsComponent } from './files/upload-details/upload-details.co
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { DebtsComponent } from './debts/debts.component';
 import { DebtFormComponent } from './debts/debt-form/debt-form.component';
+import { DebtsForGridComponent } from './debts/debts-for-grid/debts-for-grid.component';
+import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/new-or-edit-debt.component';
 
 @NgModule({
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    NgxPaginationModule,
+    CustomFormsModule,
+    RouterModule.forRoot(rootRouterConfig, { useHash: false }),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
+    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
+    NgxDocViewerModule
+  ],
   declarations: [
     AppComponent,
     UserComponent,
@@ -115,7 +132,9 @@ import { DebtFormComponent } from './debts/debt-form/debt-form.component';
     UploadListComponent,
     UploadDetailsComponent,
     DebtsComponent,
-    DebtFormComponent
+    DebtFormComponent,
+    DebtsForGridComponent,
+    NewOrEditDebtComponent
   ],
   entryComponents: [
     ListProductsComponent,
@@ -124,22 +143,8 @@ import { DebtFormComponent } from './debts/debt-form/debt-form.component';
     ShowEmployeePictureComponent,
     NewOrEditMovieComponent,
     NewOrEditAnimeComponent,
-    NewOrEditSerieComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule,
-    NgxPaginationModule,
-    CustomFormsModule,
-    RouterModule.forRoot(rootRouterConfig, { useHash: false }),
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule,
-    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
-    NgxDocViewerModule
+    NewOrEditSerieComponent,
+    NewOrEditDebtComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

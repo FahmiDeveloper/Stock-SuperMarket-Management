@@ -161,7 +161,20 @@
     </div>
 
     <!-------debts-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleDebts" routerLink="/debts">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleDebts && !isMobile" routerLink="/debts">
+      <div class="card gr-6">
+        <div class="txt">
+          <h1>Debts</h1>
+          <p hidden>{{ lengthInvoices | async }}</p>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
+     <!-------grid debts-->
+     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleDebts && isMobile" routerLink="/debts-for-grid">
       <div class="card gr-6">
         <div class="txt">
           <h1>Debts</h1>
