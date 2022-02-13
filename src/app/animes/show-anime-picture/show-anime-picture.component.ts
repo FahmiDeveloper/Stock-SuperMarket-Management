@@ -1,18 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Observable } from 'rxjs';
-import { Anime } from 'src/app/shared/models/anime.model';
+
 import { AnimeService } from 'src/app/shared/services/anime.service';
+
+import { Anime } from 'src/app/shared/models/anime.model';
 
 @Component({
   selector: 'show-anime-picture',
   templateUrl: './show-anime-picture.component.html',
   styleUrls: ['./show-anime-picture.component.scss']
 })
+
 export class ShowAnimePictureComponent implements OnInit {
 
   @Input() anime: Anime = new Anime();
@@ -22,7 +24,6 @@ export class ShowAnimePictureComponent implements OnInit {
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
-
   isMobile: boolean;
 
   constructor(
@@ -60,6 +61,5 @@ export class ShowAnimePictureComponent implements OnInit {
       alert('No images selected');
       this.pictureAnime = '';
     }
-   }
-
+  }
 }

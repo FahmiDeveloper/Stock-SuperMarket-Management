@@ -2,16 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { NewOrEditSerieComponent } from './new-or-edit-serie/new-or-edit-serie.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { SerieService } from 'src/app/shared/services/serie.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { Serie } from 'src/app/shared/models/serie.model';
-import { SerieService } from 'src/app/shared/services/serie.service';
-import { NewOrEditSerieComponent } from './new-or-edit-serie/new-or-edit-serie.component';
 
 
 @Component({
@@ -24,19 +24,17 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   series: Serie[];
   filteredSeries: Serie[];
-
-  subscriptionForGetAllSeries: Subscription;
-  subscriptionForUser: Subscription;
+  p: number = 1;
+  isGrid: boolean = false;
+  queryDate: string = "";
+  statusId: number;
+  modalRefSearch: any;
+  queryName: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
-  p: number = 1;
-
-  isGrid: boolean = false;
-
-  queryDate: string = "";
-
-  statusId: number;
+  subscriptionForGetAllSeries: Subscription;
+  subscriptionForUser: Subscription;
   
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -45,10 +43,6 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     {id: 4, status: 'Downloaded but not watched yet'},
     {id: 5, status: 'To search about it'}
   ];
-
-  modalRefSearch: any;
-
-  queryName: string = "";
 
   constructor(
     private serieService: SerieService, 
@@ -147,11 +141,10 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   getStatusSerie() {
     this.filteredSeries.forEach(element=>{
-
       this.statusSeries.forEach(statusSerie => {
         if (statusSerie.id == element.statusId) {
-             element.status = statusSerie.status;
-             element.note = element.note ? element.note : '-';
+          element.status = statusSerie.status;
+          element.note = element.note ? element.note : '-';
         }
       })
     })
@@ -172,7 +165,6 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-
 }
 
 export interface StatusSeries {

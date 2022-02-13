@@ -25,25 +25,11 @@ export class AnimeService {
     return this.db.list('/animes').push(anime);
   }
 
-  getAnimeId(animeId: string): AngularFireObject<Anime> {
-    return this.db.object('/animes/' + animeId);
-  }
-
   update(animeId, anime) {
     return this.db.object('/animes/' + animeId).update(anime);
   }
 
   delete(animeId) {
     return this.db.object('/animes/' + animeId).remove();
-  }
-
-  countLengthAnimes(): Observable<number> {
-    return this.db.list('/animes').valueChanges().pipe(map(response => response.length));
-  }
-
-  countLengthAnimesForEachCategory(categoryId: string): Observable<number> {
-    return this.db.list('/animes')
-      .valueChanges()
-      .pipe(map((response: Anime[]) => response.filter(element => element.categoryId == categoryId).length));
   }
 }

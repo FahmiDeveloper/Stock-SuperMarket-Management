@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FileUpload } from 'src/app/shared/models/file-upload.model';
+
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
+import { FileUpload } from 'src/app/shared/models/file-upload.model';
 
 @Component({
   selector: 'app-upload-form',
   templateUrl: './upload-form.component.html',
   styleUrls: ['./upload-form.component.scss']
 })
+
 export class UploadFormComponent implements OnInit {
 
   selectedFiles?: FileList;
@@ -16,8 +18,7 @@ export class UploadFormComponent implements OnInit {
 
   constructor(private uploadService: FileUploadService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
@@ -41,5 +42,4 @@ export class UploadFormComponent implements OnInit {
       }
     }
   }
-
 }

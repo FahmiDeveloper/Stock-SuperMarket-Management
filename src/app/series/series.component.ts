@@ -2,16 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { SerieFormComponent } from './serie-form/serie-form.component';
 
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
+import { SerieService } from '../shared/services/serie.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
-
 import { Serie } from '../shared/models/serie.model';
-import { SerieService } from '../shared/services/serie.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SerieFormComponent } from './serie-form/serie-form.component';
 
 @Component({
   selector: 'app-series',
@@ -23,17 +23,14 @@ export class SeriesComponent implements OnInit, OnDestroy {
 
   series: Serie[];
   filteredSeries: Serie[];
-
-  subscriptionForGetAllSeries: Subscription;
-  subscriptionForUser: Subscription;
+  p: number = 1;
+  queryDate: string = "";
+  statusId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
-  p: number = 1;
-
-  queryDate: string = "";
-
-  statusId: number;
+  subscriptionForGetAllSeries: Subscription;
+  subscriptionForUser: Subscription;
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -124,11 +121,10 @@ export class SeriesComponent implements OnInit, OnDestroy {
 
   getStatusSerie() {
     this.filteredSeries.forEach(element=>{
-
       this.statusSeries.forEach(statusSerie => {
         if (statusSerie.id == element.statusId) {
-             element.status = statusSerie.status;
-             element.note = element.note ? element.note : '-';
+          element.status = statusSerie.status;
+          element.note = element.note ? element.note : '-';
         }
       })
     })
@@ -157,7 +153,6 @@ export class SeriesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-
 }
 
 export interface StatusSeries {

@@ -56,7 +56,6 @@
                 <td>{{ serie.nameSerie }}</td>
                 <td>{{ serie.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ serie.time }}</td>
-
                 <td>
                     <span *ngIf="serie.statusId">{{ serie.status }}</span>
                     <span *ngIf="!serie.statusId">-</span>
@@ -94,7 +93,6 @@
             </tr>
         </tbody>
     </table>
-
     <div class="pagination">
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
     </div>

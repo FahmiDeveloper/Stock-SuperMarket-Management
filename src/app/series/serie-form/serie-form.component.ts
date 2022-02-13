@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { Serie } from 'src/app/shared/models/serie.model';
 import { SerieService } from 'src/app/shared/services/serie.service';
+import { Serie } from 'src/app/shared/models/serie.model';
 
 @Component({
   selector: 'app-serie-form',
   templateUrl: './serie-form.component.html',
   styleUrls: ['./serie-form.component.scss']
 })
+
 export class SerieFormComponent implements OnInit {
 
   basePath = '/PicturesSeries';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
+  modalRef: any;
 
   serie: Serie = new Serie();
 
@@ -29,8 +30,6 @@ export class SerieFormComponent implements OnInit {
     {id: 4, status: 'Downloaded but not watched yet'},
     {id: 5, status: 'To search about it'}
   ];
-
-  modalRef: any;
 
   constructor(
     private serieService: SerieService, 

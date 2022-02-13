@@ -1,26 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
-import { Debt } from 'src/app/shared/models/debt.model';
+import Swal from 'sweetalert2';
 
 import { DebtService } from 'src/app/shared/services/debt.service';
-
-import Swal from 'sweetalert2';
+import { Debt } from 'src/app/shared/models/debt.model';
 
 @Component({
   selector: 'new-or-edit-debt',
   templateUrl: './new-or-edit-debt.component.html',
   styleUrls: ['./new-or-edit-debt.scss']
 })
+
 export class NewOrEditDebtComponent implements OnInit {
 
+  modalRef: any;
+  
   debt: Debt = new Debt();
 
-  modalRef: any;
 
-  constructor(
-    private debtService: DebtService
-  ) {}
+  constructor(private debtService: DebtService) {}
 
   ngOnInit() {
     if (!this.debt.key) {

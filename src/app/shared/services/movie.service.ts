@@ -25,25 +25,11 @@ export class MovieService {
     return this.db.list('/movies').push(movie);
   }
 
-  getMovieId(movieId: string): AngularFireObject<Movie> {
-    return this.db.object('/movies/' + movieId);
-  }
-
   update(movieId, movie) {
     return this.db.object('/movies/' + movieId).update(movie);
   }
 
   delete(movieId) {
     return this.db.object('/movies/' + movieId).remove();
-  }
-
-  countLengthMovies(): Observable<number> {
-    return this.db.list('/movies').valueChanges().pipe(map(response => response.length));
-  }
-
-  countLengthMoviesForEachCategory(categoryId: string): Observable<number> {
-    return this.db.list('/movies')
-      .valueChanges()
-      .pipe(map((response: Movie[]) => response.filter(element => element.categoryId == categoryId).length));
   }
 }
