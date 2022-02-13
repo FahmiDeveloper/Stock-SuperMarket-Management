@@ -25,25 +25,11 @@ export class SerieService {
     return this.db.list('/series').push(serie);
   }
 
-  getSerieId(serieId: string): AngularFireObject<Serie> {
-    return this.db.object('/series/' + serieId);
-  }
-
   update(serieId, serie) {
     return this.db.object('/series/' + serieId).update(serie);
   }
 
   delete(serieId) {
     return this.db.object('/series/' + serieId).remove();
-  }
-
-  countLengthSeries(): Observable<number> {
-    return this.db.list('/series').valueChanges().pipe(map(response => response.length));
-  }
-
-  countLengthSeriesForEachCategory(categoryId: string): Observable<number> {
-    return this.db.list('/series')
-      .valueChanges()
-      .pipe(map((response: Serie[]) => response.filter(element => element.categoryId == categoryId).length));
   }
 }

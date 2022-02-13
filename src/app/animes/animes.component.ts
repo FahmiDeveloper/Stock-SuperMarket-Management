@@ -2,37 +2,36 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { AnimeFormComponent } from './anime-form/anime-form.component';
 
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
+import { AnimeService } from '../shared/services/anime.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
-
 import { Anime } from '../shared/models/anime.model';
-import { AnimeService } from '../shared/services/anime.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AnimeFormComponent } from './anime-form/anime-form.component';
 
 @Component({
   selector: 'app-animes',
   templateUrl: './animes.component.html',
   styleUrls: ['./animes.component.scss']
 })
+
 export class AnimesComponent implements OnInit, OnDestroy {
 
   animes: Anime[];
   filteredAnimes: Anime[];
 
-  subscriptionForGetAllAnimes: Subscription;
-  subscriptionForUser: Subscription;
+  p: number = 1;
+  queryDate: string = "";
+  statusId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
-  p: number = 1;
-
-  queryDate: string = "";
-
-  statusId: number;
+  subscriptionForGetAllAnimes: Subscription;
+  subscriptionForUser: Subscription;
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -57,8 +56,8 @@ export class AnimesComponent implements OnInit, OnDestroy {
   getAllAnimes() {
     this.subscriptionForGetAllAnimes = this.animeService
       .getAll()
-      .subscribe(movies => {
-        this.filteredAnimes = this.animes = movies;
+      .subscribe(animes => {
+        this.filteredAnimes = this.animes = animes;
         this.getStatusAnime();
     });
   }
@@ -123,11 +122,10 @@ export class AnimesComponent implements OnInit, OnDestroy {
 
   getStatusAnime() {
     this.filteredAnimes.forEach(element=>{
-
       this.statusAnimes.forEach(statusAnime => {
         if (statusAnime.id == element.statusId) {
-             element.status = statusAnime.status;
-             element.note = element.note ? element.note : '-';
+          element.status = statusAnime.status;
+          element.note = element.note ? element.note : '-';
         }
       })
     })
@@ -156,7 +154,6 @@ export class AnimesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllAnimes.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-
 }
 
 export interface StatusAnimes {

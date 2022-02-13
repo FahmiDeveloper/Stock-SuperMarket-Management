@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FileUpload } from 'src/app/shared/models/file-upload.model';
+import Swal from 'sweetalert2';
+
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
-import Swal from 'sweetalert2';
+import { FileUpload } from 'src/app/shared/models/file-upload.model';
 
 @Component({
   selector: 'app-upload-details',
@@ -27,8 +29,7 @@ export class UploadDetailsComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   deleteFileUpload(fileUpload: FileUpload) {
     Swal.fire({
@@ -77,5 +78,4 @@ export class UploadDetailsComponent implements OnInit {
 
     return imageExtentions.indexOf(extention) != -1;
   }
-
 }

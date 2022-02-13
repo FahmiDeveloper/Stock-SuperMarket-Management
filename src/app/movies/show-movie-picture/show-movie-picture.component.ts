@@ -1,19 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Observable } from 'rxjs';
 
-import { Movie } from 'src/app/shared/models/movie.model';
 import { MovieService } from 'src/app/shared/services/movie.service';
+
+import { Movie } from 'src/app/shared/models/movie.model';
 
 @Component({
   selector: 'show-movie-picture',
   templateUrl: './show-movie-picture.component.html',
   styleUrls: ['./show-movie-picture.component.scss']
 })
+
 export class ShowMoviePictureComponent implements OnInit {
 
   @Input() movie: Movie = new Movie();
@@ -23,7 +24,6 @@ export class ShowMoviePictureComponent implements OnInit {
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
-
   isMobile: boolean;
 
   constructor(
@@ -62,5 +62,4 @@ export class ShowMoviePictureComponent implements OnInit {
       this.pictureMovie = '';
     }
    }
-
 }

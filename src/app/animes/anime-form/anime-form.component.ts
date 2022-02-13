@@ -1,24 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { Anime } from 'src/app/shared/models/anime.model';
 import { AnimeService } from 'src/app/shared/services/anime.service';
+
+import { Anime } from 'src/app/shared/models/anime.model';
 
 @Component({
   selector: 'app-anime-form',
   templateUrl: './anime-form.component.html',
   styleUrls: ['./anime-form.component.scss']
 })
+
 export class AnimeFormComponent implements OnInit {
 
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
+  modalRef: any;
 
   anime: Anime = new Anime();
 
@@ -29,8 +31,6 @@ export class AnimeFormComponent implements OnInit {
     {id: 4, status: 'Downloaded but not watched yet'},
     {id: 5, status: 'To search about it'}
   ];
-
-  modalRef: any;
 
   constructor(
     private animeService: AnimeService, 

@@ -2,16 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { NewOrEditAnimeComponent } from './new-or-edit-anime/new-or-edit-anime.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { CategoryService } from 'src/app/shared/services/category.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { AnimeService } from 'src/app/shared/services/anime.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Anime } from 'src/app/shared/models/anime.model';
-import { AnimeService } from 'src/app/shared/services/anime.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NewOrEditAnimeComponent } from './new-or-edit-anime/new-or-edit-anime.component';
 
 @Component({
   selector: 'app-version-grid-animes',
@@ -24,18 +24,17 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   animes: Anime[];
   filteredAnimes: Anime[];
 
-  subscriptionForGetAllAnimes: Subscription;
-  subscriptionForUser: Subscription;
+  p: number = 1;
+  isGrid: boolean = false;
+  queryDate: string = "";
+  statusId: number;
+  modalRefSearch: any;
+  queryName: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
-  p: number = 1;
-
-  isGrid: boolean = false;
-
-  queryDate: string = "";
-
-  statusId: number;
+  subscriptionForGetAllAnimes: Subscription;
+  subscriptionForUser: Subscription;
   
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -44,10 +43,6 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     {id: 4, status: 'Downloaded but not watched yet'},
     {id: 5, status: 'To search about it'}
   ];
-
-  modalRefSearch: any;
-
-  queryName: string = "";
 
   constructor(
     private animeService: AnimeService, 
@@ -146,11 +141,10 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
 
   getStatusAnime() {
     this.filteredAnimes.forEach(element=>{
-
       this.statusAnimes.forEach(statusAnime => {
         if (statusAnime.id == element.statusId) {
-             element.status = statusAnime.status;
-             element.note = element.note ? element.note : '-';
+          element.status = statusAnime.status;
+          element.note = element.note ? element.note : '-';
         }
       })
     })

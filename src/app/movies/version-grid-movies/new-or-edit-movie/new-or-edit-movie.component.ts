@@ -1,88 +1,87 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
-import { Movie } from 'src/app/shared/models/movie.model';
 import { MovieService } from 'src/app/shared/services/movie.service';
 
-import Swal from 'sweetalert2';
+import { Movie } from 'src/app/shared/models/movie.model';
 
 @Component({
   selector: 'new-or-edit-movie',
   templateUrl: './new-or-edit-movie.component.html',
   styleUrls: ['./new-or-edit-movie.scss']
 })
+
 export class NewOrEditMovieComponent implements OnInit {
 
-    basePath = '/PicturesMovies';
-    task: AngularFireUploadTask;
-    progressValue: Observable<number>;
+  basePath = '/PicturesMovies';
+  task: AngularFireUploadTask;
+  progressValue: Observable<number>;
+  modalRef: any;
 
-    movie: Movie = new Movie();
+  movie: Movie = new Movie();
 
-    modalRef: any;
+  statusMovies: StatusMovies[] = [
+    {id: 1, status: 'Wait to sort'}, 
+    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 3, status: 'Watched'}, 
+    {id: 4, status: 'Downloaded but not watched yet'},
+    {id: 5, status: 'To search about it'}
+  ];
 
-    statusMovies: StatusMovies[] = [
-      {id: 1, status: 'Wait to sort'}, 
-      {id: 2, status: 'Not downloaded yet'}, 
-      {id: 3, status: 'Watched'}, 
-      {id: 4, status: 'Downloaded but not watched yet'},
-      {id: 5, status: 'To search about it'}
-    ];
+  constructor(
+      public modalService: NgbModal, 
+      private fireStorage: AngularFireStorage, 
+      private movieService: MovieService
+  ) {}
 
-    constructor(
-        public modalService: NgbModal, 
-        private fireStorage: AngularFireStorage, 
-        private movieService: MovieService
-    ) {}
-
-    ngOnInit() {
-      if (!this.movie.key) {
-        this.movie.date = moment().format('YYYY-MM-DD');
-        this.movie.time = moment().format('HH:mm');
-      }
+  ngOnInit() {
+    if (!this.movie.key) {
+      this.movie.date = moment().format('YYYY-MM-DD');
+      this.movie.time = moment().format('HH:mm');
     }
+  }
 
-    save(movie) {
-      if (movie.statusId == 3 || movie.statusId == 4 || movie.statusId == 5) movie.path = "";
-      if (this.movie.key) {
-        this.movieService.update(this.movie.key, movie);
-        Swal.fire(
-          'Movie data has been Updated successfully',
-          '',
-          'success'
-        )
-      } else {
-        this.movieService.create(movie);
-        Swal.fire(
-        'New Movie added successfully',
+  save(movie) {
+    if (movie.statusId == 3 || movie.statusId == 4 || movie.statusId == 5) movie.path = "";
+    if (this.movie.key) {
+      this.movieService.update(this.movie.key, movie);
+      Swal.fire(
+        'Movie data has been Updated successfully',
         '',
         'success'
-        )
-      }
-      this.modalRef.close();
+      )
+    } else {
+      this.movieService.create(movie);
+      Swal.fire(
+      'New Movie added successfully',
+      '',
+      'success'
+      )
     }
-    
-    async onFileChanged(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
-        this.task =  this.fireStorage.upload(filePath, file);    // upload task
+    this.modalRef.close();
+  }
   
-        // this.progress = this.snapTask.percentageChanges();
-        this.progressValue = this.task.percentageChanges();
-  
-        (await this.task).ref.getDownloadURL().then(url => {this.movie.imageUrl = url; });  // <<< url is found here
-  
-      } else {  
-        alert('No images selected');
-        this.movie.imageUrl = '';
-      }
+  async onFileChanged(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {this.movie.imageUrl = url; });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.movie.imageUrl = '';
     }
+  }
 }
 
 export interface StatusMovies {

@@ -2,22 +2,23 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { MovieFormComponent } from './movie-form/movie-form.component';
 
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
+import { MovieService } from '../shared/services/movie.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
-
 import { Movie } from '../shared/models/movie.model';
-import { MovieService } from '../shared/services/movie.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MovieFormComponent } from './movie-form/movie-form.component';
 
 @Component({
   selector: 'app-movies',
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss']
 })
+
 export class MoviesComponent implements OnInit, OnDestroy {
 
   movies: Movie[];
@@ -123,11 +124,10 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   getStatusMovie() {
     this.filteredMovies.forEach(element=>{
-
       this.statusMovies.forEach(statusMovie => {
         if (statusMovie.id == element.statusId) {
-             element.status = statusMovie.status;
-             element.note = element.note ? element.note : '-';
+          element.status = statusMovie.status;
+          element.note = element.note ? element.note : '-';
         }
       })
     })

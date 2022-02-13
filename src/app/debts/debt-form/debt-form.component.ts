@@ -13,13 +13,11 @@ import Swal from 'sweetalert2';
 
 export class DebtFormComponent implements OnInit {
 
-  debt: Debt = new Debt();
-
   modalRef: any;
 
-  constructor(
-    private debtService: DebtService
-  ) {}
+  debt: Debt = new Debt();
+
+  constructor(private debtService: DebtService) {}
 
   ngOnInit() {
     if (!this.debt.key) {

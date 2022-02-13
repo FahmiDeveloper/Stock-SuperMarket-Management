@@ -2,15 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { NewOrEditMovieComponent } from './new-or-edit-movie/new-or-edit-movie.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { MovieService } from 'src/app/shared/services/movie.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Movie } from 'src/app/shared/models/movie.model';
-import { MovieService } from 'src/app/shared/services/movie.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NewOrEditMovieComponent } from './new-or-edit-movie/new-or-edit-movie.component';
 
 @Component({
   selector: 'app-version-grid-movies',
@@ -22,20 +23,18 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
   movies: Movie[];
   filteredMovies: Movie[];
+  p: number = 1;
+  isGrid: boolean = false;
+  queryDate: string = "";
+  statusId: number;
+  modalRefSearch: any;
+  queryName: string = "";
+
+  user: FirebaseUserModel = new FirebaseUserModel();
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
-
-  p: number = 1;
-
-  isGrid: boolean = false;
-
-  queryDate: string = "";
-
-  statusId: number;
-  
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
@@ -43,10 +42,6 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     {id: 4, status: 'Downloaded but not watched yet'},
     {id: 5, status: 'To search about it'}
   ];
-
-  modalRefSearch: any;
-
-  queryName: string = "";
 
   constructor(
     private movieService: MovieService, 
@@ -145,11 +140,10 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
   getStatusMovie() {
     this.filteredMovies.forEach(element=>{
-
       this.statusMovies.forEach(statusMovie => {
         if (statusMovie.id == element.statusId) {
-             element.status = statusMovie.status;
-             element.note = element.note ? element.note : '-';
+          element.status = statusMovie.status;
+          element.note = element.note ? element.note : '-';
         }
       })
     })
@@ -170,7 +164,6 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllMovies.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-
 }
 
 export interface StatusMovies {

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { Movie } from 'src/app/shared/models/movie.model';
 import { MovieService } from 'src/app/shared/services/movie.service';
+
+import { Movie } from 'src/app/shared/models/movie.model';
 
 @Component({
   selector: 'app-movie-form',

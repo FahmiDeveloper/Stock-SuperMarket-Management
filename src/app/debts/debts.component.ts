@@ -4,32 +4,32 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { Debt } from '../shared/models/debt.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
+import { DebtFormComponent } from './debt-form/debt-form.component';
 
 import { AuthService } from '../shared/services/auth.service';
 import { DebtService } from '../shared/services/debt.service';
 import { UserService } from '../shared/services/user.service';
-import { DebtFormComponent } from './debt-form/debt-form.component';
+
+import { Debt } from '../shared/models/debt.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-debts',
   templateUrl: './debts.component.html',
   styleUrls: ['./debts.component.scss']
 })
+
 export class DebtsComponent implements OnInit, OnDestroy {
 
   debts: Debt[];
   filteredDebts: Debt[];
-
-  subscriptionForGetAllDebts: Subscription;
-  subscriptionForUser: Subscription;
+  p: number = 1;
+  queryDate: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
-  p: number = 1;
-
-  queryDate: string = "";
+  subscriptionForGetAllDebts: Subscription;
+  subscriptionForUser: Subscription;
 
   constructor(
     private debtService: DebtService, 
@@ -126,5 +126,4 @@ export class DebtsComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-
 }

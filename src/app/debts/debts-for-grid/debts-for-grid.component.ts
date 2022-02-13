@@ -2,37 +2,35 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
-import { Debt } from 'src/app/shared/models/debt.model';
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+import { NewOrEditDebtComponent } from './new-or-edit-debt/new-or-edit-debt.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DebtService } from 'src/app/shared/services/debt.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
-import Swal from 'sweetalert2';
-import { NewOrEditDebtComponent } from './new-or-edit-debt/new-or-edit-debt.component';
+import { Debt } from 'src/app/shared/models/debt.model';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-debts-for-grid',
   templateUrl: './debts-for-grid.component.html',
   styleUrls: ['./debts-for-grid.component.scss']
 })
+
 export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   debts: Debt[];
   filteredDebts: Debt[];
-
-  subscriptionForGetAllDebts: Subscription;
-  subscriptionForUser: Subscription;
+  p: number = 1;
+  queryDate: string = "";
+  modalRefSearch: any;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
-  p: number = 1;
-
-  queryDate: string = "";
-
-  modalRefSearch: any;
+  subscriptionForGetAllDebts: Subscription;
+  subscriptionForUser: Subscription;
 
   constructor(
     private debtService: DebtService, 
@@ -125,5 +123,4 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-
 }

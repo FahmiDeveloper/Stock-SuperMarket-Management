@@ -8,6 +8,7 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
 .imageMovie {
     border: 1px solid #4d4c4c;
     height: 700px;
@@ -16,26 +17,31 @@
     font-weight: bold;
     background-size: cover;
 }
+
 .styleProgress {
     height: 7mm; 
     width: 100%
 }
+
 .progressIncomplete {
     color:rgb(255, 60, 0); 
     font-size: 17px; 
     font-weight: 410;
 }
+
 .progressComplete {
     color:rgb(1, 153, 34);  
     font-size: 17px; 
     font-weight: 410;
 }
+
 .sizePictureForGrid {
     width: 100%;
     cursor: pointer;
     height: 286px;
     border: 1px solid #222;
 }
+
 .imageMovieMobile {
     border: 1px solid #4d4c4c;
     height: 365px;

@@ -3,8 +3,6 @@ export class Movie {
     nameMovie: string;
     date: string;
     time: string;
-    categoryId: string;
-    nameCategory: string;// get name of category foreach product using categoryId
     note: string;
     imageUrl: string;
     statusId: number;
@@ -15,8 +13,6 @@ export class Movie {
       this.nameMovie = "";
       this.date = "";
       this.time = "";
-      this.categoryId = "";
-      this.nameCategory = "";
       this.note = "";
       this.imageUrl = "";
       this.statusId = null;
