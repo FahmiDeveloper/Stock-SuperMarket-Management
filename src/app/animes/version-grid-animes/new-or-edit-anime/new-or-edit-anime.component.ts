@@ -47,7 +47,7 @@ export class NewOrEditAnimeComponent implements OnInit {
   }
 
   save(anime) {
-    if (anime.statusId == 3 || anime.statusId == 4 || anime.statusId == 5) anime.path = "";
+    if (!anime.path) anime.path = "";
     if (this.anime.key) {
       this.animeService.update(this.anime.key, anime);
       Swal.fire(

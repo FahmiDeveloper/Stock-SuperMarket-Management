@@ -21,7 +21,6 @@ import { Movie } from 'src/app/shared/models/movie.model';
 
 export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
-  movies: Movie[];
   filteredMovies: Movie[];
   p: number = 1;
   isGrid: boolean = false;
@@ -147,13 +146,6 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
         }
       })
     })
-  }
-
-  filetrByStatus(statusId: number) {
-    this.filteredMovies = (statusId)
-      ? this.movies.filter(movie => movie.statusId == statusId)
-      : this.movies;
-    this.modalRefSearch.close();
   }
 
   openModalSearch(contentModalSearch) {

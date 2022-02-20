@@ -22,7 +22,6 @@ import { Serie } from 'src/app/shared/models/serie.model';
 
 export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
-  series: Serie[];
   filteredSeries: Serie[];
   p: number = 1;
   isGrid: boolean = false;
@@ -148,13 +147,6 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
         }
       })
     })
-  }
-
-  filetrByStatus(statusId: number) {
-    this.filteredSeries = (statusId)
-      ? this.series.filter(serie => serie.statusId == statusId)
-      : this.series;
-      this.modalRefSearch.close();
   }
 
   openModalSearch(contentModalSearch) {

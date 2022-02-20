@@ -23,13 +23,29 @@ export class DebtsComponent implements OnInit, OnDestroy {
 
   debts: Debt[];
   filteredDebts: Debt[];
+  filteredDebtsCopie: Debt[];
+
   p: number = 1;
   queryDate: string = "";
+  restInPocket: string = "";
+  restInWallet: string = "";
+  restInEnvelope: string = "";
+  restInBox: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
+
+  placeId: number;
+
+  placesMoney: PlacesMoney[] = [
+    {id: 0, place: 'لا يوجد'},
+    {id: 1, place: 'الجيب'},
+    {id: 2, place: 'المحفظة'},
+    {id: 3, place: 'الظرف'}, 
+    {id: 4, place: 'الصندوق'}
+  ];
 
   constructor(
     private debtService: DebtService, 
@@ -47,7 +63,12 @@ export class DebtsComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts = this.debtService
       .getAll()
       .subscribe(debts => {
-        this.filteredDebts = this.debts = debts;
+        this.filteredDebtsCopie = debts;
+        if (this.queryDate) {
+          this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
+        } else if (this.placeId || this.placeId==0)  this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId)
+        else this.filteredDebts = debts;
+        this.getRestMoneyForeachPlace();
     });
   }
 
@@ -92,20 +113,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
     })
   }
 
-  // filter(query: string) {
-  //    this.filteredMovies = (query)
-  //       ? this.movies.filter(movie => movie.nameMovie.toLowerCase().includes(query.toLowerCase()))
-  //       : this.movies;
-  // }
-
-  filterByDate() {
-    this.filteredDebts = (this.queryDate)
-      ? this.debts.filter(debt => debt.date.includes(this.queryDate))
-      : this.debts;
-  }
-
   clear() {
     this.queryDate = "";
+    this.placeId = null;
+    this.p = 1;
     this.getAllDebts();
   }
 
@@ -122,8 +133,27 @@ export class DebtsComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.debt = debt;
   }
 
+  getRestMoneyForeachPlace() {
+    this.restInPocket = this.filteredDebtsCopie.filter(debt => debt.placeId == 1).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+
+    this.restInWallet = this.filteredDebtsCopie.filter(debt => debt.placeId == 2).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+
+    this.restInEnvelope = this.filteredDebtsCopie.filter(debt => debt.placeId == 3).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+
+    this.restInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+  }
+
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
+}
+
+export interface PlacesMoney {
+  id: number,
+  place: string
 }

@@ -2,10 +2,11 @@
 <div class="container mx-auto" style="margin-top: 50px;">
     <div class="row">
         <div class="col-md-4">
-            <div style="width: 18rem;margin-inline: auto;">
-                <button class="btn btn-success font-weight-bold" (click)="openModalSearch(contentModalSearch)">Search</button>
-                <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold float-right">New</a>  
-            </div> 
+            <div class="row btnswrap justify-content-center">
+                <button class="btn btn-success ml-2 mr-5 font-weight-bold" (click)="openModalSearch(contentModalSearch)">Search</button>
+                <button class="btn btn-info ml-1 mr-5 font-weight-bold" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
+                <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary mr-1 font-weight-bold float-right">New</a>  
+            </div>              
         </div>          
     </div>
 
@@ -20,14 +21,6 @@
                         </div>
                         <div class="col-7 font-weight-bold">
                             {{ debt.date | date:'dd/MM/yyyy' }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Time:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            {{ debt.time }}
                         </div>
                     </div>
                     <div class="row">
@@ -97,22 +90,79 @@
 
     <div class="modal-body">
         <div class="container">
-            <!-- <div class="row">
-                <div class="col-md-4">
-                    <input [(ngModel)]="queryName" type="text" class="form-control" placeholder="Search by name...">
-                </div>
-            </div>
-            <br> -->
             <div class="row">
                 <div class="col-md-4">
                     <input [(ngModel)]="queryDate" type="date" class="form-control">          
                 </div>
             </div>
             <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div *ngFor="let placeMoney of placesMoney">
+                        <label>
+                            <input type="radio" name="placeId" [(ngModel)]="placeId" id="placeId" 
+                            [value]="placeMoney.id" style="height:25px; width:25px; vertical-align: middle;">
+                            {{placeMoney.place}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br>
             <br>
             <div class="row justify-content-center">
                 <button class="btn btn-primary" (click)="getAllDebts()"><i class="fa fa-search"></i></button>
-                <button *ngIf="queryDate" class="btn btn-danger" (click)="clear()"><i class="fa fa-trash"></i></button>
+                <button *ngIf="queryDate || placeId || placeId==0" class="btn btn-danger" (click)="clear()"><i class="fa fa-trash"></i></button>
+            </div>
+        </div>
+    </div>        
+</ng-template>
+
+<ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Rest Money</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefRestMoneyForeachPlace.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <span class="font-weight-bold rest-money">{{ restInPocket }}</span>
+                </div>
+                <div class="col-8 font-weight-bold label-place">
+                    <span class="text-primary font-weight-bold">: الجيب</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <span class="font-weight-bold rest-money" >{{ restInWallet }}</span>
+                </div>
+                <div class="col-8 font-weight-bold label-place">
+                    <span class="text-primary font-weight-bold">: المحفظة</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <span class="font-weight-bold rest-money">{{ restInEnvelope }}</span>
+                </div>
+                <div class="col-8 font-weight-bold label-place">
+                    <span class="text-primary font-weight-bold">: الظرف</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <span class="font-weight-bold rest-money">{{ restInBox }}</span>
+                </div>
+                <div class="col-8 font-weight-bold label-place">
+                    <span class="text-primary font-weight-bold">: الصندوق</span>
+                </div>
             </div>
         </div>
     </div>        

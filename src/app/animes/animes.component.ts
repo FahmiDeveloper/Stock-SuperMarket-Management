@@ -21,11 +21,10 @@ import { Anime } from '../shared/models/anime.model';
 
 export class AnimesComponent implements OnInit, OnDestroy {
 
-  animes: Anime[];
   filteredAnimes: Anime[];
-
   p: number = 1;
   queryDate: string = "";
+  queryName: string = "";
   statusId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
@@ -55,10 +54,20 @@ export class AnimesComponent implements OnInit, OnDestroy {
 
   getAllAnimes() {
     this.subscriptionForGetAllAnimes = this.animeService
-      .getAll()
-      .subscribe(animes => {
-        this.filteredAnimes = this.animes = animes;
-        this.getStatusAnime();
+    .getAll()
+    .subscribe(animes => {
+      if (this.queryName) 
+      this.filteredAnimes = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryDate) 
+      this.filteredAnimes = animes.filter(anime => anime.date.includes(this.queryDate));
+      
+      else if (this.statusId) 
+      this.filteredAnimes = animes.filter(anime => anime.statusId == this.statusId);   
+      
+      else this.filteredAnimes = animes;
+
+      this.getStatusAnime();
     });
   }
 
@@ -103,20 +112,10 @@ export class AnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  filter(query: string) {
-     this.filteredAnimes = (query)
-        ? this.animes.filter(anime => anime.nameAnime.toLowerCase().includes(query.toLowerCase()))
-        : this.animes;
-  }
-
-  filterByDate() {
-    this.filteredAnimes = (this.queryDate)
-      ? this.animes.filter(anime => anime.date.includes(this.queryDate))
-      : this.animes;
-  }
-
   clear() {
     this.queryDate = "";
+    this.queryName = "";
+    this.statusId = null;
     this.getAllAnimes();
   }
 
@@ -129,12 +128,6 @@ export class AnimesComponent implements OnInit, OnDestroy {
         }
       })
     })
-  }
-
-  filetrByStatus() {
-    this.filteredAnimes = (this.statusId)
-      ? this.animes.filter(anime => anime.statusId == this.statusId)
-      : this.animes;
   }
 
   newAnime() {

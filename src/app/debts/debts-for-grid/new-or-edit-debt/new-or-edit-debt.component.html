@@ -13,13 +13,13 @@
             <div class="col-md-12">
                 <form #f="ngForm" (ngSubmit)="save(f.value)">
                     <div class="form-group" hidden>
-                        <label for="date">Date</label>
-                        <input #date="ngModel" [(ngModel)]="debt.date" name="date" id="date" type="date"
+                        <label for="numRow">N°</label>
+                        <input #numRow="ngModel" [(ngModel)]="debt.numRow" name="numRow" id="numRow" type="number"
                             class="form-control" readonly>
                     </div>
-                    <div class="form-group" hidden>
-                        <label for="time">Time</label>
-                        <input #time="ngModel" [(ngModel)]="debt.time" name="time" id="time" type="time"
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input #date="ngModel" [(ngModel)]="debt.date" name="date" id="date" type="date"
                             class="form-control" readonly>
                     </div>
                     <div class="form-group">
@@ -40,10 +40,30 @@
                     </div>
                     <div class="form-group">
                         <label for="financialDebt">Financial Debt</label>
-                        <input #financialDebt="ngModel" [(ngModel)]="debt.financialDebt" name="financialDebt" id="financialDebt" type="number"
+                        <input #financialDebt="ngModel" [(ngModel)]="debt.financialDebt" name="financialDebt" id="financialDebt" type="text"
                             class="form-control" required>
                         <div class="alert alert-danger" *ngIf="financialDebt.touched && financialDebt.invalid">
                             Financial Debt is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="restMoney">Rest Money</label>
+                        <input #restMoney="ngModel" [(ngModel)]="debt.restMoney" name="restMoney" id="restMoney" type="text"
+                            class="form-control" required>
+                        <div class="alert alert-danger" *ngIf="restMoney.touched && restMoney.invalid">
+                            Rest Money is required.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="placeId">Place</label>
+                        <select #placeId="ngModel" [(ngModel)]="debt.placeId" name="placeId" id="placeId"
+                            class="form-control" required>
+                            <option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
+                                {{placeMoney.place}}
+                            </option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="placeId.touched && placeId.invalid">
+                            Status is required.
                         </div>
                     </div>
                     <div class="form-group">
