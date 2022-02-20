@@ -18,13 +18,19 @@ export class NewOrEditDebtComponent implements OnInit {
   
   debt: Debt = new Debt();
 
+  placesMoney: PlacesMoney[] = [
+    {id: 0, place: 'لا يوجد'},
+    {id: 1, place: 'الجيب'},
+    {id: 2, place: 'المحفظة'},
+    {id: 3, place: 'الظرف'}, 
+    {id: 4, place: 'الصندوق'}
+  ];
 
   constructor(private debtService: DebtService) {}
 
   ngOnInit() {
     if (!this.debt.key) {
       this.debt.date = moment().format('YYYY-MM-DD');
-      this.debt.time = moment().format('HH:mm');
     }
   }
 
@@ -46,4 +52,9 @@ export class NewOrEditDebtComponent implements OnInit {
     }
     this.modalRef.close();
   }
+}
+
+export interface PlacesMoney {
+  id: number,
+  place: string
 }

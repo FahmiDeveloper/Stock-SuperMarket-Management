@@ -6,6 +6,7 @@ export class Debt {
     creditor: string;
     financialDebt:number;
     note: string;
+    placeId: number;
   
     constructor(){
       this.date = "";
@@ -14,5 +15,6 @@ export class Debt {
       this.creditor = "";
       this.financialDebt = null;
       this.note = "";
+      this.placeId = null;
     }
   }

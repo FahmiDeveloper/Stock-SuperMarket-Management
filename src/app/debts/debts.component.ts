@@ -31,6 +31,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
 
+  placeId: number;
+
+  placesMoney: PlacesMoney[] = [
+    {id: 0, place: 'لا يوجد'},
+    {id: 1, place: 'الجيب'},
+    {id: 2, place: 'المحفظة'},
+    {id: 3, place: 'الظرف'}, 
+    {id: 4, place: 'الصندوق'}
+  ];
+  restInPocket: Debt[];
+
   constructor(
     private debtService: DebtService, 
     public userService: UserService,
@@ -47,7 +58,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts = this.debtService
       .getAll()
       .subscribe(debts => {
-        this.filteredDebts = this.debts = debts;
+        if (this.queryDate) {
+          this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
+        } else if (this.placeId || this.placeId==0)  this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId)
+        else this.filteredDebts = debts;
     });
   }
 
@@ -92,20 +106,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
     })
   }
 
-  // filter(query: string) {
-  //    this.filteredMovies = (query)
-  //       ? this.movies.filter(movie => movie.nameMovie.toLowerCase().includes(query.toLowerCase()))
-  //       : this.movies;
-  // }
-
-  filterByDate() {
-    this.filteredDebts = (this.queryDate)
-      ? this.debts.filter(debt => debt.date.includes(this.queryDate))
-      : this.debts;
-  }
-
   clear() {
     this.queryDate = "";
+    this.placeId = null;
+    this.p = 1;
     this.getAllDebts();
   }
 
@@ -126,4 +130,9 @@ export class DebtsComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
+}
+
+export interface PlacesMoney {
+  id: number,
+  place: string
 }

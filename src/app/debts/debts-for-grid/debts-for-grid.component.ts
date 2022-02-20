@@ -26,11 +26,20 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   p: number = 1;
   queryDate: string = "";
   modalRefSearch: any;
+  placeId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
+
+  placesMoney: PlacesMoney[] = [
+    {id: 0, place: 'لا يوجد'},
+    {id: 1, place: 'الجيب'},
+    {id: 2, place: 'المحفظة'},
+    {id: 3, place: 'الظرف'}, 
+    {id: 4, place: 'الصندوق'}
+  ];
 
   constructor(
     private debtService: DebtService, 
@@ -50,8 +59,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     .subscribe(debts => {
       if (this.queryDate) {
         this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
-        this.modalRefSearch.close();
-      }  else this.filteredDebts = debts;
+      } else if (this.placeId || this.placeId==0)  this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId)
+      else this.filteredDebts = debts;
+
+      if (this.queryDate || this.placeId || this.placeId==0) this.modalRefSearch.close();
     });
   }
 
@@ -98,6 +109,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryDate = "";
+    this.placeId = null;
     this.getAllDebts();
     this.modalRefSearch.close();
   }
@@ -123,4 +135,9 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
+}
+
+export interface PlacesMoney {
+  id: number,
+  place: string
 }

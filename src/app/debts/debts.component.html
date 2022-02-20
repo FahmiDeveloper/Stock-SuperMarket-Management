@@ -4,17 +4,26 @@
 <br>
 
 <div class="row">
-    <!-- <div class="col-md-4">
-        <input #query (keyup)="filter(query.value)" type="text" class="form-control widhtInput" placeholder="Search by name...">
-    </div> -->
     <div class="col-md-5">
         <div class="row">
             <div class="col-md-7">
                 <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
             </div>
             <div class="col-md-5">
-                <button class="btn btn-primary font-weight-bold" (click)="filterByDate()">Search</button>
-                <button *ngIf="queryDate" class="btn btn-danger font-weight-bold" (click)="clear()">Clear</button>
+                <button class="btn btn-primary font-weight-bold" (click)="getAllDebts()">Search</button>
+                <button *ngIf="queryDate || placeId || placeId==0" class="btn btn-danger font-weight-bold" (click)="clear()">Clear</button>
+            </div>
+        </div>     
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-2"><label for="placeId" class="font-weight-bold">Place</label></div>
+            <div class="col-md-10">
+                <select [(ngModel)]="placeId" name="placeId" id="placeId" class="form-control" (click)="getAllDebts()">
+                    <option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
+                        {{placeMoney.place}}
+                    </option>
+                </select>
             </div>
         </div>     
     </div>
@@ -27,10 +36,10 @@
         <thead class="colorHeaderTable">
             <tr>
                 <th>Date</th>
-                <th>Time</th>
-                <th>Debtor&nbsp;(أعطى المال)</th>
-                <th>Creditor&nbsp;(قبض المال)</th>
-                <th>Debt&nbsp;(الدين)</th>
+                <th>Debtor</th>
+                <th>Creditor</th>
+                <th>Debt</th>
+                <th>Rest</th>
                 <th>Note</th>
                 <th>
                     <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
@@ -40,11 +49,14 @@
         <tbody>
             <tr
                 *ngFor="let debt of (filteredDebts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                <td>{{ debt.date | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ debt.time }}</td>
+                <td>
+                    <span *ngIf="debt.date">{{ debt.date | date: 'dd/MM/yyyy' }}</span>
+                    <span *ngIf="!debt.date">-</span>
+                </td>
                 <td>{{ debt.debtor }}</td>
                 <td>{{ debt.creditor }}</td>
                 <td>{{ debt.financialDebt }}</td>
+                <td>{{ debt.restMoney }}</td>
                 <td>{{ debt.note }}</td>
                 <td style="text-align:center;">
                     <div class="btnswrap">
