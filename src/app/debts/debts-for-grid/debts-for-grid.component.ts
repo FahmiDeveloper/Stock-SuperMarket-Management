@@ -23,8 +23,14 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   debts: Debt[];
   filteredDebts: Debt[];
+  filteredDebtsCopie: Debt[];
+
   p: number = 1;
   queryDate: string = "";
+  restInPocket: string = "";
+  restInWallet: string = "";
+  restInEnvelope: string = "";
+  restInBox: string = "";
   modalRefSearch: any;
   placeId: number;
 
@@ -40,6 +46,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     {id: 3, place: 'الظرف'}, 
     {id: 4, place: 'الصندوق'}
   ];
+  modalRefRestMoneyForeachPlace: any;
 
   constructor(
     private debtService: DebtService, 
@@ -57,6 +64,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts = this.debtService
     .getAll()
     .subscribe(debts => {
+      this.filteredDebtsCopie = debts;
       if (this.queryDate) {
         this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
       } else if (this.placeId || this.placeId==0)  this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId)
@@ -129,6 +137,26 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   openModalSearch(contentModalSearch) {
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
+  }
+
+  openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace) {
+    this.modalRefRestMoneyForeachPlace = this.modalService.open(contentRestMoneyForeachPlace as Component, { size: 'lg', centered: true });
+    this.getRestMoneyForeachPlace();
+
+  }
+
+  getRestMoneyForeachPlace() {
+    this.restInPocket = this.filteredDebtsCopie.filter(debt => debt.placeId == 1).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+
+    this.restInWallet = this.filteredDebtsCopie.filter(debt => debt.placeId == 2).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+
+    this.restInEnvelope = this.filteredDebtsCopie.filter(debt => debt.placeId == 3).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+
+    this.restInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
   }
 
   ngOnDestroy() {
