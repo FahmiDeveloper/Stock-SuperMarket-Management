@@ -21,10 +21,10 @@ import { Serie } from '../shared/models/serie.model';
 
 export class SeriesComponent implements OnInit, OnDestroy {
 
-  series: Serie[];
   filteredSeries: Serie[];
   p: number = 1;
   queryDate: string = "";
+  queryName: string = "";
   statusId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
@@ -54,10 +54,20 @@ export class SeriesComponent implements OnInit, OnDestroy {
 
   getAllSeries() {
     this.subscriptionForGetAllSeries = this.serieService
-      .getAll()
-      .subscribe(series => {
-        this.filteredSeries = this.series = series;
-        this.getStatusSerie();
+    .getAll()
+    .subscribe(series => {
+      if (this.queryName) 
+      this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryDate) 
+      this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
+      
+      else if (this.statusId) 
+      this.filteredSeries = series.filter(serie => serie.statusId == this.statusId);   
+      
+      else this.filteredSeries = series;
+
+      this.getStatusSerie();
     });
   }
 
@@ -102,20 +112,10 @@ export class SeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  filter(query: string) {
-     this.filteredSeries = (query)
-        ? this.series.filter(serie => serie.nameSerie.toLowerCase().includes(query.toLowerCase()))
-        : this.series;
-  }
-
-  filterByDate() {
-    this.filteredSeries = (this.queryDate)
-      ? this.series.filter(serie => serie.date.includes(this.queryDate))
-      : this.series;
-  }
-
   clear() {
     this.queryDate = "";
+    this.queryName = "";
+    this.statusId = null;
     this.getAllSeries();
   }
 
@@ -128,12 +128,6 @@ export class SeriesComponent implements OnInit, OnDestroy {
         }
       })
     })
-  }
-
-  filetrByStatus() {
-    this.filteredSeries = (this.statusId)
-      ? this.series.filter(serie => serie.statusId == this.statusId)
-      : this.series;
   }
 
   newSerie() {

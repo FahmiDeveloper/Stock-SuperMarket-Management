@@ -21,19 +21,16 @@ import { Movie } from '../shared/models/movie.model';
 
 export class MoviesComponent implements OnInit, OnDestroy {
 
-  movies: Movie[];
   filteredMovies: Movie[];
+  p: number = 1;
+  queryDate: string = "";
+  queryName: string = "";
+  statusId: number;
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
 
   user: FirebaseUserModel = new FirebaseUserModel();
-
-  p: number = 1;
-
-  queryDate: string = "";
-
-  statusId: number;
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -57,10 +54,20 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   getAllMovies() {
     this.subscriptionForGetAllMovies = this.movieService
-      .getAll()
-      .subscribe(movies => {
-        this.filteredMovies = this.movies = movies;
-        this.getStatusMovie();
+    .getAll()
+    .subscribe(movies => {
+      if (this.queryName) 
+      this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryDate) 
+      this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
+      
+      else if (this.statusId) 
+      this.filteredMovies = movies.filter(movie => movie.statusId == this.statusId);   
+      
+      else this.filteredMovies = movies;
+
+      this.getStatusMovie();
     });
   }
 
@@ -105,20 +112,10 @@ export class MoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  filter(query: string) {
-     this.filteredMovies = (query)
-        ? this.movies.filter(movie => movie.nameMovie.toLowerCase().includes(query.toLowerCase()))
-        : this.movies;
-  }
-
-  filterByDate() {
-    this.filteredMovies = (this.queryDate)
-      ? this.movies.filter(product => product.date.includes(this.queryDate))
-      : this.movies;
-  }
-
   clear() {
     this.queryDate = "";
+    this.queryName = "";
+    this.statusId = null;
     this.getAllMovies();
   }
 
@@ -131,12 +128,6 @@ export class MoviesComponent implements OnInit, OnDestroy {
         }
       })
     })
-  }
-
-  filetrByStatus() {
-    this.filteredMovies = (this.statusId)
-      ? this.movies.filter(movie => movie.statusId == this.statusId)
-      : this.movies;
   }
 
   newMovie() {

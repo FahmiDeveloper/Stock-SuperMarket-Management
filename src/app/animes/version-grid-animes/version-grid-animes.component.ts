@@ -21,9 +21,7 @@ import { Anime } from 'src/app/shared/models/anime.model';
 
 export class VersionGridAnimesComponent implements OnInit, OnDestroy {
 
-  animes: Anime[];
   filteredAnimes: Anime[];
-
   p: number = 1;
   isGrid: boolean = false;
   queryDate: string = "";
@@ -148,13 +146,6 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
         }
       })
     })
-  }
-
-  filetrByStatus(statusId: number) {
-    this.filteredAnimes = (statusId)
-      ? this.animes.filter(anime => anime.statusId == statusId)
-      : this.animes;
-      this.modalRefSearch.close();
   }
 
   openModalSearch(contentModalSearch) {
