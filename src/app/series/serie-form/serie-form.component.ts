@@ -44,7 +44,7 @@ export class SerieFormComponent implements OnInit {
   }
 
   save(serie) {
-    if (serie.statusId == 3 || serie.statusId == 4 || serie.statusId == 5) serie.path = "";
+    if (!serie.path) serie.path = "";
     if (this.serie.key) {
       this.serieService.update(this.serie.key, serie);
       Swal.fire(

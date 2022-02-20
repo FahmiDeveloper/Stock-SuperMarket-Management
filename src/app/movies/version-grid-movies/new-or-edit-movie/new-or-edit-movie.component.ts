@@ -47,7 +47,7 @@ export class NewOrEditMovieComponent implements OnInit {
   }
 
   save(movie) {
-    if (movie.statusId == 3 || movie.statusId == 4 || movie.statusId == 5) movie.path = "";
+    if (!movie.path) movie.path = "";
     if (this.movie.key) {
       this.movieService.update(this.movie.key, movie);
       Swal.fire(
