@@ -7,4 +7,15 @@
     flex-direction: row;
     row-gap: 5px;
 }
+
+.rest-money {
+    float: right;
+    font-size: 20px;
+}
+
+.label-place {
+    display: flex; 
+    justify-content: flex-end;
+    font-size: 20px;
+}
   

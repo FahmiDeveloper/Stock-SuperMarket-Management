@@ -2,19 +2,12 @@
 <div class="container mx-auto" style="margin-top: 50px;">
     <div class="row">
         <div class="col-md-4">
-            <div style="width: 18rem;margin-inline: auto;">
-                <div class="row">
-                    <div class="col-4">
-                        <button class="btn btn-success font-weight-bold" (click)="openModalSearch(contentModalSearch)">Search</button>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-info font-weight-bold" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
-                    </div>
-                    <div class="col-1">
-                        <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold float-right">New</a>  
-                    </div>
-                </div>
-            </div> 
+                <div class="row btnswrap justify-content-center">
+                    <button class="btn btn-success ml-2 mr-5 font-weight-bold" (click)="openModalSearch(contentModalSearch)">Search</button>
+                    <button class="btn btn-info ml-1 mr-5 font-weight-bold" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
+                    <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary mr-1 font-weight-bold float-right">New</a>  
+            </div>
+                
         </div>          
     </div>
 

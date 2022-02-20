@@ -31,96 +31,102 @@
 
 <br>
 
-<div class="row">
-    <div class="col-md-10">
-        
+<div class="row"> 
+    <div class="col-md-3">
         <div class="row">
-            <table class="table table-striped">
-                <thead class="colorHeaderTable">
-                    <tr>
-                        <th>Date</th>
-                        <th>Debtor</th>
-                        <th>Creditor</th>
-                        <th>Debt</th>
-                        <th>Rest</th>
-                        <th>Note</th>
-                        <th>
-                            <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        *ngFor="let debt of (filteredDebts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                        <td>
-                            <span *ngIf="debt.date">{{ debt.date | date: 'dd/MM/yyyy' }}</span>
-                            <span *ngIf="!debt.date">-</span>
-                        </td>
-                        <td>{{ debt.debtor }}</td>
-                        <td>{{ debt.creditor }}</td>
-                        <td>{{ debt.financialDebt }}</td>
-                        <td>{{ debt.restMoney }}</td>
-                        <td>{{ debt.note }}</td>
-                        <td style="text-align:center;">
-                            <div class="btnswrap">
-                                <button 
-                                    *ngIf="user.roleUpdate" 
-                                    (click)="editDebt(debt)"
-                                    class="btn btn-secondary font-weight-bold">
-                                    Edit
-                                </button>&nbsp;                                              
-                                <button 
-                                    *ngIf="user.roleDelete" 
-                                    type="button" 
-                                    (click)="delete(debt.key)"
-                                    class="btn btn-danger font-weight-bold">
-                                    Delete
-                                </button>                    
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="pagination">
-                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            <div class="col-5">
+                <span class="font-weight-bold rest-money badge badge-warning">{{ restInBox }}</span>
+            </div>
+            <div class="col-5 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الصندوق</span>
             </div>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
         <div class="row">
-            <div class="col-4">
-                <span class="font-weight-bold rest-money">{{ restInPocket }}</span>
+            <div class="col-5">
+                <span class="font-weight-bold rest-money badge badge-warning">{{ restInEnvelope }}</span>
             </div>
-            <div class="col-8 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الجيب</span>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-4">
-                <span class="font-weight-bold rest-money" >{{ restInWallet }}</span>
-            </div>
-            <div class="col-8 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: المحفظة</span>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-4">
-                <span class="font-weight-bold rest-money">{{ restInEnvelope }}</span>
-            </div>
-            <div class="col-8 font-weight-bold label-place">
+            <div class="col-5 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">: الظرف</span>
             </div>
         </div>
-        <br>
+    </div>
+    <div class="col-md-3">
         <div class="row">
-            <div class="col-4">
-                <span class="font-weight-bold rest-money">{{ restInBox }}</span>
+            <div class="col-5">
+                <span class="font-weight-bold rest-money badge badge-warning" >{{ restInWallet }}</span>
             </div>
-            <div class="col-8 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الصندوق</span>
+            <div class="col-5 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: المحفظة</span>
             </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold rest-money badge badge-warning">{{ restInPocket }}</span>
+            </div>
+            <div class="col-4 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الجيب</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+        
+    <div class="row">
+        <table class="table table-striped">
+            <thead class="colorHeaderTable">
+                <tr>
+                    <th>Date</th>
+                    <th>Debtor</th>
+                    <th>Creditor</th>
+                    <th>Debt</th>
+                    <th>Rest</th>
+                    <th>Note</th>
+                    <th>
+                        <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let debt of (filteredDebts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+                    <td>
+                        <span *ngIf="debt.date">{{ debt.date | date: 'dd/MM/yyyy' }}</span>
+                        <span *ngIf="!debt.date">-</span>
+                    </td>
+                    <td>{{ debt.debtor }}</td>
+                    <td>{{ debt.creditor }}</td>
+                    <td>{{ debt.financialDebt }}</td>
+                    <td>{{ debt.restMoney }}</td>
+                    <td>{{ debt.note }}</td>
+                    <td style="text-align:center;">
+                        <div class="btnswrap">
+                            <button 
+                                *ngIf="user.roleUpdate" 
+                                (click)="editDebt(debt)"
+                                class="btn btn-secondary font-weight-bold">
+                                Edit
+                            </button>&nbsp;                                              
+                            <button 
+                                *ngIf="user.roleDelete" 
+                                type="button" 
+                                (click)="delete(debt.key)"
+                                class="btn btn-danger font-weight-bold">
+                                Delete
+                            </button>                    
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
         </div>
     </div>
 </div>
