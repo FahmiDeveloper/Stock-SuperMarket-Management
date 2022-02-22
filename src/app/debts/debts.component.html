@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-5">
                 <button class="btn btn-primary font-weight-bold" (click)="getAllDebts()">Search</button>
-                <button *ngIf="queryDate || placeId || placeId==0" class="btn btn-danger font-weight-bold" (click)="clear()">Clear</button>
+                <button *ngIf="queryDate || placeId" class="btn btn-danger font-weight-bold" (click)="clear()">Clear</button>
             </div>
         </div>     
     </div>
@@ -31,7 +31,7 @@
 
 <br>
 
-<div class="row"> 
+<div class="row" *ngIf="placeId != 5 && placeId != 6"> 
     <div class="col-md-3">
         <div class="row">
             <div class="col-5">
@@ -69,6 +69,42 @@
             </div>
             <div class="col-4 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">: الجيب</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="placeId == 5"> 
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold rest-money badge badge-warning">{{ outDebt }}DT</span>
+            </div>
+            <div class="col-5 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الدين المسال</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold rest-money badge badge-warning" >{{ inDebt }}DT</span>
+            </div>
+            <div class="col-5 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الدين المتخلد بالذمة</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="placeId == 6"> 
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold rest-money badge badge-warning">{{ restInPosteAccount }}</span>
+            </div>
+            <div class="col-5 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الحساب البريدي</span>
             </div>
         </div>
     </div>

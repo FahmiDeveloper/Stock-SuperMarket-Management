@@ -4,7 +4,7 @@ export class Debt {
     time: string;
     debtor: string;
     creditor: string;
-    financialDebt:number;
+    financialDebt:string;
     note: string;
     placeId: number;
     numRow: number;

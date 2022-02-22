@@ -18,11 +18,12 @@ export class DebtFormComponent implements OnInit {
   debt: Debt = new Debt();
 
   placesMoney: PlacesMoney[] = [
-    {id: 0, place: 'لا يوجد'},
     {id: 1, place: 'الجيب'},
     {id: 2, place: 'المحفظة'},
     {id: 3, place: 'الظرف'}, 
-    {id: 4, place: 'الصندوق'}
+    {id: 4, place: 'الصندوق'},
+    {id: 5, place: 'لا يوجد'},
+    {id: 6, place: 'الحساب البريدي'}
   ];
 
   constructor(private debtService: DebtService) {}

@@ -31,6 +31,9 @@ export class DebtsComponent implements OnInit, OnDestroy {
   restInWallet: string = "";
   restInEnvelope: string = "";
   restInBox: string = "";
+  restInPosteAccount: string = "";
+  outDebt: number;
+  inDebt: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -40,11 +43,12 @@ export class DebtsComponent implements OnInit, OnDestroy {
   placeId: number;
 
   placesMoney: PlacesMoney[] = [
-    {id: 0, place: 'لا يوجد'},
     {id: 1, place: 'الجيب'},
     {id: 2, place: 'المحفظة'},
     {id: 3, place: 'الظرف'}, 
-    {id: 4, place: 'الصندوق'}
+    {id: 4, place: 'الصندوق'},
+    {id: 5, place: 'لا يوجد'},
+    {id: 6, place: 'الحساب البريدي'}
   ];
 
   constructor(
@@ -66,8 +70,15 @@ export class DebtsComponent implements OnInit, OnDestroy {
         this.filteredDebtsCopie = debts;
         if (this.queryDate) {
           this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
-        } else if (this.placeId || this.placeId==0)  this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId)
-        else this.filteredDebts = debts;
+        } else if (this.placeId) {
+          this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
+          if (this.placeId == 5) {
+            this.getDebts();
+          }
+          if (this.placeId == 6) {
+            this.getRestInPosteAccount();
+          }
+        } else this.filteredDebts = debts;
         this.getRestMoneyForeachPlace();
     });
   }
@@ -144,6 +155,24 @@ export class DebtsComponent implements OnInit, OnDestroy {
       (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
 
     this.restInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+  }
+
+  getDebts() {
+    this.outDebt = 0;
+    this.inDebt = 0;
+
+    this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi").forEach(element => {
+      this.outDebt += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
+
+    this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi").forEach(element => {
+      this.inDebt += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });  
+  }
+
+  getRestInPosteAccount() {
+    this.restInPosteAccount = this.filteredDebtsCopie.filter(debt => debt.placeId == 6).sort(
       (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
   }
 
