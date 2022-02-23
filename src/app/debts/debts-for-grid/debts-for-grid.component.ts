@@ -49,7 +49,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     {id: 2, place: 'المحفظة'},
     {id: 3, place: 'الظرف'}, 
     {id: 4, place: 'الصندوق'},
-    {id: 5, place: 'لا يوجد'},
+    {id: 5, place: 'دين'},
     {id: 6, place: 'الحساب البريدي'}
   ];
 
@@ -72,9 +72,11 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       this.filteredDebtsCopie = debts;
       if (this.queryDate) {
         this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
-      } else if (this.placeId) this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId)
-      else this.filteredDebts = debts;
-
+      } else if (this.placeId) {
+        this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
+        if (this.placeId == 5) this.getDebts();
+        else this.getRestMoneyForeachPlace();
+      } else this.filteredDebts = debts;
       if (this.queryDate || this.placeId) this.modalRefSearch.close();
     });
   }

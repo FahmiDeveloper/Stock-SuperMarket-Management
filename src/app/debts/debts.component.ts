@@ -34,22 +34,23 @@ export class DebtsComponent implements OnInit, OnDestroy {
   restInPosteAccount: string = "";
   outDebt: number;
   inDebt: number;
+  placeId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
 
-  placeId: number;
-
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
     {id: 2, place: 'المحفظة'},
     {id: 3, place: 'الظرف'}, 
     {id: 4, place: 'الصندوق'},
-    {id: 5, place: 'لا يوجد'},
+    {id: 5, place: 'دين'},
     {id: 6, place: 'الحساب البريدي'}
   ];
+  modalRefRestMoneyForeachPlace: any;
+  modalRefDebt: any;
 
   constructor(
     private debtService: DebtService, 
@@ -72,14 +73,9 @@ export class DebtsComponent implements OnInit, OnDestroy {
           this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
         } else if (this.placeId) {
           this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
-          if (this.placeId == 5) {
-            this.getDebts();
-          }
-          if (this.placeId == 6) {
-            this.getRestInPosteAccount();
-          }
+          if (this.placeId == 5) this.getDebts();
+          else this.getRestMoneyForeachPlace();
         } else this.filteredDebts = debts;
-        this.getRestMoneyForeachPlace();
     });
   }
 
@@ -144,6 +140,16 @@ export class DebtsComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.debt = debt;
   }
 
+  showRest(contentRestMoneyForeachPlace) {
+    this.modalRefRestMoneyForeachPlace = this.modalService.open(contentRestMoneyForeachPlace as Component, { size: 'sm', centered: true });
+    this.getRestMoneyForeachPlace();
+  }
+
+  showDebt(contentDebt) {
+    this.modalRefDebt = this.modalService.open(contentDebt as Component, { size: 'sm', centered: true });
+    this.getDebts();
+  }
+
   getRestMoneyForeachPlace() {
     this.restInPocket = this.filteredDebtsCopie.filter(debt => debt.placeId == 1).sort(
       (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
@@ -155,6 +161,9 @@ export class DebtsComponent implements OnInit, OnDestroy {
       (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
 
     this.restInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort(
+      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+
+    this.restInPosteAccount = this.filteredDebtsCopie.filter(debt => debt.placeId == 6).sort(
       (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
   }
 
