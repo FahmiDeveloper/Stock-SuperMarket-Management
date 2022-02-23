@@ -27,86 +27,82 @@
             </div>
         </div>     
     </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1">
+        <button class="btn btn-warning font-weight-bold" (click)="showDebt(contentDebt)">Debt</button>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-info font-weight-bold" (click)="showRest(contentRestMoneyForeachPlace)">Rest</button>
+    </div>
 </div>
 
 <br>
 
-<div class="row" *ngIf="placeId != 5 && placeId != 6"> 
-    <div class="col-md-3">
-        <div class="row">
-            <div class="col-5">
-                <span class="font-weight-bold rest-money badge badge-warning">{{ restInBox }}</span>
-            </div>
-            <div class="col-5 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الصندوق</span>
-            </div>
-        </div>
+<div class="row" *ngIf="placeId == 1">
+    <div class="col-md-6">
+        <span class="font-weight-bold rest-money badge badge-warning">{{ restInPocket }}</span>
     </div>
-    <div class="col-md-3">
-        <div class="row">
-            <div class="col-5">
-                <span class="font-weight-bold rest-money badge badge-warning">{{ restInEnvelope }}</span>
-            </div>
-            <div class="col-5 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الظرف</span>
-            </div>
-        </div>
+    <div class="col-md-6 font-weight-bold label-place">
+        <span class="text-primary font-weight-bold">: الجيب</span>
     </div>
-    <div class="col-md-3">
-        <div class="row">
-            <div class="col-5">
-                <span class="font-weight-bold rest-money badge badge-warning" >{{ restInWallet }}</span>
-            </div>
-            <div class="col-5 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: المحفظة</span>
-            </div>
-        </div>
+</div>
+
+<div class="row" *ngIf="placeId == 2"> 
+    <div class="col-md-6">
+        <span class="font-weight-bold rest-money badge badge-warning" >{{ restInWallet }}</span>
     </div>
-    <div class="col-md-3">
-        <div class="row">
-            <div class="col-5">
-                <span class="font-weight-bold rest-money badge badge-warning">{{ restInPocket }}</span>
-            </div>
-            <div class="col-4 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الجيب</span>
-            </div>
-        </div>
+    <div class="col-md-6 font-weight-bold label-place">
+        <span class="text-primary font-weight-bold">: المحفظة</span>
+    </div>
+</div>
+
+<div class="row" *ngIf="placeId == 3"> 
+    <div class="col-md-6">
+        <span class="font-weight-bold rest-money badge badge-warning">{{ restInEnvelope }}</span>
+    </div>
+    <div class="col-md-6 font-weight-bold label-place">
+        <span class="text-primary font-weight-bold">: الظرف</span>
+    </div>
+</div>
+
+<div class="row" *ngIf="placeId == 4"> 
+    <div class="col-md-6">
+        <span class="font-weight-bold rest-money badge badge-warning">{{ restInBox }}</span>
+    </div>
+    <div class="col-md-6 font-weight-bold label-place">
+        <span class="text-primary font-weight-bold">: الصندوق</span>
     </div>
 </div>
 
 <div class="row" *ngIf="placeId == 5"> 
     <div class="col-md-6">
         <div class="row">
-            <div class="col-5">
+            <div class="col-md-6">
                 <span class="font-weight-bold rest-money badge badge-warning">{{ outDebt }}DT</span>
             </div>
-            <div class="col-5 font-weight-bold label-place">
+            <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">: الدين المسال</span>
             </div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="row">
-            <div class="col-5">
+            <div class="col-md-6">
                 <span class="font-weight-bold rest-money badge badge-warning" >{{ inDebt }}DT</span>
             </div>
-            <div class="col-5 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الدين المتخلد بالذمة</span>
+            <div class="col-md-6 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الدين المتخلد</span>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row" *ngIf="placeId == 6"> 
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-5">
-                <span class="font-weight-bold rest-money badge badge-warning">{{ restInPosteAccount }}</span>
-            </div>
-            <div class="col-5 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الحساب البريدي</span>
-            </div>
-        </div>
+    <div class="col-md-6">
+        <span class="font-weight-bold rest-money badge badge-warning">{{ restInPosteAccount }}</span>
+    </div>
+    <div class="col-md-6 font-weight-bold label-place">
+        <span class="text-primary font-weight-bold">: الحساب البريدي</span>
     </div>
 </div>
 
@@ -166,4 +162,96 @@
         </div>
     </div>
 </div>
+
+<ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Rest Money</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefRestMoneyForeachPlace.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row ml-4">
+            <div class="col-4">
+                <span class="font-weight-bold rest-money">{{ restInPocket }}</span>
+            </div>
+            <div class="col-8 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الجيب</span>
+            </div>
+        </div>
+        <br>
+        <div class="row ml-4">
+            <div class="col-4">
+                <span class="font-weight-bold rest-money" >{{ restInWallet }}</span>
+            </div>
+            <div class="col-8 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: المحفظة</span>
+            </div>
+        </div>
+        <br>
+        <div class="row ml-4">
+            <div class="col-4">
+                <span class="font-weight-bold rest-money">{{ restInEnvelope }}</span>
+            </div>
+            <div class="col-8 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الظرف</span>
+            </div>
+        </div>
+        <br>
+        <div class="row ml-4">
+            <div class="col-4">
+                <span class="font-weight-bold rest-money">{{ restInBox }}</span>
+            </div>
+            <div class="col-8 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الصندوق</span>
+            </div>
+        </div>
+        <br>
+        <div class="row ml-4">
+            <div class="col-4">
+                <span class="font-weight-bold rest-money">{{ restInPosteAccount }}</span>
+            </div>
+            <div class="col-8 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">: الحساب البريدي</span>
+            </div>
+        </div>
+        </div>
+</ng-template>
+
+<ng-template #contentDebt let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Debt</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefDebt.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <span class="font-weight-bold rest-money">{{ inDebt }}DT</span>
+                </div>
+                <div class="col-8 font-weight-bold label-place">
+                    <span class="text-primary font-weight-bold">: الدين المتخلد</span>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <span class="font-weight-bold rest-money" >{{ outDebt }}DT</span>
+                </div>
+                <div class="col-8 font-weight-bold label-place">
+                    <span class="text-primary font-weight-bold">: الدين المسال</span>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>        
+</ng-template>
 

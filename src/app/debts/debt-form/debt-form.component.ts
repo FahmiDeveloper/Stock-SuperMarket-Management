@@ -22,7 +22,7 @@ export class DebtFormComponent implements OnInit {
     {id: 2, place: 'المحفظة'},
     {id: 3, place: 'الظرف'}, 
     {id: 4, place: 'الصندوق'},
-    {id: 5, place: 'لا يوجد'},
+    {id: 5, place: 'دين'},
     {id: 6, place: 'الحساب البريدي'}
   ];
 
