@@ -5,7 +5,7 @@
             <div class="row btnswrap justify-content-center">
                 <button class="btn btn-success ml-2 mr-4 font-weight-bold" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search"></i></button>
                 <button class="btn btn-info ml-1 mr-3 font-weight-bold" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
-                <button class="btn btn-warning ml-1 mr-3 font-weight-bold" (click)="openModalDebt(contentDebt)">Debt</button>
+                <button class="btn btn-dark ml-1 mr-3 font-weight-bold" (click)="openModalDebt(contentDebt)">Debt</button>
                 <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold float-right"><i class="fa fa-plus"></i></a>  
             </div>              
         </div>          
@@ -13,113 +13,79 @@
 
     <br *ngIf="placeId">
 
-    <div class="row" *ngIf="placeId == 1">
-        <div class="col-md-4">
-            <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                <div class="card-body text-dark" style="display: flex;align-items: center;justify-content: center;">
-                    <div class="row">
-                        <div class="col-6">
-                            <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInPocket }}</span>
-                        </div>
-                        <div class="col-6 font-weight-bold">
-                            <span class="text-primary" style="font-size: 18px;">: الجيب</span>
-                        </div>
-                    </div>
-                </div>
+    <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 1">
+        <div class="row">
+            <div class="col-6">
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInPocket }}</span>
+            </div>
+            <div class="col-6 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">: الجيب</span>
             </div>
         </div>
     </div>
 
-    <div class="row" *ngIf="placeId == 2">
-        <div class="col-md-4">
-            <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                <div class="card-body text-dark" style="display: flex;align-items: center;justify-content: center;">
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInWallet }}</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span class="text-primary"style="font-size: 18px;">: المحفظة</span>
-                        </div>
-                    </div>
-                </div>
+    <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 2"> 
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInWallet }}</span>
+            </div>
+            <div class="col-7 font-weight-bold">
+                <span class="text-primary"style="font-size: 18px;">: المحفظة</span>
             </div>
         </div>
     </div>
 
-    <div class="row" *ngIf="placeId == 3">
-        <div class="col-md-4">
-            <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                <div class="card-body text-dark" style="display: flex;align-items: center;justify-content: center;">
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInEnvelope }}</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span class="text-primary" style="font-size: 18px;">: الظرف</span>
-                        </div>
-                    </div>
-                </div>
+    <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 3">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInEnvelope }}</span>
+            </div>
+            <div class="col-7 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">: الظرف</span>
             </div>
         </div>
     </div>
 
-    <div class="row" *ngIf="placeId == 4">
-        <div class="col-md-4">
-            <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                <div class="card-body text-dark" style="display: flex;align-items: center;justify-content: center;">
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInBox }}</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span class="text-primary" style="font-size: 18px;">: الصندوق</span>
-                        </div>
-                    </div>
-                </div>
+    <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 4">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInBox }}</span>
+            </div>
+            <div class="col-7 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">: الصندوق</span>
             </div>
         </div>
     </div>
 
-    <div class="row" *ngIf="placeId == 5">
-        <div class="col-md-4">
-            <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                <div class="card-body text-dark">
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ outDebt }}DT</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span class="text-primary" style="font-size: 18px;">: الدين المسال</span>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ inDebt }}DT</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span class="text-primary" style="font-size: 18px;">: الدين المتخلد</span>
-                        </div>
-                    </div>
-                </div>
+    <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ inDebt }}DT</span>
+            </div>
+            <div class="col-7 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">: الدين المتخلد</span>
             </div>
         </div>
     </div>
-
-    <div class="row" *ngIf="placeId == 6">
-        <div class="col-md-4">
-            <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                <div class="card-body text-dark" style="display: flex;align-items: center;justify-content: center;">
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInPosteAccount }}</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span class="text-primary" style="font-size: 18px;">: الحساب البريدي</span>
-                        </div>
-                    </div>
-                </div>
+    <br *ngIf="placeId == 5">
+    <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;width: 70px;">{{ outDebt }}DT</span>
+            </div>
+            <div class="col-7 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">: الدين المسال</span>
+            </div>
+        </div>
+    </div>
+    
+    <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 6">
+        <div class="row">
+            <div class="col-5">
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInPosteAccount }}</span>
+            </div>
+            <div class="col-7 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">: الحساب البريدي</span>
             </div>
         </div>
     </div>
