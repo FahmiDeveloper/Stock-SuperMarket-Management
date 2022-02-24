@@ -208,7 +208,7 @@
 <ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Rest Money</h4>
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Rest Money</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefRestMoneyForeachPlace.close()">
             <span aria-hidden="true">&times;</span>
@@ -268,7 +268,7 @@
 <ng-template #contentDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Debt</h4>
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Debt</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -276,25 +276,109 @@
     </div>
 
     <div class="modal-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-3">
+                <button class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
                     <span class="font-weight-bold rest-money">{{ inDebt }}DT</span>
-                </div>
-                <div class="col-8 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">: الدين المتخلد</span>
-                </div>
+                </button>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-4">
-                    <span class="font-weight-bold rest-money" >{{ outDebt }}DT</span>
-                </div>
-                <div class="col-8 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">: الدين المسال</span>
-                </div>
+            <div class="col-6 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">الدين المتخلد</span>
             </div>
-            <br>
         </div>
-    </div>        
+        <br>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-3">
+                <button class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
+                    <span class="font-weight-bold rest-money">{{ outDebt }}DT</span>
+                </button>
+            </div>
+            <div class="col-6 font-weight-bold label-place">
+                <span class="text-primary font-weight-bold">الدين المسال</span>
+            </div>
+        </div>
+        <br>
+    </div>
+</ng-template>
+
+<ng-template #contentDetInDebt let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Details</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefDetInDebt.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-md-4" *ngFor="let detailInDebt of detailsInDebt">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
+                    <div class="card-body text-dark">
+                        <div class="row">
+                            <div class="col-5">
+                                <span class="text-primary font-weight-bold" style="font-size: 20px;">
+                                    {{ detailInDebt.creditor }}
+                                </span>
+                            </div>
+                            <div class="col-7 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
+                                {{ detailInDebt.financialDebt }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: right;">
+                                {{ detailInDebt.note }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
+
+<ng-template #contentDetOutDebt let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Details</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefDetOutDebt.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="col-md-4" *ngFor="let detailOutDebt of detailsOutDebt">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
+                    <div class="card-body text-dark">
+                        <div class="row">
+                            <div class="col-5">
+                                <span class="text-primary font-weight-bold" style="font-size: 20px;">
+                                    {{ detailOutDebt.debtor }}
+                                </span>
+                            </div>
+                            <div class="col-7 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
+                                {{ detailOutDebt.financialDebt }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: right;">
+                                {{ detailOutDebt.note }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+
+    </div>
 </ng-template>

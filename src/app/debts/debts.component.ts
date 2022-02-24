@@ -24,6 +24,8 @@ export class DebtsComponent implements OnInit, OnDestroy {
   debts: Debt[];
   filteredDebts: Debt[];
   filteredDebtsCopie: Debt[];
+  detailsInDebt: Debt[];
+  detailsOutDebt: Debt[];
 
   p: number = 1;
   queryDate: string = "";
@@ -35,6 +37,11 @@ export class DebtsComponent implements OnInit, OnDestroy {
   outDebt: number;
   inDebt: number;
   placeId: number;
+
+  modalRefRestMoneyForeachPlace: any;
+  modalRefDebt: any;
+  modalRefDetInDebt: any;
+  modalRefDetOutDebt: any;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -49,8 +56,6 @@ export class DebtsComponent implements OnInit, OnDestroy {
     {id: 5, place: 'دين'},
     {id: 6, place: 'الحساب البريدي'}
   ];
-  modalRefRestMoneyForeachPlace: any;
-  modalRefDebt: any;
 
   constructor(
     private debtService: DebtService, 
@@ -141,12 +146,12 @@ export class DebtsComponent implements OnInit, OnDestroy {
   }
 
   showRest(contentRestMoneyForeachPlace) {
-    this.modalRefRestMoneyForeachPlace = this.modalService.open(contentRestMoneyForeachPlace as Component, { size: 'sm', centered: true });
+    this.modalRefRestMoneyForeachPlace = this.modalService.open(contentRestMoneyForeachPlace as Component, { windowClass : "restModalClass", centered: true });
     this.getRestMoneyForeachPlace();
   }
 
   showDebt(contentDebt) {
-    this.modalRefDebt = this.modalService.open(contentDebt as Component, { size: 'sm', centered: true });
+    this.modalRefDebt = this.modalService.open(contentDebt as Component, { windowClass : "debtModalClass", centered: true});
     this.getDebts();
   }
 
@@ -180,9 +185,19 @@ export class DebtsComponent implements OnInit, OnDestroy {
     });  
   }
 
-  getRestInPosteAccount() {
-    this.restInPosteAccount = this.filteredDebtsCopie.filter(debt => debt.placeId == 6).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+  showDetInDebt(contentDetInDebt) {
+    this.modalRefDetInDebt = this.modalService.open(contentDetInDebt as Component, { windowClass : "detailsDebtModalClass", centered: true});
+    this.getDetDebts();
+  }
+
+  showDetOutDebt(contentDetOutDebt) {
+    this.modalRefDetOutDebt = this.modalService.open(contentDetOutDebt as Component, { windowClass : "detailsDebtModalClass", centered: true});
+    this.getDetDebts();
+  }
+
+  getDetDebts() {
+    this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+    this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
   }
 
   ngOnDestroy() {

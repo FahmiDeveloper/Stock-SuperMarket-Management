@@ -24,6 +24,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   debts: Debt[];
   filteredDebts: Debt[];
   filteredDebtsCopie: Debt[];
+  detailsInDebt: Debt[];
+  detailsOutDebt: Debt[];
 
   p: number = 1;
   queryDate: string = "";
@@ -34,10 +36,13 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   restInPosteAccount: string = "";
   modalRefSearch: any;
   placeId: number;
-  modalRefRestMoneyForeachPlace: any;
-  modalRefDebt: any;
   outDebt: number;
   inDebt: number;
+
+  modalRefRestMoneyForeachPlace: any;
+  modalRefDebt: any;
+  modalRefDetInDebt: any;
+  modalRefDetOutDebt: any;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -184,6 +189,21 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi").forEach(element => {
       this.inDebt += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
     });  
+  }
+
+  showDetInDebt(contentDetInDebt) {
+    this.modalRefDetInDebt = this.modalService.open(contentDetInDebt as Component, { size: 'lg', centered: true });
+    this.getDetDebts();
+  }
+
+  showDetOutDebt(contentDetOutDebt) {
+    this.modalRefDetOutDebt = this.modalService.open(contentDetOutDebt as Component, { size: 'lg', centered: true });
+    this.getDetDebts();
+  }
+
+  getDetDebts() {
+    this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+    this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
   }
 
   ngOnDestroy() {
