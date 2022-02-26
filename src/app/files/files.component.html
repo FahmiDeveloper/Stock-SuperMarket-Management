@@ -15,7 +15,7 @@
 <ng-template #contentListFiles let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">List {{ typeFile.type }} Files</h4>
+        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ typeFile.type }} Files</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefListFiles.close()">
             <span aria-hidden="true">&times;</span>
@@ -41,7 +41,8 @@
 <ng-template #contentLinks let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">List {{ typeFile.type }}</h4>
+        <h4 *ngIf="!clickShowLinks" class="modal-title w-100 font-weight-bold text-danger">{{ typeFile.type }}</h4>
+        <h4 *ngIf="clickShowLinks" class="modal-title w-100 font-weight-bold text-danger">{{ typeLink.type }} Links</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefListLinks.close()">
             <span aria-hidden="true">&times;</span>

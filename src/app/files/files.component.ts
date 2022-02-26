@@ -20,13 +20,19 @@ import { NewOrEditLinkComponent } from './new-or-edit-link/new-or-edit-link.comp
 
 export class FilesComponent implements OnInit {
 
-  isMobile: boolean;
+  filteredLinks: Link[];
+  allLinks: Link[];
+
   typeFile: TypesFiles;
+  typeLink: TypesLinks;
+
   modalRefListFiles: any;
   modalRefListLinks: any;
-  filteredLinks: Link[];
-  p: number = 1;
+  
+  isMobile: boolean;
   clickShowLinks: boolean = false;
+
+  p: number = 1;
 
   subscriptionForGetAllLinks: Subscription;
   subscriptionForUser: Subscription;
@@ -44,8 +50,9 @@ export class FilesComponent implements OnInit {
 
   typesLinks: TypesLinks[] = [
     {id: 1, type: 'ANGULAR', icon: '/assets/pictures/links-angular.png'},
-    {id: 2, type: 'Other Links', icon: '/assets/pictures/pdf-file.jpg'}
+    {id: 2, type: 'Other Contents', icon: '/assets/pictures/pdf-file.jpg'}
   ];
+  allLinksCopie: any[];
 
   constructor(
     private deviceService: DeviceDetectorService, 
@@ -65,7 +72,7 @@ export class FilesComponent implements OnInit {
     this.subscriptionForGetAllLinks = this.linkService
     .getAll()
     .subscribe(links => {
-       this.filteredLinks = links;
+      this.allLinks = links;
     });
   }
 
@@ -99,12 +106,29 @@ export class FilesComponent implements OnInit {
 
   showListTypeLinks(typeLink: TypesLinks) {
     this.clickShowLinks = true;
+    this.typeLink = typeLink;
+    this.getFilteredLinks();
+  }
+
+  getFilteredLinks() {   
+    this.filteredLinks = this.allLinks.filter(link => link.typeLinkId == this.typeLink.id);   
   }
 
   newLink() {
     const modalRef = this.modalService.open(NewOrEditLinkComponent as Component, { size: 'lg', centered: true });
 
+    modalRef.componentInstance.typeLinkId = this.typeLink.id;
     modalRef.componentInstance.modalRef = modalRef;
+
+    modalRef.componentInstance.passEntry.subscribe((receivedEntry: boolean) => {
+      if (receivedEntry) {
+        this.subscriptionForGetAllLinks = this.linkService
+        .getAll()
+        .subscribe(links => {
+          this.filteredLinks = links.filter(link => link.typeLinkId == this.typeLink.id);
+        });
+      }   
+    })
   }
 
   editLink(link?: Link) {
@@ -129,7 +153,12 @@ export class FilesComponent implements OnInit {
           'Link has been deleted successfully',
           '',
           'success'
-        )
+        );
+        this.subscriptionForGetAllLinks = this.linkService
+        .getAll()
+        .subscribe(links => {
+          this.filteredLinks = links.filter(link => link.typeLinkId == this.typeLink.id);
+        });
       }
     })
   }
