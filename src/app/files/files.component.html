@@ -1,15 +1,40 @@
 <h1 class="text-center text-danger font-weight-bold titleTextInterface">Files</h1>
 
-<br>
-<br>
-
-<div class="row">
-    <div class="col-md-12">
-         <app-upload-form></app-upload-form>
-    </div>
-</div><br>
-<div class="row">
-    <div class="col-md-12">
-        <app-upload-list [isMobile]="isMobile"></app-upload-list>
+<div class="container mx-auto">
+    <div class="row my-flex-card" [ngStyle]="{'margin-top': isMobile ? '30px' : '50px'}">
+        <div class="col-lg-3 col-sm-6" *ngFor="let typeFile of typesFiles">
+            <div class="card">
+                <div class="card-block">
+                    <img [src]="typeFile.icon" class="imageTypeFile" (click)="openListFiles(contentListFiles, typeFile)">                
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<ng-template #contentListFiles let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold text-danger">List {{ typeFile.type }} Files</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefListFiles.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                     <app-upload-form [typeFileId]="typeFile.id"></app-upload-form>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <app-upload-list [isMobile]="isMobile" [typeFileId]="typeFile.id"></app-upload-list>
+                </div>
+            </div>
+        </div>    
+    </div>
+</ng-template>
+

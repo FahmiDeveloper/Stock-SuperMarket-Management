@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
@@ -12,6 +12,8 @@ import { FileUpload } from 'src/app/shared/models/file-upload.model';
 
 export class UploadFormComponent implements OnInit {
 
+  @Input() typeFileId: number;
+  
   selectedFiles?: FileList;
   currentFileUpload?: FileUpload;
   percentage = 0;
@@ -30,7 +32,7 @@ export class UploadFormComponent implements OnInit {
       const file: File | null = this.selectedFiles.item(0);
       this.selectedFiles = undefined;
       if (file) {
-        this.currentFileUpload = new FileUpload(file);
+        this.currentFileUpload = new FileUpload(file, this.typeFileId);
         this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(
           percentage => {
             this.percentage = Math.round(percentage ? percentage : 0);
