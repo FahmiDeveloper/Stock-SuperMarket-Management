@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { Link } from '../shared/models/link.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
+import { NewOrEditLinkComponent } from './new-or-edit-link/new-or-edit-link.component';
+
 import { AuthService } from '../shared/services/auth.service';
 import { LinkService } from '../shared/services/link.service';
 import { UserService } from '../shared/services/user.service';
-import { NewOrEditLinkComponent } from './new-or-edit-link/new-or-edit-link.component';
+
+import { Link } from '../shared/models/link.model';
+import { FirebaseUserModel } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-files',
@@ -52,7 +54,6 @@ export class FilesComponent implements OnInit {
     {id: 1, type: 'ANGULAR', icon: '/assets/pictures/links-angular.png'},
     {id: 2, type: 'Other Contents', icon: '/assets/pictures/pdf-file.jpg'}
   ];
-  allLinksCopie: any[];
 
   constructor(
     private deviceService: DeviceDetectorService, 
