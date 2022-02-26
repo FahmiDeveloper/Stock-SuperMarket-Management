@@ -10,3 +10,9 @@
     width: 100%;
     background-size: cover;
 }
+
+.btnswrap {
+    display: flex;
+    flex-direction: row;
+    row-gap: 5px;
+}
