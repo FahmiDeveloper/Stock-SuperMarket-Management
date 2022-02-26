@@ -13,6 +13,8 @@ import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 export class UploadListComponent implements OnInit {
 
   @Input() isMobile: boolean;
+  @Input() typeFileId: number;
+
   fileUploads?: any[];
   filteredFiles?: any[];
   p: number = 1;
@@ -26,14 +28,14 @@ export class UploadListComponent implements OnInit {
         changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
       )
     ).subscribe(fileUploads => {
+      this.filteredFiles = fileUploads.filter(element => element.typeFileId == this.typeFileId);
       this.fileUploads = fileUploads;
-      this.filteredFiles = fileUploads;
     });
   }
 
   filter(query: string) {
     this.filteredFiles = (query)
-       ? this.fileUploads.filter(file => file.name.toLowerCase().includes(query.toLowerCase()))
-       : this.fileUploads;
+       ? this.filteredFiles.filter(file => file.name.toLowerCase().includes(query.toLowerCase()))
+       : this.fileUploads.filter(element => element.typeFileId == this.typeFileId);;
   }
 }

@@ -67,6 +67,7 @@ import { DebtsComponent } from './debts/debts.component';
 import { DebtFormComponent } from './debts/debt-form/debt-form.component';
 import { DebtsForGridComponent } from './debts/debts-for-grid/debts-for-grid.component';
 import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/new-or-edit-debt.component';
+import { NewOrEditLinkComponent } from './files/new-or-edit-link/new-or-edit-link.component';
 
 @NgModule({
   imports: [
@@ -134,7 +135,8 @@ import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/
     DebtsComponent,
     DebtFormComponent,
     DebtsForGridComponent,
-    NewOrEditDebtComponent
+    NewOrEditDebtComponent,
+    NewOrEditLinkComponent
   ],
   entryComponents: [
     ListProductsComponent,
@@ -144,7 +146,8 @@ import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/
     NewOrEditMovieComponent,
     NewOrEditAnimeComponent,
     NewOrEditSerieComponent,
-    NewOrEditDebtComponent
+    NewOrEditDebtComponent,
+    NewOrEditLinkComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
