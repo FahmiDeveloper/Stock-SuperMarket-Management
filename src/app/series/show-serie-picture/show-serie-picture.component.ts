@@ -37,7 +37,7 @@ export class ShowSeriePictureComponent implements OnInit {
   }
 
   showSerieImage(contentSeriePicture) {
-    this.modalService.open(contentSeriePicture, { size: 'lg', centered: true });
+    this.modalService.open(contentSeriePicture, { windowClass :'viewPicture', centered: true });
     this.pictureSerie = this.serie.imageUrl;
   }
 

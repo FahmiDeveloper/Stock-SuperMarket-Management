@@ -38,7 +38,7 @@ export class ShowAnimePictureComponent implements OnInit {
   }
 
   showAnimeImage(contentAnimePicture) {
-    this.modalService.open(contentAnimePicture, { size: 'lg', centered: true });
+    this.modalService.open(contentAnimePicture, { windowClass :'viewPicture', centered: true });
     this.pictureAnime = this.anime.imageUrl;
   }
 
