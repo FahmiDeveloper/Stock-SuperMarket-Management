@@ -11,7 +11,7 @@
 
     <br>
     <div class="row">
-        <div class="col-md-4" *ngFor="let movie of (filteredMovies | sortBy: 'key')">
+        <div class="col-md-4" *ngFor="let movie of (filteredMovies | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
             <div class="card bg-white" style="width: 18rem;margin-inline: auto;">
                 <show-movie-picture [movie]="movie" [isGrid]="isGrid"></show-movie-picture>
                 <div class="card-body text-dark">
@@ -78,6 +78,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <pagination-controls (pageChange)="p = $event" responsive="true"></pagination-controls>
+        </div>        
     </div>
 </div>
 
