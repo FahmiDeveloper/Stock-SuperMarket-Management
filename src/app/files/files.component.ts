@@ -41,6 +41,8 @@ export class FilesComponent implements OnInit {
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
+  content: string = '';
+
   typesFiles: TypesFiles[] = [
     {id: 1, type: 'PICTURE', icon: '/assets/pictures/picture-file.jpg'},
     {id: 2, type: 'PDF', icon: '/assets/pictures/pdf-file.jpg'},
@@ -113,7 +115,7 @@ export class FilesComponent implements OnInit {
   }
 
   getFilteredLinks() {   
-    this.filteredLinks = this.allLinks.filter(link => link.typeLinkId == this.typeLink.id);   
+    this.filteredLinks = this.content ? this.allLinks.filter(link => (link.typeLinkId == this.typeLink.id) && (link.content.toLowerCase().includes(this.content.toLowerCase()))) : this.allLinks.filter(link => link.typeLinkId == this.typeLink.id);     
   }
 
   newLink() {
