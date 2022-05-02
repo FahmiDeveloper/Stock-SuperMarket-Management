@@ -53,7 +53,7 @@ export class FilesComponent implements OnInit {
 
   typesLinks: TypesLinks[] = [
     {id: 1, type: 'ANGULAR', icon: '/assets/pictures/links-angular.png'},
-    {id: 2, type: 'Other Contents', icon: '/assets/pictures/pdf-file.jpg'}
+    {id: 2, type: 'Other Contents', icon: '/assets/pictures/other-link.png'}
   ];
 
   constructor(
