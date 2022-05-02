@@ -28,6 +28,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   statusId: number;
   modalRefSearch: any;
   queryName: string = "";
+  queryNote: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -62,6 +63,9 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
       if (this.queryName) 
       this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
       
+      else if (this.queryNote) 
+      this.filteredMovies = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      
       // else if (this.queryDate) 
       // this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
       
@@ -71,7 +75,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
       else this.filteredMovies = movies;
 
       this.getStatusMovie();
-      if (this.queryName || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.queryNote || this.statusId) this.modalRefSearch.close();
     });
   }
 
@@ -118,6 +122,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryName = "";
+    this.queryNote = "";
     // this.queryDate = "";
     this.statusId = null;
     this.getAllMovies();

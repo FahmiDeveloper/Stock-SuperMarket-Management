@@ -28,6 +28,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   statusId: number;
   modalRefSearch: any;
   queryName: string = "";
+  queryNote: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -62,6 +63,9 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
       if (this.queryName) 
       this.filteredAnimes = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
       
+      else if (this.queryNote) 
+      this.filteredAnimes = animes.filter(anime => anime.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+
       // else if (this.queryDate) 
       // this.filteredAnimes = animes.filter(anime => anime.date.includes(this.queryDate));
       
@@ -71,7 +75,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
       else this.filteredAnimes = animes;
 
       this.getStatusAnime();
-      if (this.queryName || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.queryNote || this.statusId) this.modalRefSearch.close();
     });
   }
 
@@ -118,6 +122,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryName = "";
+    this.queryNote = "";
     // this.queryDate = "";
     this.statusId = null;
     this.getAllAnimes();

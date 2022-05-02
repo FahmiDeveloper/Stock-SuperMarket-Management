@@ -29,6 +29,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   statusId: number;
   modalRefSearch: any;
   queryName: string = "";
+  queryNote: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -63,6 +64,9 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
       if (this.queryName) 
       this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
       
+      else if (this.queryNote) 
+      this.filteredSeries = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      
       // else if (this.queryDate) 
       // this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
       
@@ -72,7 +76,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
       else this.filteredSeries = series;
 
       this.getStatusSerie();
-      if (this.queryName || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.queryNote || this.statusId) this.modalRefSearch.close();
     });
   }
 
@@ -119,6 +123,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryName = "";
+    this.queryNote = "";
     // this.queryDate = "";
     this.statusId = null;
     this.getAllSeries();

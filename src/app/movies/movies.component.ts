@@ -25,6 +25,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   p: number = 1;
   // queryDate: string = "";
   queryName: string = "";
+  queryNote: string = "";
   statusId: number;
 
   subscriptionForGetAllMovies: Subscription;
@@ -58,6 +59,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
     .subscribe(movies => {
       if (this.queryName) 
       this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryNote) 
+      this.filteredMovies = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
       
       // else if (this.queryDate) 
       // this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));

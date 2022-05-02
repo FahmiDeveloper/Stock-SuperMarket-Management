@@ -5,6 +5,7 @@
 
 <div class="row">
     <div class="col-md-5">
+        <input #query (keyup)="getAllDebts()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput" placeholder="Search by note...">
         <!-- <div class="row">
             <div class="col-md-7">
                 <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">

@@ -107,6 +107,7 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
+                    <input [(ngModel)]="queryNote" type="text" class="form-control" placeholder="Search by note...">
                     <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
                 </div>
             </div>
@@ -125,7 +126,7 @@
             <br>
             <div class="row justify-content-center">
                 <button class="btn btn-primary" (click)="getAllAnimes()"><i class="fa fa-search"></i></button>
-                <button *ngIf="queryName || statusId" class="btn btn-danger" (click)="clear()"><i class="fa fa-trash"></i></button>
+                <button *ngIf="queryName || queryNote || statusId" class="btn btn-danger" (click)="clear()"><i class="fa fa-trash"></i></button>
             </div>
         </div>
     </div>        

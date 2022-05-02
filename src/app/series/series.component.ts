@@ -25,6 +25,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
   p: number = 1;
   // queryDate: string = "";
   queryName: string = "";
+  queryNote: string = "";
   statusId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
@@ -58,6 +59,9 @@ export class SeriesComponent implements OnInit, OnDestroy {
     .subscribe(series => {
       if (this.queryName) 
       this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryNote) 
+      this.filteredSeries = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
       
       // else if (this.queryDate) 
       // this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));

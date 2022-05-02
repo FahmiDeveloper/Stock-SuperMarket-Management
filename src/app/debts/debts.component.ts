@@ -34,6 +34,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   restInEnvelope: string = "";
   restInBox: string = "";
   restInPosteAccount: string = "";
+  queryNote: string = "";
   outDebt: number;
   inDebt: number;
   placeId: number;
@@ -76,8 +77,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
         this.filteredDebtsCopie = debts;
         // if (this.queryDate) {
         //   this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
-        // } else 
-        if (this.placeId) {
+        // } else
+        if (this.queryNote) 
+        this.filteredDebts = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+        else if (this.placeId) {
           this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
           if (this.placeId == 5) this.getDebts();
           else this.getRestMoneyForeachPlace();

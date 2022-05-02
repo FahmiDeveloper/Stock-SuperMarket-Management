@@ -25,6 +25,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
   p: number = 1;
   // queryDate: string = "";
   queryName: string = "";
+  queryNote: string = "";
   statusId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
@@ -58,6 +59,9 @@ export class AnimesComponent implements OnInit, OnDestroy {
     .subscribe(animes => {
       if (this.queryName) 
       this.filteredAnimes = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
+      
+      else if (this.queryNote) 
+      this.filteredAnimes = animes.filter(anime => anime.note.toLowerCase().includes(this.queryNote.toLowerCase()));
       
       // else if (this.queryDate) 
       // this.filteredAnimes = animes.filter(anime => anime.date.includes(this.queryDate));

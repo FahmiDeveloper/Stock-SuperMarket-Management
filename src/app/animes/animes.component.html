@@ -9,6 +9,8 @@
         <input #query (keyup)="getAllAnimes()" [(ngModel)]="queryName" type="text" class="form-control widhtInput" placeholder="Search by name...">
     </div>
     <div class="col-md-4">
+        <input #query (keyup)="getAllAnimes()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput" placeholder="Search by note...">
+
         <!-- <div class="row">
             <div class="col-md-8">
                 <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
