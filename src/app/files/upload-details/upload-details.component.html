@@ -15,7 +15,15 @@
         class="btn btn-success font-weight-bold" >
         View
     </button>&nbsp;
-  </ng-container>                    
+  </ng-container>
+  
+  <a 
+    *ngIf="fileUpload.url" 
+    href="{{ fileUpload.url }}" 
+    target="_blank" 
+    class="btn btn-warning font-weight-bold">
+    Download
+  </a>&nbsp;
                                      
   <button 
     (click)="deleteFileUpload(fileUpload)"
