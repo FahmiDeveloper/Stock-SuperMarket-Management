@@ -47,7 +47,8 @@ export class FilesComponent implements OnInit {
     {id: 3, type: 'EXCEL', icon: '/assets/pictures/excel-file.png'}, 
     {id: 4, type: 'TXT', icon: '/assets/pictures/txt-file.PNG'},
     {id: 5, type: 'ZIP', icon: '/assets/pictures/zip-file.PNG'},
-    {id: 6, type: 'LINKS', icon: '/assets/pictures/links.png'}
+    {id: 6, type: 'LINKS', icon: '/assets/pictures/links.png'},
+    {id: 7, type: 'WORD', icon: '/assets/pictures/word-file.jpg'}
   ];
 
   typesLinks: TypesLinks[] = [
