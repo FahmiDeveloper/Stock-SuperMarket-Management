@@ -64,17 +64,25 @@
 
         <div class="container" *ngIf="clickShowLinks">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <button type="button" class="btn btn-secondary" (click)="backToListTypeLinks()">
                         <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     </button>
-                </div>
-                <div class="col-md-6">
                     <a *ngIf="user.roleAdd" (click)="newLink()" class="btn btn-primary font-weight-bold float-right">
                         New
                     </a>
-                </div>                     
+                </div>                    
             </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <input #query (keyup)="getFilteredLinks()" type="text" [(ngModel)]="content" class="form-control" placeholder="Search by content...">
+                </div>
+            </div>
+
+            <br>
 
             <div class="row">
                 <table class="table table-striped" *ngIf="!isMobile">
@@ -120,30 +128,50 @@
                         <thead class="colorHeaderTable">
                             <tr>
                                 <th>Content</th>
-                                <th>
-                                    <a *ngIf="user.roleAdd" (click)="newLink()" class="btn btn-primary font-weight-bold">New</a>
-                                </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let link of (filteredLinks | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
                                 <td>{{ link.content }}</td>
+                                <td style="text-align:center;">
+                                    <div>
+                                        <button 
+                                            *ngIf="user.roleUpdate" 
+                                            (click)="editLink(link)"
+                                            class="btn btn-secondary font-weight-bold">
+                                            Edit
+                                        </button>&nbsp;                      
+                                        <a 
+                                            *ngIf="link.path" 
+                                            href="{{ link.path }}" 
+                                            target="_blank" 
+                                            class="btn btn-warning font-weight-bold">
+                                            Path
+                                        </a>&nbsp;                       
+                                        <button 
+                                            *ngIf="user.roleDelete" 
+                                            type="button" 
+                                            (click)="delete(link.key)"
+                                            class="btn btn-danger font-weight-bold">
+                                            Delete
+                                        </button>                    
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div>              
+            </div>
+
+            <div class="pagination" *ngIf="!isMobile">
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
             
-                <div class="pagination" *ngIf="!isMobile">
-                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
-                </div>
-            
-                <div class="row" *ngIf="isMobile">
-                    <div class="col-md-4">
-                        <div class="pagination">
-                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" *ngIf="isMobile">
+                <div class="col-md-4">
+                    <pagination-controls (pageChange)="p = $event" responsive="true"></pagination-controls>
+                </div>        
             </div>
         </div>
     </div>

@@ -23,8 +23,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   filteredMovies: Movie[];
   p: number = 1;
-  queryDate: string = "";
+  // queryDate: string = "";
   queryName: string = "";
+  queryNote: string = "";
   statusId: number;
 
   subscriptionForGetAllMovies: Subscription;
@@ -59,8 +60,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
       if (this.queryName) 
       this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
       
-      else if (this.queryDate) 
-      this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
+      else if (this.queryNote) 
+      this.filteredMovies = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      
+      // else if (this.queryDate) 
+      // this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
       
       else if (this.statusId) 
       this.filteredMovies = movies.filter(movie => movie.statusId == this.statusId);   
@@ -113,7 +117,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.queryDate = "";
+    // this.queryDate = "";
     this.queryName = "";
     this.statusId = null;
     this.getAllMovies();

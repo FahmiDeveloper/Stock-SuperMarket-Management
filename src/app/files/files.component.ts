@@ -41,18 +41,21 @@ export class FilesComponent implements OnInit {
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
+  content: string = '';
+
   typesFiles: TypesFiles[] = [
     {id: 1, type: 'PICTURE', icon: '/assets/pictures/picture-file.jpg'},
     {id: 2, type: 'PDF', icon: '/assets/pictures/pdf-file.jpg'},
     {id: 3, type: 'EXCEL', icon: '/assets/pictures/excel-file.png'}, 
     {id: 4, type: 'TXT', icon: '/assets/pictures/txt-file.PNG'},
     {id: 5, type: 'ZIP', icon: '/assets/pictures/zip-file.PNG'},
-    {id: 6, type: 'LINKS', icon: '/assets/pictures/links.png'}
+    {id: 6, type: 'LINKS', icon: '/assets/pictures/links.png'},
+    {id: 7, type: 'WORD', icon: '/assets/pictures/word-file.jpg'}
   ];
 
   typesLinks: TypesLinks[] = [
     {id: 1, type: 'ANGULAR', icon: '/assets/pictures/links-angular.png'},
-    {id: 2, type: 'Other Contents', icon: '/assets/pictures/pdf-file.jpg'}
+    {id: 2, type: 'Other Contents', icon: '/assets/pictures/other-link.png'}
   ];
 
   constructor(
@@ -112,7 +115,7 @@ export class FilesComponent implements OnInit {
   }
 
   getFilteredLinks() {   
-    this.filteredLinks = this.allLinks.filter(link => link.typeLinkId == this.typeLink.id);   
+    this.filteredLinks = this.content ? this.allLinks.filter(link => (link.typeLinkId == this.typeLink.id) && (link.content.toLowerCase().includes(this.content.toLowerCase()))) : this.allLinks.filter(link => link.typeLinkId == this.typeLink.id);     
   }
 
   newLink() {

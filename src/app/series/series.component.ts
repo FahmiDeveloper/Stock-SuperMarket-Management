@@ -23,8 +23,9 @@ export class SeriesComponent implements OnInit, OnDestroy {
 
   filteredSeries: Serie[];
   p: number = 1;
-  queryDate: string = "";
+  // queryDate: string = "";
   queryName: string = "";
+  queryNote: string = "";
   statusId: number;
 
   user: FirebaseUserModel = new FirebaseUserModel();
@@ -59,8 +60,11 @@ export class SeriesComponent implements OnInit, OnDestroy {
       if (this.queryName) 
       this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
       
-      else if (this.queryDate) 
-      this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
+      else if (this.queryNote) 
+      this.filteredSeries = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      
+      // else if (this.queryDate) 
+      // this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
       
       else if (this.statusId) 
       this.filteredSeries = series.filter(serie => serie.statusId == this.statusId);   
@@ -113,7 +117,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.queryDate = "";
+    // this.queryDate = "";
     this.queryName = "";
     this.statusId = null;
     this.getAllSeries();

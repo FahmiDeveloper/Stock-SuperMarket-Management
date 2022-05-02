@@ -25,10 +25,11 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   filteredSeries: Serie[];
   p: number = 1;
   isGrid: boolean = false;
-  queryDate: string = "";
+  // queryDate: string = "";
   statusId: number;
   modalRefSearch: any;
   queryName: string = "";
+  queryNote: string = "";
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -63,8 +64,11 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
       if (this.queryName) 
       this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
       
-      else if (this.queryDate) 
-      this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
+      else if (this.queryNote) 
+      this.filteredSeries = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      
+      // else if (this.queryDate) 
+      // this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
       
       else if (this.statusId) 
       this.filteredSeries = series.filter(serie => serie.statusId == this.statusId);   
@@ -72,7 +76,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
       else this.filteredSeries = series;
 
       this.getStatusSerie();
-      if (this.queryName || this.queryDate || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.queryNote || this.statusId) this.modalRefSearch.close();
     });
   }
 
@@ -119,7 +123,8 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryName = "";
-    this.queryDate = "";
+    this.queryNote = "";
+    // this.queryDate = "";
     this.statusId = null;
     this.getAllSeries();
     this.modalRefSearch.close();
