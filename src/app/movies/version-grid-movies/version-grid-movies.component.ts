@@ -24,7 +24,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   filteredMovies: Movie[];
   p: number = 1;
   isGrid: boolean = false;
-  queryDate: string = "";
+  // queryDate: string = "";
   statusId: number;
   modalRefSearch: any;
   queryName: string = "";
@@ -62,8 +62,8 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
       if (this.queryName) 
       this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
       
-      else if (this.queryDate) 
-      this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
+      // else if (this.queryDate) 
+      // this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
       
       else if (this.statusId) 
       this.filteredMovies = movies.filter(movie => movie.statusId == this.statusId);   
@@ -71,7 +71,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
       else this.filteredMovies = movies;
 
       this.getStatusMovie();
-      if (this.queryName || this.queryDate || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.statusId) this.modalRefSearch.close();
     });
   }
 
@@ -118,7 +118,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
   clear() {
     this.queryName = "";
-    this.queryDate = "";
+    // this.queryDate = "";
     this.statusId = null;
     this.getAllMovies();
     this.modalRefSearch.close();

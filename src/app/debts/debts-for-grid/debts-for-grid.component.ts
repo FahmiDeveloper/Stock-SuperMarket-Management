@@ -28,7 +28,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   detailsOutDebt: Debt[];
 
   p: number = 1;
-  queryDate: string = "";
+  // queryDate: string = "";
   restInPocket: string = "";
   restInWallet: string = "";
   restInEnvelope: string = "";
@@ -75,14 +75,15 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe(debts => {
       this.filteredDebtsCopie = debts;
-      if (this.queryDate) {
-        this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
-      } else if (this.placeId) {
+      // if (this.queryDate) {
+      //   this.filteredDebts = debts.filter(debt => debt.date.includes(this.queryDate));
+      // } else 
+      if (this.placeId) {
         this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
         if (this.placeId == 5) this.getDebts();
         else this.getRestMoneyForeachPlace();
       } else this.filteredDebts = debts;
-      if (this.queryDate || this.placeId) this.modalRefSearch.close();
+      if (this.placeId) this.modalRefSearch.close();
     });
   }
 
@@ -128,7 +129,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.queryDate = "";
+    // this.queryDate = "";
     this.placeId = null;
     this.getAllDebts();
     this.modalRefSearch.close();
