@@ -137,6 +137,15 @@
                     </div>
                     <div class="row">
                         <div class="col-5">
+                            <span class="text-primary font-weight-bold">Place:</span>
+                        </div>
+                        <div class="col-7 font-weight-bold">
+                            <span *ngIf="debt.placeId">{{ debt.place }}</span>
+                            <span *ngIf="!debt.placeId">-</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
                             <span class="text-primary font-weight-bold">Note:</span>
                         </div>
                         <div class="col-7 font-weight-bold">

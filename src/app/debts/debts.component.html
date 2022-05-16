@@ -120,6 +120,7 @@
                     <th>Creditor</th>
                     <th>Debt</th>
                     <th>Rest</th>
+                    <th>Place</th>
                     <th>Note</th>
                     <th>
                         <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
@@ -137,6 +138,10 @@
                     <td>{{ debt.creditor }}</td>
                     <td>{{ debt.financialDebt }}</td>
                     <td>{{ debt.restMoney }}</td>
+                    <td>
+                        <span *ngIf="debt.placeId">{{ debt.place }}</span>
+                        <span *ngIf="!debt.placeId">-</span>
+                    </td>
                     <td>{{ debt.note }}</td>
                     <td style="text-align:center;">
                         <div class="btnswrap">
