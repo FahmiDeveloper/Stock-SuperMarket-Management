@@ -96,7 +96,7 @@
                         <tr *ngFor="let link of (filteredLinks | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
                             <td>{{ link.content }}</td>
                             <td style="text-align:center;">
-                                <div>
+                                <div class="btnswrap">
                                     <button 
                                         *ngIf="user.roleUpdate" 
                                         (click)="editLink(link)"
@@ -135,7 +135,7 @@
                             <tr *ngFor="let link of (filteredLinks | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
                                 <td>{{ link.content }}</td>
                                 <td style="text-align:center;">
-                                    <div>
+                                    <div class="btnswrapForMob">
                                         <button 
                                             *ngIf="user.roleUpdate" 
                                             (click)="editLink(link)"
@@ -146,14 +146,16 @@
                                             *ngIf="link.path" 
                                             href="{{ link.path }}" 
                                             target="_blank" 
-                                            class="btn btn-warning font-weight-bold">
+                                            class="btn btn-warning font-weight-bold"
+                                            style="margin-top: 5px">
                                             Path
                                         </a>&nbsp;                       
                                         <button 
                                             *ngIf="user.roleDelete" 
                                             type="button" 
                                             (click)="delete(link.key)"
-                                            class="btn btn-danger font-weight-bold">
+                                            class="btn btn-danger font-weight-bold"
+                                            style="margin-top: 5px">
                                             Delete
                                         </button>                    
                                     </div>

@@ -86,6 +86,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
         if (this.placeId == 5) this.getDebts();
         else this.getRestMoneyForeachPlace();
       } else this.filteredDebts = debts;
+      this.getPlaceDebt();
       if (this.queryNote || this.placeId) this.modalRefSearch.close();
     });
   }
@@ -209,6 +210,16 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   getDetDebts() {
     this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
     this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
+  }
+
+  getPlaceDebt() {
+    this.filteredDebts.forEach(element=>{
+      this.placesMoney.forEach(placeMoney => {
+        if (placeMoney.id == element.placeId) {
+          element.place = placeMoney.place;
+        }
+      })
+    })
   }
 
   ngOnDestroy() {

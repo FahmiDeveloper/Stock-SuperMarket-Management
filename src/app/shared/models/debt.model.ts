@@ -9,6 +9,7 @@ export class Debt {
     placeId: number;
     numRow: number;
     restMoney: string;
+    place: string;
   
     constructor(){
       this.date = "";
@@ -20,5 +21,6 @@ export class Debt {
       this.placeId = null;
       this.numRow = null;
       this.restMoney = "";
+      this.place = "";
     }
   }
