@@ -4,12 +4,6 @@
   },
  
   "hosting": {
-    "firebase": "Stock-SuperMarket-Management",
-    "public": "dist",
-    "rewrites": [{
-      "source": "**",
-      "destination": "/index.html"
-    }],
     "headers": [
       {
         "source": "**",
@@ -20,6 +14,12 @@
           }
         ]
       }
-    ]
+    ],
+    "firebase": "Stock-SuperMarket-Management",
+    "public": "dist",
+    "rewrites": [{
+      "source": "**",
+      "destination": "/index.html"
+    }]
   }
 }
