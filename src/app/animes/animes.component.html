@@ -56,7 +56,9 @@
         <tbody>
             <tr
                 *ngFor="let anime of (filteredAnimes | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                <td>{{ anime.nameAnime }}</td>
+                <td>
+                    <span style="cursor: pointer;" (click)="copyNameAnime(anime.nameAnime)">{{ anime.nameAnime }}</span>
+                </td>
                 <td>{{ anime.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ anime.time }}</td>
                 <td>

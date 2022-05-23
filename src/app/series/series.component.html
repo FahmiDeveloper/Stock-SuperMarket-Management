@@ -55,7 +55,9 @@
         <tbody>
             <tr
                 *ngFor="let serie of (filteredSeries | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                <td>{{ serie.nameSerie }}</td>
+                <td>
+                    <span style="cursor: pointer;" (click)="copyNameSerie(serie.nameSerie)">{{ serie.nameSerie }}</span>
+                </td>
                 <td>{{ serie.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ serie.time }}</td>
                 <td>
