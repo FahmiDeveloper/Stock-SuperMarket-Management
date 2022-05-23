@@ -55,7 +55,9 @@
         <tbody>
             <tr
                 *ngFor="let movie of (filteredMovies | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                <td>{{ movie.nameMovie }}</td>
+                <td>
+                    <span style="cursor: pointer;" (click)="copyNameMovie(movie.nameMovie)">{{ movie.nameMovie }}</span>
+                </td>
                 <td>{{ movie.date | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ movie.time }}</td>
                 <td>
