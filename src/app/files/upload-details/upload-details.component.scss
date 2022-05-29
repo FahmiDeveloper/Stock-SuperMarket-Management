@@ -1,17 +1,3 @@
-.btnswrap {
-    display: flex;
-    flex-direction: row;
-    row-gap: 5px;
-    float: right;
-}
-
-.btnswrapForMobile {
-    display: flex;
-    flex-direction: row;
-    row-gap: 5px;
-    justify-content: center;
-}
-
 ::ng-deep .my-class .modal-dialog { 
     max-width: 60%;
     width: 60%;
@@ -53,3 +39,19 @@
     width:100%;
     height:80vh;
 }
+
+.custom-section {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
+    grid-auto-flow: column;
+}
+
+.custom-section-mobile {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
+}
+ 
