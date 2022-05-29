@@ -32,6 +32,7 @@
     "express": "^4.17.1",
     "file-saver": "^2.0.5",
     "firebase": "^8.3.0",
+    "jszip": "^3.10.0",
     "moment": "^2.29.1",
     "ng2-validation": "^4.2.0",
     "ngx-device-detector": "^2.1.0",
