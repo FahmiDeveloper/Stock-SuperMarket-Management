@@ -100,22 +100,22 @@
                                     <button 
                                         *ngIf="user.roleUpdate" 
                                         (click)="editLink(link)"
-                                        class="btn btn-secondary font-weight-bold">
-                                        Edit
+                                        class="btn btn-info">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>                                    
                                     </button>&nbsp;                      
                                     <a 
                                         *ngIf="link.path" 
                                         href="{{ link.path }}" 
                                         target="_blank" 
-                                        class="btn btn-warning font-weight-bold">
-                                        Path
+                                        class="btn btn-success">
+                                        <i class="fa fa-link" aria-hidden="true"></i>
                                     </a>&nbsp;                       
                                     <button 
                                         *ngIf="user.roleDelete" 
                                         type="button" 
                                         (click)="delete(link.key)"
-                                        class="btn btn-danger font-weight-bold">
-                                        Delete
+                                        class="btn btn-danger">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>                    
                                 </div>
                             </td>
@@ -133,31 +133,34 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let link of (filteredLinks | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                                <td>{{ link.content }}</td>
+                                <td>
+                                    {{ link.content }}
+                                </td>
                                 <td style="text-align:center;">
                                     <div class="btnswrapForMob">
                                         <button 
                                             *ngIf="user.roleUpdate" 
                                             (click)="editLink(link)"
-                                            class="btn btn-secondary font-weight-bold">
-                                            Edit
-                                        </button>&nbsp;                      
+                                            class="btn btn-info"
+                                            style="width: 42px;">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>       
+                                        </button><br>                      
                                         <a 
                                             *ngIf="link.path" 
                                             href="{{ link.path }}" 
                                             target="_blank" 
-                                            class="btn btn-warning font-weight-bold"
-                                            style="margin-top: 5px">
-                                            Path
-                                        </a>&nbsp;                       
+                                            class="btn btn-success"
+                                            style="margin-top: 5px;width: 42px;">
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </a><br>                       
                                         <button 
                                             *ngIf="user.roleDelete" 
                                             type="button" 
                                             (click)="delete(link.key)"
-                                            class="btn btn-danger font-weight-bold"
-                                            style="margin-top: 5px; margin-right: 5px;">
-                                            Delete
-                                        </button>                    
+                                            class="btn btn-danger"
+                                            style="margin-top: 5px;width: 42px;">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>                   
                                     </div>
                                 </td>
                             </tr>

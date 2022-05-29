@@ -1,35 +1,42 @@
 <span>{{ fileUpload.name }}</span>
 
 <div [ngClass]="isMobile ? 'btnswrapForMobile' : 'btnswrap'">  
-  <ng-container *ngIf="!checkIsImage(fileUpload.name)">
+  <ng-container *ngIf="!checkIsImage(fileUpload.name) && !isZip(fileUpload.name)">
     <button 
         (click)="viewOtherFileUpload(fileUpload, showOtherFile)"
-        class="btn btn-success font-weight-bold" >
-        View
-    </button>&nbsp;
+        class="btn btn-primary font-weight-bold" >
+        <i class="fa fa-eye" aria-hidden="true"></i>
+      </button>&nbsp;
   </ng-container>
 
   <ng-container *ngIf="checkIsImage(fileUpload.name)">
     <button
-        (click)="viewFilePictureUpload(fileUpload, showPicture)"
-        class="btn btn-success font-weight-bold" >
-        View
+      (click)="viewFilePictureUpload(fileUpload, showPicture)"
+      class="btn btn-primary font-weight-bold" >
+      <i class="fa fa-eye" aria-hidden="true"></i>
+    </button>&nbsp;
+  </ng-container>
+
+  <ng-container *ngIf="isZip(fileUpload.name)">
+    <button 
+      (click)="showZipFile(fileUpload, viewZipFile)"
+      class="btn btn-primary font-weight-bold">
+      <i class="fa fa-eye" aria-hidden="true"></i>
     </button>&nbsp;
   </ng-container>
   
-  <a 
-    *ngIf="fileUpload.url" 
-    href="{{ fileUpload.url }}" 
-    target="_blank" 
-    class="btn btn-warning font-weight-bold">
-    Download
-  </a>&nbsp;
+  <button 
+    (click)="downloadFile(fileUpload)"
+    class="btn btn-success font-weight-bold">
+    <i class="fa fa-download" aria-hidden="true"></i>
+  </button>&nbsp;
                                      
   <button 
     (click)="deleteFileUpload(fileUpload)"
     class="btn btn-danger font-weight-bold" >
-    Delete
-  </button>               
+    <i class="fa fa-trash" aria-hidden="true"></i>
+  </button>
+  
 </div>
 
 <ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
@@ -37,7 +44,7 @@
   <div class="modal-header text-center">
       <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
 
-      <button type="button" class="close" aria-label="Close" (click)="modalRefOtherFile.close()">
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
       </button>
   </div>
@@ -55,17 +62,49 @@
   </div>        
 </ng-template>
 
+
 <ng-template #showPicture let-modal let-c="close" let-d="dismiss">
 
   <div class="modal-header text-center">
     <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
 
-    <button type="button" class="close" aria-label="Close" (click)="modalRefPictureFile.close()">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
   <div class="modal-body">
       <img [src]='pictureFile' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
+  </div>
+</ng-template>
+
+
+<ng-template #viewZipFile let-modal let-c="close" let-d="dismiss">
+
+  <div class="modal-header text-center">
+    <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
+
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" style="width: 10rem; height: 10rem;" role="status"></div><br><br>
+      <h4>Extract files in progress...</h4>
+    </div>
+
+    
+    <ul *ngIf="!isLoading">
+        <ng-container *ngFor="let file of $zipFiles | async">
+          <li *ngIf="file.fileName">
+            <h5>
+              {{file.fileName}}<br *ngIf="isMobile">
+              <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>
+            </h5> 
+          </li><br *ngIf="file.fileName">
+        </ng-container>
+    </ul>
   </div>
 </ng-template>
