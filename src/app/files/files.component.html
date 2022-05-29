@@ -77,7 +77,10 @@
             <br>
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6" *ngIf="!isMobile">
+                    <input #query (keyup)="getFilteredLinks()" type="text" [(ngModel)]="content" class="form-control" placeholder="Search by content...">
+                </div>
+                <div class="col-md-4" *ngIf="isMobile">
                     <input #query (keyup)="getFilteredLinks()" type="text" [(ngModel)]="content" class="form-control" placeholder="Search by content...">
                 </div>
             </div>

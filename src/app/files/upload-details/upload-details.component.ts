@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
@@ -20,7 +20,7 @@ import { FileUpload } from 'src/app/shared/models/file-upload.model';
 
 export class UploadDetailsComponent implements OnInit {
 
-  @Input() fileUpload!: FileUpload;
+  @Input() filteredFiles: any[];
   @Input() isMobile: boolean;
 
   urlFile: string;
@@ -29,6 +29,8 @@ export class UploadDetailsComponent implements OnInit {
 
   $zipFiles: Observable<ZipFile[]>;
   isLoading: boolean;
+  p: number = 1;
+  blobForDownload: Blob;
 
   constructor(
     private uploadService: FileUploadService,
@@ -62,6 +64,7 @@ export class UploadDetailsComponent implements OnInit {
     fetch(fileUpload.url)
     .then(res => res.blob()) // Gets the response and returns it as a blob
     .then(blob => {
+      this.blobForDownload =blob;
       const zipLoaded = new JSZip.default();
 
       this.$zipFiles = from(zipLoaded.loadAsync(blob)).pipe(
@@ -69,6 +72,7 @@ export class UploadDetailsComponent implements OnInit {
           return of(Object.keys(zip.files).map((key)=>zip.files[key]))
         })
       )
+
       this.$zipFiles.forEach(zipFiles => {
         zipFiles.forEach(element => {
           let n = element.name.lastIndexOf('/');
@@ -105,6 +109,22 @@ export class UploadDetailsComponent implements OnInit {
           'success'
         )
       }
+    })
+  }
+
+  saveFileFromZip(file: ZipFile) {
+    var zip = new JSZip();
+    zip.loadAsync(this.blobForDownload).then(function (zip) {
+      Object.keys(zip.files).forEach(function (filename) {
+        if (file.name == filename) {
+        zip.files[file.name].async('uint8array').then(function (fileData) {
+           if (fileData) {          
+              const blob = new Blob([fileData]);
+              fileSaver.saveAs(blob, file.fileName);
+            }
+          })
+        }    
+      })
     })
   }
 

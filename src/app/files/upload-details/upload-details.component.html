@@ -1,43 +1,74 @@
-<span>{{ fileUpload.name }}</span>
+<table class="table table-striped">
+  <thead class="colorHeaderTable">
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let file of (filteredFiles | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+      <td>{{ file.name }}</td>
+      <td>
+        <section [ngClass]="isMobile ? 'custom-section-mobile' : 'custom-section'">
+          <div>
+            <button
+                *ngIf="!checkIsImage(file.name) && !isZip(file.name)"
+                type="button"
+                (click)="viewOtherfile(file, showOtherFile)"
+                class="btn btn-primary">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+            </button>
 
-<div [ngClass]="isMobile ? 'btnswrapForMobile' : 'btnswrap'">  
-  <ng-container *ngIf="!checkIsImage(fileUpload.name) && !isZip(fileUpload.name)">
-    <button 
-        (click)="viewOtherFileUpload(fileUpload, showOtherFile)"
-        class="btn btn-primary font-weight-bold" >
-        <i class="fa fa-eye" aria-hidden="true"></i>
-      </button>&nbsp;
-  </ng-container>
+            <button
+              *ngIf="checkIsImage(file.name)"
+              type="button"
+              (click)="viewFilePictureUpload(file, showPicture)"
+              class="btn btn-primary">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+            </button>
 
-  <ng-container *ngIf="checkIsImage(fileUpload.name)">
-    <button
-      (click)="viewFilePictureUpload(fileUpload, showPicture)"
-      class="btn btn-primary font-weight-bold" >
-      <i class="fa fa-eye" aria-hidden="true"></i>
-    </button>&nbsp;
-  </ng-container>
+            <button
+              *ngIf="isZip(file.name)"
+              type="button"
+              (click)="showZipFile(file, viewZipFile)"
+              class="btn btn-primary">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
 
-  <ng-container *ngIf="isZip(fileUpload.name)">
-    <button 
-      (click)="showZipFile(fileUpload, viewZipFile)"
-      class="btn btn-primary font-weight-bold">
-      <i class="fa fa-eye" aria-hidden="true"></i>
-    </button>&nbsp;
-  </ng-container>
-  
-  <button 
-    (click)="downloadFile(fileUpload)"
-    class="btn btn-success font-weight-bold">
-    <i class="fa fa-download" aria-hidden="true"></i>
-  </button>&nbsp;
-                                     
-  <button 
-    (click)="deleteFileUpload(fileUpload)"
-    class="btn btn-danger font-weight-bold" >
-    <i class="fa fa-trash" aria-hidden="true"></i>
-  </button>
-  
+          <div>
+            <button
+              type="button"
+              (click)="downloadFile(file)"
+              class="btn btn-success">
+              <i class="fa fa-download" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div> 
+            <button
+              type="button"
+              (click)="deleteFileUpload(file)"
+              class="btn btn-danger">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </section>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="pagination" *ngIf="!isMobile">
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
+
+<div class="row" *ngIf="isMobile">
+  <div class="col-md-4">
+      <pagination-controls (pageChange)="p = $event" responsive="true"></pagination-controls>
+  </div>        
+</div>
+
 
 <ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
 
@@ -100,8 +131,14 @@
         <ng-container *ngFor="let file of $zipFiles | async">
           <li *ngIf="file.fileName">
             <h5>
-              {{file.fileName}}<br *ngIf="isMobile">
-              <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>
+              {{file.fileName}}<br *ngIf="isMobile">&nbsp;
+              <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>&nbsp;
+              <button
+                type="button"
+                (click)="saveFileFromZip(file)"
+                class="btn btn-success">
+                <i class="fa fa-download" aria-hidden="true"></i>
+              </button>
             </h5> 
           </li><br *ngIf="file.fileName">
         </ng-container>

@@ -17,7 +17,6 @@ export class UploadListComponent implements OnInit {
 
   fileUploads?: any[];
   filteredFiles?: any[];
-  p: number = 1;
 
   constructor(private uploadService: FileUploadService) {}
   
