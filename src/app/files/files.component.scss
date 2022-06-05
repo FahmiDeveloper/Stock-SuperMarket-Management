@@ -11,13 +11,14 @@
     background-size: cover;
 }
 
-.btnswrap {
-    display: flex;
-    flex-direction: row;
-    row-gap: 5px;
+.btns-links {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-auto-flow: column;
 }
 
-.btnswrapForMob {
-    flex-direction: column;
-    margin-left: auto;
+.btns-links-mobile {
+    justify-content: center;
+    align-content: center;
 }

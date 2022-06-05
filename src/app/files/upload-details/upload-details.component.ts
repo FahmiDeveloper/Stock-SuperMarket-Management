@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -7,10 +7,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import * as fileSaver from 'file-saver';
 import * as JSZip from 'jszip/dist/jszip';
+import { utils, write as XlsxWrite, read as XlsxRead } from 'ts-xlsx';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
 import { FileUpload } from 'src/app/shared/models/file-upload.model';
+import { DomSanitizer } from '@angular/platform-browser';
+import { renderAsync } from 'docx-preview';
 
 @Component({
   selector: 'app-upload-details',
@@ -18,7 +21,7 @@ import { FileUpload } from 'src/app/shared/models/file-upload.model';
   styleUrls: ['./upload-details.component.scss']
 })
 
-export class UploadDetailsComponent implements OnInit {
+export class UploadDetailsComponent implements OnChanges {
 
   @Input() filteredFiles: any[];
   @Input() isMobile: boolean;
@@ -32,12 +35,29 @@ export class UploadDetailsComponent implements OnInit {
   p: number = 1;
   blobForDownload: Blob;
 
+  srcExtractedImage: any;
+  fileExtractedName: string = '';
+  contentTxtFile: string = '';
+  contentPdfFile: any;
+  excelFile: File;
+  data: any;
+  headData: any;
+  arrayBuffer: any;
+  wordFile: File;
+
   constructor(
     private uploadService: FileUploadService,
+    private sanitizer : DomSanitizer,
     protected modalService: NgbModal
   ) {}
 
-  ngOnInit(): void {}
+  ngOnChanges(changes: import("@angular/core").SimpleChanges) {
+    if (this.filteredFiles) {
+       this.filteredFiles.forEach(element => {
+        element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
+      })
+    }  
+  }
 
   viewOtherFileUpload(fileUpload: FileUpload, showFile) {
     this.urlFile = fileUpload.url;
@@ -81,7 +101,7 @@ export class UploadDetailsComponent implements OnInit {
       })
       this.modalService.open(viewZipFile as Component, { size: 'lg', centered: true });     
     });
-    setTimeout(() => this.isLoading = false, 3000); 
+    setTimeout(() => this.isLoading = false, 5000); 
   }
 
   downloadFile(fileUpload: FileUpload) {
@@ -112,6 +132,106 @@ export class UploadDetailsComponent implements OnInit {
     })
   }
 
+  viewFileFromZip(file: ZipFile, showContentFilesFromZip) {
+    this.fileExtractedName = file.fileName;
+
+    var zip = new JSZip();
+    zip.loadAsync(this.blobForDownload).then((zip) => {
+      Object.keys(zip.files).forEach((filename) => {
+        if (file.name == filename) {
+          zip.files[file.name].async('uint8array').then((fileData) => {
+          const blob = new Blob([fileData]);
+          const reader = new FileReader();
+
+          if (this.checkIsImage(file.fileName))
+          this.srcExtractedImage = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob));
+
+          else if (this.isTxt(file.fileName)){
+            reader.onloadend = () => {
+              this.contentTxtFile = reader.result as string;
+            };
+            reader.readAsText(blob);
+          } 
+          
+          else if (this.isPdf(file.fileName)){
+            reader.readAsDataURL(blob);
+            reader.addEventListener(
+                'load',
+                () => {
+                    this.contentPdfFile = reader.result;
+                },
+                false
+            );
+          }
+
+          else if (this.isExcel(file.fileName)){
+            this.excelFile = new File([blob], file.fileName);
+
+            reader.onload = (e: any) => {
+
+              this.arrayBuffer = reader.result;
+              const data = new Uint8Array(this.arrayBuffer);
+              const arr = new Array();
+        
+              for (let i = 0; i !== data.length; i++) {
+                arr[i] = String.fromCharCode(data[i]);
+              }
+        
+              const bstr = arr.join('');
+              const workbook = XlsxRead(bstr, { type: 'binary', cellDates: true });
+        
+              const wsname: string = workbook.SheetNames[0];
+              const ws = workbook.Sheets[wsname];
+        
+              this.data = utils.sheet_to_json(ws, {header: 1, raw: false});
+        
+              this.headData = this.data[0];
+
+              this.data = this.data.slice(1);
+
+              const ws2 = workbook.Sheets[workbook.SheetNames[1]];
+              this.readDataSheet(ws2, 10);
+            };
+            reader.readAsArrayBuffer(this.excelFile);
+          }
+
+          else if (this.isWord(file.fileName)){
+            this.wordFile = new File([blob], file.fileName);
+
+            reader.onloadend = () => {
+              var arrayBuffer = reader.result;
+  
+              if (this.isMobile) {
+                renderAsync(arrayBuffer, document.getElementById("contentWord"), null, {
+                inWrapper: false
+                })
+                .then(x => console.log("docx: finished"));
+              } else {
+                renderAsync(arrayBuffer, document.getElementById("contentWord"))
+                .then(x => console.log("docx: finished"));
+              }
+              };
+              reader.readAsArrayBuffer(this.wordFile);
+          };
+
+          if (this.checkIsImage(file.fileName) || this.isMobile) this.modalService.open(showContentFilesFromZip as Component, { size: 'lg', centered: true });
+          else this.modalService.open(showContentFilesFromZip as Component, { windowClass: 'class-lg', centered: true });
+        });
+        }   
+      });
+    });  
+  }
+
+  private readDataSheet(ws: any, startRow: number) {
+    let datas = utils.sheet_to_json(ws, {header: 1, raw: false, range: startRow});
+    let headDatas = datas[0];
+    datas = datas.slice(1);
+
+    for (let i = 0; i < this.data.length; i++) {
+      this.data[i][this.headData.length] = datas.filter(x => x[12] == this.data[i][0])
+    }
+  }
+
   saveFileFromZip(file: ZipFile) {
     var zip = new JSZip();
     zip.loadAsync(this.blobForDownload).then(function (zip) {
@@ -140,6 +260,34 @@ export class UploadDetailsComponent implements OnInit {
     let n = path.lastIndexOf('.');
     let extention: string = path.substring(n + 1);
     return extentionvideo.indexOf(extention) != -1;
+  }
+
+  isTxt(path) {
+    let extentionvideo = ['txt']; // Array of video extention
+    let n = path.lastIndexOf('.');
+    let extention: string = path.substring(n + 1);
+    return extentionvideo.indexOf(extention) != -1;
+  }
+
+  isPdf(path) {
+    let extentionvideo = ['pdf']; // Array of pdf extention
+    let n = path.lastIndexOf('.');
+    let extention: string = path.substring(n + 1);
+    return extentionvideo.indexOf(extention.toLocaleLowerCase()) != -1;
+  }
+
+  isExcel(path) {
+    let extentionvideo = ['xlsx']; // Array of pdf extention
+    let n = path.lastIndexOf('.');
+    let extention: string = path.substring(n + 1);
+    return extentionvideo.indexOf(extention.toLocaleLowerCase()) != -1;
+  }
+
+  isWord(path) {
+    let extentionvideo = ['docx']; // Array of pdf extention
+    let n = path.lastIndexOf('.');
+    let extention: string = path.substring(n + 1);
+    return extentionvideo.indexOf(extention.toLocaleLowerCase()) != -1;
   }
 }
 

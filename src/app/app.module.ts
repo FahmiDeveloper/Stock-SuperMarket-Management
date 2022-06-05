@@ -69,12 +69,15 @@ import { DebtsForGridComponent } from './debts/debts-for-grid/debts-for-grid.com
 import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/new-or-edit-debt.component';
 import { NewOrEditLinkComponent } from './files/new-or-edit-link/new-or-edit-link.component';
 
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 @NgModule({
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    PdfViewerModule,
     NgbModule,
     NgxPaginationModule,
     CustomFormsModule,

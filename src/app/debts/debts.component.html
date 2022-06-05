@@ -281,19 +281,38 @@
     </div>
 
     <div class="modal-body">
-        <div *ngFor="let detailInDebt of detailsInDebt">
-            <div class="row ml-4">
-                <div class="col-4 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">{{ detailInDebt.creditor }}</span>
-                </div>
-                <div class="col-1">
-                    <span class="font-weight-bold rest-money text-success">{{ detailInDebt.financialDebt }}</span>
-                </div>
-                <div class="col-7 font-weight-bold label-place">
-                    <span class="font-weight-bold">{{ detailInDebt.note }}</span>
-                </div>
+        <div class="row">
+            <table class="table table-striped">
+                <thead class="colorHeaderTable">
+                    <tr>
+                        <th>Creditor</th>
+                        <th>Debt</th>
+                        <th>Note</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
+                        <td>{{ detailInDebt.creditor }}</td>
+                        <td>{{ detailInDebt.financialDebt }}</td>
+                        <td>{{ detailInDebt.note }}</td>
+                        <td style="text-align:center;">
+                            <div class="btnswrap">                                             
+                                <button 
+                                    *ngIf="user.roleDelete" 
+                                    type="button" 
+                                    (click)="deleteFromModalInDebts(detailInDebt.key)"
+                                    class="btn btn-danger">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>                    
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <pagination-controls (pageChange)="pageDetsInDebt = $event"></pagination-controls>
             </div>
-            <br>
         </div>
     </div>
 </ng-template>
@@ -309,20 +328,40 @@
     </div>
 
     <div class="modal-body">
-        <div *ngFor="let detailOutDebt of detailsOutDebt">
-            <div class="row ml-4">
-                <div class="col-4 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">{{ detailOutDebt.debtor }}</span>
-                </div>
-                <div class="col-1">
-                    <span class="font-weight-bold rest-money text-success">{{ detailOutDebt.financialDebt }}</span>
-                </div>
-                <div class="col-7 font-weight-bold label-place">
-                    <span class="font-weight-bold">{{ detailOutDebt.note }}</span>
-                </div>
+        <div class="row">
+            <table class="table table-striped">
+                <thead class="colorHeaderTable">
+                    <tr>
+                        <th>Debtor</th>
+                        <th>Debt</th>
+                        <th>Note</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
+                        <td>{{ detailOutDebt.debtor }}</td>
+                        <td>{{ detailOutDebt.financialDebt }}</td>
+                        <td>{{ detailOutDebt.note }}</td>
+                        <td style="text-align:center;">
+                            <div class="btnswrap">                                             
+                                <button 
+                                    *ngIf="user.roleDelete" 
+                                    type="button" 
+                                    (click)="deleteFromModalOutDebts(detailOutDebt.key)"
+                                    class="btn btn-danger">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>                    
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <pagination-controls (pageChange)="pageDetsOutDebt = $event"></pagination-controls>
             </div>
-            <br>
         </div>
     </div>
 </ng-template>
+
 

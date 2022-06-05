@@ -28,6 +28,9 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   detailsOutDebt: Debt[];
 
   p: number = 1;
+  pageDetsInDebt: number = 1;
+  pageDetsOutDebt: number = 1;
+
   // queryDate: string = "";
   restInPocket: string = "";
   restInWallet: string = "";
@@ -199,16 +202,19 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   showDetInDebt(contentDetInDebt) {
     this.modalRefDetInDebt = this.modalService.open(contentDetInDebt as Component, { size: 'lg', centered: true });
-    this.getDetDebts();
+    this.getDetInDebts();
   }
 
   showDetOutDebt(contentDetOutDebt) {
     this.modalRefDetOutDebt = this.modalService.open(contentDetOutDebt as Component, { size: 'lg', centered: true });
-    this.getDetDebts();
+    this.getDetOutDebts();
   }
 
-  getDetDebts() {
+  getDetInDebts() {
     this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+  }
+
+  getDetOutDebts() {
     this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
   }
 
@@ -219,6 +225,50 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
           element.place = placeMoney.place;
         }
       })
+    })
+  }
+
+  deleteFromModalInDebts(debtId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this debt!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.debtService.delete(debtId);
+        Swal.fire(
+          'Debt has been deleted successfully',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) this.getDetInDebts();
+        })
+      }
+    })
+  }
+
+  deleteFromModalOutDebts(debtId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this debt!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.debtService.delete(debtId);
+        Swal.fire(
+          'Debt has been deleted successfully',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) this.getDetOutDebts();
+        })
+      }
     })
   }
 
