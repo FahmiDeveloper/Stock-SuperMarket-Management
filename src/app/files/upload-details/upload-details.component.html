@@ -69,7 +69,6 @@
   </div>        
 </div>
 
-
 <ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
 
   <div class="modal-header text-center">
@@ -82,12 +81,13 @@
 
   <div class="modal-body">
       <div class="container">
-          <div class="row">
-            <ngx-doc-viewer 
+          <div class="row">        
+            <ngx-doc-viewer
+              *ngIf="urlFile" 
               [url]="urlFile" 
               viewer="google" 
               [ngClass]="isMobile ? 'otherFileMobile' : 'otherFile'">
-          </ngx-doc-viewer>
+            </ngx-doc-viewer>
           </div>  
       </div>
   </div>        
@@ -105,7 +105,7 @@
   </div>
 
   <div class="modal-body">
-      <img [src]='pictureFile' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
+      <img *ngIf="pictureFile" [src]='pictureFile' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
   </div>
 </ng-template>
 
@@ -113,7 +113,7 @@
 <ng-template #viewZipFile let-modal let-c="close" let-d="dismiss">
 
   <div class="modal-header text-center">
-    <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
+    <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
 
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
@@ -125,14 +125,19 @@
       <div class="spinner-border" style="width: 10rem; height: 10rem;" role="status"></div><br><br>
       <h4>Extract files in progress...</h4>
     </div>
-
     
     <ul *ngIf="!isLoading">
         <ng-container *ngFor="let file of $zipFiles | async">
           <li *ngIf="file.fileName">
             <h5>
-              {{file.fileName}}<br *ngIf="isMobile">&nbsp;
+              {{file.fileName}}<br *ngIf="isMobile">
               <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>&nbsp;
+              <button
+                type="button"
+                (click)="viewFileFromZip(file, showContentFilesFromZip)"
+                class="btn btn-primary">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>&nbsp;
               <button
                 type="button"
                 (click)="saveFileFromZip(file)"
@@ -144,4 +149,66 @@
         </ng-container>
     </ul>
   </div>
+</ng-template>
+
+<ng-template #showContentFilesFromZip let-modal let-c="close" let-d="dismiss">
+
+  <div class="modal-header text-center">
+      <h4 *ngIf="fileExtractedName" class="modal-title w-100 font-weight-bold">{{ fileExtractedName }}</h4>
+
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+
+  <div class="modal-body">
+
+    <img *ngIf="checkIsImage(fileExtractedName)" [src]='srcExtractedImage' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
+
+    <pre 
+      *ngIf="isTxt(fileExtractedName)"
+      style="font-weight: bold;">
+      {{contentTxtFile}}>
+    </pre>
+
+    <pdf-viewer
+      *ngIf="isPdf(fileExtractedName)"
+      [src]="contentPdfFile"      
+      [rotation]="0"
+      [original-size]="false"
+      [show-all]="true"
+      [fit-to-page]="false"
+      [zoom]="1"
+      [zoom-scale]="'page-width'"
+      [stick-to-page]="false"
+      [render-text]="true"
+      [external-link-target]="'blank'"
+      [autoresize]="true"
+      [show-borders]="false"
+      style="width: 100%; height: 600px;">
+    </pdf-viewer>
+
+
+    <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
+      <thead #header>
+        <tr>
+          <th style="background-color:#d9d9d9;"></th>
+          <th *ngFor="let headValue of headData">
+            {{headValue}}
+          </th>
+        </tr>
+      </thead>
+      <tbody #container>
+        <tr *ngFor="let row of data; let e =index">
+          <td style="background-color:#d9d9d9;">{{e+1}}</td>
+          <td *ngFor="let val of headData; let i =index">
+            {{row[i] || ' '}} 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="isWord(fileExtractedName)" id="contentWord"></div>
+
+  </div>        
 </ng-template>
