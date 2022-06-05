@@ -81,7 +81,7 @@ export class UploadDetailsComponent implements OnInit {
       })
       this.modalService.open(viewZipFile as Component, { size: 'lg', centered: true });     
     });
-    setTimeout(() => this.isLoading = false, 3000); 
+    setTimeout(() => this.isLoading = false, 5000); 
   }
 
   downloadFile(fileUpload: FileUpload) {
