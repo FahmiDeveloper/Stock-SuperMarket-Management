@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { renderAsync } from 'docx-preview';
   styleUrls: ['./upload-details.component.scss']
 })
 
-export class UploadDetailsComponent implements OnInit {
+export class UploadDetailsComponent implements OnChanges {
 
   @Input() filteredFiles: any[];
   @Input() isMobile: boolean;
@@ -51,7 +51,13 @@ export class UploadDetailsComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  ngOnInit(): void {}
+  ngOnChanges(changes: import("@angular/core").SimpleChanges) {
+    if (this.filteredFiles) {
+       this.filteredFiles.forEach(element => {
+        element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
+      })
+    }  
+  }
 
   viewOtherFileUpload(fileUpload: FileUpload, showFile) {
     this.urlFile = fileUpload.url;
@@ -193,23 +199,19 @@ export class UploadDetailsComponent implements OnInit {
             this.wordFile = new File([blob], file.fileName);
 
             reader.onloadend = () => {
-            var arrayBuffer = reader.result;
-
-            renderAsync(arrayBuffer, document.getElementById("contentWord"), null, {
-              className:'', 
-              inWrapper: false,
-              ignoreWidth: true, //disables rendering width of page
-              ignoreHeight: true, //disables rendering height of page
-              ignoreFonts: true, //disables fonts rendering
-              breakPages: false, //enables page breaking on page breaks
-              ignoreLastRenderedPageBreak: false, //disables page breaking on lastRenderedPageBreak elements
-              experimental: true, //enables experimental features (tab stops calculation)
-              trimXmlDeclaration: false, //if true, xml declaration will be removed from xml documents before parsing
-              debug: true
-              })
-              .then(x => console.log("docx: finished"));
-            };
-            reader.readAsArrayBuffer(this.wordFile);
+              var arrayBuffer = reader.result;
+  
+              if (this.isMobile) {
+                renderAsync(arrayBuffer, document.getElementById("contentWord"), null, {
+                inWrapper: false
+                })
+                .then(x => console.log("docx: finished"));
+              } else {
+                renderAsync(arrayBuffer, document.getElementById("contentWord"))
+                .then(x => console.log("docx: finished"));
+              }
+              };
+              reader.readAsArrayBuffer(this.wordFile);
           };
 
           if (this.checkIsImage(file.fileName) || this.isMobile) this.modalService.open(showContentFilesFromZip as Component, { size: 'lg', centered: true });

@@ -7,7 +7,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let file of (filteredFiles | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-      <td>{{ file.name }}</td>
+      <td>{{ file.fileNameWithoutType }}</td>
       <td>
         <section [ngClass]="isMobile ? 'custom-section-mobile' : 'custom-section'">
           <div>
@@ -130,7 +130,7 @@
         <ng-container *ngFor="let file of $zipFiles | async">
           <li *ngIf="file.fileName">
             <h5>
-              {{file.fileName}}<br *ngIf="isMobile">
+              {{file.fileName}}<br>
               <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>&nbsp;
               <button
                 type="button"
@@ -188,27 +188,51 @@
       style="width: 100%; height: 600px;">
     </pdf-viewer>
 
+    <div *ngIf="isExcel(fileExtractedName) && isMobile" class="scroll">
+      <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
+        <thead #header>
+          <tr>
+            <th style="background-color:#d9d9d9;"></th>
+            <th *ngFor="let headValue of headData">
+              {{headValue}}
+            </th>
+          </tr>
+        </thead>
+        <tbody #container>
+          <tr *ngFor="let row of data; let e =index">
+            <td style="background-color:#d9d9d9;">{{e+1}}</td>
+            <td *ngFor="let val of headData; let i =index">
+              {{row[i] || ' '}} 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
-      <thead #header>
-        <tr>
-          <th style="background-color:#d9d9d9;"></th>
-          <th *ngFor="let headValue of headData">
-            {{headValue}}
-          </th>
-        </tr>
-      </thead>
-      <tbody #container>
-        <tr *ngFor="let row of data; let e =index">
-          <td style="background-color:#d9d9d9;">{{e+1}}</td>
-          <td *ngFor="let val of headData; let i =index">
-            {{row[i] || ' '}} 
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div *ngIf="isExcel(fileExtractedName) && !isMobile">
+      <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
+        <thead #header>
+          <tr>
+            <th style="background-color:#d9d9d9;"></th>
+            <th *ngFor="let headValue of headData">
+              {{headValue}}
+            </th>
+          </tr>
+        </thead>
+        <tbody #container>
+          <tr *ngFor="let row of data; let e =index">
+            <td style="background-color:#d9d9d9;">{{e+1}}</td>
+            <td *ngFor="let val of headData; let i =index">
+              {{row[i] || ' '}} 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div *ngIf="isWord(fileExtractedName)" id="contentWord"></div>
+    <div *ngIf="isWord(fileExtractedName) && isMobile" id="contentWord" class="scroll"></div>
+
+    <div *ngIf="isWord(fileExtractedName) && !isMobile" id="contentWord"></div>
 
   </div>        
 </ng-template>

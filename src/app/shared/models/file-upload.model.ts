@@ -4,6 +4,7 @@ export class FileUpload {
     url!: string;
     file: File;
     typeFileId: number;
+    fileNameWithoutType: string;
     
     constructor(file: File, typeFileId: number) {
       this.file = file;
