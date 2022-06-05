@@ -28,6 +28,9 @@ export class DebtsComponent implements OnInit, OnDestroy {
   detailsOutDebt: Debt[];
 
   p: number = 1;
+  pageDetsInDebt: number = 1;
+  pageDetsOutDebt: number = 1;
+
   // queryDate: string = "";
   restInPocket: string = "";
   restInWallet: string = "";
@@ -212,6 +215,30 @@ export class DebtsComponent implements OnInit, OnDestroy {
           element.place = placeMoney.place;
         }
       })
+    })
+  }
+
+  deleteFromModalDebts(debtId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this debt!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.debtService.delete(debtId);
+        Swal.fire(
+          'Debt has been deleted successfully',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) {
+            this.getDetDebts();
+          }
+        })
+      }
     })
   }
 

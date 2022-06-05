@@ -332,7 +332,7 @@
     <div class="modal-body">
 
         <div class="row">
-            <div class="col-md-4" *ngFor="let detailInDebt of detailsInDebt">
+            <div class="col-md-4" *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
                 <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
                     <div class="card-body text-dark">
                         <div class="row">
@@ -341,8 +341,17 @@
                                     {{ detailInDebt.creditor }}
                                 </span>
                             </div>
-                            <div class="col-7 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
+                            <div class="col-4 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
                                 {{ detailInDebt.financialDebt }}
+                            </div>
+                            <div class="col-3">
+                                <button 
+                                    *ngIf="user.roleDelete" 
+                                    type="button" 
+                                    (click)="deleteFromModalDebts(detailInDebt.key)"
+                                    class="btn btn-danger">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
                         <div class="row">
@@ -354,6 +363,12 @@
                 </div>
                 <br>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <pagination-controls (pageChange)="pageDetsInDebt = $event" responsive="true"></pagination-controls>
+            </div>        
         </div>
 
     </div>
@@ -372,7 +387,7 @@
     <div class="modal-body">
 
         <div class="row">
-            <div class="col-md-4" *ngFor="let detailOutDebt of detailsOutDebt">
+            <div class="col-md-4" *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
                 <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
                     <div class="card-body text-dark">
                         <div class="row">
@@ -381,8 +396,17 @@
                                     {{ detailOutDebt.debtor }}
                                 </span>
                             </div>
-                            <div class="col-7 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
+                            <div class="col-4 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
                                 {{ detailOutDebt.financialDebt }}
+                            </div>
+                            <div class="col-3">
+                                <button 
+                                    *ngIf="user.roleDelete" 
+                                    type="button" 
+                                    (click)="deleteFromModalDebts(detailOutDebt.key)"
+                                    class="btn btn-danger">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
                         <div class="row">
@@ -394,6 +418,12 @@
                 </div>
                 <br>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <pagination-controls (pageChange)="pageDetsOutDebt = $event" responsive="true"></pagination-controls>
+            </div>        
         </div>
 
     </div>
