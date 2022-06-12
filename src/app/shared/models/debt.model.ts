@@ -10,6 +10,8 @@ export class Debt {
     numRow: number;
     restMoney: string;
     place: string;
+    debtForPay: boolean;
+    debtToGet: boolean;
   
     constructor(){
       this.date = "";

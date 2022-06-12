@@ -40,8 +40,12 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   queryNote: string = "";
   modalRefSearch: any;
   placeId: number;
-  outDebt: number;
-  inDebt: number;
+  totalOutDebts: number;
+  totalInDebts: number;
+  totalOutDebtsInModal: number;
+  totalInDebtsInModal: number;
+  toPayThisMonth: boolean = false;
+  toGetThisMonth: boolean = false;
 
   modalRefRestMoneyForeachPlace: any;
   modalRefDebt: any;
@@ -86,7 +90,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       this.filteredDebts = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase()));
       else if (this.placeId) {
         this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
-        if (this.placeId == 5) this.getDebts();
+        if (this.placeId == 5) {
+          this.getTotalIntDebts();
+          this.getTotalOutDebts();
+        }
         else this.getRestMoneyForeachPlace();
       } else this.filteredDebts = debts;
       this.getPlaceDebt();
@@ -184,19 +191,21 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   openModalDebt(contentDebt) {
     this.modalRefDebt = this.modalService.open(contentDebt as Component, { size: 'lg', centered: true });
-    this.getDebts();
+    this.getTotalIntDebts();
+    this.getTotalOutDebts();
   }
 
-  getDebts() {
-    this.outDebt = 0;
-    this.inDebt = 0;
-
+  getTotalOutDebts() {
+    this.totalOutDebts = 0;
     this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi").forEach(element => {
-      this.outDebt += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+      this.totalOutDebts += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
     });
+  }
 
+  getTotalIntDebts() {
+    this.totalInDebts = 0;
     this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi").forEach(element => {
-      this.inDebt += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+      this.totalInDebts += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
     });  
   }
 
@@ -211,11 +220,29 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   getDetInDebts() {
-    this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+    this.totalInDebtsInModal = 0;
+
+    if (this.toPayThisMonth) {
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.debtForPay == true));
+    } else {
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+    }
+    this.detailsInDebt.forEach(element => {
+      this.totalInDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
   }
 
   getDetOutDebts() {
-    this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
+    this.totalOutDebtsInModal = 0;
+
+    if (this.toGetThisMonth) {
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.debtToGet == true));
+    } else {
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
+    }
+    this.detailsOutDebt.forEach(element => {
+      this.totalOutDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
   }
 
   getPlaceDebt() {
@@ -244,7 +271,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
           '',
           'success'
         ).then((res) => {
-          if (res.value) this.getDetInDebts();
+          if (res.value) {
+            this.getDetInDebts();
+            this.getTotalIntDebts();
+          }
         })
       }
     })
@@ -266,7 +296,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
           '',
           'success'
         ).then((res) => {
-          if (res.value) this.getDetOutDebts();
+          if (res.value) {
+            this.getDetOutDebts();
+            this.getTotalOutDebts();
+          }
         })
       }
     })
