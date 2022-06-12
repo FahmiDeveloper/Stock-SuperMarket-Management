@@ -60,7 +60,7 @@
     <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
         <div class="row">
             <div class="col-5">
-                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ inDebt }}DT</span>
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}DT</span>
             </div>
             <div class="col-7 font-weight-bold">
                 <span class="text-primary" style="font-size: 18px;">: الدين المتخلد</span>
@@ -71,7 +71,7 @@
     <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
         <div class="row">
             <div class="col-5">
-                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;width: 70px;">{{ outDebt }}DT</span>
+                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;width: 70px;">{{ totalOutDebts }}DT</span>
             </div>
             <div class="col-7 font-weight-bold">
                 <span class="text-primary" style="font-size: 18px;">: الدين المسال</span>
@@ -296,7 +296,7 @@
             <div class="col-1"></div>
             <div class="col-3">
                 <button class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
-                    <span class="font-weight-bold rest-money">{{ inDebt }}DT</span>
+                    <span class="font-weight-bold rest-money">{{ totalInDebts }}DT</span>
                 </button>
             </div>
             <div class="col-6 font-weight-bold label-place">
@@ -308,7 +308,7 @@
             <div class="col-1"></div>
             <div class="col-3">
                 <button class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
-                    <span class="font-weight-bold rest-money">{{ outDebt }}DT</span>
+                    <span class="font-weight-bold rest-money">{{ totalOutDebts }}DT</span>
                 </button>
             </div>
             <div class="col-6 font-weight-bold label-place">
@@ -322,7 +322,7 @@
 <ng-template #contentDetInDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">Details</h4>
+        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetInDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -330,7 +330,20 @@
     </div>
 
     <div class="modal-body">
-
+        <div class="row justify-content-center">
+            <label style="margin-left: 23px;">
+                <input
+                    type="checkbox"
+                    name="toPayThisMonth"
+                    id="toPayThisMonth"
+                    [(ngModel)]="toPayThisMonth"
+                    class="form-check-input"
+                    (ngModelChange)="getDetInDebts()"     
+                    style="height:25px; width:25px;">
+                <span style="margin-left: 10px;vertical-align: sub;">Will pay this month</span> 
+            </label>                                                  
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-4" *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
                 <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
@@ -377,7 +390,7 @@
 <ng-template #contentDetOutDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">Details</h4>
+        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetOutDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -385,7 +398,20 @@
     </div>
 
     <div class="modal-body">
-
+        <div class="row justify-content-center">
+            <label style="margin-left: 23px;">
+                <input
+                    type="checkbox"
+                    name="toGetThisMonth"
+                    id="toGetThisMonth"
+                    [(ngModel)]="toGetThisMonth"
+                    class="form-check-input"
+                    (ngModelChange)="getDetOutDebts()"     
+                    style="height:25px; width:25px;">
+                <span style="margin-left: 10px;vertical-align: sub;">To get this month</span> 
+            </label>                                                  
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-4" *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
                 <div class="card bg-light" style="width: 18rem;margin-inline: auto;">

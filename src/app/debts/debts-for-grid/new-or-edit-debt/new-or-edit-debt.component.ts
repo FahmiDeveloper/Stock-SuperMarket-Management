@@ -37,6 +37,9 @@ export class NewOrEditDebtComponent implements OnInit {
   }
 
   save(debt) {
+    if (debt.debtForPay == undefined) debt.debtForPay = false;
+    if (debt.debtToGet == undefined) debt.debtToGet = false;
+
     if (this.debt.key) {
       this.debtService.update(this.debt.key, debt);
       Swal.fire(

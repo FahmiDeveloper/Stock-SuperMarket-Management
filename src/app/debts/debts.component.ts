@@ -38,9 +38,13 @@ export class DebtsComponent implements OnInit, OnDestroy {
   restInBox: string = "";
   restInPosteAccount: string = "";
   queryNote: string = "";
-  outDebt: number;
-  inDebt: number;
+  totalOutDebts: number;
+  totalInDebts: number;
   placeId: number;
+  totalOutDebtsInModal: number;
+  totalInDebtsInModal: number;
+  toPayThisMonth: boolean = false;
+  toGetThisMonth: boolean = false;
 
   modalRefRestMoneyForeachPlace: any;
   modalRefDebt: any;
@@ -85,7 +89,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
         this.filteredDebts = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase()));
         else if (this.placeId) {
           this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
-          if (this.placeId == 5) this.getDebts();
+          if (this.placeId == 5) {
+            this.getTotalIntDebts();
+            this.getTotalOutDebts();
+          }
           else this.getRestMoneyForeachPlace();
         } else this.filteredDebts = debts;
         this.getPlaceDebt();
@@ -160,7 +167,8 @@ export class DebtsComponent implements OnInit, OnDestroy {
 
   showDebt(contentDebt) {
     this.modalRefDebt = this.modalService.open(contentDebt as Component, { windowClass : "debtModalClass", centered: true});
-    this.getDebts();
+    this.getTotalIntDebts();
+    this.getTotalOutDebts();
   }
 
   getRestMoneyForeachPlace() {
@@ -180,16 +188,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
   }
 
-  getDebts() {
-    this.outDebt = 0;
-    this.inDebt = 0;
-
+  getTotalOutDebts() {
+    this.totalOutDebts = 0;
     this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi").forEach(element => {
-      this.outDebt += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+      this.totalOutDebts += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
     });
+  }
 
+  getTotalIntDebts() {
+    this.totalInDebts = 0;
     this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi").forEach(element => {
-      this.inDebt += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+      this.totalInDebts += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
     });  
   }
 
@@ -204,11 +213,29 @@ export class DebtsComponent implements OnInit, OnDestroy {
   }
 
   getDetInDebts() {
-    this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+    this.totalInDebtsInModal = 0;
+
+    if (this.toPayThisMonth) {
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.debtForPay == true));
+    } else {
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+    }
+    this.detailsInDebt.forEach(element => {
+      this.totalInDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
   }
 
   getDetOutDebts() {
-    this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
+    this.totalOutDebtsInModal = 0;
+
+    if (this.toGetThisMonth) {
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.debtToGet == true));
+    } else {
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
+    }
+    this.detailsOutDebt.forEach(element => {
+      this.totalOutDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
   }
 
   getPlaceDebt() {
@@ -237,7 +264,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
           '',
           'success'
         ).then((res) => {
-          if (res.value) this.getDetInDebts();
+          if (res.value) {
+            this.getDetInDebts();
+            this.getTotalIntDebts();
+          }
         })
       }
     })
@@ -259,7 +289,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
           '',
           'success'
         ).then((res) => {
-          if (res.value) this.getDetOutDebts();
+          if (res.value) {
+            this.getDetOutDebts();
+            this.getTotalOutDebts();
+          }
         })
       }
     })
