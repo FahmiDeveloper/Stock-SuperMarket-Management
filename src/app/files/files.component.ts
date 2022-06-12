@@ -142,7 +142,7 @@ export class FilesComponent implements OnInit {
     modalRef.componentInstance.link = link;
   }
 
-  delete(linkId) {
+  deleteLink(linkId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this link!',
@@ -169,6 +169,10 @@ export class FilesComponent implements OnInit {
 
   backToListTypeLinks() {
     this.clickShowLinks = false;
+  }
+
+  shareLink(path: string) {
+    window.open("https://web.whatsapp.com/send?text=" + path,'_blank');
   }
 }
 

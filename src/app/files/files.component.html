@@ -110,7 +110,7 @@
                                         *ngIf="link.path" 
                                         href="{{ link.path }}" 
                                         target="_blank" 
-                                        class="btn btn-success">
+                                        class="btn btn-warning">
                                         <i class="fa fa-link" aria-hidden="true"></i>
                                     </a>&nbsp;                       
                                     <button 
@@ -119,6 +119,12 @@
                                         (click)="delete(link.key)"
                                         class="btn btn-danger">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>&nbsp;
+                                    <button 
+                                        type="button" 
+                                        (click)="shareLink(link.path)"
+                                        class="btn btn-success">
+                                        <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                     </button>                    
                                 </div>
                             </td>
@@ -152,18 +158,25 @@
                                             *ngIf="link.path" 
                                             href="{{ link.path }}" 
                                             target="_blank" 
-                                            class="btn btn-success"
+                                            class="btn btn-warning"
                                             style="margin-top: 5px;width: 42px;">
                                             <i class="fa fa-link" aria-hidden="true"></i>
                                         </a><br>                       
                                         <button 
                                             *ngIf="user.roleDelete" 
                                             type="button" 
-                                            (click)="delete(link.key)"
+                                            (click)="deleteLink(link.key)"
                                             class="btn btn-danger"
                                             style="margin-top: 5px;width: 42px;">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>                   
+                                        </button><br>
+                                        <button 
+                                            type="button" 
+                                            (click)="shareLink(link.path)"
+                                            class="btn btn-success"
+                                            style="margin-top: 5px;width: 42px;">
+                                            <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                        </button>                
                                     </div>
                                 </td>
                             </tr>
