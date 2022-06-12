@@ -14,6 +14,7 @@ import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 import { FileUpload } from 'src/app/shared/models/file-upload.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { renderAsync } from 'docx-preview';
+import { NgNavigatorShareService } from 'ng-navigator-share';
 
 @Component({
   selector: 'app-upload-details',
@@ -47,6 +48,7 @@ export class UploadDetailsComponent implements OnChanges {
 
   constructor(
     private uploadService: FileUploadService,
+    protected ngNavigatorShareService: NgNavigatorShareService,
     private sanitizer : DomSanitizer,
     protected modalService: NgbModal
   ) {}
@@ -246,6 +248,32 @@ export class UploadDetailsComponent implements OnChanges {
         }    
       })
     })
+  }
+
+  shareFile(fileUpload: FileUpload) {
+    fetch(fileUpload.url)
+    .then(res => res.blob())
+    .then(blob => {
+      if (!this.ngNavigatorShareService.canShare()) {
+        alert(`This service/api is not supported in your Browser`);
+        return;
+      }
+
+      this.ngNavigatorShareService.share({
+        title: fileUpload.name,
+        text: '',
+        files: [
+          new File([blob], fileUpload.name, {
+            type: blob.type,
+          }),
+        ]
+      }).then( (response) => {
+        console.log(response);
+      })
+      .catch( (error) => {
+        console.log(error);
+      });
+    });  
   }
 
   checkIsImage(path) {
