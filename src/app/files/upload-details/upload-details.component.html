@@ -53,6 +53,17 @@
               <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
           </div>
+
+          <div>
+            <button
+              *ngIf="isMobile && (checkIsImage(file.name) || isTxt(file.name)  || isPdf(file.name))"
+              type="button" 
+              (click)="shareFile(file)"
+              class="btn btn-warning">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </button>  
+          </div>
+
         </section>
       </td>
     </tr>
