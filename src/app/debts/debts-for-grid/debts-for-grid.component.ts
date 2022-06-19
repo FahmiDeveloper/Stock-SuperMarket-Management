@@ -26,6 +26,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   filteredDebtsCopie: Debt[];
   detailsInDebt: Debt[];
   detailsOutDebt: Debt[];
+  detailInDebt: Debt;
+  detailOutDebt: Debt;
 
   p: number = 1;
   pageDetsInDebt: number = 1;
@@ -44,13 +46,27 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   totalInDebts: number;
   totalOutDebtsInModal: number;
   totalInDebtsInModal: number;
-  toPayThisMonth: boolean = false;
-  toGetThisMonth: boolean = false;
+
+  toPayThisMonth: boolean = true;
+  toPayNextMonth: boolean = false;
+  notToPay: boolean = false;
+  checkToPayThisMonth: boolean = false;
+  checkToPayNextMonth: boolean = false;
+  checkNotToPay: boolean = false;
+
+  toGetThisMonth: boolean = true;
+  toGetNextMonth: boolean = false;
+  notToGet: boolean = false;
+  checkToGetThisMonth: boolean = false;
+  checkToGetNextMonth: boolean = false;
+  checkNotToGet: boolean = false;
 
   modalRefRestMoneyForeachPlace: any;
   modalRefDebt: any;
   modalRefDetInDebt: any;
   modalRefDetOutDebt: any;
+  modalRefChangeStatusInDebt: any;
+  modalRefChangeStatusOutDebt: any;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -211,34 +227,86 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   showDetInDebt(contentDetInDebt) {
     this.modalRefDetInDebt = this.modalService.open(contentDetInDebt as Component, { size: 'lg', centered: true });
-    this.getDetInDebts();
+    this.payThisMonth();
   }
 
   showDetOutDebt(contentDetOutDebt) {
     this.modalRefDetOutDebt = this.modalService.open(contentDetOutDebt as Component, { size: 'lg', centered: true });
-    this.getDetOutDebts();
+    this.getThisMonth();
   }
 
-  getDetInDebts() {
+  payThisMonth() {
     this.totalInDebtsInModal = 0;
 
     if (this.toPayThisMonth) {
-      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.debtForPay == true));
-    } else {
-      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi");
+      this.toPayNextMonth= false;
+      this.notToPay = false;
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.toPayThisMonth == true));
     }
     this.detailsInDebt.forEach(element => {
       this.totalInDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
     });
   }
 
-  getDetOutDebts() {
+  payNextMonth() {
+    this.totalInDebtsInModal = 0;
+
+    if (this.toPayNextMonth) {
+      this.toPayThisMonth = false;
+      this.notToPay = false;
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.toPayNextMonth == true));
+    }
+    this.detailsInDebt.forEach(element => {
+      this.totalInDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
+  }
+
+  notToBePay() {
+    this.totalInDebtsInModal = 0;
+
+    if (this.notToPay) {
+      this.toPayThisMonth = false;
+      this.toPayNextMonth= false;
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.notToPayForNow == true));
+    }
+    this.detailsInDebt.forEach(element => {
+      this.totalInDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
+  }
+
+  getThisMonth() {
     this.totalOutDebtsInModal = 0;
 
     if (this.toGetThisMonth) {
-      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.debtToGet == true));
-    } else {
-      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi");
+      this.toGetNextMonth = false;
+      this.notToGet= false;
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.toGetThisMonth == true));
+    }
+    this.detailsOutDebt.forEach(element => {
+      this.totalOutDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
+  }
+
+  getNextMonth() {
+    this.totalOutDebtsInModal = 0;
+
+    if (this.toGetNextMonth) {
+      this.toGetThisMonth = false;
+      this.notToGet= false;
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.toGetNextMonth == true));
+    }
+    this.detailsOutDebt.forEach(element => {
+      this.totalOutDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
+    });
+  }
+
+  notToBeGet() {
+    this.totalOutDebtsInModal = 0;
+
+    if (this.notToGet) {
+      this.toGetThisMonth = false;
+      this.toGetNextMonth = false;
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.notToGetForNow == true));
     }
     this.detailsOutDebt.forEach(element => {
       this.totalOutDebtsInModal += Number(element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT")));
@@ -272,8 +340,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
           'success'
         ).then((res) => {
           if (res.value) {
-            this.getDetInDebts();
             this.getTotalIntDebts();
+            if (this.toPayThisMonth) this.payThisMonth();
+            else if (this.toPayNextMonth) this.payNextMonth();
+            else this.notToBePay()
           }
         })
       }
@@ -297,66 +367,169 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
           'success'
         ).then((res) => {
           if (res.value) {
-            this.getDetOutDebts();
             this.getTotalOutDebts();
+            if (this.toGetThisMonth) this.getThisMonth();
+            else if (this.toGetNextMonth) this.getNextMonth();
+            else this.notToBeGet()
           }
         })
       }
     })
   }
 
-  changeStatusOutDebt(detailOutDebt: Debt) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: detailOutDebt.debtToGet == true ? 'Not get this debt in this month!' : 'Get this debt in this month!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        detailOutDebt.debtToGet = !detailOutDebt.debtToGet;
-        this.debtService.update(detailOutDebt.key, detailOutDebt);
-        Swal.fire(
-          detailOutDebt.debtToGet == true ? 'Debt will get in this month' : 'Debt will not get in this month',
-          '',
-          'success'
-        ).then((res) => {
-          if (res.value) {
-            this.getDetOutDebts();
-            this.getTotalOutDebts();
-          }
-        })
+  openModalChangeStatusInDebt(contentChangeStatusInDebt, detailInDebt: Debt) {
+    this.detailInDebt = detailInDebt;
+    this.checkToPayThisMonth = false;
+    this.checkToPayNextMonth = false;
+    this.checkNotToPay = false;
+    this.modalRefChangeStatusInDebt = this.modalService.open(contentChangeStatusInDebt as Component, { windowClass : "statusInDebtModalClass", centered: true});
+  }
+
+  changeStatusToPayThisMonth() {
+    if (this.checkToPayThisMonth) {
+      this.detailInDebt.toPayThisMonth = true;
+      this.detailInDebt.toPayNextMonth = false;
+      this.detailInDebt.notToPayForNow = false;
+    }
+
+    this.debtService.update(this.detailInDebt.key, this.detailInDebt);
+    Swal.fire(
+      'Status changed successfully' ,
+      '',
+      'success'
+    ).then((res) => {
+      if (res.value) {
+        this.getTotalIntDebts();
+        if (this.toPayThisMonth) this.payThisMonth();
+        else if (this.toPayNextMonth) this.payNextMonth();
+        else this.notToBePay();
+        this.modalRefChangeStatusInDebt.close();
       }
     })
   }
 
-  changeStatusInDebt(detailInDebt: Debt) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: detailInDebt.debtForPay == true ? 'Not pay this debt in this month!' : 'Pay this debt in this month!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        detailInDebt.debtForPay = !detailInDebt.debtForPay;
-        this.debtService.update(detailInDebt.key, detailInDebt);
-        Swal.fire(
-          detailInDebt.debtForPay == true ? 'Pay will get in this month' : 'Pay will not get in this month',
-          '',
-          'success'
-        ).then((res) => {
-          if (res.value) {
-            this.getDetInDebts();
-            this.getTotalIntDebts();
-          }
-        })
+  changeStatusToPayNextMonth() {
+  if (this.checkToPayNextMonth) {
+      this.detailInDebt.toPayNextMonth = true;
+      this.detailInDebt.toPayThisMonth = false;
+      this.detailInDebt.notToPayForNow = false;
+    }
+
+    this.debtService.update(this.detailInDebt.key, this.detailInDebt);
+    Swal.fire(
+      'Status changed successfully' ,
+      '',
+      'success'
+    ).then((res) => {
+      if (res.value) {
+        this.getTotalIntDebts();
+        if (this.toPayThisMonth) this.payThisMonth();
+        else if (this.toPayNextMonth) this.payNextMonth();
+        else this.notToBePay();
+        this.modalRefChangeStatusInDebt.close();
       }
     })
   }
 
+  changeStatusNotToPayForNow() {
+    if (this.checkNotToPay) {
+      this.detailInDebt.notToPayForNow = true;
+      this.detailInDebt.toPayThisMonth = false;
+      this.detailInDebt.toPayNextMonth = false;
+    }
+
+    this.debtService.update(this.detailInDebt.key, this.detailInDebt);
+    Swal.fire(
+      'Status changed successfully' ,
+      '',
+      'success'
+    ).then((res) => {
+      if (res.value) {
+        this.getTotalIntDebts();
+        if (this.toPayThisMonth) this.payThisMonth();
+        else if (this.toPayNextMonth) this.payNextMonth();
+        else this.notToBePay();
+        this.modalRefChangeStatusInDebt.close();
+      }
+    })
+  }
+
+  openModalChangeStatusOutDebt(contentChangeStatusOutDebt, detailOutDebt: Debt) {
+    this.detailOutDebt = detailOutDebt;
+    this.checkToGetThisMonth = false;
+    this.checkToGetNextMonth = false;
+    this.checkNotToGet = false;
+    this.modalRefChangeStatusOutDebt = this.modalService.open(contentChangeStatusOutDebt as Component, { windowClass : "statusOutDebtModalClass", centered: true});
+  }
+
+  changeStatusToGetThisMonth() {
+    if (this.checkToGetThisMonth) {
+      this.detailOutDebt.toGetThisMonth = true;
+      this.detailOutDebt.toGetNextMonth = false;
+      this.detailOutDebt.notToGetForNow = false;
+    }
+
+    this.debtService.update(this.detailOutDebt.key, this.detailOutDebt);
+    Swal.fire(
+      'Status changed successfully' ,
+      '',
+      'success'
+    ).then((res) => {
+      if (res.value) {
+        this.getTotalOutDebts();
+        if (this.toGetThisMonth) this.getThisMonth();
+        else if (this.toGetNextMonth) this.getNextMonth();
+        else this.notToBeGet();
+        this.modalRefChangeStatusOutDebt.close();
+      }
+    })
+  }
+
+  changeStatusToGetNextMonth() {
+  if (this.checkToGetNextMonth) {
+      this.detailOutDebt.toGetNextMonth = true;
+      this.detailOutDebt.toGetThisMonth = false;
+      this.detailOutDebt.notToGetForNow = false;
+    }
+
+    this.debtService.update(this.detailOutDebt.key, this.detailOutDebt);
+    Swal.fire(
+      'Status changed successfully' ,
+      '',
+      'success'
+    ).then((res) => {
+      if (res.value) {
+        this.getTotalOutDebts();
+        if (this.toGetThisMonth) this.getThisMonth();
+        else if (this.toGetNextMonth) this.getNextMonth();
+        else this.notToBeGet();
+        this.modalRefChangeStatusOutDebt.close();
+      }
+    })
+  }
+
+  changeStatusNotToGetForNow() {
+    if (this.checkNotToGet) {
+      this.detailOutDebt.notToGetForNow = true;
+      this.detailOutDebt.toGetThisMonth = false;
+      this.detailOutDebt.toGetNextMonth = false;
+    }
+
+    this.debtService.update(this.detailOutDebt.key, this.detailOutDebt);
+    Swal.fire(
+      'Status changed successfully' ,
+      '',
+      'success'
+    ).then((res) => {
+      if (res.value) {
+        this.getTotalOutDebts();
+        if (this.toGetThisMonth) this.getThisMonth();
+        else if (this.toGetNextMonth) this.getNextMonth();
+        else this.notToBeGet();
+        this.modalRefChangeStatusOutDebt.close();
+      }
+    })
+  }
 
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();

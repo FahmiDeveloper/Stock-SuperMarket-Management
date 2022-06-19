@@ -67,12 +67,28 @@
                         </div>
                     </div>
                     <div class="form-group" *ngIf="(debt.placeId==5) && (debt.debtor == 'Fahmi')">
-                        <input #debtForPay="ngModel" [(ngModel)]="debt.debtForPay" name="debtForPay" id="debtForPay" type="checkbox" class="form-control form-check-input">
-                        <label class="form-check-label" style="padding-top: 10px;" for="debtForPay">Will pay this month</label>
+                        <input #toPayThisMonth="ngModel" [(ngModel)]="debt.toPayThisMonth" name="toPayThisMonth" id="toPayThisMonth" type="checkbox" class="form-control form-check-input">
+                        <label class="form-check-label" style="padding-top: 10px;" for="toPayThisMonth">Will pay this month</label>
+                    </div>
+                    <div class="form-group" *ngIf="(debt.placeId==5) && (debt.debtor == 'Fahmi')">
+                        <input #toPayNextMonth="ngModel" [(ngModel)]="debt.toPayNextMonth" name="toPayNextMonth" id="toPayNextMonth" type="checkbox" class="form-control form-check-input">
+                        <label class="form-check-label" style="padding-top: 10px;" for="toPayNextMonth">Will pay next month</label>
+                    </div>
+                    <div class="form-group" *ngIf="(debt.placeId==5) && (debt.debtor == 'Fahmi')">
+                        <input #notToPayForNow="ngModel" [(ngModel)]="debt.notToPayForNow" name="notToPayForNow" id="notToPayForNow" type="checkbox" class="form-control form-check-input">
+                        <label class="form-check-label" style="padding-top: 10px;" for="notToPayForNow">Not to pay For Now</label>
                     </div>
                     <div class="form-group" *ngIf="(debt.placeId==5) && (debt.creditor == 'Fahmi')">
-                        <input #debtToGet="ngModel" [(ngModel)]="debt.debtToGet" name="debtToGet" id="debtToGet" type="checkbox" class="form-control form-check-input">
-                        <label class="form-check-label" style="padding-top: 10px;" for="debtToGet">Will get this month</label>
+                        <input #toGetThisMonth="ngModel" [(ngModel)]="debt.toGetThisMonth" name="toGetThisMonth" id="toGetThisMonth" type="checkbox" class="form-control form-check-input">
+                        <label class="form-check-label" style="padding-top: 10px;" for="toGetThisMonth">Will get this month</label>
+                    </div>
+                    <div class="form-group" *ngIf="(debt.placeId==5) && (debt.creditor == 'Fahmi')">
+                        <input #toGetNextMonth="ngModel" [(ngModel)]="debt.toGetNextMonth" name="toGetNextMonth" id="toGetNextMonth" type="checkbox" class="form-control form-check-input">
+                        <label class="form-check-label" style="padding-top: 10px;" for="toGetNextMonth">Will get next month</label>
+                    </div>
+                    <div class="form-group" *ngIf="(debt.placeId==5) && (debt.creditor == 'Fahmi')">
+                        <input #notToGetForNow="ngModel" [(ngModel)]="debt.notToGetForNow" name="notToGetForNow" id="notToGetForNow" type="checkbox" class="form-control form-check-input">
+                        <label class="form-check-label" style="padding-top: 10px;" for="notToGetForNow">Not to get For Now</label>
                     </div>
                     <div class="form-group">
                         <label for="note">Note</label>

@@ -330,46 +330,94 @@
     </div>
 
     <div class="modal-body">
-        <div class="row justify-content-center">
-            <label style="margin-left: 23px;">
-                <input
-                    type="checkbox"
-                    name="toPayThisMonth"
-                    id="toPayThisMonth"
-                    [(ngModel)]="toPayThisMonth"
-                    class="form-check-input"
-                    (ngModelChange)="getDetInDebts()"     
-                    style="height:25px; width:25px;">
-                <span style="margin-left: 10px;vertical-align: sub;">Will pay this month</span> 
-            </label>                                                  
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="toPayThisMonth" 
+                            name="toPayThisMonth" 
+                            id="toPayThisMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger" 
+                            (ngModelChange)="payThisMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px;">Pay this month</span>
+                    </label>             
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="toPayNextMonth" 
+                            name="toPayNextMonth" 
+                            id="toPayNextMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger" 
+                            (ngModelChange)="payNextMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px;">Pay next month</span>
+                    </label>             
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="notToPay" 
+                            name="notToPay" 
+                            id="notToPay" 
+                            type="checkbox"
+                            class="form-check-input larger" 
+                            (ngModelChange)="notToBePay()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px">Not To pay</span>
+                    </label>             
+                </div>
+            </div>
         </div>
+
         <br>
         <div class="row">
             <div class="col-md-4" *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
-                <div class="card bg-light" style="width: 18rem;margin-inline: auto;" (click)="changeStatusInDebt(detailInDebt)">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
                     <div class="card-body text-dark">
                         <div class="row">
-                            <div class="col-5">
+                            <div class="col-6">
                                 <span class="text-primary font-weight-bold" style="font-size: 20px;">
                                     {{ detailInDebt.creditor }}
                                 </span>
                             </div>
-                            <div class="col-4 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
+                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;">
                                 {{ detailInDebt.financialDebt }}
-                            </div>
-                            <div class="col-3">
-                                <button 
-                                    *ngIf="user.roleDelete" 
-                                    type="button" 
-                                    (click)="deleteFromModalInDebts(detailInDebt.key)"
-                                    class="btn btn-danger">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: right;">
                                 {{ detailInDebt.note }}
+                            </div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-6">
+                                <button 
+                                    type="button" 
+                                    (click)="openModalChangeStatusInDebt(contentChangeStatusInDebt, detailInDebt)"
+                                    class="btn btn-secondary"
+                                    style="float: right;">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button 
+                                    *ngIf="user.roleDelete" 
+                                    type="button" 
+                                    (click)="deleteFromModalInDebts(detailInDebt.key)"
+                                    class="btn btn-danger"
+                                    style="float: left;">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -398,46 +446,95 @@
     </div>
 
     <div class="modal-body">
-        <div class="row justify-content-center">
-            <label style="margin-left: 23px;">
-                <input
-                    type="checkbox"
-                    name="toGetThisMonth"
-                    id="toGetThisMonth"
-                    [(ngModel)]="toGetThisMonth"
-                    class="form-check-input"
-                    (ngModelChange)="getDetOutDebts()"     
-                    style="height:25px; width:25px;">
-                <span style="margin-left: 10px;vertical-align: sub;">To get this month</span> 
-            </label>                                                  
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="toGetThisMonth" 
+                            name="toGetThisMonth" 
+                            id="toGetThisMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger" 
+                            (ngModelChange)="getThisMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px;">Get this month</span>
+                    </label>             
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="toGetNextMonth" 
+                            name="toGetNextMonth" 
+                            id="toGetNextMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger" 
+                            (ngModelChange)="getNextMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px;">Get next month</span>
+                    </label>             
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="notToGet" 
+                            name="notToGet" 
+                            id="notToGet" 
+                            type="checkbox"
+                            class="form-check-input larger" 
+                            (ngModelChange)="notToBeGet()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px">Not to get</span>
+                    </label>             
+                </div>
+            </div>
         </div>
+                    
         <br>
         <div class="row">
             <div class="col-md-4" *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
-                <div class="card bg-light" style="width: 18rem;margin-inline: auto;" (click)="changeStatusOutDebt(detailOutDebt)">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
                     <div class="card-body text-dark">
                         <div class="row">
-                            <div class="col-5">
+                            <div class="col-6">
                                 <span class="text-primary font-weight-bold" style="font-size: 20px;">
                                     {{ detailOutDebt.debtor }}
                                 </span>
                             </div>
-                            <div class="col-4 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
+                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;">
                                 {{ detailOutDebt.financialDebt }}
-                            </div>
-                            <div class="col-3">
-                                <button 
-                                    *ngIf="user.roleDelete" 
-                                    type="button" 
-                                    (click)="deleteFromModalOutDebts(detailOutDebt.key)"
-                                    class="btn btn-danger">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: right;">
                                 {{ detailOutDebt.note }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <button 
+                                    type="button" 
+                                    (click)="openModalChangeStatusOutDebt(contentChangeStatusOutDebt, detailOutDebt)"
+                                    class="btn btn-secondary"
+                                    style="float: right;">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button 
+                                    *ngIf="user.roleDelete" 
+                                    type="button" 
+                                    (click)="deleteFromModalOutDebts(detailOutDebt.key)"
+                                    class="btn btn-danger"
+                                    style="float: left;">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -453,4 +550,205 @@
         </div>
 
     </div>
+</ng-template>
+
+<ng-template #contentChangeStatusInDebt let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusInDebt.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="container">
+            <div class="row" *ngIf="detailInDebt.toPayThisMonth">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="checkToPayNextMonth" 
+                            name="toPayNextMonth" 
+                            id="toPayNextMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger"
+                            (ngModelChange)="changeStatusToPayNextMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 65px;">Pay next month</span>
+                    </label>             
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="checkNotToPay" 
+                            name="notToPay" 
+                            id="notToPay" 
+                            type="checkbox"
+                            class="form-check-input larger"
+                            (ngModelChange)="changeStatusNotToPayForNow()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 64px">Not payed</span>
+                    </label>             
+                </div>
+            </div>
+            <div class="row" *ngIf="detailInDebt.toPayNextMonth">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="checkToPayThisMonth" 
+                            name="toPayThisMonth" 
+                            id="toPayThisMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger"
+                            (ngModelChange)="changeStatusToPayThisMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px;">Pay this month</span>
+                    </label>             
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="checkNotToPay" 
+                            name="notToPay" 
+                            id="notToPay" 
+                            type="checkbox"
+                            class="form-check-input larger"
+                            (ngModelChange)="changeStatusNotToPayForNow()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px">Not payed</span>
+                    </label>             
+                </div>
+            </div>
+            <div class="row" *ngIf="detailInDebt.notToPayForNow">
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="checkToPayThisMonth" 
+                            name="toPayThisMonth" 
+                            id="toPayThisMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger"
+                            (ngModelChange)="changeStatusToPayThisMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px;">Pay this month</span>
+                    </label>             
+                </div>
+                <div class="col-md-4">
+                    <label>
+                        <input 
+                            [(ngModel)]="checkToPayNextMonth" 
+                            name="toPayNextMonth" 
+                            id="toPayNextMonth" 
+                            type="checkbox" 
+                            class="form-check-input larger"
+                            (ngModelChange)="changeStatusToPayNextMonth()"
+                            style="margin-left: 185px;">
+                        <span style="margin-left: 70px;">Pay next month</span>
+                    </label>             
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</ng-template>
+
+<ng-template #contentChangeStatusOutDebt let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusOutDebt.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row justify-content-center" *ngIf="detailOutDebt.toGetThisMonth">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetNextMonth" 
+                        name="checkToGetNextMonth" 
+                        id="checkToGetNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetNextMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 65px;">Get next month</span>
+                </label>             
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkNotToGet" 
+                        name="checkNotToGet" 
+                        id="checkNotToGet" 
+                        type="checkbox"
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusNotToGetForNow()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 65px">Not to get</span>
+                </label>             
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="detailOutDebt.toGetNextMonth">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetThisMonth" 
+                        name="checkToGetThisMonth" 
+                        id="checkToGetThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Get this month</span>
+                </label>             
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkNotToGet" 
+                        name="checkNotToGet" 
+                        id="checkNotToGet" 
+                        type="checkbox"
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusNotToGetForNow()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px">Not to get</span>
+                </label>           
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="detailOutDebt.notToGetForNow">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetThisMonth" 
+                        name="checkToGetThisMonth" 
+                        id="checkToGetThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Get this month</span>
+                </label>            
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetNextMonth" 
+                        name="checkToGetNextMonth" 
+                        id="checkToGetNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetNextMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Get next month</span>
+                </label>              
+            </div>
+        </div>
+    </div>
+
 </ng-template>

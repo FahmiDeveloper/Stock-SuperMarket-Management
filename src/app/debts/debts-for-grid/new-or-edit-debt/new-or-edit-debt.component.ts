@@ -37,8 +37,15 @@ export class NewOrEditDebtComponent implements OnInit {
   }
 
   save(debt) {
-    if (debt.debtForPay == undefined) debt.debtForPay = false;
-    if (debt.debtToGet == undefined) debt.debtToGet = false;
+    if (debt.placeId == 5) {
+      if (debt.toPayThisMonth == undefined) debt.toPayThisMonth = false;
+      if (debt.toPayNextMonth == undefined) debt.toPayNextMonth = false;
+      if (debt.notToPayForNow == undefined) debt.notToPayForNow = false;
+
+      if (debt.toGetThisMonth == undefined) debt.toGetThisMonth = false;
+      if (debt.toGetNextMonth == undefined) debt.toGetNextMonth = false;
+      if (debt.notToGetForNow == undefined) debt.notToGetForNow = false;
+    }
 
     if (this.debt.key) {
       this.debtService.update(this.debt.key, debt);

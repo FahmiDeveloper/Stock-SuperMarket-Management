@@ -15,3 +15,11 @@ input.larger {
     height: 25px;
     margin-left: 180px;
 }
+
+.statusInDebtModalClass .modal-dialog {
+    max-width: 10px !important;
+}
+
+.statusOutDebtModalClass .modal-dialog {
+    max-width: 10px !important;
+}
