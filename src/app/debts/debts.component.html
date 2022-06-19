@@ -3,8 +3,8 @@
 <br>
 <br>
 
-<div class="row">
-    <div class="col-md-5">
+<div class="row justify-content-center">
+    <div class="col-md-4">
         <input #query (keyup)="getAllDebts()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput" placeholder="Search by note...">
         <!-- <div class="row">
             <div class="col-md-7">
@@ -16,7 +16,7 @@
             </div>
         </div>      -->
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="row">
             <div class="col-md-2"><label for="placeId" class="font-weight-bold">Place</label></div>
             <div class="col-md-10">
@@ -79,7 +79,8 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-6">
-                <span class="font-weight-bold rest-money badge badge-warning">{{ totalOutDebts }}DT</span>
+                <span *ngIf="totalOutDebts" class="font-weight-bold rest-money badge badge-warning">{{ totalOutDebts }}</span>
+                <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
             </div>
             <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">: الدين المسال</span>
@@ -89,7 +90,8 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-6">
-                <span class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebts }}DT</span>
+                <span *ngIf="totalInDebts" class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebts }}</span>
+                <span *ngIf="!totalInDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
             </div>
             <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">: الدين المتخلد</span>
@@ -244,26 +246,26 @@
     </div>
 
     <div class="modal-body">
-        <div class="row ml-4">
-            <div class="col-2"></div>
-            <div class="col-4">
-                <button class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
-                    <span class="font-weight-bold rest-money">{{ totalInDebts }}DT</span>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-warning" style="float: right;" (click)="showDetInDebt(contentDetInDebt)">
+                    <span *ngIf="totalInDebts" class="font-weight-bold rest-money">{{ totalInDebts }}</span>
+                    <span *ngIf="!totalInDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
             </div>
-            <div class="col-6 font-weight-bold label-place">
+            <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">الدين المتخلد</span>&nbsp;
             </div>
         </div>
         <br>
-        <div class="row ml-4">
-            <div class="col-2"></div>
-            <div class="col-4">
-                <button class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
-                    <span class="font-weight-bold rest-money">{{ totalOutDebts }}DT</span>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-warning" style="float: right;" (click)="showDetOutDebt(contentDetOutDebt)">
+                    <span *ngIf="totalOutDebts" class="font-weight-bold rest-money">{{ totalOutDebts }}</span>
+                    <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
             </div>
-            <div class="col-6 font-weight-bold label-place">
+            <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">الدين المسال</span>&nbsp;
             </div>
         </div>
@@ -273,7 +275,8 @@
 <ng-template #contentDetInDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}DT</h4>
+        <h4 *ngIf="totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}</h4>
+        <h4 *ngIf="!totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetInDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -282,19 +285,47 @@
 
     <div class="modal-body">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <input 
-                    [(ngModel)]="toPayThisMonth" 
-                    name="toPayThisMonth" 
-                    id="toPayThisMonth" 
-                    type="checkbox" 
-                    class="form-check-input larger" 
-                    (ngModelChange)="getDetInDebts()">
+            <div class="col-md-4">
+                <label>
+                    <input 
+                        [(ngModel)]="toPayThisMonth" 
+                        name="toPayThisMonth" 
+                        id="toPayThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger" 
+                        (ngModelChange)="payThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Pay this month</span>
+                </label>             
             </div>
-            <div class="col-md-6">
-                <label class="form-check-label" style="margin-left:-25px;margin-top: 5px;" for="toPayThisMonth">To pay this month</label>
+            <div class="col-md-4">
+                <label>
+                    <input 
+                        [(ngModel)]="toPayNextMonth" 
+                        name="toPayNextMonth" 
+                        id="toPayNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger" 
+                        (ngModelChange)="payNextMonth()"
+                        style="margin-left: 170px;">
+                    <span style="margin-left: 50px;">Pay next month</span>
+                </label>             
+            </div>
+            <div class="col-md-4">
+                <label>
+                    <input 
+                        [(ngModel)]="notToPay" 
+                        name="notToPay" 
+                        id="notToPay" 
+                        type="checkbox"
+                        class="form-check-input larger" 
+                        (ngModelChange)="notToBePay()"
+                        style="margin-left: 115px;">
+                    <span style="margin-left: 30px">Not To pay</span>
+                </label>             
             </div>
         </div>
+
         <br>
         <div class="row">
             <table class="table table-striped">
@@ -304,6 +335,7 @@
                         <th>Debt</th>
                         <th>Note</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -311,6 +343,16 @@
                         <td>{{ detailInDebt.creditor }}</td>
                         <td>{{ detailInDebt.financialDebt }}</td>
                         <td>{{ detailInDebt.note }}</td>
+                        <td style="text-align:center;">
+                            <div class="btnswrap">                                             
+                                <button 
+                                    type="button" 
+                                    (click)="openModalChangeStatusInDebt(contentChangeStatusInDebt, detailInDebt)"
+                                    class="btn btn-secondary">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>                    
+                            </div>
+                        </td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 
@@ -335,7 +377,8 @@
 <ng-template #contentDetOutDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}DT</h4>
+        <h4 *ngIf="totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}</h4>
+        <h4 *ngIf="!totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetOutDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -344,17 +387,44 @@
 
     <div class="modal-body">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <input 
-                    [(ngModel)]="toGetThisMonth" 
-                    name="toGetThisMonth" 
-                    id="toGetThisMonth" 
-                    type="checkbox" 
-                    class="form-check-input larger" 
-                    (ngModelChange)="getDetOutDebts()">
+            <div class="col-md-4">
+                <label>
+                    <input 
+                        [(ngModel)]="toGetThisMonth" 
+                        name="toGetThisMonth" 
+                        id="toGetThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger" 
+                        (ngModelChange)="getThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Get this month</span>
+                </label>             
             </div>
-            <div class="col-md-6">
-                <label class="form-check-label" style="margin-left:-25px;margin-top: 5px;" for="toGetThisMonth">To get this month</label>
+            <div class="col-md-4">
+                <label>
+                    <input 
+                        [(ngModel)]="toGetNextMonth" 
+                        name="toGetNextMonth" 
+                        id="toGetNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger" 
+                        (ngModelChange)="getNextMonth()"
+                        style="margin-left: 170px;">
+                    <span style="margin-left: 50px;">Get next month</span>
+                </label>             
+            </div>
+            <div class="col-md-4">
+                <label>
+                    <input 
+                        [(ngModel)]="notToGet" 
+                        name="notToGet" 
+                        id="notToGet" 
+                        type="checkbox"
+                        class="form-check-input larger" 
+                        (ngModelChange)="notToBeGet()"
+                        style="margin-left: 115px;">
+                    <span style="margin-left: 30px">Not to get</span>
+                </label>             
             </div>
         </div>
         <br>
@@ -366,6 +436,7 @@
                         <th>Debt</th>
                         <th>Note</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -373,6 +444,16 @@
                         <td>{{ detailOutDebt.debtor }}</td>
                         <td>{{ detailOutDebt.financialDebt }}</td>
                         <td>{{ detailOutDebt.note }}</td>
+                        <td style="text-align:center;">
+                            <div class="btnswrap">                                             
+                                <button 
+                                    type="button" 
+                                    (click)="openModalChangeStatusOutDebt(contentChangeStatusOutDebt, detailOutDebt)"
+                                    class="btn btn-secondary">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>                    
+                            </div>
+                        </td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 
@@ -394,4 +475,200 @@
     </div>
 </ng-template>
 
+<ng-template #contentChangeStatusInDebt let-modal let-c="close" let-d="dismiss">
 
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusInDebt.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row justify-content-center" *ngIf="detailInDebt.toPayThisMonth">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToPayNextMonth" 
+                        name="toPayNextMonth" 
+                        id="toPayNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToPayNextMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 65px;">Pay next month</span>
+                </label>             
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkNotToPay" 
+                        name="notToPay" 
+                        id="notToPay" 
+                        type="checkbox"
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusNotToPayForNow()"
+                        style="margin-left: 115px;">
+                    <span style="margin-left: 30px">Not payed</span>
+                </label>             
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="detailInDebt.toPayNextMonth">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToPayThisMonth" 
+                        name="toPayThisMonth" 
+                        id="toPayThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToPayThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Pay this month</span>
+                </label>             
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkNotToPay" 
+                        name="notToPay" 
+                        id="notToPay" 
+                        type="checkbox"
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusNotToPayForNow()"
+                        style="margin-left: 115px;">
+                    <span style="margin-left: 30px">Not payed</span>
+                </label>             
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="detailInDebt.notToPayForNow">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToPayThisMonth" 
+                        name="toPayThisMonth" 
+                        id="toPayThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToPayThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Pay this month</span>
+                </label>             
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToPayNextMonth" 
+                        name="toPayNextMonth" 
+                        id="toPayNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToPayNextMonth()"
+                        style="margin-left: 143px;">
+                    <span style="margin-left: 22px;">Pay next month</span>
+                </label>             
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #contentChangeStatusOutDebt let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusOutDebt.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row justify-content-center" *ngIf="detailOutDebt.toGetThisMonth">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetNextMonth" 
+                        name="checkToGetNextMonth" 
+                        id="checkToGetNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetNextMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 65px;">Get next month</span>
+                </label>             
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkNotToGet" 
+                        name="checkNotToGet" 
+                        id="checkNotToGet" 
+                        type="checkbox"
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusNotToGetForNow()"
+                        style="margin-left: 115px;">
+                    <span style="margin-left: 30px">Not to get</span>
+                </label>             
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="detailOutDebt.toGetNextMonth">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetThisMonth" 
+                        name="checkToGetThisMonth" 
+                        id="checkToGetThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Get this month</span>
+                </label>             
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkNotToGet" 
+                        name="checkNotToGet" 
+                        id="checkNotToGet" 
+                        type="checkbox"
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusNotToGetForNow()"
+                        style="margin-left: 115px;">
+                    <span style="margin-left: 30px">Not to get</span>
+                </label>           
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="detailOutDebt.notToGetForNow">
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetThisMonth" 
+                        name="checkToGetThisMonth" 
+                        id="checkToGetThisMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetThisMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 70px;">Get this month</span>
+                </label>            
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <input 
+                        [(ngModel)]="checkToGetNextMonth" 
+                        name="checkToGetNextMonth" 
+                        id="checkToGetNextMonth" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="changeStatusToGetNextMonth()"
+                        style="margin-left: 185px;">
+                    <span style="margin-left: 65px;">Get next month</span>
+                </label>              
+            </div>
+        </div>
+    </div>
+
+</ng-template>

@@ -13,9 +13,9 @@ import Swal from 'sweetalert2';
 
 export class DebtFormComponent implements OnInit {
 
-  modalRef: any;
-
   debt: Debt = new Debt();
+
+  modalRef: any;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -36,8 +36,16 @@ export class DebtFormComponent implements OnInit {
   }
 
   save(debt) {
-    if (debt.debtForPay == undefined) debt.debtForPay = false;
-    if (debt.debtToGet == undefined) debt.debtToGet = false;
+    if (debt.placeId == 5) {
+      if (debt.toPayThisMonth == undefined) debt.toPayThisMonth = false;
+      if (debt.toPayNextMonth == undefined) debt.toPayNextMonth = false;
+      if (debt.notToPayForNow == undefined) debt.notToPayForNow = false;
+
+      if (debt.toGetThisMonth == undefined) debt.toGetThisMonth = false;
+      if (debt.toGetNextMonth == undefined) debt.toGetNextMonth = false;
+      if (debt.notToGetForNow == undefined) debt.notToGetForNow = false;
+    }
+    
 
     if (this.debt.key) {
       this.debtService.update(this.debt.key, debt);
@@ -69,6 +77,92 @@ export class DebtFormComponent implements OnInit {
             }      
         } 
     });
+  }
+
+  checkAddRestMoney() {
+    if (!this.debt.key) {
+      if(this.debt.isRestMoney == true) {
+        this.debt.restMoney = "";
+        this.debt.placeId = null;
+        this.debt.debtForPay = false;
+        this.debt.debtToGet = false;
+        this.debt.debtor = "-";
+        this.debt.creditor = "-";
+        this.debt.financialDebt = "-";
+      }
+    }
+  }
+
+  checkDebtForPay() {
+    if (!this.debt.key) {
+      if(this.debt.debtForPay == true) {
+        this.debt.financialDebt = "";
+        this.debt.restMoney = "";
+        this.debt.creditor = "";
+        this.debt.debtToGet = false;
+        this.debt.isRestMoney = false;
+        this.debt.debtor = "Fahmi";
+        this.debt.restMoney = "-";
+        this.debt.placeId = 5;
+      }
+    }
+  }
+
+  checkDebtToGet() {
+    if (!this.debt.key) {
+      if(this.debt.debtToGet == true) {
+        this.debt.financialDebt = "";
+        this.debt.restMoney = "";
+        this.debt.debtor = "";
+        this.debt.debtForPay = false;
+        this.debt.isRestMoney = false;
+        this.debt.creditor = "Fahmi";
+        this.debt.restMoney = "-";
+        this.debt.placeId = 5;
+      }
+    }
+  }
+
+  checkToPayThisMonth() {
+    if(this.debt.toPayThisMonth == true) {
+      this.debt.toPayNextMonth = false;
+      this.debt.notToPayForNow = false;
+    }
+  }
+
+  checkToPayNextMonth() {
+    if(this.debt.toPayNextMonth == true) {
+      this.debt.toPayThisMonth = false;
+      this.debt.notToPayForNow = false;
+    }
+  }
+
+  checkNotToPayForNow() {
+    if(this.debt.notToPayForNow == true) {
+      this.debt.toPayThisMonth = false;
+      this.debt.toPayNextMonth = false;
+    }
+  }
+
+  checkToGetThisMonth() {
+    if(this.debt.toGetThisMonth == true) {
+      this.debt.toGetNextMonth = false;
+      this.debt.notToGetForNow = false;
+    }
+  }
+
+  checkToGetNextMonth() {
+    if(this.debt.toGetNextMonth == true) {
+      this.debt.toGetThisMonth = false;
+      this.debt.notToGetForNow = false;
+    }
+  }
+
+  checkNotToGetForNow() {
+    if(this.debt.notToGetForNow == true) {
+      this.debt.toGetThisMonth = false;
+      this.debt.toGetNextMonth = false;
+    }
   }
 }
 

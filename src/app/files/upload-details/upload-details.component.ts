@@ -217,6 +217,8 @@ export class UploadDetailsComponent implements OnChanges {
           };
 
           if (this.checkIsImage(file.fileName) || this.isMobile) this.modalService.open(showContentFilesFromZip as Component, { size: 'lg', centered: true });
+          else if (this.isTxt(file.fileName) || this.isPdf(file.fileName)) 
+          this.modalService.open(showContentFilesFromZip as Component, { windowClass: 'class-md', centered: true });
           else this.modalService.open(showContentFilesFromZip as Component, { windowClass: 'class-lg', centered: true });
         });
         }   
@@ -259,20 +261,48 @@ export class UploadDetailsComponent implements OnChanges {
         return;
       }
 
-      this.ngNavigatorShareService.share({
-        title: fileUpload.name,
-        text: '',
-        files: [
-          new File([blob], fileUpload.name, {
-            type: blob.type,
-          }),
-        ]
-      }).then( (response) => {
-        console.log(response);
-      })
-      .catch( (error) => {
-        console.log(error);
-      });
+      if (this.isTxt(fileUpload.name)) {
+        this.ngNavigatorShareService.share({
+          title: fileUpload.name,
+          text: fileUpload.name,
+          files: [
+            new File([blob], fileUpload.name, {type: 'text/plain'}),
+          ]
+        }).then( (response) => {
+          console.log(response);
+        })
+        .catch( (error) => {
+          console.log(error);
+        });
+      } else if (this.isPdf(fileUpload.name)) {
+        this.ngNavigatorShareService.share({
+          title: fileUpload.name,
+          text: fileUpload.name,
+          files: [
+            new File([blob], fileUpload.name, {type: 'application/pdf'}),
+          ]
+        }).then( (response) => {
+          console.log(response);
+        })
+        .catch( (error) => {
+          console.log(error);
+        });
+      } else {
+        this.ngNavigatorShareService.share({
+          title: fileUpload.name,
+          text: fileUpload.name,
+          files: [
+            new File([blob], fileUpload.name, {
+              type: blob.type,
+            }),
+          ]
+        }).then( (response) => {
+          console.log(response);
+        })
+        .catch( (error) => {
+          console.log(error);
+        });
+      }    
     });  
   }
 

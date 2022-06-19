@@ -19,8 +19,9 @@
     font-size: 20px;
 }
 
-.detailsDebtModalClass .modal-dialog {
-    max-width: 100px;
+::ng-deep .detailsDebtModalClass .modal-dialog {
+    max-width: 50% !important;
+    width: 50% !important;
 }
 
 .debtModalClass .modal-dialog {
@@ -35,5 +36,13 @@ input.larger {
     width: 25px;
     height: 25px;
     margin-left: 180px;
+}
+
+.statusInDebtModalClass .modal-dialog {
+    max-width: 10px !important;
+}
+
+.statusOutDebtModalClass .modal-dialog {
+    max-width: 10px !important;
 }
   
