@@ -13,6 +13,7 @@ import { UserService } from '../shared/services/user.service';
 
 import { Link } from '../shared/models/link.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { NgNavigatorShareService } from 'ng-navigator-share';
 
 @Component({
   selector: 'app-files',
@@ -59,7 +60,8 @@ export class FilesComponent implements OnInit {
   ];
 
   constructor(
-    private deviceService: DeviceDetectorService, 
+    private deviceService: DeviceDetectorService,
+    protected ngNavigatorShareService: NgNavigatorShareService,
     protected modalService: NgbModal,
     private linkService: LinkService,
     public userService: UserService,
@@ -171,8 +173,25 @@ export class FilesComponent implements OnInit {
     this.clickShowLinks = false;
   }
 
-  shareLink(path: string) {
-    window.open("https://web.whatsapp.com/send?text=" + path,'_blank');
+  shareLink(link: Link) {
+    if (this.isMobile) {
+      if (!this.ngNavigatorShareService.canShare()) {
+        alert(`This service/api is not supported in your Browser`);
+        return;
+      }
+
+      this.ngNavigatorShareService.share({
+        title: link.content,
+        text: '',
+        url: link.path
+      }).then( (response) => {
+        console.log(response);
+      })
+      .catch( (error) => {
+        console.log(error);
+      });
+    } else
+    window.open("https://web.whatsapp.com/send?text=" + link.path,'_blank');
   }
 }
 

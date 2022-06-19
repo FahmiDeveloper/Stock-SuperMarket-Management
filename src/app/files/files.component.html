@@ -116,13 +116,13 @@
                                     <button 
                                         *ngIf="user.roleDelete" 
                                         type="button" 
-                                        (click)="delete(link.key)"
+                                        (click)="deleteLink(link.key)"
                                         class="btn btn-danger">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>&nbsp;
                                     <button 
                                         type="button" 
-                                        (click)="shareLink(link.path)"
+                                        (click)="shareLink(link)"
                                         class="btn btn-success">
                                         <i class="fa fa-whatsapp" aria-hidden="true"></i>
                                     </button>                    
@@ -158,7 +158,7 @@
                                             *ngIf="link.path" 
                                             href="{{ link.path }}" 
                                             target="_blank" 
-                                            class="btn btn-warning"
+                                            class="btn btn-success"
                                             style="margin-top: 5px;width: 42px;">
                                             <i class="fa fa-link" aria-hidden="true"></i>
                                         </a><br>                       
@@ -172,10 +172,10 @@
                                         </button><br>
                                         <button 
                                             type="button" 
-                                            (click)="shareLink(link.path)"
-                                            class="btn btn-success"
+                                            (click)="shareLink(link)"
+                                            class="btn btn-warning"
                                             style="margin-top: 5px;width: 42px;">
-                                            <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                            <i class="fa fa-share-alt" aria-hidden="true"></i>
                                         </button>                
                                     </div>
                                 </td>
