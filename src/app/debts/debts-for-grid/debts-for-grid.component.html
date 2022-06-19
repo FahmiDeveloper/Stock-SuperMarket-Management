@@ -59,22 +59,24 @@
 
     <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
         <div class="row">
-            <div class="col-5">
-                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}DT</span>
+            <div class="col-7">
+                <span *ngIf="totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}</span>
+                <span *ngIf="!totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
             </div>
-            <div class="col-7 font-weight-bold">
-                <span class="text-primary" style="font-size: 18px;">: الدين المتخلد</span>
+            <div class="col-5 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">:المتخلد</span>
             </div>
         </div>
     </div>
     <br *ngIf="placeId == 5">
     <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
         <div class="row">
-            <div class="col-5">
-                <span class="font-weight-bold badge badge-warning" style="font-size: 18px;width: 70px;">{{ totalOutDebts }}DT</span>
+            <div class="col-7">
+                <span *ngIf="totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebts }}</span>
+                <span *ngIf="!totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
             </div>
-            <div class="col-7 font-weight-bold">
-                <span class="text-primary" style="font-size: 18px;">: الدين المسال</span>
+            <div class="col-5 font-weight-bold">
+                <span class="text-primary" style="font-size: 18px;">:المسال</span>
             </div>
         </div>
     </div>
@@ -294,25 +296,27 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-3">
+            <div class="col-4">
                 <button class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
-                    <span class="font-weight-bold rest-money">{{ totalInDebts }}DT</span>
+                    <span *ngIf="totalInDebts" class="font-weight-bold rest-money">{{ totalInDebts }}</span>
+                    <span *ngIf="!totalInDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
             </div>
             <div class="col-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">الدين المتخلد</span>
+                <span class="text-primary font-weight-bold">المتخلد</span>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-3">
+            <div class="col-4">
                 <button class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
-                    <span class="font-weight-bold rest-money">{{ totalOutDebts }}DT</span>
+                    <span *ngIf="totalOutDebts" class="font-weight-bold rest-money">{{ totalOutDebts }}</span>
+                    <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
             </div>
             <div class="col-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">الدين المسال</span>
+                <span class="text-primary font-weight-bold">المسال</span>
             </div>
         </div>
         <br>
@@ -322,7 +326,8 @@
 <ng-template #contentDetInDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}DT</h4>
+        <h4 *ngIf="totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}</h4>
+        <h4 *ngIf="!totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetInDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -438,7 +443,8 @@
 <ng-template #contentDetOutDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}DT</h4>
+        <h4 *ngIf="totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}</h4>
+        <h4 *ngIf="!totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetOutDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -502,12 +508,12 @@
                 <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
                     <div class="card-body text-dark">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-5">
                                 <span class="text-primary font-weight-bold" style="font-size: 20px;">
                                     {{ detailOutDebt.debtor }}
                                 </span>
                             </div>
-                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;">
+                            <div class="col-4 font-weight-bold text-success" style="font-size: 20px;text-align: center;">
                                 {{ detailOutDebt.financialDebt }}
                             </div>
                         </div>

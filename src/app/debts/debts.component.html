@@ -3,8 +3,8 @@
 <br>
 <br>
 
-<div class="row">
-    <div class="col-md-5">
+<div class="row justify-content-center">
+    <div class="col-md-4">
         <input #query (keyup)="getAllDebts()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput" placeholder="Search by note...">
         <!-- <div class="row">
             <div class="col-md-7">
@@ -16,7 +16,7 @@
             </div>
         </div>      -->
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="row">
             <div class="col-md-2"><label for="placeId" class="font-weight-bold">Place</label></div>
             <div class="col-md-10">
@@ -79,7 +79,8 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-6">
-                <span class="font-weight-bold rest-money badge badge-warning">{{ totalOutDebts }}DT</span>
+                <span *ngIf="totalOutDebts" class="font-weight-bold rest-money badge badge-warning">{{ totalOutDebts }}</span>
+                <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
             </div>
             <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">: الدين المسال</span>
@@ -89,7 +90,8 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-6">
-                <span class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebts }}DT</span>
+                <span *ngIf="totalInDebts" class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebts }}</span>
+                <span *ngIf="!totalInDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
             </div>
             <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">: الدين المتخلد</span>
@@ -244,26 +246,26 @@
     </div>
 
     <div class="modal-body">
-        <div class="row ml-4">
-            <div class="col-2"></div>
-            <div class="col-4">
-                <button class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
-                    <span class="font-weight-bold rest-money">{{ totalInDebts }}DT</span>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-warning" style="float: right;" (click)="showDetInDebt(contentDetInDebt)">
+                    <span *ngIf="totalInDebts" class="font-weight-bold rest-money">{{ totalInDebts }}</span>
+                    <span *ngIf="!totalInDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
             </div>
-            <div class="col-6 font-weight-bold label-place">
+            <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">الدين المتخلد</span>&nbsp;
             </div>
         </div>
         <br>
-        <div class="row ml-4">
-            <div class="col-2"></div>
-            <div class="col-4">
-                <button class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
-                    <span class="font-weight-bold rest-money">{{ totalOutDebts }}DT</span>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-warning" style="float: right;" (click)="showDetOutDebt(contentDetOutDebt)">
+                    <span *ngIf="totalOutDebts" class="font-weight-bold rest-money">{{ totalOutDebts }}</span>
+                    <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
             </div>
-            <div class="col-6 font-weight-bold label-place">
+            <div class="col-md-6 font-weight-bold label-place">
                 <span class="text-primary font-weight-bold">الدين المسال</span>&nbsp;
             </div>
         </div>
@@ -273,7 +275,8 @@
 <ng-template #contentDetInDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}DT</h4>
+        <h4 *ngIf="totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}</h4>
+        <h4 *ngIf="!totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetInDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -374,7 +377,8 @@
 <ng-template #contentDetOutDebt let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}DT</h4>
+        <h4 *ngIf="totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}</h4>
+        <h4 *ngIf="!totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDetOutDebt.close()">
             <span aria-hidden="true">&times;</span>
@@ -668,5 +672,3 @@
     </div>
 
 </ng-template>
-
-
