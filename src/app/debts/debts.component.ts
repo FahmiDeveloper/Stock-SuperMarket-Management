@@ -223,7 +223,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     this.defaultTotalOutDebts = 0;
     this.customTotalOutDebts = 0;
 
-    this.filteredDebtsCopie.filter(debt => debt.creditor == "Fahmi").forEach(element => {
+    this.filteredDebtsCopie.filter(debt => debt.debtToGet == true).forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
         element.financialOutDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
         element.financialOutDebtWithConvert = element.financialOutDebtWithConvert + '000';
@@ -255,7 +255,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     this.defaultTotalInDebts = 0;
     this.customTotalInDebts = 0;
 
-    this.filteredDebtsCopie.filter(debt => debt.debtor == "Fahmi").forEach(element => {
+    this.filteredDebtsCopie.filter(debt => debt.debtForPay == true).forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
         element.financialInDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
         element.financialInDebtWithConvert = element.financialInDebtWithConvert + '000';
@@ -301,7 +301,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     if (this.toPayThisMonth) {
       this.toPayNextMonth= false;
       this.notToPay = false;
-      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.toPayThisMonth == true));
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtForPay == true) && (debt.toPayThisMonth == true));
     }
     this.detailsInDebt.forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -339,7 +339,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     if (this.toPayNextMonth) {
       this.toPayThisMonth = false;
       this.notToPay = false;
-      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.toPayNextMonth == true));
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtForPay == true) && (debt.toPayNextMonth == true));
     }
     this.detailsInDebt.forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -377,7 +377,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     if (this.notToPay) {
       this.toPayThisMonth = false;
       this.toPayNextMonth= false;
-      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtor == "Fahmi") && (debt.notToPayForNow == true));
+      this.detailsInDebt = this.filteredDebtsCopie.filter(debt => (debt.debtForPay == true) && (debt.notToPayForNow == true));
     }
     this.detailsInDebt.forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -415,7 +415,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     if (this.toGetThisMonth) {
       this.toGetNextMonth = false;
       this.notToGet= false;
-      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.toGetThisMonth == true));
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.debtToGet == true) && (debt.toGetThisMonth == true));
     }
     this.detailsOutDebt.forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -453,7 +453,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     if (this.toGetNextMonth) {
       this.toGetThisMonth = false;
       this.notToGet= false;
-      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.toGetNextMonth == true));
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.debtToGet == true) && (debt.toGetNextMonth == true));
     }
     this.detailsOutDebt.forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -491,7 +491,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     if (this.notToGet) {
       this.toGetThisMonth = false;
       this.toGetNextMonth = false;
-      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.creditor == "Fahmi") && (debt.notToGetForNow == true));
+      this.detailsOutDebt = this.filteredDebtsCopie.filter(debt => (debt.debtToGet == true) && (debt.notToGetForNow == true));
     }
     this.detailsOutDebt.forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {

@@ -14,9 +14,9 @@ import { Debt } from 'src/app/shared/models/debt.model';
 
 export class NewOrEditDebtComponent implements OnInit {
 
-  modalRef: any;
-  
   debt: Debt = new Debt();
+
+  modalRef: any;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -77,6 +77,92 @@ export class NewOrEditDebtComponent implements OnInit {
             }      
         } 
     });
+  }
+
+  checkAddRestMoney() {
+    if (!this.debt.key) {
+      if(this.debt.isRestMoney == true) {
+        this.debt.restMoney = "";
+        this.debt.placeId = null;
+        this.debt.debtForPay = false;
+        this.debt.debtToGet = false;
+        this.debt.debtor = "-";
+        this.debt.creditor = "-";
+        this.debt.financialDebt = "-";
+      }
+    }
+  }
+
+  checkDebtForPay() {
+    if (!this.debt.key) {
+      if(this.debt.debtForPay == true) {
+        this.debt.financialDebt = "";
+        this.debt.restMoney = "";
+        this.debt.creditor = "";
+        this.debt.debtToGet = false;
+        this.debt.isRestMoney = false;
+        this.debt.debtor = "Fahmi";
+        this.debt.restMoney = "-";
+        this.debt.placeId = 5;
+      }
+    }
+  }
+
+  checkDebtToGet() {
+    if (!this.debt.key) {
+      if(this.debt.debtToGet == true) {
+        this.debt.financialDebt = "";
+        this.debt.restMoney = "";
+        this.debt.debtor = "";
+        this.debt.debtForPay = false;
+        this.debt.isRestMoney = false;
+        this.debt.creditor = "Fahmi";
+        this.debt.restMoney = "-";
+        this.debt.placeId = 5;
+      }
+    }
+  }
+
+  checkToPayThisMonth() {
+    if(this.debt.toPayThisMonth == true) {
+      this.debt.toPayNextMonth = false;
+      this.debt.notToPayForNow = false;
+    }
+  }
+
+  checkToPayNextMonth() {
+    if(this.debt.toPayNextMonth == true) {
+      this.debt.toPayThisMonth = false;
+      this.debt.notToPayForNow = false;
+    }
+  }
+
+  checkNotToPayForNow() {
+    if(this.debt.notToPayForNow == true) {
+      this.debt.toPayThisMonth = false;
+      this.debt.toPayNextMonth = false;
+    }
+  }
+
+  checkToGetThisMonth() {
+    if(this.debt.toGetThisMonth == true) {
+      this.debt.toGetNextMonth = false;
+      this.debt.notToGetForNow = false;
+    }
+  }
+
+  checkToGetNextMonth() {
+    if(this.debt.toGetNextMonth == true) {
+      this.debt.toGetThisMonth = false;
+      this.debt.notToGetForNow = false;
+    }
+  }
+
+  checkNotToGetForNow() {
+    if(this.debt.notToGetForNow == true) {
+      this.debt.toGetThisMonth = false;
+      this.debt.toGetNextMonth = false;
+    }
   }
 }
 

@@ -10,22 +10,20 @@ export class Debt {
   numRow: number;
   restMoney: string;
   place: string;
-  debtForPay: boolean;
-  debtToGet: boolean;
 
+  isRestMoney: boolean;
+
+  debtForPay: boolean;
   financialInDebtWithConvert:string;
   financialInDebtInModalWithConvert:string;
-
   toPayThisMonth: boolean;
   toPayNextMonth: boolean;
   notToPayForNow: boolean;
 
 
-
-
+  debtToGet: boolean;
   financialOutDebtWithConvert:string; 
   financialOutDebtInModalWithConvert:string;  
-
   toGetThisMonth: boolean;
   toGetNextMonth: boolean;
   notToGetForNow: boolean;
