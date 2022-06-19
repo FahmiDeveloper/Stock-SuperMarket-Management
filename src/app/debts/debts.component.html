@@ -304,6 +304,7 @@
                         <th>Debt</th>
                         <th>Note</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -311,6 +312,16 @@
                         <td>{{ detailInDebt.creditor }}</td>
                         <td>{{ detailInDebt.financialDebt }}</td>
                         <td>{{ detailInDebt.note }}</td>
+                        <td style="text-align:center;">
+                            <div class="btnswrap">                                             
+                                <button 
+                                    type="button" 
+                                    (click)="changeStatusInDebt(detailInDebt)"
+                                    class="btn btn-secondary">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>                    
+                            </div>
+                        </td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 
@@ -366,6 +377,7 @@
                         <th>Debt</th>
                         <th>Note</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -373,6 +385,16 @@
                         <td>{{ detailOutDebt.debtor }}</td>
                         <td>{{ detailOutDebt.financialDebt }}</td>
                         <td>{{ detailOutDebt.note }}</td>
+                        <td style="text-align:center;">
+                            <div class="btnswrap">                                             
+                                <button 
+                                    type="button" 
+                                    (click)="changeStatusOutDebt(detailOutDebt)"
+                                    class="btn btn-secondary">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                </button>                    
+                            </div>
+                        </td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 

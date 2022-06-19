@@ -346,7 +346,7 @@
         <br>
         <div class="row">
             <div class="col-md-4" *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
-                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;" (click)="changeStatusInDebt(detailInDebt)">
                     <div class="card-body text-dark">
                         <div class="row">
                             <div class="col-5">
@@ -414,7 +414,7 @@
         <br>
         <div class="row">
             <div class="col-md-4" *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
-                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;" (click)="changeStatusOutDebt(detailOutDebt)">
                     <div class="card-body text-dark">
                         <div class="row">
                             <div class="col-5">

@@ -305,6 +305,59 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     })
   }
 
+  changeStatusOutDebt(detailOutDebt: Debt) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: detailOutDebt.debtToGet == true ? 'Not get this debt in this month!' : 'Get this debt in this month!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        detailOutDebt.debtToGet = !detailOutDebt.debtToGet;
+        this.debtService.update(detailOutDebt.key, detailOutDebt);
+        Swal.fire(
+          detailOutDebt.debtToGet == true ? 'Debt will get in this month' : 'Debt will not get in this month',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) {
+            this.getDetOutDebts();
+            this.getTotalOutDebts();
+          }
+        })
+      }
+    })
+  }
+
+  changeStatusInDebt(detailInDebt: Debt) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: detailInDebt.debtForPay == true ? 'Not pay this debt in this month!' : 'Pay this debt in this month!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        detailInDebt.debtForPay = !detailInDebt.debtForPay;
+        this.debtService.update(detailInDebt.key, detailInDebt);
+        Swal.fire(
+          detailInDebt.debtForPay == true ? 'Pay will get in this month' : 'Pay will not get in this month',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) {
+            this.getDetInDebts();
+            this.getTotalIntDebts();
+          }
+        })
+      }
+    })
+  }
+
+
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
