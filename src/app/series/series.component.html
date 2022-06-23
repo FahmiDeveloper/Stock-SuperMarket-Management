@@ -43,12 +43,32 @@
             <tr>
                 <th>Name</th>
                 <th>Date</th>
-                <th>Time</th>
+                <!-- <th>Time</th> -->
                 <th>Status</th>
                 <th>Note</th>
                 <th>Picture</th>
-                <th class="text-center">
-                    <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary font-weight-bold">New</a>
+                <th>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary font-weight-bold">New</a>
+                        </div>
+                        <div class="col-md-6">
+                            <i 
+                                *ngIf="!sortByDesc" 
+                                class="fa fa-sort-desc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefSerieDesc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                            <i 
+                                *ngIf="sortByDesc"
+                                class="fa fa-sort-asc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefSerieAsc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                        </div>
+                    </div>                
                 </th>
             </tr>
         </thead>
@@ -59,7 +79,7 @@
                     <span style="cursor: pointer;" (click)="copyNameSerie(serie.nameSerie)">{{ serie.nameSerie }}</span>
                 </td>
                 <td>{{ serie.date | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ serie.time }}</td>
+                <!-- <td>{{ serie.time }}</td> -->
                 <td>
                     <span *ngIf="serie.statusId">{{ serie.status }}</span>
                     <span *ngIf="!serie.statusId">-</span>
@@ -87,7 +107,7 @@
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
-                            (click)="delete(serie.key)"
+                            (click)="deleteSerie(serie.key)"
                             class="btn btn-danger font-weight-bold"
                             [hidden]="serie.statusId == 3">
                             Delete

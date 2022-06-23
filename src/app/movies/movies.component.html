@@ -43,12 +43,32 @@
             <tr>
                 <th>Name</th>
                 <th>Date</th>
-                <th>Time</th>
+                <!-- <th>Time</th> -->
                 <th>Status</th>
                 <th>Note</th>
                 <th>Picture</th>
                 <th>
-                    <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary font-weight-bold">New</a>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary font-weight-bold">New</a>
+                        </div>
+                        <div class="col-md-6">
+                            <i 
+                                *ngIf="!sortByDesc" 
+                                class="fa fa-sort-desc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefMovieDesc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                            <i 
+                                *ngIf="sortByDesc"
+                                class="fa fa-sort-asc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefMovieAsc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                        </div>
+                    </div>                
                 </th>
             </tr>
         </thead>
@@ -59,7 +79,7 @@
                     <span style="cursor: pointer;" (click)="copyNameMovie(movie.nameMovie)">{{ movie.nameMovie }}</span>
                 </td>
                 <td>{{ movie.date | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ movie.time }}</td>
+                <!-- <td>{{ movie.time }}</td> -->
                 <td>
                     <span *ngIf="movie.statusId">{{ movie.status }}</span>
                     <span *ngIf="!movie.statusId">-</span>
@@ -87,7 +107,7 @@
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
-                            (click)="delete(movie.key)"
+                            (click)="deleteMovie(movie.key)"
                             class="btn btn-danger font-weight-bold"
                             [hidden]="movie.statusId == 3">
                             Delete

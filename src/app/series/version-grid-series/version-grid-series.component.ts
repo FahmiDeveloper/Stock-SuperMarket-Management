@@ -101,7 +101,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(serieId) {
+  deleteSerie(serieId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this serie!',

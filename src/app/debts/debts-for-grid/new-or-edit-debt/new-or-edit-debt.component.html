@@ -20,43 +20,43 @@
                     <div class="form-group" *ngIf="!debt.key">
                         <div class="row">
                             <div class="col-md-12">
+                                <label style="padding-top: 10px;margin-left: 65px;" for="checkRestMoney">Rest money</label>
                                 <input 
                                     [(ngModel)]="debt.isRestMoney" 
                                     name="isRestMoney" 
                                     id="isRestMoney" 
                                     type="checkbox" 
-                                    class="form-control form-check-input" 
-                                    style="margin-left:45px;"
+                                    class="larger" 
+                                    style="margin-left:21px;vertical-align: bottom;"
                                     (ngModelChange)="checkAddRestMoney()">
-                                <label class="form-check-label" style="padding-top: 10px;margin-left: 65px;" for="checkRestMoney">Rest money</label>
                             </div>
                         </div><br>
                         <div class="row">
                             <div class="col-md-12">
+                                <label style="padding-top: 10px;margin-left: 65px;" for="debtForPay">Debt to pay</label>
                                 <input 
                                     #debtForPay="ngModel" 
                                     [(ngModel)]="debt.debtForPay" 
                                     name="debtForPay" 
                                     id="debtForPay" 
                                     type="checkbox" 
-                                    class="form-control form-check-input" 
-                                    style="margin-left:45px;"
+                                    class="larger" 
+                                    style="margin-left:20px;vertical-align: bottom;"
                                     (ngModelChange)="checkDebtForPay()">
-                                <label class="form-check-label" style="padding-top: 10px;margin-left: 65px;" for="debtForPay">Debt to pay</label>
                             </div>
                         </div><br>
                         <div class="row">
                             <div class="col-md-12">
+                                <label style="padding-top: 10px;margin-left: 65px;" for="debtToGet">Debt to get</label>
                                 <input 
                                     #debtToGet="ngModel" 
                                     [(ngModel)]="debt.debtToGet" 
                                     name="debtToGet" 
                                     id="debtToGet" 
                                     type="checkbox" 
-                                    class="form-control form-check-input" 
-                                    style="margin-left:45px;"
+                                    class="larger" 
+                                    style="margin-left:22px;vertical-align: bottom;"
                                     (ngModelChange)="checkDebtToGet()">
-                                <label class="form-check-label" style="padding-top: 10px;margin-left: 65px;" for="debtToGet">Debt to get</label>
                             </div>
                         </div>                            
                     </div>
@@ -111,76 +111,76 @@
                             </div>
                         </div>
                         <div class="form-group" *ngIf="debt.debtForPay">
+                            <label style="padding-top: 10px;" for="toPayThisMonth">Will pay this month</label>
                             <input 
                                 #toPayThisMonth="ngModel" 
                                 [(ngModel)]="debt.toPayThisMonth" 
                                 name="toPayThisMonth" 
                                 id="toPayThisMonth" 
                                 type="checkbox" 
-                                class="form-control form-check-input"
-                                (ngModelChange)="checkToPayThisMonth()"
-                                style="margin-left: 20px;">
-                            <label class="form-check-label" style="padding-top: 10px;" for="toPayThisMonth">Will pay this month</label>
+                                class="larger" 
+                                style="margin-left:30px;vertical-align: bottom;"
+                                (ngModelChange)="checkToPayThisMonth()">
                         </div>
                         <div class="form-group" *ngIf="debt.debtForPay">
+                            <label style="padding-top: 10px;" for="toPayNextMonth">Will pay next month</label>
                             <input 
                                 #toPayNextMonth="ngModel" 
                                 [(ngModel)]="debt.toPayNextMonth" 
                                 name="toPayNextMonth" 
                                 id="toPayNextMonth" 
                                 type="checkbox" 
-                                class="form-control form-check-input"
-                                (ngModelChange)="checkToPayNextMonth()"
-                                style="margin-left: 20px;">
-                            <label class="form-check-label" style="padding-top: 10px;" for="toPayNextMonth">Will pay next month</label>
+                                class="larger"
+                                style="margin-left:25px;vertical-align: bottom;" 
+                                (ngModelChange)="checkToPayNextMonth()">
                         </div>
                         <div class="form-group" *ngIf="debt.debtForPay">
+                            <label style="padding-top: 10px;" for="notToPayForNow">Not to pay For Now</label>
                             <input 
                                 #notToPayForNow="ngModel" 
                                 [(ngModel)]="debt.notToPayForNow" 
                                 name="notToPayForNow" 
                                 id="notToPayForNow" 
                                 type="checkbox" 
-                                class="form-control form-check-input"
-                                (ngModelChange)="checkNotToPayForNow()"
-                                style="margin-left: 20px;">
-                            <label class="form-check-label" style="padding-top: 10px;" for="notToPayForNow">Not to pay For Now</label>
+                                class="larger"
+                                style="margin-left:27px;vertical-align: bottom;"
+                                (ngModelChange)="checkNotToPayForNow()">
                         </div>
                         <div class="form-group" *ngIf="debt.debtToGet">
+                            <label style="padding-top: 10px;" for="toGetThisMonth">Will get this month</label>
                             <input 
                                 #toGetThisMonth="ngModel" 
                                 [(ngModel)]="debt.toGetThisMonth" 
                                 name="toGetThisMonth" 
                                 id="toGetThisMonth" 
                                 type="checkbox" 
-                                class="form-control form-check-input"
-                                (ngModelChange)="checkToGetThisMonth()"
-                                style="margin-left: 20px;">
-                            <label class="form-check-label" style="padding-top: 10px;" for="toGetThisMonth">Will get this month</label>
+                                class="larger"
+                                style="margin-left:31px;vertical-align: bottom;" 
+                                (ngModelChange)="checkToGetThisMonth()">
                         </div>
                         <div class="form-group" *ngIf="debt.debtToGet">
+                            <label style="padding-top: 10px;" for="toGetNextMonth">Will get next month</label>
                             <input 
                                 #toGetNextMonth="ngModel" 
                                 [(ngModel)]="debt.toGetNextMonth" 
                                 name="toGetNextMonth" 
                                 id="toGetNextMonth" 
                                 type="checkbox" 
-                                class="form-control form-check-input"
-                                (ngModelChange)="checkToGetNextMonth()"
-                                style="margin-left: 20px;">
-                            <label class="form-check-label" style="padding-top: 10px;" for="toGetNextMonth">Will get next month</label>
+                                class="larger"
+                                style="margin-left:26px;vertical-align: bottom;" 
+                                (ngModelChange)="checkToGetNextMonth()">
                         </div>
                         <div class="form-group" *ngIf="debt.debtToGet">
+                            <label style="padding-top: 10px;" for="notToGetForNow">Not to get For Now</label>
                             <input 
                                 #notToGetForNow="ngModel" 
                                 [(ngModel)]="debt.notToGetForNow" 
                                 name="notToGetForNow" 
                                 id="notToGetForNow" 
                                 type="checkbox" 
-                                class="form-control form-check-input"
-                                (ngModelChange)="checkNotToGetForNow()"
-                                style="margin-left: 20px;">
-                            <label class="form-check-label" style="padding-top: 10px;" for="notToGetForNow">Not to get For Now</label>
+                                class="larger"
+                                style="margin-left:28px;vertical-align: bottom;" 
+                                (ngModelChange)="checkNotToGetForNow()">
                         </div>
                         <div class="form-group">
                             <label for="note">Note</label>

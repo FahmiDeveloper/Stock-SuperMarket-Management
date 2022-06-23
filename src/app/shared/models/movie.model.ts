@@ -8,6 +8,7 @@ export class Movie {
     statusId: number;
     status: string;// get name of status foreach movie using statusId
     path: string;
+    numRefMovie: number;
   
     constructor(){
       this.nameMovie = "";

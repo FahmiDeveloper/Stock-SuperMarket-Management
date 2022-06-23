@@ -17,6 +17,8 @@ export class DebtFormComponent implements OnInit {
 
   modalRef: any;
 
+  arrayDebts: Debt[];
+
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
     {id: 2, place: 'المحفظة'},
@@ -55,6 +57,7 @@ export class DebtFormComponent implements OnInit {
         'success'
       )
     } else {
+      if (this.arrayDebts[0].numRefDebt) debt.numRefDebt = this.arrayDebts[0].numRefDebt + 1;
       this.debtService.create(debt);
       Swal.fire(
       'New Debt added successfully',

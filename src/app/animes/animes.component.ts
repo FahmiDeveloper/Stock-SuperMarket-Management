@@ -27,6 +27,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
+  sortByDesc: boolean = true;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -96,7 +97,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(animeId) {
+  deleteAnime(animeId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this anime!',
@@ -137,6 +138,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
   newAnime() {
     const modalRef = this.modalService.open(AnimeFormComponent as Component, { size: 'lg', centered: true });
 
+    modalRef.componentInstance.arrayAnimes = this.filteredAnimes;
     modalRef.componentInstance.modalRef = modalRef;
   }
 
@@ -159,6 +161,16 @@ export class AnimesComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  sortByRefAnimeDesc() {
+    this.filteredAnimes = this.filteredAnimes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+    this.sortByDesc = true;
+  }
+
+  sortByRefAnimeAsc() {
+      this.filteredAnimes = this.filteredAnimes.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime);
+      this.sortByDesc = false;
   }
 
   ngOnDestroy() {

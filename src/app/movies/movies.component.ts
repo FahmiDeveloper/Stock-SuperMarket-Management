@@ -27,6 +27,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
+  sortByDesc: boolean = true;
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
@@ -96,7 +97,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(movieId) {
+  deleteMovie(movieId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this movie!',
@@ -137,6 +138,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   newMovie() {
     const modalRef = this.modalService.open(MovieFormComponent as Component, { size: 'lg', centered: true });
 
+    modalRef.componentInstance.arrayMovies = this.filteredMovies;
     modalRef.componentInstance.modalRef = modalRef;
   }
 
@@ -159,6 +161,16 @@ export class MoviesComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  sortByRefMovieDesc() {
+    this.filteredMovies = this.filteredMovies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+    this.sortByDesc = true;
+  }
+
+  sortByRefMovieAsc() {
+      this.filteredMovies = this.filteredMovies.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
+      this.sortByDesc = false;
   }
 
   ngOnDestroy() {

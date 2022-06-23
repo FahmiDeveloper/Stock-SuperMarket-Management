@@ -24,6 +24,8 @@ export class AnimeFormComponent implements OnInit {
 
   anime: Anime = new Anime();
 
+  arrayAnimes: Anime[];
+
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
@@ -55,6 +57,7 @@ export class AnimeFormComponent implements OnInit {
       )
     }
     else {
+      if (this.arrayAnimes[0].numRefAnime) anime.numRefAnime = this.arrayAnimes[0].numRefAnime + 1;
       this.animeService.create(anime);
       Swal.fire(
         'New Anime added successfully',

@@ -1,5 +1,5 @@
 <h1 class="text-center text-danger font-weight-bold titleTextInterface">Debts</h1>
-<div class="container mx-auto" style="margin-top: 50px;">
+<div class="container mx-auto" style="margin-top: 40px;">
     <div class="row">
         <div class="col-md-4">
             <div class="row btnswrap justify-content-center">
@@ -93,6 +93,26 @@
     </div>
     
     <br>
+
+    <div class="row">
+        <div class="col-md-4">
+            <button
+                *ngIf="!sortByDesc"
+                class="btn btn-warning float-right" 
+                style="margin-right: 6px;" 
+                (click)="sortByRefDebtDesc()">
+                <i class="fa fa-lg fa-sort-desc" aria-hidden="true"></i>
+            </button>
+
+            <button
+                *ngIf="sortByDesc"
+                class="btn btn-warning float-right" 
+                style="margin-right: 6px;" 
+                (click)="sortByRefDebtAsc()">
+                <i class="fa fa-lg fa-sort-asc" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-4" *ngFor="let debt of (filteredDebts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
             <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
