@@ -43,7 +43,7 @@
             <tr>
                 <th>Name</th>
                 <th>Date</th>
-                <th>Time</th>
+                <!-- <th>Time</th> -->
                 <th>Status</th>
                 <th>Note</th>
                 <th>Picture</th>
@@ -59,7 +59,7 @@
                     <span style="cursor: pointer;" (click)="copyNameSerie(serie.nameSerie)">{{ serie.nameSerie }}</span>
                 </td>
                 <td>{{ serie.date | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ serie.time }}</td>
+                <!-- <td>{{ serie.time }}</td> -->
                 <td>
                     <span *ngIf="serie.statusId">{{ serie.status }}</span>
                     <span *ngIf="!serie.statusId">-</span>
@@ -87,7 +87,7 @@
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
-                            (click)="delete(serie.key)"
+                            (click)="deleteSerie(serie.key)"
                             class="btn btn-danger font-weight-bold"
                             [hidden]="serie.statusId == 3">
                             Delete

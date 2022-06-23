@@ -43,7 +43,7 @@
             <tr>
                 <th>Name</th>
                 <th>Date</th>
-                <th>Time</th>
+                <!-- <th>Time</th> -->
                 <th>Status</th>
                 <th>Note</th>
                 <th>Picture</th>
@@ -59,7 +59,7 @@
                     <span style="cursor: pointer;" (click)="copyNameMovie(movie.nameMovie)">{{ movie.nameMovie }}</span>
                 </td>
                 <td>{{ movie.date | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ movie.time }}</td>
+                <!-- <td>{{ movie.time }}</td> -->
                 <td>
                     <span *ngIf="movie.statusId">{{ movie.status }}</span>
                     <span *ngIf="!movie.statusId">-</span>
@@ -87,7 +87,7 @@
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
-                            (click)="delete(movie.key)"
+                            (click)="deleteMovie(movie.key)"
                             class="btn btn-danger font-weight-bold"
                             [hidden]="movie.statusId == 3">
                             Delete

@@ -24,14 +24,14 @@
                             {{ serie.date | date:'dd/MM/yyyy' }}
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-4">
                             <span class="text-primary font-weight-bold">Time:</span>
                         </div>
                         <div class="col-8 font-weight-bold">
                             {{ serie.time }}
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="col-4">
                             <span class="text-primary font-weight-bold">Status:</span>
@@ -68,7 +68,7 @@
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
-                            (click)="delete(serie.key)" 
+                            (click)="deleteSerie(serie.key)" 
                             class="btn btn-danger font-weight-bold"
                             style="text-decoration: none;"
                             [hidden]="serie.statusId == 3">

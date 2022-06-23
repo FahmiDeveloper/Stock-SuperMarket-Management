@@ -96,7 +96,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(animeId) {
+  deleteAnime(animeId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this anime!',

@@ -96,7 +96,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(movieId) {
+  deleteMovie(movieId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this movie!',
