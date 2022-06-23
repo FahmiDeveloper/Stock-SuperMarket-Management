@@ -15,6 +15,7 @@ import { Debt } from 'src/app/shared/models/debt.model';
 export class NewOrEditDebtComponent implements OnInit {
 
   debt: Debt = new Debt();
+  arrayDebts: Debt[];
 
   modalRef: any;
 
@@ -55,6 +56,7 @@ export class NewOrEditDebtComponent implements OnInit {
         'success'
       )
     } else {
+      if (this.arrayDebts[0].numRefDebt) debt.numRefDebt = this.arrayDebts[0].numRefDebt + 1;
       this.debtService.create(debt);
       Swal.fire(
       'New Debt added successfully',

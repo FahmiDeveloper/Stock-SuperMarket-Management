@@ -32,6 +32,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   p: number = 1;
   pageDetsInDebt: number = 1;
   pageDetsOutDebt: number = 1;
+  sortByDesc: boolean = true;
 
   // queryDate: string = "";
   restInPocket: string = "";
@@ -183,6 +184,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   newDebt() {
     const modalRef = this.modalService.open(NewOrEditDebtComponent as Component, { size: 'lg', centered: true });
 
+    modalRef.componentInstance.arrayDebts = this.filteredDebts;
     modalRef.componentInstance.modalRef = modalRef;
   }
 
@@ -745,6 +747,15 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     })
   }
 
+  sortByRefDebtDesc() {
+    this.filteredDebts = this.filteredDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+    this.sortByDesc = true;
+  }
+
+  sortByRefDebtAsc() {
+    this.filteredDebts = this.filteredDebts.sort((n1, n2) => n1.numRefDebt - n2.numRefDebt);
+    this.sortByDesc = false;
+  }
 
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();

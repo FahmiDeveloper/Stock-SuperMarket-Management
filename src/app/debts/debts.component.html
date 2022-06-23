@@ -125,7 +125,27 @@
                     <th>Place</th>
                     <th>Note</th>
                     <th>
-                        <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
+                            </div>
+                            <div class="col-md-6">
+                                <i 
+                                    *ngIf="!sortByDesc" 
+                                    class="fa fa-sort-desc iconSort" 
+                                    aria-hidden="true" 
+                                    (click)="sortByRefDebtDesc()" 
+                                    style="vertical-align: -webkit-baseline-middle;">
+                                </i>
+                                <i 
+                                    *ngIf="sortByDesc"
+                                    class="fa fa-sort-asc iconSort" 
+                                    aria-hidden="true" 
+                                    (click)="sortByRefDebtAsc()" 
+                                    style="vertical-align: -webkit-baseline-middle;">
+                                </i>
+                            </div>
+                        </div>                
                     </th>
                 </tr>
             </thead>
@@ -152,7 +172,7 @@
                                 (click)="editDebt(debt)"
                                 class="btn btn-secondary font-weight-bold">
                                 Edit
-                            </button>&nbsp;                                              
+                            </button>                                             
                             <button 
                                 *ngIf="user.roleDelete" 
                                 type="button" 

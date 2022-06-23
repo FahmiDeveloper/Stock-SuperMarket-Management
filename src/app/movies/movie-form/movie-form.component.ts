@@ -22,6 +22,8 @@ export class MovieFormComponent implements OnInit {
 
   movie: Movie = new Movie();
 
+  arrayMovies: Movie[];
+
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
@@ -54,6 +56,7 @@ export class MovieFormComponent implements OnInit {
         'success'
       )
     } else {
+      if (this.arrayMovies[0].numRefMovie) movie.numRefMovie = this.arrayMovies[0].numRefMovie + 1;
       this.movieService.create(movie);
       Swal.fire(
       'New Movie added successfully',

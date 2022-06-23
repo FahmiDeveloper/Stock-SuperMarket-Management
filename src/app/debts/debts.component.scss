@@ -4,7 +4,7 @@
 
 .btnswrap {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     row-gap: 5px;
 }
 
@@ -44,5 +44,9 @@ input.larger {
 
 .statusOutDebtModalClass .modal-dialog {
     max-width: 10px !important;
+}
+
+.iconSort {
+    cursor: pointer;
 }
   

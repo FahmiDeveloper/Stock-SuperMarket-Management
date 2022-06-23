@@ -28,6 +28,8 @@ export class Debt {
   toGetNextMonth: boolean;
   notToGetForNow: boolean;
 
+  numRefDebt: number;
+
   constructor(){
     this.date = "";
     this.time = "";

@@ -27,6 +27,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
+  sortByDesc: boolean = true;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -137,6 +138,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
   newSerie() {
     const modalRef = this.modalService.open(SerieFormComponent as Component, { size: 'lg', centered: true });
 
+    modalRef.componentInstance.arraySeries = this.filteredSeries;
     modalRef.componentInstance.modalRef = modalRef;
   }
 
@@ -159,6 +161,16 @@ export class SeriesComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  sortByRefSerieDesc() {
+    this.filteredSeries = this.filteredSeries.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+    this.sortByDesc = true;
+  }
+
+  sortByRefSerieAsc() {
+      this.filteredSeries = this.filteredSeries.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
+      this.sortByDesc = false;
   }
 
   ngOnDestroy() {

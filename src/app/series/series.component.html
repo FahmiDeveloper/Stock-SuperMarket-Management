@@ -47,8 +47,28 @@
                 <th>Status</th>
                 <th>Note</th>
                 <th>Picture</th>
-                <th class="text-center">
-                    <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary font-weight-bold">New</a>
+                <th>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary font-weight-bold">New</a>
+                        </div>
+                        <div class="col-md-6">
+                            <i 
+                                *ngIf="!sortByDesc" 
+                                class="fa fa-sort-desc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefSerieDesc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                            <i 
+                                *ngIf="sortByDesc"
+                                class="fa fa-sort-asc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefSerieAsc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                        </div>
+                    </div>                
                 </th>
             </tr>
         </thead>

@@ -48,7 +48,27 @@
                 <th>Note</th>
                 <th>Picture</th>
                 <th>
-                    <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary font-weight-bold">New</a>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary font-weight-bold">New</a>
+                        </div>
+                        <div class="col-md-6">
+                            <i 
+                                *ngIf="!sortByDesc" 
+                                class="fa fa-sort-desc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefMovieDesc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                            <i 
+                                *ngIf="sortByDesc"
+                                class="fa fa-sort-asc iconSort" 
+                                aria-hidden="true" 
+                                (click)="sortByRefMovieAsc()" 
+                                style="vertical-align: -webkit-baseline-middle;">
+                            </i>
+                        </div>
+                    </div>                
                 </th>
             </tr>
         </thead>

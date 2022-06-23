@@ -23,6 +23,8 @@ export class SerieFormComponent implements OnInit {
 
   serie: Serie = new Serie();
 
+  arraySeries: Serie[];
+
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
@@ -54,6 +56,7 @@ export class SerieFormComponent implements OnInit {
       )
     }
     else {
+      if (this.arraySeries[0].numRefSerie) serie.numRefSerie = this.arraySeries[0].numRefSerie + 1;
       this.serieService.create(serie);
       Swal.fire(
         'New Serie added successfully',
