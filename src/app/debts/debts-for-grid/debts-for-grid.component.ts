@@ -33,6 +33,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   pageDetsInDebt: number = 1;
   pageDetsOutDebt: number = 1;
   sortByDesc: boolean = true;
+  checkPlace: boolean = false;
 
   // queryDate: string = "";
   restInPocket: string = "";
@@ -120,6 +121,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       if (this.queryNote) 
       this.filteredDebts = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase()));
       else if (this.placeId) {
+        this.checkPlace = true;
         this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
         if (this.placeId == 5) {
           this.getTotalIntDebts();
@@ -177,6 +179,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     // this.queryDate = "";
     this.queryNote = "";
     this.placeId = null;
+    this.checkPlace = false;
     this.getAllDebts();
     this.modalRefSearch.close();
   }
