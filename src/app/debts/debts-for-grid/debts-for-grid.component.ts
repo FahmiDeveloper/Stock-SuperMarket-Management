@@ -228,6 +228,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   getTotalOutDebts() {
+    this.totalOutDebts = "";
     this.defaultTotalOutDebts = 0;
     this.customTotalOutDebts = 0;
 
@@ -272,6 +273,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   getTotalIntDebts() {
+    this.totalInDebts = "";
     this.defaultTotalInDebts = 0;
     this.customTotalInDebts = 0;
 

@@ -423,20 +423,23 @@
                 <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
                     <div class="card-body text-dark">
                         <div class="row">
-                            <div class="col-6">
-                                <span class="text-primary font-weight-bold" style="font-size: 20px;">
-                                    {{ detailInDebt.creditor }}
-                                </span>
+                            <div class="col-12 text-primary font-weight-bold" style="font-size: 20px;text-align: center;">
+                                {{ detailInDebt.creditor }}
                             </div>
-                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;" (click)="updateInDebtValue(detailInDebt)">
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12 font-weight-bold text-success" style="font-size: 20px;text-align: center;" (click)="updateInDebtValue(detailInDebt)">
                                 {{ detailInDebt.financialDebt }}
                             </div>
                         </div>
+                        <br>
                         <div class="row">
-                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: right;">
+                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: center;">
                                 {{ detailInDebt.note }}
                             </div>
-                        </div><br>
+                        </div>
+                        <br>
                         <div class="row">
                             <div class="col-6">
                                 <button 
@@ -541,20 +544,23 @@
                 <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
                     <div class="card-body text-dark">
                         <div class="row">
-                            <div class="col-6">
-                                <span class="text-primary font-weight-bold" style="font-size: 20px;">
-                                    {{ detailOutDebt.debtor }}
-                                </span>
+                            <div class="col-12 font-weight-bold text-primary" style="font-size: 20px;text-align: center;">
+                                {{ detailOutDebt.debtor }}
                             </div>
-                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;" (click)="updateOutDebtValue(detailOutDebt)">
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12 font-weight-bold text-success" style="font-size: 20px;text-align: center;" (click)="updateOutDebtValue(detailOutDebt)">
                                 {{ detailOutDebt.financialDebt }}
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: right;">
                                 {{ detailOutDebt.note }}
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col-6">
                                 <button 
