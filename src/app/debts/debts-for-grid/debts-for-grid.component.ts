@@ -209,19 +209,19 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   getRestMoneyForeachPlace() {
     this.restInPocket = this.filteredDebtsCopie.filter(debt => debt.placeId == 1).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInWallet = this.filteredDebtsCopie.filter(debt => debt.placeId == 2).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInEnvelope = this.filteredDebtsCopie.filter(debt => debt.placeId == 3).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInPosteAccount = this.filteredDebtsCopie.filter(debt => debt.placeId == 6).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
   }
 
   openModalDebt(contentDebt) {

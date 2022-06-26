@@ -41,7 +41,6 @@ export class DebtFormComponent implements OnInit {
   ngOnInit() {
     if (!this.debt.key) {
       this.debt.date = moment().format('YYYY-MM-DD');
-      this.generateNumRow();
     }
   }
 
@@ -74,20 +73,6 @@ export class DebtFormComponent implements OnInit {
       )
     }
     this.modalRef.close();
-  }
-
-  generateNumRow(){
-    this.debtService
-      .getAll()
-      .subscribe((debts: Debt[]) => {
-          if (debts.length > 0) {
-            for (let i = 0; i < debts.length; i++) {
-              if(debts[i].numRow) {
-                this.debt.numRow = debts[i].numRow + 1;
-              }
-            }      
-        } 
-    });
   }
 
   checkAddRestMoney() {

@@ -7,7 +7,6 @@ export class Debt {
   financialDebt:string;
   note: string;
   placeId: number;
-  numRow: number;
   restMoney: string;
   place: string;
   isRestMoney: boolean;
@@ -41,7 +40,6 @@ export class Debt {
     this.financialDebt = null;
     this.note = "";
     this.placeId = null;
-    this.numRow = null;
     this.restMoney = "";
     this.place = "";
   }
