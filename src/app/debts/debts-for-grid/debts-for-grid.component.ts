@@ -240,6 +240,18 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
         element.financialOutDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
       }
 
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
+      }
+
       this.defaultTotalOutDebts += Number(element.financialOutDebtWithConvert);
 
       if (this.defaultTotalOutDebts.toString().length > 4) {
@@ -270,6 +282,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
       }
 
       this.defaultTotalInDebts += Number(element.financialInDebtWithConvert);
@@ -319,6 +342,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
       }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
+      }
 
       this.defaultTotalInDebtsInModal += Number(element.financialInDebtInModalWithConvert);
       if (this.defaultTotalInDebtsInModal.toString().length > 4) {
@@ -356,6 +390,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
       }
 
       this.defaultTotalInDebtsInModal += Number(element.financialInDebtInModalWithConvert);
@@ -395,6 +440,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
       }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
+      }
 
       this.defaultTotalInDebtsInModal += Number(element.financialInDebtInModalWithConvert);
       if (this.defaultTotalInDebtsInModal.toString().length > 4) {
@@ -432,6 +488,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialOutDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
       }
 
       this.defaultTotalOutDebtsInModal += Number(element.financialOutDebtInModalWithConvert);
@@ -471,6 +538,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialOutDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
       }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
+      }
 
       this.defaultTotalOutDebtsInModal += Number(element.financialOutDebtInModalWithConvert);
       if (this.defaultTotalOutDebtsInModal.toString().length > 4) {
@@ -508,6 +586,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialOutDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
       }
 
       this.defaultTotalOutDebtsInModal += Number(element.financialOutDebtInModalWithConvert);
