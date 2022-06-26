@@ -12,11 +12,6 @@
         <div class="row">
             <div class="col-md-12">
                 <form #f="ngForm" (ngSubmit)="save(f.value)">
-                    <div class="form-group" hidden>
-                        <label for="numRow">N°</label>
-                        <input #numRow="ngModel" [(ngModel)]="debt.numRow" name="numRow" id="numRow" type="number"
-                            class="form-control" readonly>
-                    </div>
                     <div class="form-group" *ngIf="!debt.key">
                         <div class="row">
                             <div class="col-md-12">
@@ -96,6 +91,28 @@
                                 class="form-control" required>
                             <div class="alert alert-danger" *ngIf="restMoney.touched && restMoney.invalid">
                                 Rest Money is required.
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="debt.isRestMoney">
+                            <label for="selectUnitForRestMoney">Unit</label>
+                            <select #selectUnitForRestMoney class="form-control" (change)='onSelectUnitForRestMoney(selectUnitForRestMoney.value)' required>
+                                <option *ngFor="let unit of units" [value]="unit.unitName">
+                                    {{unit.unitName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="selectUnitForRestMoney.touched && selectUnitForRestMoney.invalid">
+                                Unit is required.
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="debt.debtForPay || debt.debtToGet">
+                            <label for="selectUnitForFinancialDebt">Unit</label>
+                            <select #selectUnitForFinancialDebt class="form-control" (change)='onSelectUnitForFinancialDebt(selectUnitForFinancialDebt.value)' required>
+                                <option *ngFor="let unit of units" [value]="unit.unitName">
+                                    {{unit.unitName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="selectUnitForFinancialDebt.touched && selectUnitForFinancialDebt.invalid">
+                                Unit is required.
                             </div>
                         </div>
                         <div class="form-group" [hidden]="debt.debtForPay || debt.debtToGet">

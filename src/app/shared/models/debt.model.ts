@@ -7,11 +7,10 @@ export class Debt {
   financialDebt:string;
   note: string;
   placeId: number;
-  numRow: number;
   restMoney: string;
   place: string;
-
   isRestMoney: boolean;
+  numRefDebt: number;
 
   debtForPay: boolean;
   financialInDebtWithConvert:string;
@@ -19,6 +18,8 @@ export class Debt {
   toPayThisMonth: boolean;
   toPayNextMonth: boolean;
   notToPayForNow: boolean;
+  firstPartComposedFinancialInDebt:string;
+  secondPartComposedFinancialInDebt:string;
 
 
   debtToGet: boolean;
@@ -27,8 +28,9 @@ export class Debt {
   toGetThisMonth: boolean;
   toGetNextMonth: boolean;
   notToGetForNow: boolean;
+  firstPartComposedFinancialOutDebt:string;
+  secondPartComposedFinancialOutDebt:string;
 
-  numRefDebt: number;
 
   constructor(){
     this.date = "";
@@ -38,7 +40,6 @@ export class Debt {
     this.financialDebt = null;
     this.note = "";
     this.placeId = null;
-    this.numRow = null;
     this.restMoney = "";
     this.place = "";
   }

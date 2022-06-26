@@ -152,7 +152,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(debtId) {
+  deleteDebt(debtId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this debt!',
@@ -206,22 +206,23 @@ export class DebtsComponent implements OnInit, OnDestroy {
 
   getRestMoneyForeachPlace() {
     this.restInPocket = this.filteredDebtsCopie.filter(debt => debt.placeId == 1).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInWallet = this.filteredDebtsCopie.filter(debt => debt.placeId == 2).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInEnvelope = this.filteredDebtsCopie.filter(debt => debt.placeId == 3).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
 
     this.restInPosteAccount = this.filteredDebtsCopie.filter(debt => debt.placeId == 6).sort(
-      (n1, n2) => n2.numRow - n1.numRow)[0].restMoney;
+      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
   }
 
   getTotalOutDebts() {
+    this.totalOutDebts = "";
     this.defaultTotalOutDebts = 0;
     this.customTotalOutDebts = 0;
 
@@ -232,6 +233,18 @@ export class DebtsComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialOutDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
       }
 
       this.defaultTotalOutDebts += Number(element.financialOutDebtWithConvert);
@@ -253,7 +266,8 @@ export class DebtsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getTotalIntDebts() {
+  getTotalIntDebts() { 
+    this.totalInDebts = "";
     this.defaultTotalInDebts = 0;
     this.customTotalInDebts = 0;
 
@@ -264,6 +278,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
       }
 
       this.defaultTotalInDebts += Number(element.financialInDebtWithConvert);
@@ -284,6 +309,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
       }
     }); 
   }
+
 
   showDetInDebt(contentDetInDebt) {
     this.modalRefDetInDebt = this.modalService.open(contentDetInDebt as Component, { windowClass : "detailsDebtModalClass", centered: true});
@@ -312,6 +338,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
       }
 
       this.defaultTotalInDebtsInModal += Number(element.financialInDebtInModalWithConvert);
@@ -351,6 +388,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
       }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
+      }
 
       this.defaultTotalInDebtsInModal += Number(element.financialInDebtInModalWithConvert);
       if (this.defaultTotalInDebtsInModal.toString().length > 4) {
@@ -388,6 +436,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialInDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
       }
 
       this.defaultTotalInDebtsInModal += Number(element.financialInDebtInModalWithConvert);
@@ -427,6 +486,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialOutDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
       }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
+      }
 
       this.defaultTotalOutDebtsInModal += Number(element.financialOutDebtInModalWithConvert);
       if (this.defaultTotalOutDebtsInModal.toString().length > 4) {
@@ -465,6 +535,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialOutDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
       }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
+      }
 
       this.defaultTotalOutDebtsInModal += Number(element.financialOutDebtInModalWithConvert);
       if (this.defaultTotalOutDebtsInModal.toString().length > 4) {
@@ -502,6 +583,17 @@ export class DebtsComponent implements OnInit, OnDestroy {
       }
       if (element.financialDebt.indexOf("Mill") !== -1) {
         element.financialOutDebtInModalWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebt = element.firstPartComposedFinancialOutDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtInModalWithConvert = String(Number(element.firstPartComposedFinancialOutDebt)+Number(element.secondPartComposedFinancialOutDebt));
       }
 
       this.defaultTotalOutDebtsInModal += Number(element.financialOutDebtInModalWithConvert);
@@ -749,6 +841,89 @@ export class DebtsComponent implements OnInit, OnDestroy {
   sortByRefDebtAsc() {
     this.filteredDebts = this.filteredDebts.sort((n1, n2) => n1.numRefDebt - n2.numRefDebt);
     this.sortByDesc = false;
+  }
+
+  deleteAll() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete all debts to pay this month!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.detailsInDebt.filter(debt => (debt.debtForPay == true) && (debt.toPayThisMonth == true)).forEach(element => {
+          this.debtService.delete(element.key);
+          Swal.fire(
+            'Debts has been deleted successfully',
+            '',
+            'success'
+          ).then((res) => {
+            if (res.value) {
+              this.getTotalIntDebts();
+              this.payThisMonth();
+            }
+          })
+        });
+      }
+    })
+  }
+
+  updateInDebtValue(detailInDebt: Debt) {
+    Swal.fire({
+      title: 'Update debt value',
+      input: 'text',
+      inputValue: detailInDebt.financialDebt,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        detailInDebt.financialDebt = result.value;
+        this.debtService.update(detailInDebt.key, detailInDebt);
+        Swal.fire(
+          'Debts has been updated successfully',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) {
+            this.getTotalIntDebts();
+            if (this.toPayThisMonth) this.payThisMonth();
+            else if (this.toPayNextMonth) this.payNextMonth();
+            else this.notToBePay()
+          }
+        })
+      }
+    })
+  }
+
+  updateOutDebtValue(detailOutDebt: Debt) {
+    Swal.fire({
+      title: 'Update debt value',
+      input: 'text',
+      inputValue: detailOutDebt.financialDebt,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        detailOutDebt.financialDebt = result.value;
+        this.debtService.update(detailOutDebt.key, detailOutDebt);
+        Swal.fire(
+          'Debts has been updated successfully',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) {
+            this.getTotalOutDebts();
+            if (this.toGetThisMonth) this.getThisMonth();
+            else if (this.toGetNextMonth) this.getNextMonth();
+            else this.notToBeGet()
+          }
+        })
+      }
+    })
   }
 
   ngOnDestroy() {

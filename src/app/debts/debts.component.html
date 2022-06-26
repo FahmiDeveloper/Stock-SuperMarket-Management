@@ -176,7 +176,7 @@
                             <button 
                                 *ngIf="user.roleDelete" 
                                 type="button" 
-                                (click)="delete(debt.key)"
+                                (click)="deleteDebt(debt.key)"
                                 class="btn btn-danger font-weight-bold">
                                 Delete
                             </button>                    
@@ -347,6 +347,19 @@
         </div>
 
         <br>
+
+        <div class="row">
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
+                <button 
+                    *ngIf="toPayThisMonth && detailsInDebt.length" 
+                    (click)="deleteAll()" 
+                    class="btn btn-danger font-weight-bold float-right"
+                    >Delete all
+                </button> 
+            </div>
+        </div>
+
         <div class="row">
             <table class="table table-striped">
                 <thead class="colorHeaderTable">
@@ -361,8 +374,7 @@
                 <tbody>
                     <tr *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
                         <td>{{ detailInDebt.creditor }}</td>
-                        <td>{{ detailInDebt.financialDebt }}</td>
-                        <td>{{ detailInDebt.note }}</td>
+                        <td><span (click)="updateInDebtValue(detailInDebt)" style="cursor: pointer;">{{ detailInDebt.financialDebt }}</span></td>                        <td>{{ detailInDebt.note }}</td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 
@@ -462,8 +474,7 @@
                 <tbody>
                     <tr *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
                         <td>{{ detailOutDebt.debtor }}</td>
-                        <td>{{ detailOutDebt.financialDebt }}</td>
-                        <td>{{ detailOutDebt.note }}</td>
+                        <td><span (click)="updateOutDebtValue(detailOutDebt)" style="cursor: pointer;">{{ detailOutDebt.financialDebt }}</span></td>                        <td>{{ detailOutDebt.note }}</td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 
