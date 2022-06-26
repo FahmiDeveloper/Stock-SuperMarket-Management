@@ -14,10 +14,11 @@ import Swal from 'sweetalert2';
 export class DebtFormComponent implements OnInit {
 
   debt: Debt = new Debt();
+  arrayDebts: Debt[];
+  selectUnitForRestMoney:string;
+  selectUnitForFinancialDebt:string;
 
   modalRef: any;
-
-  arrayDebts: Debt[];
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -26,6 +27,13 @@ export class DebtFormComponent implements OnInit {
     {id: 4, place: 'الصندوق'},
     {id: 5, place: 'دين'},
     {id: 6, place: 'الحساب البريدي'}
+  ];
+
+  units: Unit[] = [
+    {unitName: ''},
+    {unitName: 'DT'},
+    {unitName: 'DT.'},
+    {unitName: 'Mill'}
   ];
 
   constructor(private debtService: DebtService) {}
@@ -167,10 +175,22 @@ export class DebtFormComponent implements OnInit {
       this.debt.toGetNextMonth = false;
     }
   }
+
+  onSelectUnitForRestMoney(unitName:string) {
+    this.debt.restMoney = this.debt.restMoney + unitName;
+  }
+
+  onSelectUnitForFinancialDebt(unitName:string) {
+    this.debt.financialDebt = this.debt.financialDebt + unitName;
+  }
 }
 
 export interface PlacesMoney {
   id: number,
   place: string
+}
+
+export interface Unit {
+  unitName: string
 }
 
