@@ -428,7 +428,7 @@
                                     {{ detailInDebt.creditor }}
                                 </span>
                             </div>
-                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;">
+                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;" (click)="updateInDebtValue(detailInDebt)">
                                 {{ detailInDebt.financialDebt }}
                             </div>
                         </div>
@@ -546,7 +546,7 @@
                                     {{ detailOutDebt.debtor }}
                                 </span>
                             </div>
-                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;">
+                            <div class="col-6 font-weight-bold text-success" style="font-size: 20px;text-align: right;" (click)="updateOutDebtValue(detailOutDebt)">
                                 {{ detailOutDebt.financialDebt }}
                             </div>
                         </div>

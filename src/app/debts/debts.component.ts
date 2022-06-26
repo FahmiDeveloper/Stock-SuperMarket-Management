@@ -778,6 +778,62 @@ export class DebtsComponent implements OnInit, OnDestroy {
     })
   }
 
+  updateInDebtValue(detailInDebt: Debt) {
+    Swal.fire({
+      title: 'Update debt value',
+      input: 'text',
+      inputValue: detailInDebt.financialDebt,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        detailInDebt.financialDebt = result.value;
+        this.debtService.update(detailInDebt.key, detailInDebt);
+        Swal.fire(
+          'Debts has been updated successfully',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) {
+            this.getTotalIntDebts();
+            if (this.toPayThisMonth) this.payThisMonth();
+            else if (this.toPayNextMonth) this.payNextMonth();
+            else this.notToBePay()
+          }
+        })
+      }
+    })
+  }
+
+  updateOutDebtValue(detailOutDebt: Debt) {
+    Swal.fire({
+      title: 'Update debt value',
+      input: 'text',
+      inputValue: detailOutDebt.financialDebt,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        detailOutDebt.financialDebt = result.value;
+        this.debtService.update(detailOutDebt.key, detailOutDebt);
+        Swal.fire(
+          'Debts has been updated successfully',
+          '',
+          'success'
+        ).then((res) => {
+          if (res.value) {
+            this.getTotalOutDebts();
+            if (this.toGetThisMonth) this.getThisMonth();
+            else if (this.toGetNextMonth) this.getNextMonth();
+            else this.notToBeGet()
+          }
+        })
+      }
+    })
+  }
+
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
