@@ -176,7 +176,7 @@
                             <button 
                                 *ngIf="user.roleDelete" 
                                 type="button" 
-                                (click)="delete(debt.key)"
+                                (click)="deleteDebt(debt.key)"
                                 class="btn btn-danger font-weight-bold">
                                 Delete
                             </button>                    
@@ -347,6 +347,19 @@
         </div>
 
         <br>
+
+        <div class="row">
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
+                <button 
+                    *ngIf="toPayThisMonth && detailsInDebt.length" 
+                    (click)="deleteAll()" 
+                    class="btn btn-danger font-weight-bold float-right"
+                    >Delete all
+                </button> 
+            </div>
+        </div>
+
         <div class="row">
             <table class="table table-striped">
                 <thead class="colorHeaderTable">

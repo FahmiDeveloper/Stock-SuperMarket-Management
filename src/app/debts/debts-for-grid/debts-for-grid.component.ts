@@ -153,7 +153,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     })
   }
 
-  delete(debtId) {
+  deleteDebt(debtId) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this debt!',
@@ -755,6 +755,33 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   sortByRefDebtAsc() {
     this.filteredDebts = this.filteredDebts.sort((n1, n2) => n1.numRefDebt - n2.numRefDebt);
     this.sortByDesc = false;
+  }
+
+  deleteAll() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete all debts to pay this month!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.detailsInDebt.filter(debt => (debt.debtForPay == true) && (debt.toPayThisMonth == true)).forEach(element => {
+          this.debtService.delete(element.key);
+          Swal.fire(
+            'Debts has been deleted successfully',
+            '',
+            'success'
+          ).then((res) => {
+            if (res.value) {
+              this.getTotalIntDebts();
+              this.payThisMonth();
+            }
+          })
+        });
+      }
+    })
   }
 
   ngOnDestroy() {
