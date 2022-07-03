@@ -77,7 +77,7 @@
 
 .ExcelTable2007 TH {
 	background-repeat: repeat-x; 
-	font-weight: normal;
+	font-weight: bold;
 	font-size: 14px;
 	border: 1px solid #9EB6CE;
 	border-width: 0px 1px 1px 0px;
@@ -90,6 +90,7 @@
 	padding: 0px 4px 0px 2px;
 	border: 1px solid #D0D7E5;
 	border-width: 0px 1px 1px 0px;
+    font-weight: bold;
 }
 
 .ExcelTable2007 TD B {

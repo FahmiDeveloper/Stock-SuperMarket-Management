@@ -20,6 +20,9 @@ export class Debt {
   notToPayForNow: boolean;
   firstPartComposedFinancialInDebt:string;
   secondPartComposedFinancialInDebt:string;
+  financialInDebtWithConvertByCreditor:string;
+  firstPartComposedFinancialInDebtByCreditor:string;
+  secondPartComposedFinancialInDebtByCreditor:string;
 
 
   debtToGet: boolean;
@@ -30,6 +33,9 @@ export class Debt {
   notToGetForNow: boolean;
   firstPartComposedFinancialOutDebt:string;
   secondPartComposedFinancialOutDebt:string;
+  financialOutDebtWithConvertByDebtor:string;
+  firstPartComposedFinancialOutDebtByDebtor:string;
+  secondPartComposedFinancialOutDebtByDebtor:string;
 
 
   constructor(){
