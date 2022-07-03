@@ -73,7 +73,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && !isMobile" routerLink="/movies">
       <div class="card gr-1">
         <div class="txt">
-          <h1 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">Movies</h1>
+          <h1 class="text-application">Movies</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -112,7 +112,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && isMobile" routerLink="/movies-for-grid">
       <div class="card gr-1">
         <div class="txt">
-          <h1 class="text-application">Movies</h1>
+          <h1 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">Movies</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
