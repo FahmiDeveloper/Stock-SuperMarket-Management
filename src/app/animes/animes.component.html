@@ -51,7 +51,7 @@
                 <th>
                     <div class="row">
                         <div class="col-md-6">
-                            <a *ngIf="user.roleAdd" (click)="newAnime()" class="btn btn-primary font-weight-bold">New</a>
+                            <a *ngIf="user.roleAdd" (click)="newAnime()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>
                         </div>
                         <div class="col-md-6">
                             <i 
@@ -94,24 +94,24 @@
                         <button 
                             *ngIf="user.roleUpdate" 
                             (click)="editAnime(anime)"
-                            class="btn btn-secondary font-weight-bold"
+                            class="btn btn-secondary"
                             [hidden]="anime.statusId == 3">
-                            Edit
+                            <i class="fa fa-edit" aria-hidden="true"></i>
                         </button>                        
                         <a 
                             *ngIf="anime.path && (anime.statusId == 1 || anime.statusId == 2)" 
                             href="{{ anime.path }}" 
                             target="_blank" 
-                            class="btn btn-warning font-weight-bold">
-                            Path
+                            class="btn btn-warning">
+                            <i class="fa fa-link" aria-hidden="true"></i> 
                         </a>                        
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
                             (click)="deleteAnime(anime.key)"
-                            class="btn btn-danger font-weight-bold"
+                            class="btn btn-danger"
                             [hidden]="anime.statusId == 3">
-                            Delete
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>                    
                     </div>
                 </td>

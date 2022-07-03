@@ -127,7 +127,7 @@
                     <th>
                         <div class="row">
                             <div class="col-md-6">
-                                <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold">New</a>
+                                <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>
                             </div>
                             <div class="col-md-6">
                                 <i 
@@ -170,15 +170,15 @@
                             <button 
                                 *ngIf="user.roleUpdate" 
                                 (click)="editDebt(debt)"
-                                class="btn btn-secondary font-weight-bold">
-                                Edit
+                                class="btn btn-secondary">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
                             </button>                                             
                             <button 
                                 *ngIf="user.roleDelete" 
                                 type="button" 
                                 (click)="deleteDebt(debt.key)"
-                                class="btn btn-danger font-weight-bold">
-                                Delete
+                                class="btn btn-danger">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>                    
                         </div>
                     </td>
@@ -368,13 +368,13 @@
                         <th>Debt</th>
                         <th>Note</th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
                         <td>{{ detailInDebt.creditor }}</td>
-                        <td><span (click)="updateInDebtValue(detailInDebt)" style="cursor: pointer;">{{ detailInDebt.financialDebt }}</span></td>                        <td>{{ detailInDebt.note }}</td>
+                        <td><span (click)="updateInDebtValue(detailInDebt)" style="cursor: pointer;">{{ detailInDebt.financialDebt }}</span></td>                        
+                        <td>{{ detailInDebt.note }}</td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 
@@ -382,18 +382,14 @@
                                     (click)="openModalChangeStatusInDebt(contentChangeStatusInDebt, detailInDebt)"
                                     class="btn btn-secondary">
                                     <i class="fa fa-edit" aria-hidden="true"></i>
-                                </button>                    
-                            </div>
-                        </td>
-                        <td style="text-align:center;">
-                            <div class="btnswrap">                                             
+                                </button>
                                 <button 
                                     *ngIf="user.roleDelete" 
                                     type="button" 
                                     (click)="deleteFromModalInDebts(detailInDebt.key)"
                                     class="btn btn-danger">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>                    
+                                </button>                   
                             </div>
                         </td>
                     </tr>
@@ -468,13 +464,13 @@
                         <th>Debt</th>
                         <th>Note</th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
                         <td>{{ detailOutDebt.debtor }}</td>
-                        <td><span (click)="updateOutDebtValue(detailOutDebt)" style="cursor: pointer;">{{ detailOutDebt.financialDebt }}</span></td>                        <td>{{ detailOutDebt.note }}</td>
+                        <td><span (click)="updateOutDebtValue(detailOutDebt)" style="cursor: pointer;">{{ detailOutDebt.financialDebt }}</span></td>                        
+                        <td>{{ detailOutDebt.note }}</td>
                         <td style="text-align:center;">
                             <div class="btnswrap">                                             
                                 <button 
@@ -482,18 +478,14 @@
                                     (click)="openModalChangeStatusOutDebt(contentChangeStatusOutDebt, detailOutDebt)"
                                     class="btn btn-secondary">
                                     <i class="fa fa-edit" aria-hidden="true"></i>
-                                </button>                    
-                            </div>
-                        </td>
-                        <td style="text-align:center;">
-                            <div class="btnswrap">                                             
+                                </button>
                                 <button 
                                     *ngIf="user.roleDelete" 
                                     type="button" 
                                     (click)="deleteFromModalOutDebts(detailOutDebt.key)"
                                     class="btn btn-danger">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>                    
+                                </button>                   
                             </div>
                         </td>
                     </tr>
