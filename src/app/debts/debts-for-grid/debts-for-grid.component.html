@@ -74,7 +74,7 @@
                         <br>
                         <div class="row">
                             <div class="col-7">
-                                <select [(ngModel)]="creditorName" name="creditorName" id="creditorName" class="form-control" (click)="getTotalInDebtsByCreditor()">
+                                <select [ngModel]="creditorName" (ngModelChange)="getTotalInDebtsByCreditor($event)" name="creditorName" id="creditorName" class="form-control">
                                     <option *ngFor="let creditor of creditors" [value]="creditor">
                                         {{creditor}}
                                     </option>
