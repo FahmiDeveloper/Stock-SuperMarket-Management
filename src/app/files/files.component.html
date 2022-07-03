@@ -1,4 +1,4 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface">Files</h1>
+<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Files</h1>
 
 <div class="container mx-auto">
     <div class="row my-flex-card" [ngStyle]="{'margin-top': isMobile ? '30px' : '50px'}">
@@ -15,7 +15,7 @@
 <ng-template #contentListFiles let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">{{ typeFile.type }} Files</h4>
+        <h4 class="modal-title w-100 font-weight-bold text-danger text-application">{{ typeFile.type }} Files</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefListFiles.close()">
             <span aria-hidden="true">&times;</span>
@@ -41,8 +41,8 @@
 <ng-template #contentLinks let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 *ngIf="!clickShowLinks" class="modal-title w-100 font-weight-bold text-danger">{{ typeFile.type }}</h4>
-        <h4 *ngIf="clickShowLinks" class="modal-title w-100 font-weight-bold text-danger">{{ typeLink.type }} Links</h4>
+        <h4 *ngIf="!clickShowLinks" class="modal-title w-100 font-weight-bold text-danger text-application">{{ typeFile.type }}</h4>
+        <h4 *ngIf="clickShowLinks" class="modal-title w-100 font-weight-bold text-danger text-application">{{ typeLink.type }} Links</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefListLinks.close()">
             <span aria-hidden="true">&times;</span>
@@ -68,7 +68,7 @@
                     <button type="button" class="btn btn-secondary" (click)="backToListTypeLinks()">
                         <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     </button>
-                    <a *ngIf="user.roleAdd" (click)="newLink()" class="btn btn-primary font-weight-bold float-right">
+                    <a *ngIf="user.roleAdd" (click)="newLink()" class="btn btn-primary font-weight-bold float-right text-application">
                         New
                     </a>
                 </div>                    

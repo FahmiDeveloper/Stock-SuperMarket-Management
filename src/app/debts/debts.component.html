@@ -1,11 +1,11 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface">Debts</h1>
+<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Debts</h1>
 
 <br>
 <br>
 
 <div class="row justify-content-center">
     <div class="col-md-4">
-        <input #query (keyup)="getAllDebts()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput" placeholder="Search by note...">
+        <input #query (keyup)="getAllDebts()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput text-application" placeholder="Search by note...">
         <!-- <div class="row">
             <div class="col-md-7">
                 <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
@@ -18,7 +18,7 @@
     </div>
     <div class="col-md-3">
         <div class="row">
-            <div class="col-md-2"><label for="placeId" class="font-weight-bold">Place</label></div>
+            <div class="col-md-2"><label for="placeId" class="font-weight-bold text-application">Place</label></div>
             <div class="col-md-10">
                 <select [(ngModel)]="placeId" name="placeId" id="placeId" class="form-control" (click)="getAllDebts()">
                     <option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
@@ -30,16 +30,16 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-1">
-        <button class="btn btn-info font-weight-bold" (click)="showRest(contentRestMoneyForeachPlace)">Rest</button>
+        <button class="btn btn-info font-weight-bold text-application" (click)="showRest(contentRestMoneyForeachPlace)">Rest</button>
     </div>
     <div class="col-md-1">
-        <button class="btn btn-dark font-weight-bold" (click)="showDebt(contentDebt)">Debt</button>
+        <button class="btn btn-dark font-weight-bold text-application" (click)="showDebt(contentDebt)">Debt</button>
     </div>    
 </div>
 
 <br>
 
-<div class="row" *ngIf="placeId == 1">
+<div class="row text-application" *ngIf="placeId == 1">
     <div class="col-md-6">
         <span class="font-weight-bold rest-money badge badge-warning">{{ restInPocket }}</span>
     </div>
@@ -48,7 +48,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="placeId == 2"> 
+<div class="row text-application" *ngIf="placeId == 2"> 
     <div class="col-md-6">
         <span class="font-weight-bold rest-money badge badge-warning" >{{ restInWallet }}</span>
     </div>
@@ -57,7 +57,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="placeId == 3"> 
+<div class="row text-application" *ngIf="placeId == 3"> 
     <div class="col-md-6">
         <span class="font-weight-bold rest-money badge badge-warning">{{ restInEnvelope }}</span>
     </div>
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="placeId == 4"> 
+<div class="row text-application" *ngIf="placeId == 4"> 
     <div class="col-md-6">
         <span class="font-weight-bold rest-money badge badge-warning">{{ restInBox }}</span>
     </div>
@@ -75,7 +75,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="placeId == 5"> 
+<div class="row text-application" *ngIf="placeId == 5"> 
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-6">
@@ -158,7 +158,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="placeId == 6"> 
+<div class="row text-application" *ngIf="placeId == 6"> 
     <div class="col-md-6">
         <span class="font-weight-bold rest-money badge badge-warning">{{ restInPosteAccount }}</span>
     </div>
@@ -181,6 +181,7 @@
                 <th>Rest</th>
                 <th>Place</th>
                 <th>Note</th>
+                <th>Status</th>
                 <th>
                     <div class="row">
                         <div class="col-md-6">
@@ -222,6 +223,17 @@
                     <span *ngIf="!debt.placeId">-</span>
                 </td>
                 <td>{{ debt.note }}</td>
+                <td>
+                    <span *ngIf="debt.placeId === 5">
+                        <span *ngIf="debt.toPayThisMonth">Pay this month</span>
+                        <span *ngIf="debt.toPayNextMonth">Pay next month</span>
+                        <span *ngIf="debt.notToPayForNow">Pay will be delayed</span>
+                        <span *ngIf="debt.toGetThisMonth">Get this month</span>
+                        <span *ngIf="debt.toGetNextMonth">Get next month</span>
+                        <span *ngIf="debt.notToGetForNow">Get will be delayed</span>
+                    </span>
+                    <span *ngIf="debt.placeId !== 5">-</span>                
+                </td>
                 <td style="text-align:center;">
                     <div class="btnswrap">
                         <button 
@@ -249,7 +261,7 @@
 
 <ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
+    <div class="modal-header text-center text-application">
         <h4 class="modal-title w-100 font-weight-bold text-danger">Rest Money</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefRestMoneyForeachPlace.close()">
@@ -257,7 +269,7 @@
         </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body text-application">
         <div class="row ml-4">
             <div class="col-2"></div>
             <div class="col-4">
@@ -313,7 +325,7 @@
 
 <ng-template #contentDebt let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
+    <div class="modal-header text-center text-application">
         <h4 class="modal-title w-100 font-weight-bold text-danger">Debt</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefDebt.close()">
@@ -321,7 +333,7 @@
         </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body" text-application>
         <div class="row">
             <div class="col-md-6">
                 <button class="btn btn-warning" style="float: right;" (click)="showDetInDebt(contentDetInDebt)">
@@ -350,7 +362,7 @@
 
 <ng-template #contentDetInDebt let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
+    <div class="modal-header text-center text-application">
         <h4 *ngIf="totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}</h4>
         <h4 *ngIf="!totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
@@ -359,7 +371,7 @@
         </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body text-application">
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <label>
@@ -460,7 +472,7 @@
 
 <ng-template #contentDetOutDebt let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
+    <div class="modal-header text-center text-application">
         <h4 *ngIf="totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}</h4>
         <h4 *ngIf="!totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
 
@@ -469,7 +481,7 @@
         </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body text-application">
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <label>
@@ -556,7 +568,7 @@
 
 <ng-template #contentChangeStatusInDebt let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
+    <div class="modal-header text-center text-application">
         <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusInDebt.close()">
@@ -564,7 +576,7 @@
         </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body text-application">
         <div class="row justify-content-center" *ngIf="detailInDebt.toPayThisMonth">
             <div class="col-md-6">
                 <label>
@@ -655,7 +667,7 @@
 
 <ng-template #contentChangeStatusOutDebt let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
+    <div class="modal-header text-center text-application">
         <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusOutDebt.close()">
@@ -663,7 +675,7 @@
         </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body text-application">
         <div class="row justify-content-center" *ngIf="detailOutDebt.toGetThisMonth">
             <div class="col-md-6">
                 <label>

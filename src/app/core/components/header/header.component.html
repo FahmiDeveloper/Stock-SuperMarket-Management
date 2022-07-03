@@ -6,8 +6,8 @@
       <img *ngIf="user.photoURL" [src]="user.photoURL" class="picture">&nbsp;
       <img *ngIf="!user.photoURL" src="/src/assets/pictures/nopictureuser.jpg" class="picture">&nbsp;
 
-      <span *ngIf="user.displayName" style="color: white;font-weight: bold;">{{ user.displayName }}</span>
-      <span *ngIf="!user.displayName" style="color: white;font-weight: bold;">{{ userName }}</span>
+      <span *ngIf="user.displayName" class="text-application" style="color: white;font-weight: bold;">{{ user.displayName }}</span>
+      <span *ngIf="!user.displayName" class="text-application" style="color: white;font-weight: bold;">{{ userName }}</span>
 
     </span>
 
@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link font-weight-bold" routerLink="/home">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link font-weight-bold text-application" routerLink="/home">Home <span class="sr-only">(current)</span></a>
         </li>
         <li ngbDropdown class="nav-item dropdown" hidden>
           <a ngbDropdownToggle class="nav-link dropdown-toggle white-text" id="dropdown01" data-toggle="dropdown"
@@ -46,11 +46,11 @@
       <div class="navbar-header navbar-right">
         <ul class="nav navbar-nav">
           <li ngbDropdown class="nav-item dropdown">
-            <a *ngIf="user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold" id="dropdown01"
+            <a *ngIf="user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold text-application" id="dropdown01"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{ user.displayName }}
             </a>
-            <a *ngIf="!user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold" id="dropdown01"
+            <a *ngIf="!user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold text-application" id="dropdown01"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{ userName }}
             </a>

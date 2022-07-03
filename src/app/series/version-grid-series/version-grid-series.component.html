@@ -1,4 +1,4 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface">Series</h1>
+<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Series</h1>
 <div class="container mx-auto" style="margin-top: 50px;">
     <div class="row">
         <div class="col-md-4">
@@ -10,7 +10,7 @@
     </div>
 
     <br>
-    <div class="row">
+    <div class="row text-application">
         <div class="col-md-4" *ngFor="let serie of (filteredSeries | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
             <div class="card bg-white" style="width: 18rem;margin-inline: auto;">
                 <show-serie-picture [serie]="serie" [isGrid]="isGrid"></show-serie-picture>
@@ -90,7 +90,7 @@
 <ng-template #contentModalSearch let-modal let-c="close" let-d="dismiss">
 
     <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <h4 class="modal-title w-100 font-weight-bold text-application">Search</h4>
 
         <button type="button" class="close" aria-label="Close" (click)="modalRefSearch.close()">
             <span aria-hidden="true">&times;</span>
@@ -101,13 +101,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <input [(ngModel)]="queryName" type="text" class="form-control" placeholder="Search by name...">
+                    <input [(ngModel)]="queryName" type="text" class="form-control text-application" placeholder="Search by name...">
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <input [(ngModel)]="queryNote" type="text" class="form-control" placeholder="Search by note...">
+                    <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
                     <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
                 </div>
             </div>

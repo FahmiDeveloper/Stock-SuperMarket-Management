@@ -28,6 +28,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   detailsOutDebt: Debt[];
   detailInDebt: Debt;
   detailOutDebt: Debt;
+  creditors: string[] = [];
+  creditorName: string ='';
+  debtors: string[] = [];
+  debtorName: string ='';
 
   p: number = 1;
   pageDetsInDebt: number = 1;
@@ -49,33 +53,35 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   totalInDebts: string = "";
   defaultTotalInDebts: number;
   customTotalInDebts: number;
-
   totalInDebtsInModal: string = "";
   defaultTotalInDebtsInModal: number;
   customTotalInDebtsInModal: number;
-
   toPayThisMonth: boolean = true;
   toPayNextMonth: boolean = false;
   notToPay: boolean = false;
   checkToPayThisMonth: boolean = false;
   checkToPayNextMonth: boolean = false;
   checkNotToPay: boolean = false;
+  totalInDebtsByCreditor: string;
+  customTotalInDebtsByCreditor: number;
+  defaultTotalInDebtsByCreditor: number;
 
   //out debt attributes
   totalOutDebts: string = "";
   defaultTotalOutDebts: number;
   customTotalOutDebts: number;
-
   totalOutDebtsInModal: string = "";
   defaultTotalOutDebtsInModal: number;
   customTotalOutDebtsInModal: number;
-
   toGetThisMonth: boolean = true;
   toGetNextMonth: boolean = false;
   notToGet: boolean = false;
   checkToGetThisMonth: boolean = false;
   checkToGetNextMonth: boolean = false;
   checkNotToGet: boolean = false;
+  totalOutDebtsByDebtor: string;
+  defaultTotalOutDebtsByDebtor: number;
+  customTotalOutDebtsByDebtor: number;
 
   modalRefRestMoneyForeachPlace: any;
   modalRefDebt: any;
@@ -97,19 +103,6 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     {id: 5, place: 'دين'},
     {id: 6, place: 'الحساب البريدي'}
   ];
-
-  creditors: string[] = [];
-  creditorName: string ='';
-
-  debtors: string[] = [];
-  debtorName: string ='';
-  
-  totalOutDebtsByDebtor: string;
-  defaultTotalOutDebtsByDebtor: number;
-  customTotalOutDebtsByDebtor: number;
-  totalInDebtsByCreditor: string;
-  customTotalInDebtsByCreditor: number;
-  defaultTotalInDebtsByCreditor: number;
 
   constructor(
     private debtService: DebtService, 
@@ -1008,7 +1001,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     }
   }
 
-  getTotalInDebtsByCreditor() { 
+  getTotalInDebtsByCreditor(event) {
+    this.creditorName = event;
     this.defaultTotalInDebtsByCreditor = 0;
     this.customTotalInDebtsByCreditor = 0;
     this.totalInDebtsByCreditor = "";
