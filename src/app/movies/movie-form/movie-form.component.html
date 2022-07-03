@@ -1,4 +1,4 @@
-<div class="modal-header text-center">
+<div class="modal-header text-center text-application">
     <h4 class="modal-title w-100" *ngIf="!movie.key">New Movie</h4>
     <h4 class="modal-title w-100" *ngIf="movie.key">Edit Movie</h4>
     <button type="button" class="close" aria-label="Close" (click)="modalRef.close()">
@@ -10,7 +10,7 @@
 <div class="modal-body">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 text-application">
                 <form #f="ngForm" (ngSubmit)="save(f.value)">
                     <div class="form-group">
                         <label for="nameMovie">Name</label>

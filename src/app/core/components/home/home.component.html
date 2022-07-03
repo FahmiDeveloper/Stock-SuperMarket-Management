@@ -1,4 +1,4 @@
-<h1 class="text-center text-primary" style="padding-top: 60px;">Welcome</h1>
+<h1 class="text-center text-primary text-application" style="padding-top: 60px;font-weight: bold;">Welcome</h1>
 <hr class="bg-dark" />
 <div class="container mx-auto" style="margin-top: 300px;">
   <div class="row" style="margin-top: -300px;cursor: pointer;">
@@ -73,7 +73,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && !isMobile" routerLink="/movies">
       <div class="card gr-1">
         <div class="txt">
-          <h1>Movies</h1>
+          <h1 class="text-application">Movies</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -86,7 +86,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && !isMobile" routerLink="/animes">
       <div class="card gr-4">
         <div class="txt">
-          <h1>Animes</h1>
+          <h1 class="text-application">Animes</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -99,7 +99,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleSeries && !isMobile" routerLink="/series">
       <div class="card gr-2">
         <div class="txt">
-          <h1>Series</h1>
+          <h1 class="text-application">Series</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -112,7 +112,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && isMobile" routerLink="/movies-for-grid">
       <div class="card gr-1">
         <div class="txt">
-          <h1>Movies</h1>
+          <h1 class="text-application">Movies</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -125,7 +125,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && isMobile" routerLink="/animes-for-grid">
       <div class="card gr-4">
         <div class="txt">
-          <h1>Animes</h1>
+          <h1 class="text-application">Animes</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -138,7 +138,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleSeries && isMobile" routerLink="/series-for-grid">
       <div class="card gr-2">
         <div class="txt">
-          <h1>Series</h1>
+          <h1 class="text-application">Series</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -151,7 +151,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleFiles" routerLink="/files">
       <div class="card gr-3">
         <div class="txt">
-          <h1>Files</h1>
+          <h1 class="text-application">Files</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -164,7 +164,7 @@
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleDebts && !isMobile" routerLink="/debts">
       <div class="card gr-6">
         <div class="txt">
-          <h1>Debts</h1>
+          <h1 class="text-application">Debts</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -177,7 +177,7 @@
      <div class="col-md-6 col-lg-4 column" *ngIf="user.roleDebts && isMobile" routerLink="/debts-for-grid">
       <div class="card gr-6">
         <div class="txt">
-          <h1>Debts</h1>
+          <h1 class="text-application">Debts</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">

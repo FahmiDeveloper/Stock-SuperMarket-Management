@@ -124,14 +124,14 @@
 <ng-template #viewZipFile let-modal let-c="close" let-d="dismiss">
 
   <div class="modal-header text-center">
-    <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
+    <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold text-application">{{ FileName }}</h4>
 
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
-  <div class="modal-body">
+  <div class="modal-body text-application">
     <div *ngIf="isLoading" class="text-center">
       <div class="spinner-border" style="width: 10rem; height: 10rem;" role="status"></div><br><br>
       <h4>Extract files in progress...</h4>
@@ -164,7 +164,7 @@
 
 <ng-template #showContentFilesFromZip let-modal let-c="close" let-d="dismiss">
 
-  <div class="modal-header text-center">
+  <div class="modal-header text-center text-application">
       <h4 *ngIf="fileExtractedName" class="modal-title w-100 font-weight-bold">{{ fileExtractedName }}</h4>
 
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">

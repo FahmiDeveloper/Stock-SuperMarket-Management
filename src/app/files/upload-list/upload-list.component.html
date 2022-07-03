@@ -1,9 +1,9 @@
 <div class="row">
     <div class="col-md-6" *ngIf="!isMobile">
-        <input #query (keyup)="filter(query.value)" type="text"  class="form-control widhtInput" placeholder="Search by name...">
+        <input #query (keyup)="filter(query.value)" type="text"  class="form-control widhtInput text-application" placeholder="Search by name...">
     </div>
     <div class="col-md-4" *ngIf="isMobile">
-        <input #query (keyup)="filter(query.value)" type="text"  class="form-control widhtInput" placeholder="Search by name...">
+        <input #query (keyup)="filter(query.value)" type="text"  class="form-control widhtInput text-application" placeholder="Search by name...">
     </div>
 </div>
 

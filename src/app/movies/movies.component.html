@@ -1,14 +1,14 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface">Movies</h1>
+<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Movies</h1>
 
 <br>
 <br>
 
 <div class="row">
     <div class="col-md-4">
-        <input #query (keyup)="getAllMovies()" [(ngModel)]="queryName" type="text" class="form-control widhtInput" placeholder="Search by name...">
+        <input #query (keyup)="getAllMovies()" [(ngModel)]="queryName" type="text" class="form-control widhtInput text-application" placeholder="Search by name...">
     </div>
     <div class="col-md-4">
-        <input #query (keyup)="getAllMovies()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput" placeholder="Search by note...">
+        <input #query (keyup)="getAllMovies()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput text-application" placeholder="Search by note...">
 
         <!-- <div class="row">
             <div class="col-md-8">
@@ -22,7 +22,7 @@
     </div>
     <div class="col-md-4">
         <div class="row">
-            <div class="col-md-2"><label for="statusId" class="font-weight-bold">Status</label></div>
+            <div class="col-md-2"><label for="statusId" class="font-weight-bold text-application">Status</label></div>
             <div class="col-md-10">
                 <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="getAllMovies()">
                     <option value=""></option>
