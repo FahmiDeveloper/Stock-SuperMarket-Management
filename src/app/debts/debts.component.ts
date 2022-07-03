@@ -97,6 +97,19 @@ export class DebtsComponent implements OnInit, OnDestroy {
     {id: 6, place: 'الحساب البريدي'}
   ];
 
+  creditors: string[] = [];
+  creditorName: string ='';
+
+  debtors: string[] = [];
+  debtorName: string ='';
+  
+  totalOutDebtsByDebtor: string;
+  defaultTotalOutDebtsByDebtor: number;
+  customTotalOutDebtsByDebtor: number;
+  totalInDebtsByCreditor: string;
+  customTotalInDebtsByCreditor: number;
+  defaultTotalInDebtsByCreditor: number;
+
   constructor(
     private debtService: DebtService, 
     public userService: UserService,
@@ -222,9 +235,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
   }
 
   getTotalOutDebts() {
-    this.totalOutDebts = "";
     this.defaultTotalOutDebts = 0;
     this.customTotalOutDebts = 0;
+    this.totalOutDebts = "";
+    this.debtors = [];
 
     this.filteredDebtsCopie.filter(debt => debt.debtToGet == true).forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -263,13 +277,18 @@ export class DebtsComponent implements OnInit, OnDestroy {
       } else {
         this.totalOutDebts = this.defaultTotalOutDebts + "Mill";
       }
+
+      if (!this.debtors.includes(element.debtor)) {
+        this.debtors.push(element.debtor);
+      }
     });
   }
 
   getTotalIntDebts() { 
-    this.totalInDebts = "";
     this.defaultTotalInDebts = 0;
     this.customTotalInDebts = 0;
+    this.totalInDebts = "";
+    this.creditors = [];
 
     this.filteredDebtsCopie.filter(debt => debt.debtForPay == true).forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -306,6 +325,10 @@ export class DebtsComponent implements OnInit, OnDestroy {
         }
       } else {
         this.totalInDebts = this.defaultTotalInDebts + "Mill";
+      }
+
+      if (!this.creditors.includes(element.creditor)) {
+        this.creditors.push(element.creditor);
       }
     }); 
   }
@@ -925,6 +948,107 @@ export class DebtsComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  getTotalOutDebtsByDebtor() {
+    this.defaultTotalOutDebtsByDebtor = 0;
+    this.customTotalOutDebtsByDebtor = 0;
+    this.totalOutDebtsByDebtor = "";
+
+    if (this.debtorName) {
+      this.creditorName = '';
+      this.filteredDebts = [];
+      this.filteredDebts = this.filteredDebtsCopie.filter(debt => (debt.debtToGet == true) && (debt.debtor == this.debtorName));
+      this.filteredDebts.forEach(element => {
+      if (element.financialDebt.indexOf("DT") !== -1) {
+        element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+        element.financialOutDebtWithConvertByDebtor = element.financialOutDebtWithConvertByDebtor + '000';
+      }
+      if (element.financialDebt.indexOf("Mill") !== -1) {
+        element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebtByDebtor = element.financialDebt.split('.');
+        if (composedFinancialDebtByDebtor[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[0].substring(0, composedFinancialDebtByDebtor[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialOutDebtByDebtor = element.firstPartComposedFinancialOutDebtByDebtor + '000';
+        }
+        if (composedFinancialDebtByDebtor[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[1].substring(0, composedFinancialDebtByDebtor[1].lastIndexOf("Mill"));
+        }
+        element.financialOutDebtWithConvertByDebtor = String(Number(element.firstPartComposedFinancialOutDebtByDebtor)+Number(element.secondPartComposedFinancialOutDebtByDebtor));
+      }
+
+      this.defaultTotalOutDebtsByDebtor += Number(element.financialOutDebtWithConvertByDebtor);
+
+      if (this.defaultTotalOutDebtsByDebtor.toString().length > 4) {
+
+        this.customTotalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor / 1000;
+        if (String(this.customTotalOutDebtsByDebtor).includes(".")){
+          const customTotalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor).split('.');
+          if (customTotalOutDebtsByDebtor[1].length == 1) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "00Mill";
+          else if (customTotalOutDebtsByDebtor[1].length == 2) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "0Mill";
+          else this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "Mill";
+        } else {
+          this.totalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor) + "DT";
+        }
+      } else {
+        this.totalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor + "Mill";
+      }
+      });
+    }
+  }
+
+  getTotalInDebtsByCreditor() { 
+    this.defaultTotalInDebtsByCreditor = 0;
+    this.customTotalInDebtsByCreditor = 0;
+    this.totalInDebtsByCreditor = "";
+
+    if (this.creditorName) {
+      this.debtorName = '';
+      this.filteredDebts = [];
+      this.filteredDebts = this.filteredDebtsCopie.filter(debt => (debt.debtForPay == true) && (debt.creditor == this.creditorName));
+      this.filteredDebts.forEach(element => {
+      if (element.financialDebt.indexOf("DT") !== -1) {
+        element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+        element.financialInDebtWithConvertByCreditor = element.financialInDebtWithConvertByCreditor + '000';
+      }
+      if (element.financialDebt.indexOf("Mill") !== -1) {
+        element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebtByCreditor = element.financialDebt.split('.');
+        if (composedFinancialDebtByCreditor[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[0].substring(0, composedFinancialDebtByCreditor[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebtByCreditor = element.firstPartComposedFinancialInDebtByCreditor + '000';
+        }
+        if (composedFinancialDebtByCreditor[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[1].substring(0, composedFinancialDebtByCreditor[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtWithConvertByCreditor = String(Number(element.firstPartComposedFinancialInDebtByCreditor)+Number(element.secondPartComposedFinancialInDebtByCreditor));
+      }
+
+      this.defaultTotalInDebtsByCreditor += Number(element.financialInDebtWithConvertByCreditor);
+      if (this.defaultTotalInDebtsByCreditor.toString().length > 4) {
+
+        this.customTotalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor / 1000;
+
+        if (String(this.customTotalInDebtsByCreditor).includes(".")){
+          const customTotalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor).split('.');
+          if (customTotalInDebtsByCreditor[1].length == 1) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "00Mill";
+          else if (customTotalInDebtsByCreditor[1].length == 2) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "0Mill";
+          else this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "Mill";
+        } else {
+          this.totalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor) + "DT";
+        }
+      } else {
+        this.totalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor + "Mill";
+      }
+    });
+    }  
+  }
+
+
 
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();

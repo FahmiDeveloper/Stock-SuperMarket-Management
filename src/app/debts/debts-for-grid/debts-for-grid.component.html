@@ -3,10 +3,10 @@
     <div class="row">
         <div class="col-md-4">
             <div class="row btnswrap justify-content-center">
-                <button class="btn btn-success ml-2 mr-4 font-weight-bold" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search"></i></button>
+                <button class="btn btn-success ml-2 mr-4" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search"></i></button>
                 <button class="btn btn-info ml-1 mr-3 font-weight-bold" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
                 <button class="btn btn-dark ml-1 mr-3 font-weight-bold" (click)="openModalDebt(contentDebt)">Debt</button>
-                <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary font-weight-bold float-right"><i class="fa fa-plus"></i></a>  
+                <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>  
             </div>              
         </div>          
     </div>
@@ -58,26 +58,86 @@
             </div>
         </div>
     
-        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
-            <div class="row">
-                <div class="col-7">
-                    <span *ngIf="totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}</span>
-                    <span *ngIf="!totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                </div>
-                <div class="col-5 font-weight-bold">
-                    <span class="text-primary" style="font-size: 18px;">:المتخلد</span>
+        <div class="row" *ngIf="placeId == 5">
+            <div class="col-md-4">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
+                    <div class="card-body text-dark" style="text-align: center;">
+                        <div class="row">
+                            <div class="col-7">
+                                <span *ngIf="totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}</span>
+                                <span *ngIf="!totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:المتخلد</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-7">
+                                <select [(ngModel)]="creditorName" name="creditorName" id="creditorName" class="form-control" (click)="getTotalInDebtsByCreditor()">
+                                    <option *ngFor="let creditor of creditors" [value]="creditor">
+                                        {{creditor}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:الدائنين</span>
+                            </div>
+                        </div>
+                        <br *ngIf="creditorName">
+                        <div class="row" *ngIf="creditorName">
+                            <div class="col-7">
+                                <span *ngIf="totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebtsByCreditor }}</span>
+                                <span *ngIf="!totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:الدين</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
         <br *ngIf="placeId == 5">
-        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 5">
-            <div class="row">
-                <div class="col-7">
-                    <span *ngIf="totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebts }}</span>
-                    <span *ngIf="!totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                </div>
-                <div class="col-5 font-weight-bold">
-                    <span class="text-primary" style="font-size: 18px;">:المسال</span>
+
+        <div class="row" *ngIf="placeId == 5">
+            <div class="col-md-4">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
+                    <div class="card-body text-dark" style="text-align: center;">
+                        <div class="row">
+                            <div class="col-7">
+                                <span *ngIf="totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebts }}</span>
+                                <span *ngIf="!totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:المسال</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-7">
+                                <select [ngModel]="debtorName" (ngModelChange)="getTotalOutDebtsByDebtor($event)" name="debtorName" id="debtorName" class="form-control">
+                                    <option *ngFor="let debtor of debtors" [value]="debtor">
+                                        {{debtor}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:المدينين</span>
+                            </div>
+                        </div>
+                        <br *ngIf="debtorName">
+                        <div class="row" *ngIf="debtorName">
+                            <div class="col-7">
+                                <span *ngIf="totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebtsByDebtor }}</span>
+                                <span *ngIf="!totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:الدين</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -180,17 +240,17 @@
                         <button 
                             *ngIf="user.roleUpdate" 
                             (click)="editDebt(debt)" 
-                            class="btn btn-secondary ml-1 mr-3 font-weight-bold"
+                            class="btn btn-secondary ml-1 mr-3"
                             style="text-decoration: none;">
-                            Edit
+                            <i class="fa fa-edit" aria-hidden="true"></i>
                         </button>     
                         <button 
                             *ngIf="user.roleDelete" 
                             type="button" 
                             (click)="deleteDebt(debt.key)" 
-                            class="btn btn-danger font-weight-bold"
+                            class="btn btn-danger"
                             style="text-decoration: none;">
-                            Delete
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </div>   
                 </div>
@@ -558,7 +618,7 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: right;">
+                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: center;">
                                 {{ detailOutDebt.note }}
                             </div>
                         </div>

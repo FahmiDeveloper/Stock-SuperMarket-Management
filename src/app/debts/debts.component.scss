@@ -3,9 +3,11 @@
 }
 
 .btnswrap {
-    display: flex;
-    flex-direction: column;
-    row-gap: 5px;
+    display: grid;
+    grid-column: auto;
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
 }
 
 .rest-money {
