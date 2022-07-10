@@ -126,17 +126,9 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       // } else 
       if (this.queryNote) 
       this.filteredDebts = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase()));
-      else if (this.placeId) {
-        this.checkPlace = true;
-        this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
-        if (this.placeId == 5) {
-          this.getTotalIntDebts();
-          this.getTotalOutDebts();
-        }
-        else this.getRestMoneyForeachPlace();
-      } else this.filteredDebts = debts;
+      else this.filteredDebts = debts;
       this.getPlaceDebt();
-      if (this.queryNote || this.placeId) this.modalRefSearch.close();
+      if (this.queryNote) this.modalRefSearch.close();
     });
   }
 
@@ -159,6 +151,20 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
           });   
         }
     })
+  }
+
+  searchByplace(event) {
+    this.placeId = event;
+
+    if (this.placeId) {
+      this.checkPlace = true;
+      this.filteredDebts = this.filteredDebtsCopie.filter(debt => debt.placeId == this.placeId);
+      if (this.placeId == 5) {
+        this.getTotalIntDebts();
+        this.getTotalOutDebts();
+      } else this.getRestMoneyForeachPlace();
+      this.modalRefSearch.close();
+    }
   }
 
   deleteDebt(debtId) {
@@ -205,6 +211,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   openModalSearch(contentModalSearch) {
+    this.queryNote = '';
+    this.placeId = null;
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
