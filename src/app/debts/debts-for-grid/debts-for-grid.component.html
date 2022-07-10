@@ -184,7 +184,7 @@
     
     <br>
 
-    <div class="row">
+    <div class="row" *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)">
         <div class="col-md-4">
             <button
                 *ngIf="!sortByDesc"
@@ -203,6 +203,7 @@
             </button>
         </div>
     </div>
+    
     <div class="row text-application">
         <div class="col-md-4" *ngFor="let debt of (filteredDebts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
             <div class="card bg-light" style="width: 18rem;margin-inline: auto;">

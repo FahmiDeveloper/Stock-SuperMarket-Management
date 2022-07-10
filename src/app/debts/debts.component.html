@@ -209,27 +209,23 @@
                 <th>Note</th>
                 <th>Status</th>
                 <th>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                        </div>
-                        <div class="col-md-6">
-                            <i 
-                                *ngIf="!sortByDesc" 
-                                class="fa fa-sort-desc iconSort" 
-                                aria-hidden="true" 
-                                (click)="sortByRefDebtDesc()" 
-                                style="vertical-align: -webkit-baseline-middle;">
-                            </i>
-                            <i 
-                                *ngIf="sortByDesc"
-                                class="fa fa-sort-asc iconSort" 
-                                aria-hidden="true" 
-                                (click)="sortByRefDebtAsc()" 
-                                style="vertical-align: -webkit-baseline-middle;">
-                            </i>
-                        </div>
-                    </div>                
+                    <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>               
+                </th>
+                <th *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)">
+                    <i 
+                        *ngIf="!sortByDesc" 
+                        class="fa fa-sort-desc iconSort" 
+                        aria-hidden="true" 
+                        (click)="sortByRefDebtDesc()" 
+                        style="vertical-align: -webkit-baseline-middle;">
+                    </i>
+                    <i 
+                        *ngIf="sortByDesc"
+                        class="fa fa-sort-asc iconSort" 
+                        aria-hidden="true" 
+                        (click)="sortByRefDebtAsc()" 
+                        style="vertical-align: -webkit-baseline-middle;">
+                    </i>                      
                 </th>
             </tr>
         </thead>
@@ -277,6 +273,7 @@
                         </button>                    
                     </div>
                 </td>
+                <td *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)"></td>
             </tr>
         </tbody>
     </table>
