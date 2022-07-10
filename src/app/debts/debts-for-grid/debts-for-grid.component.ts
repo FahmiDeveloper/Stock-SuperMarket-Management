@@ -233,6 +233,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   openModalSearch(contentModalSearch) {
     this.queryNote = '';
     this.placeId = null;
+    this.checkPlace = false;
+    this.getAllDebts();
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
