@@ -75,86 +75,113 @@
     </div>
 </div>
 
-<div class="row text-application" *ngIf="placeId == 5"> 
+<div class="row text-application" *ngIf="placeId == 5">
+    <div class="col-md-2"></div>
     <div class="col-md-6">
+        <div *ngIf="getInDebt || getOutDebt" class="card bg-light" style="width: 28rem;margin-inline: auto;">
+            <div class="card-body text-dark">
+                <div class="row">
+                    <div class="col-9">
+                        <span *ngIf="getInDebt">
+                            <span *ngIf="totalInDebts" class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebts }}</span>
+                            <span *ngIf="!totalInDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
+                        </span>
+                        <span *ngIf="getOutDebt">
+                            <span *ngIf="totalOutDebts" class="font-weight-bold rest-money badge badge-warning">{{ totalOutDebts }}</span>
+                            <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
+                        </span>               
+                    </div>
+                    <div class="col-3 font-weight-bold">
+                        <span class="text-primary font-weight-bold" style="float: right;font-size: larger;">:المجموع</span>                    
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <select *ngIf="getInDebt" [(ngModel)]="statusInDebtId" name="statuInDebtId" id="statuInDebtId" class="form-control" (ngModelChange)="getTotalInDebtsByStatus()">
+                            <option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
+                                {{statusInDebt.status}}
+                            </option>
+                        </select>
+                        <select *ngIf="getOutDebt" [(ngModel)]="statusOutDebtId" name="statusOutDebtId" id="statusOutDebtId" class="form-control" (ngModelChange)="getTotalOutDebtsByStatus()">
+                            <option *ngFor="let statusOutDebt of statusOutDebts" [value]="statusOutDebt.id">
+                                {{statusOutDebt.status}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-3 font-weight-bold">
+                        <span class="text-primary font-weight-bold" style="float: right;font-size: larger;">:الحالة</span>
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                         <select *ngIf="getInDebt" [(ngModel)]="creditorName" name="creditorName" id="creditorName" class="form-control" (ngModelChange)="getTotalInDebtsByCreditor()">
+                            <option *ngFor="let creditor of creditors" [value]="creditor">
+                                {{creditor}}
+                            </option>
+                        </select>
+                        <select *ngIf="getOutDebt" [(ngModel)]="debtorName" name="debtorName" id="debtorName" class="form-control" (ngModelChange)="getTotalOutDebtsByDebtor()">
+                            <option *ngFor="let debtor of debtors" [value]="debtor">
+                                {{debtor}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-3 font-weight-bold">
+                        <span *ngIf="getInDebt" class="text-primary font-weight-bold" style="float: right;font-size: larger;">:الدائنين</span>
+                        <span *ngIf="getOutDebt" class="text-primary font-weight-bold" style="float: right;font-size: larger;">:المدينين</span>                      
+                    </div>
+                </div><br *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
+                <div class="row" *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
+                    <div class="col-9">
+                        <span *ngIf="statusInDebtId || creditorName">
+                            <span *ngIf="totalInDebtsByCreditor" class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebtsByCreditor }}</span>
+                            <span *ngIf="!totalInDebtsByCreditor" class="font-weight-bold rest-money badge badge-warning">0DT</span>
+                        </span>                  
+                        <span *ngIf="statusOutDebtId || debtorName">
+                            <span *ngIf="totalOutDebtsByDebtor" class="font-weight-bold rest-money badge badge-warning" >{{ totalOutDebtsByDebtor }}</span>
+                            <span *ngIf="!totalOutDebtsByDebtor" class="font-weight-bold rest-money badge badge-warning">0DT</span>
+                        </span>           
+                    </div>
+                    <div class="col-3 font-weight-bold">
+                        <span class="text-primary font-weight-bold" style="float: right;font-size: larger;">:الدين</span>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 font-weight-bold label-place">
         <div class="row">
-            <div class="col-md-6">
-                <span *ngIf="totalOutDebts" class="font-weight-bold rest-money badge badge-warning">{{ totalOutDebts }}</span>
-                <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
+            <div class="col">
+                <span *ngIf="!getInDebt && !getOutDebt" class="text-primary font-weight-bold">الدين المتخلد</span>
+                <span *ngIf="getInDebt || getOutDebt" class="text-primary font-weight-bold" style="vertical-align: -webkit-baseline-middle;">الدين المتخلد</span>                      
             </div>
-            <div class="col-md-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الدين المسال</span>
+            <div class="col">
+                <input 
+                    [(ngModel)]="getInDebt" 
+                    name="getInDebt" 
+                    id="getInDebt" 
+                    type="checkbox" 
+                    class="form-check-input larger"
+                    (ngModelChange)="showInDebt()"
+                    style="margin-left: auto;"
+                    [ngStyle]="{'margin-top': getInDebt || getOutDebt ? '11px' : '' }">
             </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-6">
-                <span *ngIf="totalInDebts" class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebts }}</span>
-                <span *ngIf="!totalInDebts" class="font-weight-bold rest-money badge badge-warning">0DT</span>
+            <div class="w-100"></div>
+            <div class="col">
+                <span class="text-primary font-weight-bold">الدين المسال</span>           
             </div>
-            <div class="col-md-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الدين المتخلد</span>
+            <div class="col">
+                <input 
+                    [(ngModel)]="getOutDebt" 
+                    name="getOutDebt" 
+                    id="getOutDebt" 
+                    type="checkbox" 
+                    class="form-check-input larger"
+                    (ngModelChange)="showOutDebt()"
+                    style="margin-left: auto;"> 
             </div>
-        </div>
-    </div>
-
-    <br><br>
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <select [(ngModel)]="debtorName" name="debtorName" id="debtorName" class="form-control" (click)="getTotalOutDebtsByDebtor()">
-                    <option *ngFor="let debtor of debtors" [value]="debtor">
-                        {{debtor}}
-                    </option>
-                </select>
-            </div>
-            <div class="col-md-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: المدينين</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <select [(ngModel)]="creditorName" name="creditorName" id="creditorName" class="form-control" (click)="getTotalInDebtsByCreditor()">
-                    <option *ngFor="let creditor of creditors" [value]="creditor">
-                        {{creditor}}
-                    </option>
-                </select>
-            </div>
-            <div class="col-md-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الدائنين</span>
-            </div>
-        </div>
-    </div>
-
-    <br><br>
-    <div class="col-md-6">
-        <div class="row" *ngIf="debtorName">
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <span *ngIf="totalOutDebtsByDebtor" class="font-weight-bold rest-money badge badge-warning" >{{ totalOutDebtsByDebtor }}</span>
-                <span *ngIf="!totalOutDebtsByDebtor" class="font-weight-bold rest-money badge badge-warning">0DT</span>
-            </div>
-            <div class="col-md-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الدين</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="row" *ngIf="creditorName">
-            <div class="col-md-2"></div>
-            <div class="col-md-4">
-                <span *ngIf="totalInDebtsByCreditor" class="font-weight-bold rest-money badge badge-warning" >{{ totalInDebtsByCreditor }}</span>
-                <span *ngIf="!totalInDebtsByCreditor" class="font-weight-bold rest-money badge badge-warning">0DT</span>
-            </div>
-            <div class="col-md-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">: الدين</span>
-            </div>
-        </div>
+        </div>    
     </div>
 </div>
 
@@ -168,7 +195,6 @@
 </div>
 
 <br *ngIf="placeId">
-
         
 <div class="row">
     <table class="table table-striped">
@@ -183,27 +209,23 @@
                 <th>Note</th>
                 <th>Status</th>
                 <th>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                        </div>
-                        <div class="col-md-6">
-                            <i 
-                                *ngIf="!sortByDesc" 
-                                class="fa fa-sort-desc iconSort" 
-                                aria-hidden="true" 
-                                (click)="sortByRefDebtDesc()" 
-                                style="vertical-align: -webkit-baseline-middle;">
-                            </i>
-                            <i 
-                                *ngIf="sortByDesc"
-                                class="fa fa-sort-asc iconSort" 
-                                aria-hidden="true" 
-                                (click)="sortByRefDebtAsc()" 
-                                style="vertical-align: -webkit-baseline-middle;">
-                            </i>
-                        </div>
-                    </div>                
+                    <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>               
+                </th>
+                <th *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)">
+                    <i 
+                        *ngIf="!sortByDesc" 
+                        class="fa fa-sort-desc iconSort" 
+                        aria-hidden="true" 
+                        (click)="sortByRefDebtDesc()" 
+                        style="vertical-align: -webkit-baseline-middle;">
+                    </i>
+                    <i 
+                        *ngIf="sortByDesc"
+                        class="fa fa-sort-asc iconSort" 
+                        aria-hidden="true" 
+                        (click)="sortByRefDebtAsc()" 
+                        style="vertical-align: -webkit-baseline-middle;">
+                    </i>                      
                 </th>
             </tr>
         </thead>
@@ -251,6 +273,7 @@
                         </button>                    
                     </div>
                 </td>
+                <td *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)"></td>
             </tr>
         </tbody>
     </table>
