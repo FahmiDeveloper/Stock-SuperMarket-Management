@@ -26,6 +26,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   filteredDebtsCopie: Debt[];
   detailsInDebt: Debt[];
   detailsOutDebt: Debt[];
+  filteredDebtsByPlaceAndDebtForPay: Debt[];
+  filteredDebtsByPlaceAndDebtToGet: Debt[];
   detailInDebt: Debt;
   detailOutDebt: Debt;
   creditors: string[] = [];
@@ -48,6 +50,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   queryNote: string = "";
   modalRefSearch: any;
   placeId: number;
+  getInDebt: boolean = false;
+  getOutDebt: boolean = false;
+  statusOutDebtId: number;
+  statusInDebtId: number;
 
   //in debt attributes
   totalInDebts: string = "";
@@ -104,26 +110,18 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     {id: 6, place: 'الحساب البريدي'}
   ];
 
-  getInDebt: boolean = false;
-  getOutDebt: boolean = false;
+  statusInDebts: StatusInDebts[] = [
+    {id: 1, status: 'This month'},
+    {id: 2, status: 'Next month'},
+    {id: 3, status: 'Not now'}
+  ];
 
   statusOutDebts: StatusOutDebts[] = [
-    {id: 1, status: 'Get this month'},
-    {id: 2, status: 'Get next month'},
-    {id: 3, status: 'Get will be delayed'}
+    {id: 1, status: 'This month'},
+    {id: 2, status: 'Next month'},
+    {id: 3, status: 'Not now'}
   ];
-
-  statusInDebts: StatusInDebts[] = [
-    {id: 1, status: 'Pay this month'},
-    {id: 2, status: 'Pay next month'},
-    {id: 3, status: 'Pay will be delayed'}
-  ];
-
-  statusOutDebtId: number;
-  statusInDebtId: number;
-  filteredDebtsByPlaceAndDebtForPay: Debt[];
-  filteredDebtsByPlaceAndDebtToGet: Debt[];
-
+  
   constructor(
     private debtService: DebtService, 
     public userService: UserService,

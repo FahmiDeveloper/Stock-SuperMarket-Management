@@ -83,7 +83,7 @@
                         type="checkbox" 
                         class="form-check-input larger"
                         (ngModelChange)="showInDebt()"
-                        style="margin-left: -8px;">
+                        style="margin-left: -5px;">
                     <span class="text-primary" style="margin-left: -50px;vertical-align: -webkit-baseline-middle;">المتخلد</span>
                 </label>
             </div>
@@ -267,15 +267,16 @@
                     </div>
                     <div class="row" *ngIf="debt.placeId == 5">
                         <div class="col-5">
-                            <span class="text-primary font-weight-bold">Status:</span>
+                            <span *ngIf="debt.debtForPay == true" class="text-primary font-weight-bold">Pay Status:</span>
+                            <span *ngIf="debt.debtToGet == true" class="text-primary font-weight-bold">Get Status:</span>
                         </div>
                         <div class="col-7 font-weight-bold">
-                            <span *ngIf="debt.toPayThisMonth">Pay this month</span>
-                            <span *ngIf="debt.toPayNextMonth">Pay next month</span>
-                            <span *ngIf="debt.notToPayForNow">Pay will be delayed</span>
-                            <span *ngIf="debt.toGetThisMonth">Get this month</span>
-                            <span *ngIf="debt.toGetNextMonth">Get next month</span>
-                            <span *ngIf="debt.notToGetForNow">Get will be delayed</span>
+                            <span *ngIf="debt.toPayThisMonth">This month</span>
+                            <span *ngIf="debt.toPayNextMonth">Next month</span>
+                            <span *ngIf="debt.notToPayForNow">Not now</span>
+                            <span *ngIf="debt.toGetThisMonth">This month</span>
+                            <span *ngIf="debt.toGetNextMonth">Next month</span>
+                            <span *ngIf="debt.notToGetForNow">Not now</span>
                         </div>
                     </div><br>
                     <div class="row btnswrap justify-content-center">
