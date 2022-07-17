@@ -1,4 +1,36 @@
-<label>
+<div class="row">
+    <div class="col-md-4">
+        <label>
+            <input 
+            [(ngModel)]="angularContext" 
+            name="angularContext" 
+            id="angularContext" 
+            type="checkbox" 
+            class="form-check-input larger"
+            (ngModelChange)="checkAngularContext()"
+            style="margin-left: auto;">
+            <span class="text-application" style="margin-left: 35px;vertical-align: sub;">Angular context</span>
+        </label>  
+    </div>
+    <div class="col-md-3">
+        <label>
+            <input 
+            [(ngModel)]="otherContext" 
+            name="otherContext" 
+            id="otherContext" 
+            type="checkbox" 
+            class="form-check-input larger"
+            (ngModelChange)="checkotherContext()"
+            style="margin-left: auto;">
+            <span class="text-application" style="margin-left: 35px;vertical-align: sub;">Other context</span>
+        </label>  
+    </div>
+    
+</div>
+
+<br *ngIf="angularContext || otherContext">
+
+<label *ngIf="angularContext || otherContext">
     <input
       type="file"
       class="text-nowrap text-truncate"

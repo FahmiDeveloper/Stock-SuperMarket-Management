@@ -5,9 +5,11 @@ export class FileUpload {
     file: File;
     typeFileId: number;
     fileNameWithoutType: string;
+    contextFile: number;
     
-    constructor(file: File, typeFileId: number) {
+    constructor(file: File, typeFileId: number, contextFile: number) {
       this.file = file;
       this.typeFileId = typeFileId;
+      this.contextFile = contextFile;
     }
 }
