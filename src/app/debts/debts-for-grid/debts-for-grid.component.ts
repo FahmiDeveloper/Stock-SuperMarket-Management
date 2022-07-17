@@ -134,7 +134,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.getRolesUser();
   }
 
-  getAllDebts() {
+  getAllDebts(event?) {
     this.subscriptionForGetAllDebts = this.debtService
     .getAll()
     .subscribe(debts => {
@@ -144,6 +144,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       // } else 
       if (this.queryNote) 
       this.filteredDebts = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      else if (event) this.searchByplace(event);
       else this.filteredDebts = debts;
       this.getPlaceDebt();
       if (this.queryNote) this.modalRefSearch.close();
@@ -171,15 +172,14 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     })
   }
 
-  searchByplace(event) {
-    this.placeId = event;
-
-    if (this.placeId) {
+  searchByplace(placeID: number) {
+    if (placeID) {
       this.checkPlace = true;
-      this.filteredDebts = this.filteredDebtsCopie.filter(debt => debt.placeId == this.placeId);
-      if (this.placeId == 5) {
-        this.getTotalIntDebts();
-        this.getTotalOutDebts();
+      this.placeId = placeID;
+      this.filteredDebts = this.filteredDebtsCopie.filter(debt => debt.placeId == placeID);
+      if (placeID == 5) {
+        if (this.getInDebt == true) this.showInDebt();
+        if (this.getOutDebt == true) this.showOutDebt();
       } else this.getRestMoneyForeachPlace();
       this.modalRefSearch.close();
     }
@@ -232,6 +232,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.queryNote = '';
     this.placeId = null;
     this.checkPlace = false;
+    this.getInDebt = false;
+    this.getOutDebt = false;
     this.getAllDebts();
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
@@ -984,8 +986,11 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       this.statusOutDebtId = null;
       this.creditors = [];
       this.debtorName = '';
+      this.getTotalIntDebts();
       this.filteredDebts = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true));
       this.filteredDebtsByPlaceAndDebtForPay = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true));
+      if (this.statusInDebtId) this.getTotalInDebtsByStatus(this.statusInDebtId);
+      if (this.creditorName) this.getTotalInDebtsByCreditor(this.creditorName);
       this.filteredDebtsByPlaceAndDebtForPay.forEach(element => {
         if (!this.creditors.includes(element.creditor)) {
           this.creditors.push(element.creditor);
@@ -1000,8 +1005,11 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       this.statusInDebtId = null;
       this.debtors = [];
       this.creditorName = '';
+      this.getTotalOutDebts();
       this.filteredDebts = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true));
       this.filteredDebtsByPlaceAndDebtToGet = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true));
+      if (this.statusOutDebtId) this.getTotalOutDebtsByStatus(this.statusOutDebtId);
+      if (this.debtorName) this.getTotalOutDebtsByDebtor(this.debtorName);
       this.filteredDebtsByPlaceAndDebtToGet.forEach(element => {
         if (!this.debtors.includes(element.debtor)) {
           this.debtors.push(element.debtor);
@@ -1018,13 +1026,13 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
     if (this.statusInDebtId) {
       if (this.statusInDebtId == 1) {
-        this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName) && (debt.toPayThisMonth == true));
+        this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == event) && (debt.toPayThisMonth == true));
       } else if (this.statusInDebtId == 2) {
-        this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName) && (debt.toPayNextMonth == true));
+        this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == event) && (debt.toPayNextMonth == true));
       } else {
-        this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName) && (debt.notToPayForNow == true));
+        this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == event) && (debt.notToPayForNow == true));
       }
-    } else this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName));
+    } else this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == event));
 
     this.filteredDebts.forEach(element => {
 
@@ -1067,23 +1075,22 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   getTotalInDebtsByStatus(event) {
-    this.statusInDebtId = event;
     this.defaultTotalInDebtsByCreditor = 0;
     this.customTotalInDebtsByCreditor = 0;
     this.totalInDebtsByCreditor = "";
 
     if (this.creditorName) {
-      if (this.statusInDebtId == 1) {
+      if (event == 1) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayThisMonth == true) && (debt.creditor == this.creditorName));
-      } else if (this.statusInDebtId == 2) {
+      } else if (event == 2) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayNextMonth == true) && (debt.creditor == this.creditorName));
       } else {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.notToPayForNow == true) && (debt.creditor == this.creditorName));
       }
     } else {
-      if (this.statusInDebtId == 1) {
+      if (event == 1) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayThisMonth == true));
-      } else if (this.statusInDebtId == 2) {
+      } else if (event == 2) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayNextMonth == true));
       } else {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.notToPayForNow == true));
@@ -1138,13 +1145,13 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
     if (this.statusOutDebtId) {
       if (this.statusOutDebtId == 1) {
-        this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName) && (debt.toGetThisMonth == true));
+        this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == event) && (debt.toGetThisMonth == true));
       } else if (this.statusOutDebtId == 2) {
-        this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName) && (debt.toGetNextMonth == true));
+        this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == event) && (debt.toGetNextMonth == true));
       } else {
-        this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName) && (debt.notToGetForNow == true));
+        this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == event) && (debt.notToGetForNow == true));
       }
-    } else this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName));
+    } else this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == event));
 
     this.filteredDebts.forEach(element => {
       if (element.financialDebt.indexOf("DT") !== -1) {
@@ -1187,23 +1194,22 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   getTotalOutDebtsByStatus(event) {
-    this.statusOutDebtId = event;
     this.defaultTotalOutDebtsByDebtor = 0;
     this.customTotalOutDebtsByDebtor = 0;
     this.totalOutDebtsByDebtor = "";
 
     if (this.debtorName) {
-      if (this.statusOutDebtId == 1) {
+      if (event == 1) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetThisMonth == true) && (debt.debtor == this.debtorName));
-      } else if (this.statusOutDebtId == 2) {
+      } else if (event == 2) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetNextMonth == true) && (debt.debtor == this.debtorName));
       } else {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.notToGetForNow == true) && (debt.debtor == this.debtorName));
       }
     } else {
-      if (this.statusOutDebtId == 1) {
+      if (event == 1) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetThisMonth == true));
-      } else if (this.statusOutDebtId == 2) {
+      } else if (event == 2) {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetNextMonth == true));
       } else {
         this.filteredDebts = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.notToGetForNow == true));
@@ -1249,6 +1255,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       }
     });
   }
+
 
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();

@@ -332,7 +332,7 @@
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <select [ngModel]="placeId" (ngModelChange)="searchByplace($event)" name="placeId" id="placeId" class="form-control">
+                    <select [ngModel]="placeId" (ngModelChange)="getAllDebts($event)" name="placeId" id="placeId" class="form-control">
                         <option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
                             {{placeMoney.place}}
                         </option>

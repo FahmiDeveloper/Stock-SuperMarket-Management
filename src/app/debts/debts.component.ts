@@ -145,10 +145,9 @@ export class DebtsComponent implements OnInit, OnDestroy {
         else if (this.placeId) {
           this.filteredDebts = debts.filter(debt => debt.placeId == this.placeId);
           if (this.placeId == 5) {
-            this.getTotalIntDebts();
-            this.getTotalOutDebts();
-          }
-          else this.getRestMoneyForeachPlace();
+            if (this.getInDebt == true) this.showInDebt();
+            if (this.getOutDebt == true) this.showOutDebt();
+          } else this.getRestMoneyForeachPlace();
         } else this.filteredDebts = debts;
         this.getPlaceDebt();
     });
@@ -965,8 +964,11 @@ export class DebtsComponent implements OnInit, OnDestroy {
       this.statusOutDebtId = null;
       this.creditors = [];
       this.debtorName = '';
+      this.getTotalIntDebts();
       this.filteredDebts = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true));
       this.filteredDebtsByPlaceAndDebtForPay = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true));
+      if (this.statusInDebtId) this.getTotalInDebtsByStatus();
+      if (this.creditorName) this.getTotalInDebtsByCreditor();
       this.filteredDebtsByPlaceAndDebtForPay.forEach(element => {
         if (!this.creditors.includes(element.creditor)) {
           this.creditors.push(element.creditor);
@@ -981,8 +983,11 @@ export class DebtsComponent implements OnInit, OnDestroy {
       this.statusInDebtId = null;
       this.debtors = [];
       this.creditorName = '';
+      this.getTotalOutDebts();
       this.filteredDebts = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true));
       this.filteredDebtsByPlaceAndDebtToGet = this.filteredDebtsCopie.filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true));
+      if (this.statusOutDebtId) this.getTotalOutDebtsByStatus();
+      if (this.debtorName) this.getTotalOutDebtsByDebtor();
       this.filteredDebtsByPlaceAndDebtToGet.forEach(element => {
         if (!this.debtors.includes(element.debtor)) {
           this.debtors.push(element.debtor);
