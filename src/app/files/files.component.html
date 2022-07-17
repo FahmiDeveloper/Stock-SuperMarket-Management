@@ -26,12 +26,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                     <app-upload-form [typeFileId]="typeFile.id"></app-upload-form>
+                     <app-upload-form [typeFileId]="typeFile.id" (refContextFile)="getRefContextFile($event)"></app-upload-form>
                 </div>
             </div><br>
             <div class="row">
                 <div class="col-md-12">
-                    <app-upload-list [isMobile]="isMobile" [typeFileId]="typeFile.id"></app-upload-list>
+                    <app-upload-list [isMobile]="isMobile" [typeFileId]="typeFile.id" [numContextFile]="numContextFile"></app-upload-list>
                 </div>
             </div>
         </div>    

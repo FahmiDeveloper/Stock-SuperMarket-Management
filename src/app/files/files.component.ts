@@ -43,6 +43,7 @@ export class FilesComponent implements OnInit {
   user: FirebaseUserModel = new FirebaseUserModel();
 
   content: string = '';
+  numContextFile: number;
 
   typesFiles: TypesFiles[] = [
     {id: 1, type: 'PICTURE', icon: '/assets/pictures/picture-file.jpg'},
@@ -105,6 +106,7 @@ export class FilesComponent implements OnInit {
 
   openListFiles(contentDetOutDebt, contentLinks, typeFile: TypesFiles) {
     this.typeFile = typeFile;
+    this.numContextFile = null;
     if (this.typeFile.id == 6) {
       this.modalRefListLinks = this.modalService.open(contentLinks as Component, { size: 'lg', centered: true});
     } else this.modalRefListFiles = this.modalService.open(contentDetOutDebt as Component, { size: 'lg', centered: true});
@@ -192,6 +194,10 @@ export class FilesComponent implements OnInit {
       });
     } else
     window.open("https://web.whatsapp.com/send?text=" + link.path,'_blank');
+  }
+
+  getRefContextFile(refContextFile: number) {
+    this.numContextFile = refContextFile;
   }
 }
 
