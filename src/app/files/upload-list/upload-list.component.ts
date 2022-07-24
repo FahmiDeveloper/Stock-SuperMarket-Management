@@ -37,10 +37,8 @@ export class UploadListComponent implements OnChanges {
   ngOnInit(): void {}
 
   filter(query: string) {
-    this.filteredFiles = (query && this.numContextFile)
-    ? this.filteredFiles.filter(file => (file.contextFile == this.numContextFile) && (file.name.toLowerCase().includes(query.toLowerCase())))
-    : (query && !this.numContextFile)
-    ? this.filteredFiles.filter(file => file.name.toLowerCase().includes(query.toLowerCase()))
-    : this.fileUploads.filter(element => element.typeFileId == this.typeFileId);
+    this.filteredFiles = (this.numContextFile)
+    ? this.fileUploads.filter(file => (file.typeFileId == this.typeFileId) && (file.contextFile == this.numContextFile) && (file.name.toLowerCase().includes(query.toLowerCase())))
+    : this.fileUploads.filter(file => (file.typeFileId == this.typeFileId) && (file.name.toLowerCase().includes(query.toLowerCase())));
   }
 }
