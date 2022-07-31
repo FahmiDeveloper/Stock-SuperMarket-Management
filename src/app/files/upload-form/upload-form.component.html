@@ -28,9 +28,9 @@
     
 </div>
 
-<br *ngIf="angularContext || otherContext">
+<br *ngIf="user.roleAddFile && (angularContext || otherContext)">
 
-<label *ngIf="angularContext || otherContext">
+<label *ngIf="user.roleAddFile && (angularContext || otherContext)">
     <input
       type="file"
       class="text-nowrap text-truncate"

@@ -50,7 +50,7 @@
                 <th>
                     <div class="row">
                         <div class="col-md-6">
-                            <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                            <a *ngIf="user.roleAddSerie" (click)="newSerie()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>
                         </div>
                         <div class="col-md-6">
                             <i 
@@ -91,7 +91,7 @@
                 <td style="text-align:center;">
                     <div class="btnswrap">
                         <button 
-                            *ngIf="user.roleUpdate" 
+                            *ngIf="user.roleUpdateSerie" 
                             (click)="editSerie(serie)"
                             class="btn btn-secondary"
                             [hidden]="serie.statusId == 3">
@@ -105,7 +105,7 @@
                             <i class="fa fa-link" aria-hidden="true"></i>
                         </a>                        
                         <button 
-                            *ngIf="user.roleDelete" 
+                            *ngIf="user.roleDeleteSerie" 
                             type="button" 
                             (click)="deleteSerie(serie.key)"
                             class="btn btn-danger"

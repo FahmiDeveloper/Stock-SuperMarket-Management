@@ -209,7 +209,7 @@
                 <th>Note</th>
                 <th>Status</th>
                 <th>
-                    <a *ngIf="user.roleAdd" (click)="newDebt()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>               
+                    <a *ngIf="user.roleAddDebt" (click)="newDebt()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>               
                 </th>
                 <th *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)">
                     <i 
@@ -259,13 +259,13 @@
                 <td style="text-align:center;">
                     <div class="btnswrap">
                         <button 
-                            *ngIf="user.roleUpdate" 
+                            *ngIf="user.roleUpdateDebt" 
                             (click)="editDebt(debt)"
                             class="btn btn-secondary">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </button>                                             
                         <button 
-                            *ngIf="user.roleDelete" 
+                            *ngIf="user.roleDeleteDebt" 
                             type="button" 
                             (click)="deleteDebt(debt.key)"
                             class="btn btn-danger">
@@ -475,7 +475,7 @@
                                     <i class="fa fa-edit" aria-hidden="true"></i>
                                 </button>
                                 <button 
-                                    *ngIf="user.roleDelete" 
+                                    *ngIf="user.roleDeleteDebt" 
                                     type="button" 
                                     (click)="deleteFromModalInDebts(detailInDebt.key)"
                                     class="btn btn-danger">
@@ -571,7 +571,7 @@
                                     <i class="fa fa-edit" aria-hidden="true"></i>
                                 </button>
                                 <button 
-                                    *ngIf="user.roleDelete" 
+                                    *ngIf="user.roleDeleteDebt" 
                                     type="button" 
                                     (click)="deleteFromModalOutDebts(detailOutDebt.key)"
                                     class="btn btn-danger">

@@ -2,3 +2,15 @@ input.larger {
     width: 25px;
     height: 25px;
 }
+
+.PrivilegesModalClass .modal-dialog {
+    max-width: 10px !important;
+}
+
+.btnswrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
+}

@@ -4,7 +4,7 @@
         <div class="col-md-4">
             <div style="width: 18rem;margin-inline: auto;">
                 <button class="btn btn-success" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search" aria-hidden="true"></i></button>
-                <a *ngIf="user.roleAdd" (click)="newMovie()" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i></a>  
+                <a *ngIf="user.roleAddMovie" (click)="newMovie()" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i></a>  
             </div> 
         </div>          
     </div>
@@ -51,7 +51,7 @@
                     </div><br>
                     <div class="row btnswrap justify-content-center">
                         <button 
-                            *ngIf="user.roleUpdate" 
+                            *ngIf="user.roleUpdateMovie" 
                             (click)="editMovie(movie)" 
                             class="btn btn-secondary ml-1 mr-3"
                             style="text-decoration: none;"
@@ -66,7 +66,7 @@
                             <i class="fa fa-link" aria-hidden="true"></i>
                         </a>      
                         <button 
-                            *ngIf="user.roleDelete" 
+                            *ngIf="user.roleDeleteMovie" 
                             type="button" 
                             (click)="deleteMovie(movie.key)" 
                             class="btn btn-danger"

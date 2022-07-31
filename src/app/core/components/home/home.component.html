@@ -187,7 +187,7 @@
     </div>
 
     <!-------users-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleUsers && !isMobile" routerLink="/users">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin && !isMobile" routerLink="/users">
       <div class="card gr-5">
         <div class="txt">
           <h1 class="text-application">users</h1>

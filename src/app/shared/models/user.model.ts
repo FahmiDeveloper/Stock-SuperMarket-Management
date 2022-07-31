@@ -1,8 +1,8 @@
 export class FirebaseUserModel {
   key: string;
-  email: string;
   image: string;
   name: string;
+  email: string;
   provider: string;
   isAdmin: boolean;
   roleEmployee: boolean;
@@ -19,7 +19,21 @@ export class FirebaseUserModel {
   roleSeries: boolean;
   roleFiles: boolean;
   roleDebts: boolean;
-  roleUsers: boolean;
+  roleAddMovie: boolean;
+  roleUpdateMovie: boolean;
+  roleDeleteMovie: boolean;
+  roleAddAnime: boolean;
+  roleUpdateAnime: boolean;
+  roleDeleteAnime: boolean;
+  roleAddSerie: boolean;
+  roleUpdateSerie: boolean;
+  roleDeleteSerie: boolean;
+  roleAddFile: boolean;
+  roleUpdateFile: boolean;
+  roleDeleteFile: boolean;
+  roleAddDebt: boolean;
+  roleUpdateDebt: boolean;
+  roleDeleteDebt: boolean;
 
   constructor(){
     this.image = "";

@@ -47,6 +47,7 @@
 
           <div> 
             <button
+              *ngIf="userRoles.roleDeleteFile"
               type="button"
               (click)="deleteFileUpload(file)"
               class="btn btn-danger">

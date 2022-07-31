@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 
 import { map } from 'rxjs/operators';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
@@ -15,6 +16,7 @@ export class UploadListComponent implements OnChanges {
   @Input() isMobile: boolean;
   @Input() typeFileId: number;
   @Input() numContextFile: number;
+  @Input() user: FirebaseUserModel;
 
   fileUploads?: any[];
   filteredFiles?: any[];

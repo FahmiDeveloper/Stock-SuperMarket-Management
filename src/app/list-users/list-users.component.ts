@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { UserService } from '../shared/services/user.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'list-users',
@@ -16,9 +17,11 @@ import { FirebaseUserModel } from '../shared/models/user.model';
 export class ListUsersComponent implements OnInit, OnDestroy {
 
   listUsers: FirebaseUserModel[] = [];
+  currentUser: FirebaseUserModel;
 
   p: number = 1;
   queryName: string = '';
+  modalRefPrivileges: any;
 
   subscriptionForGetAllUsers: Subscription;
 
@@ -31,7 +34,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
     {id: 6, roleName: 'Users'}
   ];
 
-  constructor(public userService: UserService) {}
+  constructor(public userService: UserService, protected modalService: NgbModal) {}
 
   ngOnInit() {
     this.getAllUsers();
@@ -47,6 +50,31 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   }
 
   changeRoleStatus(user: FirebaseUserModel) {
+    if (user.roleMovies == false) {
+      if (user.roleAddMovie == true) user.roleAddMovie = false;
+      if (user.roleUpdateMovie == true) user.roleUpdateMovie = false;
+      if (user.roleDeleteMovie == true) user.roleDeleteMovie = false;
+    }
+    if (user.roleAnimes == false) {
+      if (user.roleAddAnime == true) user.roleAddAnime = false;
+      if (user.roleUpdateAnime == true) user.roleUpdateAnime = false;
+      if (user.roleDeleteAnime == true) user.roleDeleteAnime = false;
+    }
+    if (user.roleSeries == false) {
+      if (user.roleAddSerie == true) user.roleAddSerie = false;
+      if (user.roleUpdateSerie == true) user.roleUpdateSerie = false;
+      if (user.roleDeleteSerie == true) user.roleDeleteSerie = false;
+    }
+    if (user.roleFiles == false) {
+      if (user.roleAddFile == true) user.roleAddFile = false;
+      if (user.roleUpdateFile == true) user.roleUpdateFile = false;
+      if (user.roleDeleteFile == true) user.roleDeleteFile = false;
+    }
+    if (user.roleDebts == false) {
+      if (user.roleAddDebt == true) user.roleAddDebt = false;
+      if (user.roleUpdateDebt == true) user.roleUpdateDebt = false;
+      if (user.roleDeleteDebt == true) user.roleDeleteDebt = false;
+    }
     this.userService.update(user.key, user);
   }
 
@@ -68,6 +96,15 @@ export class ListUsersComponent implements OnInit, OnDestroy {
         )
       }
     })
+  }
+
+  openModalPrivileges(contentModalPrivileges, user: FirebaseUserModel) {
+    this.currentUser = user;
+    this.modalRefPrivileges = this.modalService.open(contentModalPrivileges as Component, { windowClass : "PrivilegesModalClass", centered: true});
+  }
+
+  changePrivliegeStatus(currentUser: FirebaseUserModel) {
+    this.userService.update(currentUser.key, currentUser);
   }
 
   ngOnDestroy() {

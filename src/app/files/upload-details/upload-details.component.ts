@@ -15,6 +15,7 @@ import { FileUpload } from 'src/app/shared/models/file-upload.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { renderAsync } from 'docx-preview';
 import { NgNavigatorShareService } from 'ng-navigator-share';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-upload-details',
@@ -26,6 +27,7 @@ export class UploadDetailsComponent implements OnChanges {
 
   @Input() filteredFiles: any[];
   @Input() isMobile: boolean;
+  @Input() userRoles: FirebaseUserModel;
 
   urlFile: string;
   pictureFile: string;
