@@ -1256,6 +1256,9 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   clear() {
     this.queryNote = '';
     this.placeId = null;
+    this.clickNew = false;
+    this.clickUpdate = false;
+    this.clickDelete = false;
     // this.checkPlace = false;
     this.getInDebt = false;
     this.getOutDebt = false;
