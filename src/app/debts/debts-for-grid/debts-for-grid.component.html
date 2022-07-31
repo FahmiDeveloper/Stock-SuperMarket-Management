@@ -11,7 +11,7 @@
         </div>          
     </div>
 
-    <br *ngIf="checkPlace">
+    <!-- <br *ngIf="checkPlace">
 
     <div *ngIf="checkPlace" class="text-application">
         <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 1">
@@ -180,7 +180,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
     <br>
 
@@ -200,6 +200,15 @@
                 style="margin-right: 6px;" 
                 (click)="sortByRefDebtAsc()">
                 <i class="fa fa-lg fa-sort-asc" aria-hidden="true"></i>
+            </button>
+
+            <button
+                *ngIf="queryNote || placeId"
+                [hidden]="clickNew || clickUpdate || clickDelete"
+                class="btn btn-danger float-right" 
+                style="margin-right: 6px;" 
+                (click)="clear()">
+                clear
             </button>
         </div>
     </div>
