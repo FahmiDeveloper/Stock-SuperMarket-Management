@@ -1,0 +1,139 @@
+<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Users</h1>
+
+<br>
+<br>
+
+<div class="row">
+    <div class="col-md-4">
+        <input #query (keyup)="getAllUsers()" [(ngModel)]="queryName" type="text" class="form-control widhtInput text-application" placeholder="Search by email...">
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+    <table class="table table-striped">
+        <thead class="colorHeaderTable">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Movies</th>
+                <th>Animes</th>
+                <th>Series</th>
+                <th>Files</th>
+                <th>Debts</th>
+                <th>Users</th>
+                <th>Add</th>
+                <th>Update</th>
+                <th>Delete</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of (listUsers | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleMovies" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+
+                    <button
+                        *ngIf="user.roleMovies"
+                        type="button" 
+                        (click)="deleteUser(user.key)"
+                        class="btn btn-danger">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleAnimes" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleSeries" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleFiles" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleDebts" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleUsers" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleAdd" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleUpdate" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <input 
+                    [(ngModel)]="user.roleDelete" 
+                    name="angularContext" 
+                    id="angularContext" 
+                    type="checkbox" 
+                    class="larger"
+                    (ngModelChange)="changeRoleStatus(user)">
+                </td>
+                <td>
+                    <button 
+                        type="button" 
+                        (click)="deleteUser(user.key)"
+                        class="btn btn-danger">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>  
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>

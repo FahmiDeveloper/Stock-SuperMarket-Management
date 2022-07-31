@@ -2,7 +2,7 @@
 <hr class="bg-dark" />
 <div class="container mx-auto" style="margin-top: 300px;">
   <div class="row" style="margin-top: -300px;cursor: pointer;">
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleEmployee" routerLink="/employees">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleEmployee" routerLink="/employees">
       <div class="card gr-1">
         <div class="txt">
           <h1>Employees</h1>
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleProduct" routerLink="/products">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleProduct" routerLink="/products">
       <div class="card gr-2">
         <div class="txt">
           <h1>Products</h1>
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleCategory" routerLink="/categories">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleCategory" routerLink="/categories">
       <div class="card gr-3">
         <div class="txt">
           <h1>Categories</h1>
@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleStock" routerLink="/stock-menu">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleStock" routerLink="/stock-menu">
       <div class="card gr-4">
         <div class="txt">
           <h1>Stock</h1>
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleSupplier" routerLink="/suppliers">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleSupplier" routerLink="/suppliers">
       <div class="card gr-5">
         <div class="txt">
           <h1>Suppliers</h1>
@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin || user.roleInvoice" routerLink="/invoices">
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleInvoice" routerLink="/invoices">
       <div class="card gr-6">
         <div class="txt">
           <h1>Invoices</h1>
@@ -82,8 +82,34 @@
       </div>
     </div>
 
+     <!-------grid movies-->
+     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && isMobile" routerLink="/movies-for-grid">
+      <div class="card gr-1">
+        <div class="txt">
+          <h1 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">Movies</h1>
+          <p hidden>{{ lengthInvoices | async }}</p>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
     <!-------animes-->
     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && !isMobile" routerLink="/animes">
+      <div class="card gr-4">
+        <div class="txt">
+          <h1 class="text-application">Animes</h1>
+          <p hidden>{{ lengthInvoices | async }}</p>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-------grid animes-->
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && isMobile" routerLink="/animes-for-grid">
       <div class="card gr-4">
         <div class="txt">
           <h1 class="text-application">Animes</h1>
@@ -100,32 +126,6 @@
       <div class="card gr-2">
         <div class="txt">
           <h1 class="text-application">Series</h1>
-          <p hidden>{{ lengthInvoices | async }}</p>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------grid movies-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && isMobile" routerLink="/movies-for-grid">
-      <div class="card gr-1">
-        <div class="txt">
-          <h1 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">Movies</h1>
-          <p hidden>{{ lengthInvoices | async }}</p>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------grid animes-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && isMobile" routerLink="/animes-for-grid">
-      <div class="card gr-4">
-        <div class="txt">
-          <h1 class="text-application">Animes</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">
@@ -178,6 +178,19 @@
       <div class="card gr-6">
         <div class="txt">
           <h1 class="text-application">Debts</h1>
+          <p hidden>{{ lengthInvoices | async }}</p>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-------users-->
+    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleUsers && !isMobile" routerLink="/users">
+      <div class="card gr-5">
+        <div class="txt">
+          <h1 class="text-application">users</h1>
           <p hidden>{{ lengthInvoices | async }}</p>
         </div>
         <div class="ico-card">

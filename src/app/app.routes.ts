@@ -14,6 +14,7 @@ import { EmployeesComponent } from './employees/employees.component';
 import { FilesComponent } from './files/files.component';
 import { InvoiceFormComponent } from './invoices/invoice-form/invoice-form.component';
 import { InvoicesComponent } from './invoices/invoices.component';
+import { ListUsersComponent } from './list-users/list-users.component';
 import { MovieFormComponent } from './movies/movie-form/movie-form.component';
 import { MoviesComponent } from './movies/movies.component';
 import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
@@ -94,5 +95,7 @@ export const rootRouterConfig: Routes = [
 
   { path: 'debts', component: DebtsComponent,  resolve: { data: SharedResolver}},
   { path: 'debts-for-grid', component: DebtsForGridComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'users', component: ListUsersComponent,  resolve: { data: SharedResolver}}
 
 ]; 

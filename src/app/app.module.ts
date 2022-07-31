@@ -70,6 +70,7 @@ import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/
 import { NewOrEditLinkComponent } from './files/new-or-edit-link/new-or-edit-link.component';
 
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ListUsersComponent } from './list-users/list-users.component';
 
 @NgModule({
   imports: [
@@ -139,7 +140,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     DebtFormComponent,
     DebtsForGridComponent,
     NewOrEditDebtComponent,
-    NewOrEditLinkComponent
+    NewOrEditLinkComponent,
+    ListUsersComponent
   ],
   entryComponents: [
     ListProductsComponent,

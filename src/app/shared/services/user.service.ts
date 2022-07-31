@@ -3,14 +3,16 @@ import 'rxjs/add/operator/toPromise';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase';
-import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { FirebaseUserModel } from "../models/user.model";
+import { map } from "rxjs/operators";
 
 
 @Injectable({ providedIn: 'root' })
 
 export class UserService {
 
+  aflistUsers: AngularFireList<any>;
   userName: string;
 
   constructor(
@@ -68,11 +70,26 @@ export class UserService {
         name: this.userName,
         email: user.email
       });
-    }
-    
- }
+    }  
+  }
 
- get(uid: string): AngularFireObject<FirebaseUserModel> {
-   return this.dataBase.object('/users/' + uid);
- }
+  get(uid: string): AngularFireObject<FirebaseUserModel> {
+    return this.dataBase.object('/users/' + uid);
+  }
+
+  getAll() {
+    this.aflistUsers = this.dataBase.list('/users', debt => debt.orderByChild('key'));
+    return this.aflistUsers
+    .snapshotChanges()
+    .pipe(map(changes => changes
+    .map(c => ({ key: c.payload.key, ...c.payload.val() }))));
+  }
+
+  update(userId, user) {
+    return this.dataBase.object('/users/' + userId).update(user);
+  }
+
+  delete(userId) {
+    return this.dataBase.object('/users/' + userId).remove();
+  }
 }
