@@ -96,6 +96,10 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   modalRefChangeStatusInDebt: any;
   modalRefChangeStatusOutDebt: any;
 
+  clickNew: boolean = false;
+  clickDelete: boolean = false;
+  clickUpdate: boolean = false;
+
   user: FirebaseUserModel = new FirebaseUserModel();
 
   subscriptionForGetAllDebts: Subscription;
@@ -174,7 +178,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   searchByplace(placeID: number) {
     if (placeID) {
-      this.checkPlace = true;
+      // this.checkPlace = true;
       this.placeId = placeID;
       this.filteredDebts = this.filteredDebtsCopie.filter(debt => debt.placeId == placeID);
       if (placeID == 5) {
@@ -186,6 +190,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   deleteDebt(debtId) {
+    this.clickDelete = true;
     Swal.fire({
       title: 'Are you sure?',
       text: 'delete this debt!',
@@ -205,23 +210,16 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     })
   }
 
-  clear() {
-    // this.queryDate = "";
-    this.queryNote = "";
-    this.placeId = null;
-    this.checkPlace = false;
-    this.getAllDebts();
-    this.modalRefSearch.close();
-  }
-
   newDebt() {
+    this.clickNew = true;
     const modalRef = this.modalService.open(NewOrEditDebtComponent as Component, { size: 'lg', centered: true });
 
-    modalRef.componentInstance.arrayDebts = this.filteredDebts;
+    modalRef.componentInstance.arrayDebts = this.filteredDebtsCopie;
     modalRef.componentInstance.modalRef = modalRef;
   }
 
   editDebt(debt?: Debt) {
+    this.clickUpdate = true;
     const modalRef = this.modalService.open(NewOrEditDebtComponent as Component, { size: 'lg', centered: true });
 
     modalRef.componentInstance.modalRef = modalRef;
@@ -231,10 +229,9 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   openModalSearch(contentModalSearch) {
     this.queryNote = '';
     this.placeId = null;
-    this.checkPlace = false;
-    this.getInDebt = false;
-    this.getOutDebt = false;
-    this.getAllDebts();
+    this.clickNew = false;
+    this.clickUpdate = false;
+    this.clickDelete = false;
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
@@ -1256,6 +1253,16 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     });
   }
 
+  clear() {
+    this.queryNote = '';
+    this.placeId = null;
+    // this.checkPlace = false;
+    this.getInDebt = false;
+    this.getOutDebt = false;
+    this.getAllDebts();
+    // this.queryDate = "";
+    this.modalRefSearch.close();
+  }
 
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();

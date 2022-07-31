@@ -56,7 +56,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     this.isGrid = true;
   }
 
-  getAllAnimes() {
+  getAllAnimes(event?) {
     this.subscriptionForGetAllAnimes = this.animeService
     .getAll()
     .subscribe(animes => {
@@ -69,13 +69,13 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
       // else if (this.queryDate) 
       // this.filteredAnimes = animes.filter(anime => anime.date.includes(this.queryDate));
       
-      else if (this.statusId) 
-      this.filteredAnimes = animes.filter(anime => anime.statusId == this.statusId);   
+      else if (event) 
+      this.filteredAnimes = animes.filter(anime => anime.statusId == event);   
       
       else this.filteredAnimes = animes;
 
       this.getStatusAnime();
-      if (this.queryName || this.queryNote || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.queryNote || event) this.modalRefSearch.close();
     });
   }
 
@@ -154,6 +154,11 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   }
 
   openModalSearch(contentModalSearch) {
+    this.queryName = '';
+    this.queryNote = '';
+    this.statusId = null;
+    this.p = 1;
+    this.getAllAnimes();
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 

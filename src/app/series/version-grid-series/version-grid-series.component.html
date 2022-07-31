@@ -4,7 +4,7 @@
         <div class="col-md-4">
             <div style="width: 18rem;margin-inline: auto;">
                 <button class="btn btn-success" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search" aria-hidden="true"></i></button>
-                <a *ngIf="user.roleAdd" (click)="newSerie()" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i></a>  
+                <a *ngIf="user.roleAddSerie" (click)="newSerie()" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i></a>  
             </div> 
         </div>          
     </div>
@@ -51,7 +51,7 @@
                     </div><br>
                     <div class="row btnswrap justify-content-center">
                         <button 
-                            *ngIf="user.roleUpdate" 
+                            *ngIf="user.roleUpdateSerie" 
                             (click)="editSerie(serie)" 
                             class="btn btn-secondary ml-1 mr-3"
                             style="text-decoration: none;"
@@ -66,7 +66,7 @@
                             <i class="fa fa-link" aria-hidden="true"></i>
                         </a>      
                         <button 
-                            *ngIf="user.roleDelete" 
+                            *ngIf="user.roleDeleteSerie" 
                             type="button" 
                             (click)="deleteSerie(serie.key)" 
                             class="btn btn-danger"
@@ -100,33 +100,32 @@
     <div class="modal-body">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <input [(ngModel)]="queryName" type="text" class="form-control text-application" placeholder="Search by name...">
+                <div class="col-md-4" style="display: table;">
+                    <div style="display: table-cell; width: 100%;">
+                        <input [(ngModel)]="queryName" type="text" class="form-control text-application" placeholder="Search by name...">
+                    </div>
+                    <button class="btn btn-primary" (click)="getAllSeries()" style="margin-top: -3px;"><i class="fa fa-search"></i></button>
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-md-4">
-                    <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
+                <div class="col-md-4" style="display: table;">
+                    <div style="display: table-cell; width: 100%;">
+                        <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
+                    </div>
+                    <button class="btn btn-primary" (click)="getAllSeries()" style="margin-top: -3px;"><i class="fa fa-search"></i></button>
                     <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <div *ngFor="let statusSerie of statusSeries">
-                        <label>
-                            <input type="radio" name="statusId" [(ngModel)]="statusId" id="statusId" 
-                            [value]="statusSerie.id" style="height:25px; width:25px; vertical-align: middle;">
+                    <select [ngModel]="statusId" (ngModelChange)="getAllSeries($event)" name="statusId" id="statusId" class="form-control">
+                        <option *ngFor="let statusSerie of statusSeries" [value]="statusSerie.id">
                             {{statusSerie.status}}
-                        </label>
-                    </div>
+                        </option>
+                    </select>
                 </div>
-            </div>
-            <br>
-            <div class="row justify-content-center">
-                <button class="btn btn-primary" (click)="getAllSeries()"><i class="fa fa-search"></i></button>
-                <button *ngIf="queryName || queryNote || statusId" class="btn btn-danger" (click)="clear()"><i class="fa fa-trash"></i></button>
             </div>
         </div>
     </div>        

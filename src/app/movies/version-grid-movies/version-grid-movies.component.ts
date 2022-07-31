@@ -56,7 +56,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     this.isGrid = true;
   }
 
-  getAllMovies() {
+  getAllMovies(event?) {
     this.subscriptionForGetAllMovies = this.movieService
     .getAll()
     .subscribe(movies => {
@@ -69,13 +69,13 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
       // else if (this.queryDate) 
       // this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
       
-      else if (this.statusId) 
-      this.filteredMovies = movies.filter(movie => movie.statusId == this.statusId);   
+      else if (event) 
+      this.filteredMovies = movies.filter(movie => movie.statusId == event);   
       
       else this.filteredMovies = movies;
 
       this.getStatusMovie();
-      if (this.queryName || this.queryNote || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.queryNote || event) this.modalRefSearch.close();
     });
   }
 
@@ -154,6 +154,11 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   }
 
   openModalSearch(contentModalSearch) {
+    this.queryName = '';
+    this.queryNote = '';
+    this.statusId = null;
+    this.p = 1;
+    this.getAllMovies();
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 

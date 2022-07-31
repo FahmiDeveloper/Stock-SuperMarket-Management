@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
 import { FileUpload } from 'src/app/shared/models/file-upload.model';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-upload-form',
@@ -13,6 +14,8 @@ import { FileUpload } from 'src/app/shared/models/file-upload.model';
 export class UploadFormComponent implements OnInit {
 
   @Input() typeFileId: number;
+  @Input() user: FirebaseUserModel;
+
   @Output() refContextFile = new EventEmitter<number>();
   
   selectedFiles?: FileList;

@@ -26,12 +26,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                     <app-upload-form [typeFileId]="typeFile.id" (refContextFile)="getRefContextFile($event)"></app-upload-form>
+                     <app-upload-form [typeFileId]="typeFile.id" [user]="user" (refContextFile)="getRefContextFile($event)"></app-upload-form>
                 </div>
             </div><br>
             <div class="row">
                 <div class="col-md-12">
-                    <app-upload-list [isMobile]="isMobile" [typeFileId]="typeFile.id" [numContextFile]="numContextFile"></app-upload-list>
+                    <app-upload-list [isMobile]="isMobile" [typeFileId]="typeFile.id" [numContextFile]="numContextFile" [user]="user"></app-upload-list>
                 </div>
             </div>
         </div>    
@@ -68,7 +68,7 @@
                     <button type="button" class="btn btn-secondary" (click)="backToListTypeLinks()">
                         <i class="fa fa-arrow-left" aria-hidden="true"></i>
                     </button>
-                    <a *ngIf="user.roleAdd" (click)="newLink()" class="btn btn-primary font-weight-bold float-right text-application">
+                    <a *ngIf="user.roleAddFile" (click)="newLink()" class="btn btn-primary font-weight-bold float-right text-application">
                         New
                     </a>
                 </div>                    
@@ -101,7 +101,7 @@
                             <td>
                                 <div class="btns-links">
                                     <button 
-                                        *ngIf="user.roleUpdate" 
+                                        *ngIf="user.roleUpdateFile" 
                                         (click)="editLink(link)"
                                         class="btn btn-info">
                                         <i class="fa fa-edit" aria-hidden="true"></i>                                    
@@ -114,7 +114,7 @@
                                         <i class="fa fa-link" aria-hidden="true"></i>
                                     </a>&nbsp;                       
                                     <button 
-                                        *ngIf="user.roleDelete" 
+                                        *ngIf="user.roleDeleteFile" 
                                         type="button" 
                                         (click)="deleteLink(link.key)"
                                         class="btn btn-danger">
