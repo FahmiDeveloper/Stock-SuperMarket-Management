@@ -71,6 +71,7 @@ import { NewOrEditLinkComponent } from './files/new-or-edit-link/new-or-edit-lin
 
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ListUsersComponent } from './list-users/list-users.component';
+import { ListUsersMobileComponent } from './list-users/list-users-mobile/list-users-mobile.component';
 
 @NgModule({
   imports: [
@@ -141,7 +142,8 @@ import { ListUsersComponent } from './list-users/list-users.component';
     DebtsForGridComponent,
     NewOrEditDebtComponent,
     NewOrEditLinkComponent,
-    ListUsersComponent
+    ListUsersComponent,
+    ListUsersMobileComponent
   ],
   entryComponents: [
     ListProductsComponent,
