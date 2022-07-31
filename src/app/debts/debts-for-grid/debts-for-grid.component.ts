@@ -214,7 +214,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.clickNew = true;
     const modalRef = this.modalService.open(NewOrEditDebtComponent as Component, { size: 'lg', centered: true });
 
-    modalRef.componentInstance.arrayDebts = this.filteredDebts;
+    modalRef.componentInstance.arrayDebts = this.filteredDebtsCopie;
     modalRef.componentInstance.modalRef = modalRef;
   }
 
