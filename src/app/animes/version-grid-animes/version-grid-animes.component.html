@@ -100,33 +100,32 @@
     <div class="modal-body">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <input [(ngModel)]="queryName" type="text" class="form-control text-application" placeholder="Search by name...">
+                <div class="col-md-4" style="display: table;">
+                    <div style="display: table-cell; width: 100%;">
+                        <input [(ngModel)]="queryName" type="text" class="form-control text-application" placeholder="Search by name...">
+                    </div>
+                    <button class="btn btn-primary" (click)="getAllAnimes()" style="margin-top: -3px;"><i class="fa fa-search"></i></button>
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-md-4">
-                    <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
+                <div class="col-md-4" style="display: table;">
+                    <div style="display: table-cell; width: 100%;">
+                        <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
+                    </div>
+                    <button class="btn btn-primary" (click)="getAllAnimes()" style="margin-top: -3px;"><i class="fa fa-search"></i></button>
                     <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-md-4">
-                    <div *ngFor="let statusAnime of statusAnimes">
-                        <label>
-                            <input type="radio" name="statusId" [(ngModel)]="statusId" id="statusId" 
-                            [value]="statusAnime.id" style="height:25px; width:25px; vertical-align: middle;">
+                    <select [ngModel]="statusId" (ngModelChange)="getAllAnimes($event)" name="statusId" id="statusId" class="form-control">
+                        <option *ngFor="let statusAnime of statusAnimes" [value]="statusAnime.id">
                             {{statusAnime.status}}
-                        </label>
-                    </div>
+                        </option>
+                    </select>
                 </div>
-            </div>
-            <br>
-            <div class="row justify-content-center">
-                <button class="btn btn-primary" (click)="getAllAnimes()"><i class="fa fa-search"></i></button>
-                <button *ngIf="queryName || queryNote || statusId" class="btn btn-danger" (click)="clear()"><i class="fa fa-trash"></i></button>
             </div>
         </div>
     </div>        

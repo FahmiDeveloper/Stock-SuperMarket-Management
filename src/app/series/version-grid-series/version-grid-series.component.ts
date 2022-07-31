@@ -57,7 +57,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     this.isGrid = true;
   }
 
-  getAllSeries() {
+  getAllSeries(event?) {
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
@@ -70,13 +70,13 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
       // else if (this.queryDate) 
       // this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
       
-      else if (this.statusId) 
-      this.filteredSeries = series.filter(serie => serie.statusId == this.statusId);   
+      else if (event) 
+      this.filteredSeries = series.filter(serie => serie.statusId == event);   
       
       else this.filteredSeries = series;
 
       this.getStatusSerie();
-      if (this.queryName || this.queryNote || this.statusId) this.modalRefSearch.close();
+      if (this.queryName || this.queryNote || event) this.modalRefSearch.close();
     });
   }
 
@@ -155,6 +155,11 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   }
 
   openModalSearch(contentModalSearch) {
+    this.queryName = '';
+    this.queryNote = '';
+    this.statusId = null;
+    this.p = 1;
+    this.getAllSeries();
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
