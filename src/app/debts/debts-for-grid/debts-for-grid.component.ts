@@ -199,21 +199,23 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   getRestMoneyForeachPlace() {
-    this.restInPocket = this.filteredDebtsCopie.filter(debt => debt.placeId == 1).sort(
-      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
+    let debtForRestInPocket = this.filteredDebtsCopie.filter(debt => debt.placeId == 1).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInWallet = this.filteredDebtsCopie.filter(debt => debt.placeId == 2).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvelope = this.filteredDebtsCopie.filter(debt => debt.placeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInPosteAccount = this.filteredDebtsCopie.filter(debt => debt.placeId == 6).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
 
-    this.restInWallet = this.filteredDebtsCopie.filter(debt => debt.placeId == 2).sort(
-      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
+    this.restInPocket = debtForRestInPocket ? debtForRestInPocket.restMoney : '0DT';
 
-    this.restInEnvelope = this.filteredDebtsCopie.filter(debt => debt.placeId == 3).sort(
-      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
+    this.restInWallet = debtForRestInWallet ? debtForRestInWallet.restMoney : '0DT';
 
-    this.restInBox = this.filteredDebtsCopie.filter(debt => debt.placeId == 4).sort(
-      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
+    this.restInEnvelope = debtForRestInEnvelope ? debtForRestInEnvelope.restMoney : '0DT';
 
-    this.restInPosteAccount = this.filteredDebtsCopie.filter(debt => debt.placeId == 6).sort(
-      (n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].restMoney;
+    this.restInBox = debtForRestInBox ? debtForRestInBox.restMoney : '0DT';
+
+    this.restInPosteAccount = debtForRestInPosteAccount ? debtForRestInPosteAccount.restMoney : '0DT';
   }
+
 
   openModalDebt(contentDebt) {
     this.modalRefDebt = this.modalService.open(contentDebt as Component, { size: 'lg', centered: true });
@@ -1220,6 +1222,32 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.getAllDebts();
     // this.queryDate = "";
     this.modalRefSearch.close();
+  }
+
+  deleteAllByPlace() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete all this debts!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.filteredDebtsCopie.filter(debt => debt.placeId == this.placeId).forEach(element => {
+          this.debtService.delete(element.key);
+          Swal.fire(
+            'Debts has been deleted successfully',
+            '',
+            'success'
+          ).then((res) => {
+            if (res.value) {
+              this.searchByplace(this.placeId);
+            }
+          })
+        });
+      }
+    })
   }
 
   ngOnDestroy() {

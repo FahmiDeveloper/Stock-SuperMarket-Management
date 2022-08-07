@@ -202,13 +202,14 @@
                 <i class="fa fa-lg fa-sort-asc" aria-hidden="true"></i>
             </button>
 
-            <!-- <button
-                *ngIf="queryNote || placeId"
+            <button
+                *ngIf="selectPlace"
+                [hidden]="placeId == 5"
                 class="btn btn-danger float-right" 
                 style="margin-right: 6px;" 
-                (click)="clear()">
-                <span class="font-weight-bold">clear</span>
-            </button> -->
+                (click)="deleteAllByPlace()">
+                <span class="font-weight-bold">Delete all</span>
+            </button>
         </div>
     </div>
     
