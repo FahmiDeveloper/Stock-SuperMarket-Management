@@ -4,8 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { NewOrEditDebtComponent } from './new-or-edit-debt/new-or-edit-debt.component';
-
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DebtService } from 'src/app/shared/services/debt.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -39,7 +37,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   pageDetsInDebt: number = 1;
   pageDetsOutDebt: number = 1;
   sortByDesc: boolean = true;
-  checkPlace: boolean = false;
+  selectPlace: boolean = false;
 
   // queryDate: string = "";
   restInPocket: string = "";
@@ -95,10 +93,6 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   modalRefDetOutDebt: any;
   modalRefChangeStatusInDebt: any;
   modalRefChangeStatusOutDebt: any;
-
-  clickNew: boolean = false;
-  clickDelete: boolean = false;
-  clickUpdate: boolean = false;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -178,7 +172,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
 
   searchByplace(placeID: number) {
     if (placeID) {
-      // this.checkPlace = true;
+      this.selectPlace = true;
       this.placeId = placeID;
       this.filteredDebts = this.filteredDebtsCopie.filter(debt => debt.placeId == placeID);
       if (placeID == 5) {
@@ -189,49 +183,13 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteDebt(debtId) {
-    this.clickDelete = true;
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this debt!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.debtService.delete(debtId);
-        Swal.fire(
-          'Debt has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
-  newDebt() {
-    this.clickNew = true;
-    const modalRef = this.modalService.open(NewOrEditDebtComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.arrayDebts = this.filteredDebtsCopie;
-    modalRef.componentInstance.modalRef = modalRef;
-  }
-
-  editDebt(debt?: Debt) {
-    this.clickUpdate = true;
-    const modalRef = this.modalService.open(NewOrEditDebtComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.modalRef = modalRef;
-    modalRef.componentInstance.debt = debt;
-  }
-
   openModalSearch(contentModalSearch) {
+    this.selectPlace = false;
     this.queryNote = '';
     this.placeId = null;
-    this.clickNew = false;
-    this.clickUpdate = false;
-    this.clickDelete = false;
+    this.getInDebt = false;
+    this.getOutDebt = false;
+    this.getAllDebts();
     this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
   }
 
@@ -1256,10 +1214,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   clear() {
     this.queryNote = '';
     this.placeId = null;
-    this.clickNew = false;
-    this.clickUpdate = false;
-    this.clickDelete = false;
-    // this.checkPlace = false;
+    this.selectPlace = false;
     this.getInDebt = false;
     this.getOutDebt = false;
     this.getAllDebts();
