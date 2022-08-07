@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+
 import { map } from 'rxjs/operators';
-import { Anime } from '../models/anime.model';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AnimeService {
 
   aflistAnimes: AngularFireList<any>;
@@ -32,4 +32,5 @@ export class AnimeService {
   delete(animeId) {
     return this.db.object('/animes/' + animeId).remove();
   }
+
 }

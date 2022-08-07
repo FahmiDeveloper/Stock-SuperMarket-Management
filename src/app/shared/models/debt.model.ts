@@ -1,4 +1,5 @@
 export class Debt {
+
   key: string;
   date: string;
   time: string;
@@ -37,7 +38,6 @@ export class Debt {
   firstPartComposedFinancialOutDebtByDebtor:string;
   secondPartComposedFinancialOutDebtByDebtor:string;
 
-
   constructor(){
     this.date = "";
     this.time = "";
@@ -49,4 +49,5 @@ export class Debt {
     this.restMoney = "";
     this.place = "";
   }
+  
 }

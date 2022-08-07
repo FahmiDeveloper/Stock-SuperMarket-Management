@@ -1,4 +1,5 @@
 export class Product {
+
   key: string;
   nameProduct: string;
   price: number;
@@ -19,4 +20,5 @@ export class Product {
     this.note = "";
     this.imageUrl = "";
   }
+  
 }

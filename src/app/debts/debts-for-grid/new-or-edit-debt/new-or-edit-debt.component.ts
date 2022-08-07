@@ -1,16 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { DebtService } from 'src/app/shared/services/debt.service';
-import { Debt } from 'src/app/shared/models/debt.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { UserService } from 'src/app/shared/services/user.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
+
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+import { Debt } from 'src/app/shared/models/debt.model';
 
 @Component({
   selector: 'new-or-edit-debt',
@@ -56,8 +58,7 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-    ) 
-    {}
+  ) {}
 
   ngOnInit() {
     this.debtId = this.route.snapshot.paramMap.get('id');

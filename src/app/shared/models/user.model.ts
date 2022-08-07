@@ -1,4 +1,5 @@
 export class FirebaseUserModel {
+  
   key: string;
   image: string;
   name: string;
@@ -47,4 +48,5 @@ export class FirebaseUserModel {
     this.name = "";
     this.provider = "";
   }
+
 }

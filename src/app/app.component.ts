@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { AuthService } from './shared/services/auth.service';
 import { UserService } from './shared/services/user.service';
 
@@ -8,7 +9,9 @@ import { UserService } from './shared/services/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
+
   constructor(
     public authService:AuthService,
     public userService:UserService,
@@ -30,4 +33,5 @@ export class AppComponent {
       }
     })
   }
+
 }

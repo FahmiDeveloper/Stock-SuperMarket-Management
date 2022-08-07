@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 
-import firebase from 'firebase';
 import { Subscription } from 'rxjs';
 
-import { AuthService } from 'src/app/shared/services/auth.service';
+import firebase from 'firebase';
+
 import { DeviceDetectorService } from 'ngx-device-detector';
+
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-header',

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
+
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+
 import { FileUpload } from '../models/file-upload.model';
 
 @Injectable({
@@ -13,7 +15,7 @@ export class FileUploadService {
 
   private basePath = '/Files';
 
-  constructor(private db: AngularFireDatabase, private storage: AngularFireStorage) { }
+  constructor(private db: AngularFireDatabase, private storage: AngularFireStorage) {}
 
   pushFileToStorage(fileUpload: FileUpload): Observable<number | undefined> {
     const filePath = `${this.basePath}/${fileUpload.file.name}`;
@@ -55,4 +57,5 @@ export class FileUploadService {
     const storageRef = this.storage.ref(this.basePath);
     storageRef.child(name).delete();
   }
+  
 }

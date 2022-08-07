@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -8,13 +8,13 @@ import Swal from 'sweetalert2';
 import * as fileSaver from 'file-saver';
 import * as JSZip from 'jszip/dist/jszip';
 import { utils, write as XlsxWrite, read as XlsxRead } from 'ts-xlsx';
+import { DomSanitizer } from '@angular/platform-browser';
+import { renderAsync } from 'docx-preview';
+import { NgNavigatorShareService } from 'ng-navigator-share';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
 import { FileUpload } from 'src/app/shared/models/file-upload.model';
-import { DomSanitizer } from '@angular/platform-browser';
-import { renderAsync } from 'docx-preview';
-import { NgNavigatorShareService } from 'ng-navigator-share';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
@@ -349,6 +349,7 @@ export class UploadDetailsComponent implements OnChanges {
     let extention: string = path.substring(n + 1);
     return extentionvideo.indexOf(extention.toLocaleLowerCase()) != -1;
   }
+  
 }
 
 export interface ZipFile {

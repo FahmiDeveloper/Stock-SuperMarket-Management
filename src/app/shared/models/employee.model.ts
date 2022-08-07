@@ -1,4 +1,5 @@
 export class Employee {
+
   key: string;
   name: string;
   surName:string;
@@ -21,4 +22,5 @@ export class Employee {
     this.note = "";
     this.imageUrl = "";
   }
-  }
+  
+}

@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
-import 'rxjs/add/operator/toPromise';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import firebase from 'firebase';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
-import { FirebaseUserModel } from "../models/user.model";
+
+import 'rxjs/add/operator/toPromise';
 import { map } from "rxjs/operators";
+
+import firebase from 'firebase';
+
+import { FirebaseUserModel } from "../models/user.model";
 
 
 @Injectable({ providedIn: 'root' })
@@ -20,7 +23,6 @@ export class UserService {
    public afAuth: AngularFireAuth,
    private dataBase: AngularFireDatabase
   ) {}
-
 
   getCurrentUser(){
     return new Promise<any>((resolve, reject) => {
@@ -92,4 +94,5 @@ export class UserService {
   delete(userId) {
     return this.dataBase.object('/users/' + userId).remove();
   }
+  
 }

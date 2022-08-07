@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
+import { Observable } from 'rxjs';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';

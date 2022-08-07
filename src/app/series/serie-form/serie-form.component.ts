@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
-import * as moment from 'moment';
 import { Observable } from 'rxjs';
+
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { SerieService } from 'src/app/shared/services/serie.service';
+
 import { Serie } from 'src/app/shared/models/serie.model';
 
 @Component({

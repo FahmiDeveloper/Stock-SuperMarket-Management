@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 import { DebtFormComponent } from './debt-form/debt-form.component';
@@ -822,7 +823,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   }
 
   changeStatusToGetNextMonth() {
-  if (this.checkToGetNextMonth) {
+    if (this.checkToGetNextMonth) {
       this.detailOutDebt.toGetNextMonth = true;
       this.detailOutDebt.toGetThisMonth = false;
       this.detailOutDebt.notToGetForNow = false;

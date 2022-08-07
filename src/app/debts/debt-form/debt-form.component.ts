@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 import * as moment from 'moment';
-import { Debt } from 'src/app/shared/models/debt.model';
+import Swal from 'sweetalert2';
+
 import { DebtService } from 'src/app/shared/services/debt.service';
 
-import Swal from 'sweetalert2';
+import { Debt } from 'src/app/shared/models/debt.model';
 
 @Component({
   selector: 'app-debt-form',

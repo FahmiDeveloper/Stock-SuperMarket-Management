@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from "@angular/router";
-import { FirebaseUserModel } from '../models/user.model';
+
 import { UserService } from './user.service';
+
+import { FirebaseUserModel } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 
 export class SharedResolver implements Resolve<FirebaseUserModel> {
 
-  constructor(public userService: UserService, private router: Router) { }
+  constructor(public userService: UserService, private router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Promise<FirebaseUserModel> {
 
@@ -34,4 +36,5 @@ export class SharedResolver implements Resolve<FirebaseUserModel> {
       })
     })
   }
+  
 }

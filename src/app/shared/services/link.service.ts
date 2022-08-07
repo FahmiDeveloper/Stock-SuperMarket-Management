@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -31,4 +32,5 @@ export class LinkService {
   delete(linkId) {
     return this.db.object('/links/' + linkId).remove();
   }
+  
 }

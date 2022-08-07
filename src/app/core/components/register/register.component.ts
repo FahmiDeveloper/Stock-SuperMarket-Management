@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { AuthService } from 'src/app/shared/services/auth.service';

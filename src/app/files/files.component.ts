@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Subscription } from 'rxjs';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgNavigatorShareService } from 'ng-navigator-share';
 
 import { NewOrEditLinkComponent } from './new-or-edit-link/new-or-edit-link.component';
 
@@ -13,7 +15,6 @@ import { UserService } from '../shared/services/user.service';
 
 import { Link } from '../shared/models/link.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
-import { NgNavigatorShareService } from 'ng-navigator-share';
 
 @Component({
   selector: 'app-files',

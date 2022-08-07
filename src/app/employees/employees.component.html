@@ -8,9 +8,9 @@
         </p>
     </div>
     <div class="col-md-1">
-        <p *ngIf="user.roleAdd">
+        <!-- <p *ngIf="user.roleAdd">
             <a routerLink="/employees/new" class="btn btn-primary">New</a>
-        </p>
+        </p> -->
     </div>
 </div>
 
@@ -45,8 +45,8 @@
                     <show-employee-picture [employee]="employee"></show-employee-picture>
                 </td>
                 <td>
-                    <button *ngIf="user.roleUpdate" [routerLink]="['/employees', employee.key]"
-                        class="btn btn-success">Edit</button>
+                    <!-- <button *ngIf="user.roleUpdate" [routerLink]="['/employees', employee.key]"
+                        class="btn btn-success">Edit</button> -->
                     <button *ngIf="user.roleDelete" type="button" (click)="delete(employee.key)"
                         class="btn btn-danger">Delete</button>
                 </td>

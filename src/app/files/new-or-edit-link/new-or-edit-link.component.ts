@@ -2,8 +2,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import Swal from 'sweetalert2';
 
-import { Link } from 'src/app/shared/models/link.model';
 import { LinkService } from 'src/app/shared/services/link.service';
+
+import { Link } from 'src/app/shared/models/link.model';
 
 @Component({
   selector: 'new-or-edit-link',
