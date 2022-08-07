@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 import { DebtFormComponent } from './debt-form/debt-form.component';
@@ -10,7 +11,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { DebtService } from '../shared/services/debt.service';
 import { UserService } from '../shared/services/user.service';
 
-import { Debt } from '../shared/models/debt.model';
+import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from '../shared/models/debt.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
 
 @Component({
@@ -822,7 +823,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   }
 
   changeStatusToGetNextMonth() {
-  if (this.checkToGetNextMonth) {
+    if (this.checkToGetNextMonth) {
       this.detailOutDebt.toGetNextMonth = true;
       this.detailOutDebt.toGetThisMonth = false;
       this.detailOutDebt.notToGetForNow = false;
@@ -1271,19 +1272,4 @@ export class DebtsComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-}
-
-export interface PlacesMoney {
-  id: number,
-  place: string
-}
-
-export interface StatusOutDebts {
-  id: number,
-  status: string
-}
-
-export interface StatusInDebts{
-  id: number,
-  status: string
 }

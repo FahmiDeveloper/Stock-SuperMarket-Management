@@ -1,11 +1,13 @@
 import { Injectable } from "@angular/core";
-import 'rxjs/add/operator/toPromise';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { ActivatedRoute } from "@angular/router";
+
+import 'rxjs/add/operator/toPromise';
+import { BehaviorSubject } from "rxjs";
 
 import firebase from 'firebase';
-import { BehaviorSubject } from "rxjs";
+
 import { UserService } from "./user.service";
-import { ActivatedRoute } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 
@@ -17,9 +19,7 @@ export class AuthService {
    public afAuth: AngularFireAuth,
    public userService:UserService,
    private route: ActivatedRoute
- ){
-    this.userService.isAuthentificated().then(res=>this.isConnected.next(res));
- }
+ ){ this.userService.isAuthentificated().then(res=>this.isConnected.next(res));}
 
   doFacebookLogin(){
     return new Promise<any>((resolve, reject) => {
@@ -102,4 +102,5 @@ export class AuthService {
       }
     });
   }
+  
 }

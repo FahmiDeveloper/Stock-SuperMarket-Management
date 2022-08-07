@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+
 import { map } from 'rxjs/operators';
-import { Serie } from '../models/serie.model';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class SerieService {
 
   aflistSeries: AngularFireList<any>;
@@ -32,4 +32,5 @@ export class SerieService {
   delete(serieId) {
     return this.db.object('/series/' + serieId).remove();
   }
+
 }

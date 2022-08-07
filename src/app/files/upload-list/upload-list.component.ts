@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges } from '@angular/core';
 
 import { map } from 'rxjs/operators';
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
+
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-upload-list',

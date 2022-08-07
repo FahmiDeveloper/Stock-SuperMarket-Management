@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Subscription } from 'rxjs';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgNavigatorShareService } from 'ng-navigator-share';
 
 import { NewOrEditLinkComponent } from './new-or-edit-link/new-or-edit-link.component';
 
@@ -13,7 +15,7 @@ import { UserService } from '../shared/services/user.service';
 
 import { Link } from '../shared/models/link.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
-import { NgNavigatorShareService } from 'ng-navigator-share';
+import { TypesFiles, TypesLinks } from '../shared/models/file-upload.model';
 
 @Component({
   selector: 'app-files',
@@ -202,16 +204,4 @@ export class FilesComponent implements OnInit {
   getRefContextFile(refContextFile: number) {
     this.numContextFile = refContextFile;
   }
-}
-
-export interface TypesFiles {
-  id: number,
-  type: string,
-  icon: string
-}
-
-export interface TypesLinks {
-  id: number,
-  type: string,
-  icon: string
 }

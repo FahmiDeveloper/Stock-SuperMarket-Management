@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Observable, Subscription } from 'rxjs';
 
+import { DeviceDetectorService } from 'ngx-device-detector';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { EmployeeService } from 'src/app/shared/services/employee.service';
@@ -13,13 +15,13 @@ import { SupplierService } from 'src/app/shared/services/supplier.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit, OnDestroy {
 
   user: FirebaseUserModel = new FirebaseUserModel();
@@ -89,4 +91,5 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscripton.unsubscribe();
   }
+  
 }

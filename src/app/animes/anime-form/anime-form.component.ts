@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
-import * as moment from 'moment';
 import { Observable } from 'rxjs';
+
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
-import { Anime } from 'src/app/shared/models/anime.model';
+import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 @Component({
   selector: 'app-anime-form',
@@ -84,9 +85,4 @@ export class AnimeFormComponent implements OnInit {
       this.anime.imageUrl = '';
     }
   }
-}
-
-export interface StatusAnimes {
-  id: number,
-  status: string
 }

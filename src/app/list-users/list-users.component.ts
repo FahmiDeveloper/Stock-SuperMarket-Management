@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { UserService } from '../shared/services/user.service';
 
-import { FirebaseUserModel } from '../shared/models/user.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FirebaseUserModel, Roles } from '../shared/models/user.model';
 
 @Component({
   selector: 'list-users',
@@ -110,9 +111,4 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllUsers.unsubscribe();
   }
-}
-
-export interface Roles {
-    id: number,
-    roleName: string
 }

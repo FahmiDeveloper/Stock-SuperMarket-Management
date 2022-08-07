@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
+import { Observable } from 'rxjs';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { MovieService } from 'src/app/shared/services/movie.service';
 
-import { Movie } from 'src/app/shared/models/movie.model';
+import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 @Component({
   selector: 'new-or-edit-movie',
@@ -82,9 +83,4 @@ export class NewOrEditMovieComponent implements OnInit {
       this.movie.imageUrl = '';
     }
   }
-}
-
-export interface StatusMovies {
-  id: number,
-  status: string
 }

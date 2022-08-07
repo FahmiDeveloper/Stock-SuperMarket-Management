@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,7 +12,7 @@ import { UserService } from '../shared/services/user.service';
 import { SerieService } from '../shared/services/serie.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
-import { Serie } from '../shared/models/serie.model';
+import { Serie, StatusSeries } from '../shared/models/serie.model';
 
 @Component({
   selector: 'app-series',
@@ -177,10 +178,5 @@ export class SeriesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-}
-
-export interface StatusSeries {
-  id: number,
-  status: string
 }
 

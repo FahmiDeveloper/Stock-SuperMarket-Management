@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,7 +12,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { SerieService } from 'src/app/shared/services/serie.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
-import { Serie } from 'src/app/shared/models/serie.model';
+import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 
 @Component({
@@ -167,11 +168,6 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-}
-
-export interface StatusSeries {
-  id: number,
-  status: string
 }
 
 

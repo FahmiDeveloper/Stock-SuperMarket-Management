@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,7 +12,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { MovieService } from 'src/app/shared/services/movie.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
-import { Movie } from 'src/app/shared/models/movie.model';
+import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 @Component({
   selector: 'app-version-grid-movies',
@@ -166,10 +167,5 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllMovies.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-}
-
-export interface StatusMovies {
-  id: number,
-  status: string
 }
 

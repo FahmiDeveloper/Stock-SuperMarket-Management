@@ -1,24 +1,82 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
-import { environment } from 'src/environments/environment';
-
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { UserComponent } from './user/user.component';
-
 import { RouterModule } from '@angular/router';
-import { rootRouterConfig } from './app.routes';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HeaderComponent } from './core/components/header/header.component';
-import { HomeComponent } from './core/components/home/home.component';
-import { LoginComponent } from './core/components/login/login.component';
-import { RegisterComponent } from './core/components/register/register.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { CustomFormsModule } from 'ng2-validation';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
+
+import { AppRoutingModule } from './app-routing.module';
+import { rootRouterConfig } from './app.routes';
+
+import { environment } from 'src/environments/environment';
+
+import { SortPipe } from './shared/pipes/sort.pipe';
+
+import { AppComponent } from './app.component';
+
+import { 
+  MoviesComponent,
+  MovieFormComponent,
+  ShowMoviePictureComponent,
+  VersionGridMoviesComponent,
+  NewOrEditMovieComponent
+} from './movies/index';
+
+import { 
+  AnimesComponent,
+  AnimeFormComponent,
+  ShowAnimePictureComponent,
+  VersionGridAnimesComponent,
+  NewOrEditAnimeComponent
+} from './animes/index';
+
+import { 
+  SeriesComponent,
+  SerieFormComponent,
+  ShowSeriePictureComponent,
+  VersionGridSeriesComponent,
+  NewOrEditSerieComponent
+} from './series/index';
+
+import { 
+  FilesComponent,
+  UploadFormComponent,
+  UploadListComponent,
+  UploadDetailsComponent,
+  NewOrEditLinkComponent
+} from './files/index';
+
+import { 
+  DebtsComponent,
+  DebtFormComponent,
+  DebtsForGridComponent,
+  NewOrEditDebtComponent
+} from './debts/index';
+
+import { 
+  ListUsersComponent,
+  ListUsersMobileComponent
+} from './list-users/index';
+
+
+import { 
+  HeaderComponent,
+  HomeComponent,
+  LoginComponent,
+  RegisterComponent
+} from './core/components/index';
+
+import { UserComponent } from './user/index';
+
+
 import { ProductsComponent } from './products/products.component';
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { EmployeesComponent } from './employees/employees.component';
@@ -34,44 +92,11 @@ import { StockInFormComponent } from './stock/stock-menu/stock-in/stock-in-form/
 import { StockInComponent } from './stock/stock-menu/stock-in/stock-in.component';
 import { StockOutFormComponent } from './stock/stock-menu/stock-out/stock-out-form/stock-out-form.component';
 import { StockOutComponent } from './stock/stock-menu/stock-out/stock-out.component';
-import { SortPipe } from './shared/pipes/sort.pipe';
-import { CustomFormsModule } from 'ng2-validation';
-import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ListProductsComponent } from './categories/list-products/list-products.component';
 import { ListInvoicesComponent } from './suppliers/list-invoices/list-invoices.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { ShowProductPictureComponent } from './products/show-product-picture/show-product-picture.component';
 import { ShowEmployeePictureComponent } from './employees/show-employee-picture/show-employee-picture.component';
 import { VersionGridComponent } from './products/version-grid/version-grid.component';
-import { MoviesComponent } from './movies/movies.component';
-import { MovieFormComponent } from './movies/movie-form/movie-form.component';
-import { ShowMoviePictureComponent } from './movies/show-movie-picture/show-movie-picture.component';
-import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
-import { AnimesComponent } from './animes/animes.component';
-import { AnimeFormComponent } from './animes/anime-form/anime-form.component';
-import { ShowAnimePictureComponent } from './animes/show-anime-picture/show-anime-picture.component';
-import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
-import { NewOrEditMovieComponent } from './movies/version-grid-movies/new-or-edit-movie/new-or-edit-movie.component';
-import { NewOrEditAnimeComponent } from './animes/version-grid-animes/new-or-edit-anime/new-or-edit-anime.component';
-import { SeriesComponent } from './series/series.component';
-import { SerieFormComponent } from './series/serie-form/serie-form.component';
-import { ShowSeriePictureComponent } from './series/show-serie-picture/show-serie-picture.component';
-import { VersionGridSeriesComponent } from './series/version-grid-series/version-grid-series.component';
-import { NewOrEditSerieComponent } from './series/version-grid-series/new-or-edit-serie/new-or-edit-serie.component';
-import { FilesComponent } from './files/files.component';
-import { UploadFormComponent } from './files/upload-form/upload-form.component';
-import { UploadListComponent } from './files/upload-list/upload-list.component';
-import { UploadDetailsComponent } from './files/upload-details/upload-details.component';
-import { NgxDocViewerModule } from 'ngx-doc-viewer';
-import { DebtsComponent } from './debts/debts.component';
-import { DebtFormComponent } from './debts/debt-form/debt-form.component';
-import { DebtsForGridComponent } from './debts/debts-for-grid/debts-for-grid.component';
-import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/new-or-edit-debt.component';
-import { NewOrEditLinkComponent } from './files/new-or-edit-link/new-or-edit-link.component';
-
-import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { ListUsersComponent } from './list-users/list-users.component';
-import { ListUsersMobileComponent } from './list-users/list-users-mobile/list-users-mobile.component';
 
 @NgModule({
   imports: [
@@ -159,4 +184,5 @@ import { ListUsersMobileComponent } from './list-users/list-users-mobile/list-us
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

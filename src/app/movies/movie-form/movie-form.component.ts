@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
-import * as moment from 'moment';
 import { Observable } from 'rxjs';
+
+import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { MovieService } from 'src/app/shared/services/movie.service';
 
-import { Movie } from 'src/app/shared/models/movie.model';
+import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 @Component({
   selector: 'app-movie-form',
@@ -83,9 +84,4 @@ export class MovieFormComponent implements OnInit {
       this.movie.imageUrl = '';
     }
   }
-}
-
-export interface StatusMovies {
-  id: number,
-  status: string
 }

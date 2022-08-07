@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
+import { Observable } from 'rxjs';
+
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Observable } from 'rxjs';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';
 

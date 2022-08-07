@@ -1,9 +1,6 @@
 .row{
   margin-top: 10px;
 }
-.col {
-  cursor: pointer;
-}
 
 @import url('https://fonts.googleapis.com/css?family=Oswald:300,400,500,700');
 
@@ -52,6 +49,7 @@ $gr-6:linear-gradient(170deg, #c4c734 0%, #707206 100%);
     }
   }
 }
+
 .card{
   min-height:170px;
   margin: 0;
@@ -117,6 +115,6 @@ $gr-6:linear-gradient(170deg, #c4c734 0%, #707206 100%);
     opacity: .2;
     color:rgba(255,255,255,1);
     z-index: 0;
-    }
   }
+}
   
