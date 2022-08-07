@@ -51,3 +51,23 @@ export class Debt {
   }
   
 }
+
+export interface PlacesMoney {
+  id: number,
+  place: string
+}
+
+export interface StatusOutDebts {
+  id: number,
+  status: string
+}
+
+export interface StatusInDebts{
+  id: number,
+  status: string
+}
+
+export interface Unit {
+  unitName: string
+}
+

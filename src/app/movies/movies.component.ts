@@ -12,7 +12,7 @@ import { UserService } from '../shared/services/user.service';
 import { MovieService } from '../shared/services/movie.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
-import { Movie } from '../shared/models/movie.model';
+import { Movie, StatusMovies } from '../shared/models/movie.model';
 
 @Component({
   selector: 'app-movies',
@@ -179,9 +179,4 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.subscriptionForUser.unsubscribe();
   }
 
-}
-
-export interface StatusMovies {
-  id: number,
-  status: string
 }

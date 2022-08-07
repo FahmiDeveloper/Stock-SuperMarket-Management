@@ -12,7 +12,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
-import { Debt } from 'src/app/shared/models/debt.model';
+import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
 
 @Component({
   selector: 'new-or-edit-debt',
@@ -260,13 +260,4 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
     this.subscriptionForUser.unsubscribe();
     if (!this.debtId) this.subscriptionForGetAllDebts.unsubscribe();
   }
-}
-
-export interface PlacesMoney {
-  id: number,
-  place: string
-}
-
-export interface Unit {
-  unitName: string
 }

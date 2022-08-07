@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 import { DebtService } from 'src/app/shared/services/debt.service';
 
-import { Debt } from 'src/app/shared/models/debt.model';
+import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
 
 @Component({
   selector: 'app-debt-form',
@@ -170,14 +170,5 @@ export class DebtFormComponent implements OnInit {
   onSelectUnitForFinancialDebt(unitName:string) {
     this.debt.financialDebt = this.debt.financialDebt + unitName;
   }
-}
-
-export interface PlacesMoney {
-  id: number,
-  place: string
-}
-
-export interface Unit {
-  unitName: string
 }
 

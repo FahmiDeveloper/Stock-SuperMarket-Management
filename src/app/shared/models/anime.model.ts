@@ -22,3 +22,8 @@ export class Anime {
   }
   
 }
+
+export interface StatusAnimes {
+  id: number,
+  status: string
+}

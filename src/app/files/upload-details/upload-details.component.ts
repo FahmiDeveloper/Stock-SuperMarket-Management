@@ -14,7 +14,7 @@ import { NgNavigatorShareService } from 'ng-navigator-share';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
-import { FileUpload } from 'src/app/shared/models/file-upload.model';
+import { FileUpload, ZipFile } from 'src/app/shared/models/file-upload.model';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
@@ -350,12 +350,4 @@ export class UploadDetailsComponent implements OnChanges {
     return extentionvideo.indexOf(extention.toLocaleLowerCase()) != -1;
   }
   
-}
-
-export interface ZipFile {
-  readonly name: string;
-  readonly dir: boolean;
-  readonly date: Date;
-  readonly data: any;
-  fileName: string;
 }

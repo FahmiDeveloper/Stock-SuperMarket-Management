@@ -50,3 +50,8 @@ export class FirebaseUserModel {
   }
 
 }
+
+export interface Roles {
+  id: number,
+  roleName: string
+}

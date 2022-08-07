@@ -15,6 +15,7 @@ import { UserService } from '../shared/services/user.service';
 
 import { Link } from '../shared/models/link.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { TypesFiles, TypesLinks } from '../shared/models/file-upload.model';
 
 @Component({
   selector: 'app-files',
@@ -203,16 +204,4 @@ export class FilesComponent implements OnInit {
   getRefContextFile(refContextFile: number) {
     this.numContextFile = refContextFile;
   }
-}
-
-export interface TypesFiles {
-  id: number,
-  type: string,
-  icon: string
-}
-
-export interface TypesLinks {
-  id: number,
-  type: string,
-  icon: string
 }

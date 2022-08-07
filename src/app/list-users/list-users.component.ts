@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { UserService } from '../shared/services/user.service';
 
-import { FirebaseUserModel } from '../shared/models/user.model';
+import { FirebaseUserModel, Roles } from '../shared/models/user.model';
 
 @Component({
   selector: 'list-users',
@@ -111,9 +111,4 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllUsers.unsubscribe();
   }
-}
-
-export interface Roles {
-    id: number,
-    roleName: string
 }

@@ -22,3 +22,8 @@ export class Serie {
   }
   
 }
+
+export interface StatusSeries {
+  id: number,
+  status: string
+}

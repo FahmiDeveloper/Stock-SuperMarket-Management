@@ -12,7 +12,7 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
-import { Anime } from 'src/app/shared/models/anime.model';
+import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 @Component({
   selector: 'app-version-grid-animes',
@@ -168,9 +168,4 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     this.subscriptionForUser.unsubscribe();
   }
 
-}
-
-export interface StatusAnimes {
-  id: number,
-  status: string
 }

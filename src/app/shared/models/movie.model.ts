@@ -22,3 +22,8 @@ export class Movie {
   }
   
 }
+
+export interface StatusMovies {
+  id: number,
+  status: string
+}

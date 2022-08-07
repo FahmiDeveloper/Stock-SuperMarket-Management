@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import { SerieService } from 'src/app/shared/services/serie.service';
 
-import { Serie } from 'src/app/shared/models/serie.model';
+import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 @Component({
   selector: 'app-serie-form',
@@ -85,9 +85,4 @@ export class SerieFormComponent implements OnInit {
       this.serie.imageUrl = '';
     }
   }
-}
-
-export interface StatusSeries {
-  id: number,
-  status: string
 }

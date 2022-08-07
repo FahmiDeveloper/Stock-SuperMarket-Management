@@ -15,3 +15,23 @@ export class FileUpload {
   }
   
 }
+
+export interface TypesFiles {
+  id: number,
+  type: string,
+  icon: string
+}
+
+export interface TypesLinks {
+  id: number,
+  type: string,
+  icon: string
+}
+
+export interface ZipFile {
+  readonly name: string;
+  readonly dir: boolean;
+  readonly date: Date;
+  readonly data: any;
+  fileName: string;
+}

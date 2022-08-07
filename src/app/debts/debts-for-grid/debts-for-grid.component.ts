@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { DebtService } from 'src/app/shared/services/debt.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
-import { Debt } from 'src/app/shared/models/debt.model';
+import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from 'src/app/shared/models/debt.model';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
@@ -1255,19 +1255,4 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-}
-
-export interface PlacesMoney {
-  id: number,
-  place: string
-}
-
-export interface StatusOutDebts {
-  id: number,
-  status: string
-}
-
-export interface StatusInDebts{
-  id: number,
-  status: string
 }

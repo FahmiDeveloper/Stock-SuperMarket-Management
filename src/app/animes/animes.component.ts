@@ -12,7 +12,7 @@ import { UserService } from '../shared/services/user.service';
 import { AnimeService } from '../shared/services/anime.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
-import { Anime } from '../shared/models/anime.model';
+import { Anime, StatusAnimes } from '../shared/models/anime.model';
 
 @Component({
   selector: 'app-animes',
@@ -178,9 +178,4 @@ export class AnimesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllAnimes.unsubscribe();
     this.subscriptionForUser.unsubscribe();
   }
-}
-
-export interface StatusAnimes {
-  id: number,
-  status: string
 }
