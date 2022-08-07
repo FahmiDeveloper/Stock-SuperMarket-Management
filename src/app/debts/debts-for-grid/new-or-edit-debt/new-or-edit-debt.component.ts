@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { DebtService } from 'src/app/shared/services/debt.service';
 import { Debt } from 'src/app/shared/models/debt.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { UserService } from 'src/app/shared/services/user.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'new-or-edit-debt',
@@ -12,12 +18,14 @@ import { Debt } from 'src/app/shared/models/debt.model';
   styleUrls: ['./new-or-edit-debt.scss']
 })
 
-export class NewOrEditDebtComponent implements OnInit {
+export class NewOrEditDebtComponent implements OnInit, OnDestroy {
 
   debt: Debt = new Debt();
   arrayDebts: Debt[];
   selectUnitForRestMoney:string;
   selectUnitForFinancialDebt:string;
+  subscriptionForGetAllDebts: Subscription;
+  subscriptionForUser: Subscription;
 
   modalRef: any;
 
@@ -37,12 +45,65 @@ export class NewOrEditDebtComponent implements OnInit {
     {unitName: 'Mill'}
   ];
 
-  constructor(private debtService: DebtService) {}
+  filteredDebts: Debt[];
+  debtId: string;
+  user: FirebaseUserModel = new FirebaseUserModel();
+
+
+  constructor(
+    private debtService: DebtService,
+    public userService: UserService,
+    public authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+    ) 
+    {}
 
   ngOnInit() {
-    if (!this.debt.key) {
+    this.debtId = this.route.snapshot.paramMap.get('id');
+    this.getDebtData();
+    this.getRolesUser();
+  }
+
+  getDebtData() {
+    if (this.debtId) {
+      this.debtService
+        .getDebtId(this.debtId)
+        .valueChanges()
+        .pipe(take(1))
+        .subscribe(debt => {
+          this.debt = debt;
+        });
+    } else {
       this.debt.date = moment().format('YYYY-MM-DD');
+
+      this.subscriptionForGetAllDebts = this.debtService
+      .getAll()
+      .subscribe(debts => {
+        this.filteredDebts = debts;
+      });
     }
+  }
+
+  getRolesUser() {
+    this.subscriptionForUser = this.authService
+      .isConnected
+      .subscribe(res=>{
+        if(res) {
+          this.userService
+          .getCurrentUser()
+          .then(user=>{
+            if(user) {
+              this.userService
+                .get(user.uid)
+                .valueChanges()
+                .subscribe(dataUser=>{
+                  this.user = dataUser;
+                });
+              }
+          });   
+        }
+    })
   }
 
   save(debt) {
@@ -56,15 +117,15 @@ export class NewOrEditDebtComponent implements OnInit {
       if (debt.notToGetForNow == undefined) debt.notToGetForNow = false;
     }
 
-    if (this.debt.key) {
-      this.debtService.update(this.debt.key, debt);
+    if (this.debtId) {
+      this.debtService.update(this.debtId, debt);
       Swal.fire(
         'Debt data has been Updated successfully',
         '',
         'success'
       )
     } else {
-      if (this.arrayDebts[0].numRefDebt) debt.numRefDebt = this.arrayDebts[0].numRefDebt + 1;
+      if (this.filteredDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) debt.numRefDebt = this.filteredDebts[0].numRefDebt + 1;
       this.debtService.create(debt);
       Swal.fire(
       'New Debt added successfully',
@@ -72,7 +133,7 @@ export class NewOrEditDebtComponent implements OnInit {
       'success'
       )
     }
-    this.modalRef.close();
+    this.router.navigate(['/debts-for-grid']);  
   }
 
   checkAddRestMoney() {
@@ -167,6 +228,36 @@ export class NewOrEditDebtComponent implements OnInit {
 
   onSelectUnitForFinancialDebt(unitName:string) {
     this.debt.financialDebt = this.debt.financialDebt + unitName;
+  }
+
+  deleteDebt() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this debt!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.debtService.delete(this.debtId);
+        this.router.navigate(['/debts-for-grid']);
+        Swal.fire(
+          'Debt has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
+  }
+
+  cancel() {
+    this.router.navigate(['/debts-for-grid']);
+  }
+
+  ngOnDestroy() {
+    this.subscriptionForUser.unsubscribe();
+    if (!this.debtId) this.subscriptionForGetAllDebts.unsubscribe();
   }
 }
 

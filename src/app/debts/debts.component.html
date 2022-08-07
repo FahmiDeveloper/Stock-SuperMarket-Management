@@ -195,6 +195,18 @@
 </div>
 
 <br *ngIf="placeId">
+
+<div class="row" *ngIf="placeId" [hidden]="placeId == 5">
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+        <button
+            class="btn btn-danger float-right" 
+            style="margin-right: 6px;" 
+            (click)="deleteAllByPlace()">
+            <span class="font-weight-bold">Delete all</span>
+        </button>
+    </div>  
+</div>
         
 <div class="row">
     <table class="table table-striped">

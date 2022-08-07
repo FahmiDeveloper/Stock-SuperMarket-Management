@@ -6,16 +6,14 @@
                 <button class="btn btn-success ml-2 mr-4" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search"></i></button>
                 <button class="btn btn-info ml-1 mr-3 font-weight-bold text-application" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
                 <button class="btn btn-dark ml-1 mr-3 font-weight-bold text-application" (click)="openModalDebt(contentDebt)">Debt</button>
-                <a *ngIf="user.roleAddDebt" (click)="newDebt()" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>  
+                <a *ngIf="user.roleAddDebt" routerLink="/debts/new" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>  
             </div>              
         </div>          
     </div>
 
-    <br *ngIf="placeId && placeId == 5">
+    <br *ngIf="selectPlace">
 
-    <!-- <br *ngIf="checkPlace">
-
-    <div *ngIf="checkPlace" class="text-application">
+    <div *ngIf="selectPlace" class="text-application">
         <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 1">
             <div class="row">
                 <div class="col-6">
@@ -58,123 +56,121 @@
                     <span class="text-primary" style="font-size: 18px;">: الصندوق</span>
                 </div>
             </div>
-        </div>-->
+        </div>
 
-        <div [hidden]="clickNew || clickUpdate || clickDelete">
-            <div class="row" *ngIf="placeId && placeId == 5">
-                <div class="col-3"></div>
-                <div class="col-3 font-weight-bold">
-                    <label>
-                        <input 
-                            [(ngModel)]="getOutDebt" 
-                            name="getOutDebt" 
-                            id="getOutDebt" 
-                            type="checkbox" 
-                            class="form-check-input larger"
-                            (ngModelChange)="showOutDebt()"
-                            style="margin-left: 5px;">
-                        <span class="text-primary" style="margin-left: -45px;vertical-align: -webkit-baseline-middle;">المسال</span>
-                    </label>     
-                </div>
-                <div class="col-3"></div>
-                <div class="col-3 font-weight-bold">
-                    <label>
-                        <input 
-                            [(ngModel)]="getInDebt" 
-                            name="getInDebt" 
-                            id="getInDebt" 
-                            type="checkbox" 
-                            class="form-check-input larger"
-                            (ngModelChange)="showInDebt()"
-                            style="margin-left: 0px;">
-                        <span class="text-primary" style="margin-left: -50px;vertical-align: -webkit-baseline-middle;">المتخلد</span>
-                    </label>
-                </div>
+        <div class="row" *ngIf="placeId && placeId == 5">
+            <div class="col-3"></div>
+            <div class="col-3 font-weight-bold">
+                <label>
+                    <input 
+                        [(ngModel)]="getOutDebt" 
+                        name="getOutDebt" 
+                        id="getOutDebt" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="showOutDebt()"
+                        style="margin-left: 5px;">
+                    <span class="text-primary" style="margin-left: -45px;vertical-align: -webkit-baseline-middle;">المسال</span>
+                </label>     
             </div>
+            <div class="col-3"></div>
+            <div class="col-3 font-weight-bold">
+                <label>
+                    <input 
+                        [(ngModel)]="getInDebt" 
+                        name="getInDebt" 
+                        id="getInDebt" 
+                        type="checkbox" 
+                        class="form-check-input larger"
+                        (ngModelChange)="showInDebt()"
+                        style="margin-left: 0px;">
+                    <span class="text-primary" style="margin-left: -50px;vertical-align: -webkit-baseline-middle;">المتخلد</span>
+                </label>
+            </div>
+        </div>
+
+        <br *ngIf="getInDebt || getOutDebt">
     
-            <br *ngIf="getInDebt || getOutDebt">
-        
-            <div class="row" *ngIf="getInDebt || getOutDebt">
-                <div class="col-md-4">
-                    <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                        <div class="card-body text-dark" style="text-align: center;">
-                            <div class="row">
-                                <div class="col-7">
-                                    <span *ngIf="getInDebt">
-                                        <span *ngIf="totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}</span>
-                                        <span *ngIf="!totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                    </span>
-                                    <span *ngIf="getOutDebt">
-                                        <span *ngIf="totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebts }}</span>
-                                    <span *ngIf="!totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                    </span>
-                                </div>
-                                <div class="col-5 font-weight-bold">
-                                    <span class="text-primary" style="font-size: 18px;">:المجموع</span>
-                                </div>
+        <div class="row" *ngIf="getInDebt || getOutDebt">
+            <div class="col-md-4">
+                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
+                    <div class="card-body text-dark" style="text-align: center;">
+                        <div class="row">
+                            <div class="col-7">
+                                <span *ngIf="getInDebt">
+                                    <span *ngIf="totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}</span>
+                                    <span *ngIf="!totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                                </span>
+                                <span *ngIf="getOutDebt">
+                                    <span *ngIf="totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebts }}</span>
+                                <span *ngIf="!totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                                </span>
                             </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-7">
-                                    <select *ngIf="getInDebt" [(ngModel)]="statusInDebtId" name="statuInDebtId" id="statuInDebtId" class="form-control" (ngModelChange)="getTotalInDebtsByStatus($event)">
-                                        <option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
-                                            {{statusInDebt.status}}
-                                        </option>
-                                    </select>
-                                    <select *ngIf="getOutDebt" [(ngModel)]="statusOutDebtId" name="statusOutDebtId" id="statusOutDebtId" class="form-control" (ngModelChange)="getTotalOutDebtsByStatus($event)">
-                                        <option *ngFor="let statusOutDebt of statusOutDebts" [value]="statusOutDebt.id">
-                                            {{statusOutDebt.status}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-5 font-weight-bold">
-                                    <span class="text-primary" style="font-size: 18px;">:الحالة</span>
-                                </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:المجموع</span>
                             </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-7">
-                                     <select *ngIf="getInDebt" [ngModel]="creditorName" (ngModelChange)="getTotalInDebtsByCreditor($event)" name="creditorName" id="creditorName" class="form-control">
-                                        <option *ngFor="let creditor of creditors" [value]="creditor">
-                                            {{creditor}}
-                                        </option>
-                                    </select>
-                                    <select *ngIf="getOutDebt" [ngModel]="debtorName" (ngModelChange)="getTotalOutDebtsByDebtor($event)" name="debtorName" id="debtorName" class="form-control">
-                                        <option *ngFor="let debtor of debtors" [value]="debtor">
-                                            {{debtor}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-5 font-weight-bold">
-                                    <span *ngIf="getInDebt" class="text-primary" style="font-size: 18px;">:الدائنين</span>
-                                    <span *ngIf="getOutDebt" class="text-primary" style="font-size: 18px;">:المدينين</span>
-                                </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-7">
+                                <select *ngIf="getInDebt" [(ngModel)]="statusInDebtId" name="statuInDebtId" id="statuInDebtId" class="form-control" (ngModelChange)="getTotalInDebtsByStatus($event)">
+                                    <option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
+                                        {{statusInDebt.status}}
+                                    </option>
+                                </select>
+                                <select *ngIf="getOutDebt" [(ngModel)]="statusOutDebtId" name="statusOutDebtId" id="statusOutDebtId" class="form-control" (ngModelChange)="getTotalOutDebtsByStatus($event)">
+                                    <option *ngFor="let statusOutDebt of statusOutDebts" [value]="statusOutDebt.id">
+                                        {{statusOutDebt.status}}
+                                    </option>
+                                </select>
                             </div>
-                            <br *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
-                            <div class="row" *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
-                                <div class="col-7">
-                                    <span *ngIf="statusInDebtId || creditorName">
-                                        <span *ngIf="totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebtsByCreditor }}</span>
-                                        <span *ngIf="!totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                    </span>
-                                    <span *ngIf="statusOutDebtId || debtorName">
-                                        <span *ngIf="totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebtsByDebtor }}</span>
-                                        <span *ngIf="!totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                    </span>           
-                                </div>
-                                <div class="col-5 font-weight-bold">
-                                    <span class="text-primary" style="font-size: 18px;">:الدين</span>
-                                </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:الحالة</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-7">
+                                    <select *ngIf="getInDebt" [ngModel]="creditorName" (ngModelChange)="getTotalInDebtsByCreditor($event)" name="creditorName" id="creditorName" class="form-control">
+                                    <option *ngFor="let creditor of creditors" [value]="creditor">
+                                        {{creditor}}
+                                    </option>
+                                </select>
+                                <select *ngIf="getOutDebt" [ngModel]="debtorName" (ngModelChange)="getTotalOutDebtsByDebtor($event)" name="debtorName" id="debtorName" class="form-control">
+                                    <option *ngFor="let debtor of debtors" [value]="debtor">
+                                        {{debtor}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span *ngIf="getInDebt" class="text-primary" style="font-size: 18px;">:الدائنين</span>
+                                <span *ngIf="getOutDebt" class="text-primary" style="font-size: 18px;">:المدينين</span>
+                            </div>
+                        </div>
+                        <br *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
+                        <div class="row" *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
+                            <div class="col-7">
+                                <span *ngIf="statusInDebtId || creditorName">
+                                    <span *ngIf="totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebtsByCreditor }}</span>
+                                    <span *ngIf="!totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                                </span>
+                                <span *ngIf="statusOutDebtId || debtorName">
+                                    <span *ngIf="totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebtsByDebtor }}</span>
+                                    <span *ngIf="!totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
+                                </span>           
+                            </div>
+                            <div class="col-5 font-weight-bold">
+                                <span class="text-primary" style="font-size: 18px;">:الدين</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    
-            <br *ngIf="getInDebt || getOutDebt">
         </div>
+
+        <br *ngIf="getInDebt || getOutDebt">
         
-        <!-- <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 6">
+        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 6">
             <div class="row">
                 <div class="col-5">
                     <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInPosteAccount }}</span>
@@ -183,8 +179,8 @@
                     <span class="text-primary" style="font-size: 18px;">: الحساب البريدي</span>
                 </div>
             </div>
-        </div> -->
-    <!-- </div> -->
+        </div>
+    </div>
     
     <br>
 
@@ -207,12 +203,12 @@
             </button>
 
             <button
-                *ngIf="queryNote || placeId"
-                [hidden]="clickNew || clickUpdate || clickDelete"
+                *ngIf="selectPlace"
+                [hidden]="placeId == 5"
                 class="btn btn-danger float-right" 
                 style="margin-right: 6px;" 
-                (click)="clear()">
-                clear
+                (click)="deleteAllByPlace()">
+                <span class="font-weight-bold">Delete all</span>
             </button>
         </div>
     </div>
@@ -294,16 +290,17 @@
                     </div><br>
                     <div class="row btnswrap justify-content-center">
                         <button 
-                            *ngIf="user.roleUpdateDebt" 
-                            (click)="editDebt(debt)" 
+                            *ngIf="user.roleUpdateDebt"
+                            type="button"
+                            [routerLink]="['/debts', debt.key]" 
                             class="btn btn-secondary ml-1 mr-3"
                             style="text-decoration: none;">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </button>     
                         <button 
-                            *ngIf="user.roleDeleteDebt" 
-                            type="button" 
-                            (click)="deleteDebt(debt.key)" 
+                            *ngIf="user.roleDeleteDebt"
+                            type="button"
+                            [routerLink]="['/debts', debt.key]" 
                             class="btn btn-danger"
                             style="text-decoration: none;">
                             <i class="fa fa-trash" aria-hidden="true"></i>

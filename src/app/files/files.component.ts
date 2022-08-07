@@ -104,16 +104,18 @@ export class FilesComponent implements OnInit {
     })
   }
 
-  openListFiles(contentDetOutDebt, contentLinks, typeFile: TypesFiles) {
+  openListFiles(contentListFiles, contentLinks, typeFile: TypesFiles) {
+    this.clickShowLinks = false;
     this.typeFile = typeFile;
     this.numContextFile = null;
     if (this.typeFile.id == 6) {
       this.modalRefListLinks = this.modalService.open(contentLinks as Component, { size: 'lg', centered: true});
-    } else this.modalRefListFiles = this.modalService.open(contentDetOutDebt as Component, { size: 'lg', centered: true});
+    } else this.modalRefListFiles = this.modalService.open(contentListFiles as Component, { size: 'lg', centered: true});
   }
 
   showListTypeLinks(typeLink: TypesLinks) {
     this.clickShowLinks = true;
+    this.content = '';
     this.typeLink = typeLink;
     this.getFilteredLinks();
   }
@@ -173,6 +175,7 @@ export class FilesComponent implements OnInit {
 
   backToListTypeLinks() {
     this.clickShowLinks = false;
+    this.content = '';
   }
 
   shareLink(link: Link) {

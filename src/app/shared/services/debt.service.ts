@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
+import { Debt } from '../models/debt.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,4 +32,9 @@ export class DebtService {
   delete(debtId) {
     return this.db.object('/debts/' + debtId).remove();
   }
+
+  getDebtId(debtId: string): AngularFireObject<Debt> {
+    return this.db.object('/debts/' + debtId);
+  }
+
 }

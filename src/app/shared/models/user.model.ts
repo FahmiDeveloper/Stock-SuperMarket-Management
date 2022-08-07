@@ -5,6 +5,33 @@ export class FirebaseUserModel {
   email: string;
   provider: string;
   isAdmin: boolean;
+
+  roleMovies: boolean;
+  roleAddMovie: boolean;
+  roleUpdateMovie: boolean;
+  roleDeleteMovie: boolean;
+
+  roleAnimes: boolean;
+  roleAddAnime: boolean;
+  roleUpdateAnime: boolean;
+  roleDeleteAnime: boolean;
+
+  roleSeries: boolean;
+  roleAddSerie: boolean;
+  roleUpdateSerie: boolean;
+  roleDeleteSerie: boolean;
+
+  roleFiles: boolean;
+  roleAddFile: boolean;
+  roleUpdateFile: boolean;
+  roleDeleteFile: boolean;
+
+  roleDebts: boolean;
+  roleAddDebt: boolean;
+  roleUpdateDebt: boolean;
+  roleDeleteDebt: boolean;
+
+  //old roles
   roleEmployee: boolean;
   roleProduct: boolean;
   roleCategory: boolean;
@@ -14,26 +41,6 @@ export class FirebaseUserModel {
   roleAdd: boolean;
   roleUpdate: boolean;
   roleDelete: boolean;
-  roleMovies: boolean;
-  roleAnimes: boolean;
-  roleSeries: boolean;
-  roleFiles: boolean;
-  roleDebts: boolean;
-  roleAddMovie: boolean;
-  roleUpdateMovie: boolean;
-  roleDeleteMovie: boolean;
-  roleAddAnime: boolean;
-  roleUpdateAnime: boolean;
-  roleDeleteAnime: boolean;
-  roleAddSerie: boolean;
-  roleUpdateSerie: boolean;
-  roleDeleteSerie: boolean;
-  roleAddFile: boolean;
-  roleUpdateFile: boolean;
-  roleDeleteFile: boolean;
-  roleAddDebt: boolean;
-  roleUpdateDebt: boolean;
-  roleDeleteDebt: boolean;
 
   constructor(){
     this.image = "";
