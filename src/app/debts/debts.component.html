@@ -196,7 +196,7 @@
 
 <br *ngIf="placeId">
 
-<div class="row" *ngIf="placeId" [hidden]="placeId == 5">
+<div class="row" *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1) && placeId" [hidden]="placeId == 5">
     <div class="col-md-10"></div>
     <div class="col-md-2">
         <button
