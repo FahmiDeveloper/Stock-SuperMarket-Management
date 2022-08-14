@@ -16,7 +16,7 @@ import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
 export class DebtFormComponent implements OnInit {
 
   debt: Debt = new Debt();
-  arrayDebts: Debt[];
+  defaultDebts: Debt[];
   selectUnitForRestMoney:string;
   selectUnitForFinancialDebt:string;
 
@@ -66,7 +66,7 @@ export class DebtFormComponent implements OnInit {
         'success'
       )
     } else {
-      if (this.arrayDebts[0].numRefDebt) debt.numRefDebt = this.arrayDebts[0].numRefDebt + 1;
+      if (this.defaultDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) debt.numRefDebt = this.defaultDebts[0].numRefDebt + 1;
       this.debtService.create(debt);
       Swal.fire(
       'New Debt added successfully',

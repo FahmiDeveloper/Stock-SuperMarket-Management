@@ -25,6 +25,7 @@ export class NewOrEditAnimeComponent implements OnInit {
   modalRef: any;
 
   anime: Anime = new Anime();
+  arrayAnimes: Anime[];
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -57,6 +58,7 @@ export class NewOrEditAnimeComponent implements OnInit {
         'success'
       )
     } else {
+      if (this.arrayAnimes[0].numRefAnime) anime.numRefAnime = this.arrayAnimes[0].numRefAnime + 1;
       this.animeService.create(anime);
       Swal.fire(
       'New Anime added successfully',

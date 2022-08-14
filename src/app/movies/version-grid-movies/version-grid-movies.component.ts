@@ -23,6 +23,7 @@ import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
   filteredMovies: Movie[];
+  filteredMoviesCopie: Movie[];
   p: number = 1;
   isGrid: boolean = false;
   // queryDate: string = "";
@@ -61,6 +62,8 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllMovies = this.movieService
     .getAll()
     .subscribe(movies => {
+      this.filteredMoviesCopie = movies;
+
       if (this.queryName) 
       this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
       
@@ -134,6 +137,7 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(NewOrEditMovieComponent as Component, { size: 'lg', centered: true });
 
     modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.arrayMovies = this.filteredMoviesCopie;
   }
 
   editMovie(movie?: Movie) {

@@ -205,7 +205,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   newDebt() {
     const modalRef = this.modalService.open(DebtFormComponent as Component, { centered: true });
 
-    modalRef.componentInstance.arrayDebts = this.filteredDebtsCopie;
+    modalRef.componentInstance.defaultDebts = this.filteredDebtsCopie;
     modalRef.componentInstance.modalRef = modalRef;
   }
 

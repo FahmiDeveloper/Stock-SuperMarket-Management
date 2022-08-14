@@ -47,7 +47,7 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
     {unitName: 'Mill'}
   ];
 
-  filteredDebts: Debt[];
+  defaultDebts: Debt[];
   debtId: string;
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -81,7 +81,7 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
       this.subscriptionForGetAllDebts = this.debtService
       .getAll()
       .subscribe(debts => {
-        this.filteredDebts = debts;
+        this.defaultDebts = debts;
       });
     }
   }
@@ -126,7 +126,7 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
         'success'
       )
     } else {
-      if (this.filteredDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) debt.numRefDebt = this.filteredDebts[0].numRefDebt + 1;
+      if (this.defaultDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) debt.numRefDebt = this.defaultDebts[0].numRefDebt + 1;
       this.debtService.create(debt);
       Swal.fire(
       'New Debt added successfully',
