@@ -25,6 +25,7 @@ import { SharedResolver } from './shared/services/shared.resolver';
 
 
 export const rootRouterConfig: Routes = [
+  
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
@@ -32,10 +33,6 @@ export const rootRouterConfig: Routes = [
   
   { path: 'user', component: UserComponent,  resolve: { data: SharedResolver}},
   { path: 'home', component: HomeComponent,  resolve: { data: SharedResolver}},
-
-  // { path: 'employees/new', component: EmployeeFormComponent,  resolve: { data: SharedResolver}},
-  // { path: 'employees/:id', component: EmployeeFormComponent,  resolve: { data: SharedResolver}},
-  // { path: 'employees', component: EmployeesComponent,  resolve: { data: SharedResolver}},
 
   { path: 'movies/new', component: MovieFormComponent,  resolve: { data: SharedResolver}},
   { path: 'movies/:id', component: MovieFormComponent,  resolve: { data: SharedResolver}},
