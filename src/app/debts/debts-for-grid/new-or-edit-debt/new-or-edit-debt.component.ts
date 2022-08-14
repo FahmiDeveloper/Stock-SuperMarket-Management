@@ -23,13 +23,15 @@ import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
 export class NewOrEditDebtComponent implements OnInit, OnDestroy {
 
   debt: Debt = new Debt();
-  arrayDebts: Debt[];
+  defaultDebts: Debt[];
   selectUnitForRestMoney:string;
   selectUnitForFinancialDebt:string;
+  debtId: string;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
+
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
-
-  modalRef: any;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -46,11 +48,6 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
     {unitName: 'DT.'},
     {unitName: 'Mill'}
   ];
-
-  defaultDebts: Debt[];
-  debtId: string;
-  user: FirebaseUserModel = new FirebaseUserModel();
-
 
   constructor(
     private debtService: DebtService,
