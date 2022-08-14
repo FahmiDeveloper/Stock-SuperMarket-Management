@@ -25,6 +25,7 @@ export class NewOrEditSerieComponent implements OnInit {
   modalRef: any;
 
   serie: Serie = new Serie();
+  arraySeries: Serie[];
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -57,6 +58,7 @@ export class NewOrEditSerieComponent implements OnInit {
         'success'
       )
     } else {
+      if (this.arraySeries[0].numRefSerie) serie.numRefSerie = this.arraySeries[0].numRefSerie + 1;
       this.serieService.create(serie);
       Swal.fire(
       'New Serie added successfully',

@@ -23,13 +23,15 @@ import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
 export class NewOrEditDebtComponent implements OnInit, OnDestroy {
 
   debt: Debt = new Debt();
-  arrayDebts: Debt[];
+  defaultDebts: Debt[];
   selectUnitForRestMoney:string;
   selectUnitForFinancialDebt:string;
+  debtId: string;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
+
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
-
-  modalRef: any;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -46,11 +48,6 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
     {unitName: 'DT.'},
     {unitName: 'Mill'}
   ];
-
-  filteredDebts: Debt[];
-  debtId: string;
-  user: FirebaseUserModel = new FirebaseUserModel();
-
 
   constructor(
     private debtService: DebtService,
@@ -81,7 +78,7 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
       this.subscriptionForGetAllDebts = this.debtService
       .getAll()
       .subscribe(debts => {
-        this.filteredDebts = debts;
+        this.defaultDebts = debts;
       });
     }
   }
@@ -126,7 +123,7 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
         'success'
       )
     } else {
-      if (this.filteredDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) debt.numRefDebt = this.filteredDebts[0].numRefDebt + 1;
+      if (this.defaultDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) debt.numRefDebt = this.defaultDebts[0].numRefDebt + 1;
       this.debtService.create(debt);
       Swal.fire(
       'New Debt added successfully',

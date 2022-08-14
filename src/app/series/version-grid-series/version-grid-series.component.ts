@@ -24,6 +24,7 @@ import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   filteredSeries: Serie[];
+  filteredSeriesCopie: Serie[];
   p: number = 1;
   isGrid: boolean = false;
   // queryDate: string = "";
@@ -62,6 +63,8 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
+      this.filteredSeriesCopie = series;
+
       if (this.queryName) 
       this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
       
@@ -135,6 +138,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(NewOrEditSerieComponent as Component, { size: 'lg', centered: true });
 
     modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.arraySeries = this.filteredSeriesCopie;
   }
 
   editSerie(serie?: Serie) {

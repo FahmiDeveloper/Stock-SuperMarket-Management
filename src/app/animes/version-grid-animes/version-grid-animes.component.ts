@@ -23,6 +23,7 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 export class VersionGridAnimesComponent implements OnInit, OnDestroy {
 
   filteredAnimes: Anime[];
+  filteredAnimesCopie: Anime[];
   p: number = 1;
   isGrid: boolean = false;
   // queryDate: string = "";
@@ -61,6 +62,8 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllAnimes = this.animeService
     .getAll()
     .subscribe(animes => {
+      this.filteredAnimesCopie = animes;
+
       if (this.queryName) 
       this.filteredAnimes = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
       
@@ -134,6 +137,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(NewOrEditAnimeComponent as Component, { size: 'lg', centered: true });
 
     modalRef.componentInstance.modalRef = modalRef;
+    modalRef.componentInstance.arrayAnimes = this.filteredAnimesCopie;
   }
 
   editAnime(anime?: Anime) {
