@@ -74,6 +74,12 @@ import {
   RegisterComponent
 } from './core/components/index';
 
+import { 
+  ToDoListComponent,
+  TaskComponent,
+  TaskFormComponent
+} from './to-do-list/index';
+
 import { UserComponent } from './user/index';
 
 @NgModule({
@@ -126,7 +132,10 @@ import { UserComponent } from './user/index';
     NewOrEditDebtComponent,
     NewOrEditLinkComponent,
     ListUsersComponent,
-    ListUsersMobileComponent
+    ListUsersMobileComponent,
+    ToDoListComponent,
+    TaskComponent,
+    TaskFormComponent
   ],
   entryComponents: [
     NewOrEditMovieComponent,
