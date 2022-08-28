@@ -44,9 +44,9 @@ export class FirebaseUserModel {
   roleDelete: boolean;
 
   constructor(){
-    this.image = "";
-    this.name = "";
-    this.provider = "";
+    this.image = '';
+    this.name = '';
+    this.provider = '';
   }
 
 }

@@ -6,12 +6,20 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { RouterModule } from '@angular/router';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CustomFormsModule } from 'ng2-validation';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { MatCardModule } from '@angular/material/card';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { rootRouterConfig } from './app.routes';
@@ -66,13 +74,18 @@ import {
   ListUsersMobileComponent
 } from './list-users/index';
 
-
 import { 
   HeaderComponent,
   HomeComponent,
   LoginComponent,
   RegisterComponent
 } from './core/components/index';
+
+import { 
+  ToDoListComponent,
+  TaskComponent,
+  TaskFormComponent
+} from './to-do-list/index';
 
 import { UserComponent } from './user/index';
 
@@ -81,6 +94,13 @@ import { UserComponent } from './user/index';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    MatCardModule,
+    DragDropModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
     ReactiveFormsModule,
     PdfViewerModule,
     NgbModule,
@@ -91,7 +111,7 @@ import { UserComponent } from './user/index';
     AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
-    NgxDocViewerModule
+    NgxDocViewerModule, BrowserAnimationsModule
   ],
   declarations: [
     AppComponent,
@@ -126,7 +146,10 @@ import { UserComponent } from './user/index';
     NewOrEditDebtComponent,
     NewOrEditLinkComponent,
     ListUsersComponent,
-    ListUsersMobileComponent
+    ListUsersMobileComponent,
+    ToDoListComponent,
+    TaskComponent,
+    TaskFormComponent
   ],
   entryComponents: [
     NewOrEditMovieComponent,

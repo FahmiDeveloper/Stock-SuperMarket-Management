@@ -111,6 +111,18 @@
       </div>
     </div>
 
+    <!-------ToDoList-->
+    <div class="col-md-6 col-lg-4 column" *ngIf="!isMobile" routerLink="/to-do-list">
+      <div class="card gr-7">
+        <div class="txt">
+          <h1 class="text-application">To Do List</h1>
+        </div>
+        <div class="ico-card">
+          <i class="fa fa-film"></i>
+        </div>
+      </div>
+    </div>
+
     <!-------users-->
     <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin && !isMobile" routerLink="/users">
       <div class="card gr-5">

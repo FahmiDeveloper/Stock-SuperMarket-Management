@@ -12,13 +12,13 @@ export class Anime {
   numRefAnime: number;
 
   constructor(){
-    this.nameAnime = "";
-    this.date = "";
-    this.time = "";
-    this.note = "";
-    this.imageUrl = "";
+    this.nameAnime = '';
+    this.date = '';
+    this.time = '';
+    this.note = '';
+    this.imageUrl = '';
     this.statusId = null;
-    this.path = "";
+    this.path = '';
   }
   
 }

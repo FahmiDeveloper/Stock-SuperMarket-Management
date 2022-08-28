@@ -19,6 +19,7 @@ import { SerieFormComponent } from './series/serie-form/serie-form.component';
 import { SeriesComponent } from './series/series.component';
 import { VersionGridSeriesComponent } from './series/version-grid-series/version-grid-series.component';
 import { UserComponent } from './user/user.component';
+import { ToDoListComponent } from './to-do-list/to-do-list.component';
 
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
@@ -57,6 +58,8 @@ export const rootRouterConfig: Routes = [
   { path: 'debts/:id', component: NewOrEditDebtComponent,  resolve: { data: SharedResolver}},
 
   { path: 'users', component: ListUsersComponent,  resolve: { data: SharedResolver}},
-  { path: 'users-mobile', component: ListUsersMobileComponent,  resolve: { data: SharedResolver}}
+  { path: 'users-mobile', component: ListUsersMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'to-do-list', component: ToDoListComponent,  resolve: { data: SharedResolver}}
 
 ]; 

@@ -3,9 +3,11 @@
     <div class="row">
         <div class="col-md-4">
             <div class="row btnswrap justify-content-center">
-                <button class="btn btn-success ml-2 mr-4" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search"></i></button>
-                <button class="btn btn-info ml-1 mr-3 font-weight-bold text-application" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
-                <button class="btn btn-dark ml-1 mr-3 font-weight-bold text-application" (click)="openModalDebt(contentDebt)">Debt</button>
+                <button type="button" class="btn btn-success ml-2 mr-4" (click)="openModalSearch(contentModalSearch)">
+                    <i class="fa fa-search"></i>
+                </button>
+                <button type="button" class="btn btn-info ml-1 mr-4 font-weight-bold text-application" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
+                <!-- <button class="btn btn-dark ml-1 mr-3 font-weight-bold text-application" (click)="openModalDebt(contentDebt)">Debt</button> -->
                 <a *ngIf="user.roleAddDebt" routerLink="/debts/new" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>  
             </div>              
         </div>          
@@ -187,6 +189,7 @@
     <div class="row" *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)">
         <div class="col-md-4">
             <button
+                type="button"
                 *ngIf="!sortByDesc"
                 class="btn btn-warning float-right" 
                 style="margin-right: 6px;" 
@@ -195,6 +198,7 @@
             </button>
 
             <button
+                type="button"
                 *ngIf="sortByDesc"
                 class="btn btn-warning float-right" 
                 style="margin-right: 6px;" 
@@ -203,6 +207,7 @@
             </button>
 
             <button
+                type="button"
                 *ngIf="selectPlace"
                 [hidden]="placeId == 5"
                 class="btn btn-danger float-right" 
@@ -335,7 +340,9 @@
                     <div style="display: table-cell; width: 100%;">
                         <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
                     </div>
-                    <button class="btn btn-primary" (click)="getAllDebts()" style="margin-top: -3px;"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-primary" (click)="getAllDebts()" style="margin-top: -3px;">
+                        <i class="fa fa-search"></i>
+                    </button>
                     <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
                 </div>
             </div>
@@ -427,7 +434,7 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-4">
-                <button class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
+                <button type="button" class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
                     <span *ngIf="totalInDebts" class="font-weight-bold rest-money">{{ totalInDebts }}</span>
                     <span *ngIf="!totalInDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
@@ -440,7 +447,7 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-4">
-                <button class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
+                <button type="button" class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
                     <span *ngIf="totalOutDebts" class="font-weight-bold rest-money">{{ totalOutDebts }}</span>
                     <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
@@ -518,7 +525,8 @@
 
         <div class="row">
             <div class="col-md-4">
-                <button 
+                <button
+                    type="button" 
                     *ngIf="toPayThisMonth && detailsInDebt.length" 
                     (click)="deleteAll()" 
                     class="btn btn-danger font-weight-bold"
