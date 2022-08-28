@@ -100,7 +100,8 @@
                             <td>{{ link.content }}</td>
                             <td>
                                 <div class="btns-links">
-                                    <button 
+                                    <button
+                                        type="button"
                                         *ngIf="user.roleUpdateFile" 
                                         (click)="editLink(link)"
                                         class="btn btn-info">
@@ -147,7 +148,8 @@
                                 </td>
                                 <td>
                                     <div class="btns-links-mobile">
-                                        <button 
+                                        <button
+                                            type="button"
                                             *ngIf="user.roleUpdate" 
                                             (click)="editLink(link)"
                                             class="btn btn-info"

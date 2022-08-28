@@ -30,11 +30,11 @@
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-1">
-        <button class="btn btn-info font-weight-bold text-application" (click)="showRest(contentRestMoneyForeachPlace)">Rest</button>
+        <button type="button" class="btn btn-info font-weight-bold text-application" (click)="showRest(contentRestMoneyForeachPlace)">Rest</button>
     </div>
-    <div class="col-md-1">
+    <!-- <div class="col-md-1">
         <button class="btn btn-dark font-weight-bold text-application" (click)="showDebt(contentDebt)">Debt</button>
-    </div>    
+    </div>     -->
 </div>
 
 <br>
@@ -200,6 +200,7 @@
     <div class="col-md-10"></div>
     <div class="col-md-2">
         <button
+            type="button"
             class="btn btn-danger float-right" 
             style="margin-right: 6px;" 
             (click)="deleteAllByPlace()">
@@ -270,7 +271,8 @@
                 </td>
                 <td style="text-align:center;">
                     <div class="btnswrap">
-                        <button 
+                        <button
+                            type="button" 
                             *ngIf="user.roleUpdateDebt" 
                             (click)="editDebt(debt)"
                             class="btn btn-secondary">
@@ -371,7 +373,7 @@
     <div class="modal-body text-application">
         <div class="row">
             <div class="col-md-6">
-                <button class="btn btn-warning" style="float: right;" (click)="showDetInDebt(contentDetInDebt)">
+                <button type="button" class="btn btn-warning" style="float: right;" (click)="showDetInDebt(contentDetInDebt)">
                     <span *ngIf="totalInDebts" class="font-weight-bold rest-money">{{ totalInDebts }}</span>
                     <span *ngIf="!totalInDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
@@ -383,7 +385,7 @@
         <br>
         <div class="row">
             <div class="col-md-6">
-                <button class="btn btn-warning" style="float: right;" (click)="showDetOutDebt(contentDetOutDebt)">
+                <button type="button" class="btn btn-warning" style="float: right;" (click)="showDetOutDebt(contentDetOutDebt)">
                     <span *ngIf="totalOutDebts" class="font-weight-bold rest-money">{{ totalOutDebts }}</span>
                     <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money">0DT</span>
                 </button>
@@ -454,7 +456,8 @@
         <div class="row">
             <div class="col-md-9"></div>
             <div class="col-md-3">
-                <button 
+                <button
+                    type="button" 
                     *ngIf="toPayThisMonth && detailsInDebt.length" 
                     (click)="deleteAll()" 
                     class="btn btn-danger font-weight-bold float-right"

@@ -39,15 +39,15 @@ export class Debt {
   secondPartComposedFinancialOutDebtByDebtor:string;
 
   constructor(){
-    this.date = "";
-    this.time = "";
-    this.debtor = "";
-    this.creditor = "";
+    this.date = '';
+    this.time = '';
+    this.debtor = '';
+    this.creditor = '';
     this.financialDebt = null;
-    this.note = "";
+    this.note = '';
     this.placeId = null;
-    this.restMoney = "";
-    this.place = "";
+    this.restMoney = '';
+    this.place = '';
   }
   
 }

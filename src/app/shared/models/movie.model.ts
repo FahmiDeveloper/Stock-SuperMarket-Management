@@ -12,13 +12,13 @@ export class Movie {
   numRefMovie: number;
 
   constructor(){
-    this.nameMovie = "";
-    this.date = "";
-    this.time = "";
-    this.note = "";
-    this.imageUrl = "";
+    this.nameMovie = '';
+    this.date = '';
+    this.time = '';
+    this.note = '';
+    this.imageUrl = '';
     this.statusId = null;
-    this.path = "";
+    this.path = '';
   }
   
 }

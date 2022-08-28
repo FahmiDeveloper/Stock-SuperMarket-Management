@@ -6,8 +6,8 @@ export class Link {
   typeLinkId: number;
   
   constructor(){
-    this.content = "";
-    this.path = "";
+    this.content = '';
+    this.path = '';
   }
   
 }

@@ -12,13 +12,13 @@ export class Serie {
   numRefSerie: number;
 
   constructor(){
-    this.nameSerie = "";
-    this.date = "";
-    this.time = "";
-    this.note = "";
-    this.imageUrl = "";
+    this.nameSerie = '';
+    this.date = '';
+    this.time = '';
+    this.note = '';
+    this.imageUrl = '';
     this.statusId = null;
-    this.path = "";
+    this.path = '';
   }
   
 }

@@ -3,7 +3,9 @@
     <div class="row">
         <div class="col-md-4">
             <div style="width: 18rem;margin-inline: auto;">
-                <button class="btn btn-success" (click)="openModalSearch(contentModalSearch)"><i class="fa fa-search" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-success" (click)="openModalSearch(contentModalSearch)">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
                 <a *ngIf="user.roleAddMovie" (click)="newMovie()" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i></a>  
             </div> 
         </div>          
@@ -50,7 +52,8 @@
                         </div>
                     </div><br>
                     <div class="row btnswrap justify-content-center">
-                        <button 
+                        <button
+                            type="button"
                             *ngIf="user.roleUpdateMovie" 
                             (click)="editMovie(movie)" 
                             class="btn btn-secondary ml-1 mr-3"
@@ -104,7 +107,9 @@
                     <div style="display: table-cell; width: 100%;">
                         <input [(ngModel)]="queryName" type="text" class="form-control text-application" placeholder="Search by name...">
                     </div>
-                    <button class="btn btn-primary" (click)="getAllMovies()" style="margin-top: -3px;"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-primary" (click)="getAllMovies()" style="margin-top: -3px;">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
             </div>
             <br>
@@ -113,7 +118,9 @@
                     <div style="display: table-cell; width: 100%;">
                         <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
                     </div>
-                    <button class="btn btn-primary" (click)="getAllMovies()" style="margin-top: -3px;"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-primary" (click)="getAllMovies()" style="margin-top: -3px;">
+                        <i class="fa fa-search"></i>
+                    </button>
                     <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
                 </div>
             </div>
