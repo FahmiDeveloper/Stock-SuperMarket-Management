@@ -3,4 +3,66 @@
 <br>
 <br>
 
-<div class="row"></div>
+<div class="row">
+    <div class="content-wrapper">
+		<button (click)="newTask()" mat-button>
+		    <mat-icon>add</mat-icon>Add Task
+		</button>
+
+		<div class="container-wrapper">
+			<div class="container">
+				
+				<mat-form-field>
+					<mat-label>Task</mat-label>
+					<input matInput type="text" [(ngModel)]="taskName" (input)="searchByTask()"/>
+				</mat-form-field>
+
+				<h2>Backlog</h2>
+			
+				<mat-card
+					cdkDropList
+					id="todo"
+					#todoList="cdkDropList"
+					[cdkDropListData]="taskList"
+					[cdkDropListConnectedTo]="[doneList, inProgressList]"
+					(cdkDropListDropped)="drop($event)"
+					class="list">
+					<p class="empty-label" *ngIf="taskList?.length === 0">Empty list</p>
+					<task (edit)="editTask('todo', $event)" *ngFor="let task of taskList" cdkDrag [task]="task" [currentList]="'todo'"></task>
+				</mat-card>
+			</div>
+		
+			<div class="container">
+				<h2>In progress</h2>
+			
+				<mat-card
+					cdkDropList
+					id="inProgress"
+					#inProgressList="cdkDropList"
+					[cdkDropListData]="inProgress | async"
+					[cdkDropListConnectedTo]="[todoList, doneList]"
+					(cdkDropListDropped)="drop($event)"
+					class="list">
+					<p class="empty-label" *ngIf="(inProgress | async)?.length === 0">Empty list</p>
+					<task (edit)="editTask('inProgress', $event)" *ngFor="let task of inProgress | async" cdkDrag [task]="task"></task>
+				</mat-card>
+			</div>
+		
+			<div class="container">
+			    <h2>Done</h2>
+		
+				<mat-card
+					cdkDropList
+					id="done"
+					#doneList="cdkDropList"
+					[cdkDropListData]="done | async"
+					[cdkDropListConnectedTo]="[todoList, inProgressList]"
+					(cdkDropListDropped)="drop($event)"
+					class="list">
+					<p class="empty-label" *ngIf="(done | async)?.length === 0">Empty list</p>
+					<task (edit)="editTask('done', $event)" *ngFor="let task of done | async" cdkDrag [task]="task"></task>
+				</mat-card>
+			</div>
+		</div>
+	</div>
+</div>

@@ -13,6 +13,13 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CustomFormsModule } from 'ng2-validation';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
+import { MatCardModule } from '@angular/material/card';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { rootRouterConfig } from './app.routes';
@@ -87,6 +94,13 @@ import { UserComponent } from './user/index';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    MatCardModule,
+    DragDropModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
     ReactiveFormsModule,
     PdfViewerModule,
     NgbModule,
