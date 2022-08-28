@@ -6,6 +6,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { RouterModule } from '@angular/router';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -66,7 +67,6 @@ import {
   ListUsersMobileComponent
 } from './list-users/index';
 
-
 import { 
   HeaderComponent,
   HomeComponent,
@@ -91,7 +91,7 @@ import { UserComponent } from './user/index';
     AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
-    NgxDocViewerModule
+    NgxDocViewerModule, BrowserAnimationsModule
   ],
   declarations: [
     AppComponent,
