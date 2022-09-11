@@ -1,0 +1,15 @@
+<mat-card class="item" *ngIf="task" (click)="edit.emit(task)">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 style="margin-bottom: 5px;font-weight: 500;font-size: large;">{{ task.title }}</h3>
+        <br *ngIf="task.description">
+        <span style="font-size: initial;">{{ task.description }}</span>
+        <br *ngIf="task.description">
+        <br *ngIf="task.description">
+        <div style="display: inline;">
+          <span style="font-size: small;">{{ task.date | date: 'dd/MM/yyyy' }}</span>
+          <mat-icon color="warn" style="float: right;" (click)="deleteTask($event)">delete</mat-icon>
+        </div>
+      </div>
+    </div>
+</mat-card>

@@ -7,12 +7,12 @@ import { TaskDialogData } from 'src/app/shared/models/task-dialog-data';
 import { Task } from 'src/app/shared/models/task.model';
 
 @Component({
-    selector: 'task-form',
-    templateUrl: './task-form.component.html',
-    styleUrls: ['./task-form.scss']
+    selector: 'task-form-mobile',
+    templateUrl: './task-form-mobile.component.html',
+    styleUrls: ['./task-form-mobile.scss']
 })
 
-export class TaskFormComponent implements OnInit{
+export class TaskFormMobileComponent implements OnInit{
 
     rangeDays: string[] = [
       'Today', 
@@ -25,7 +25,7 @@ export class TaskFormComponent implements OnInit{
     private backupTask: Partial<Task> = { ...this.data.task };
 
     constructor(
-      public dialogRef: MatDialogRef<TaskFormComponent>,
+      public dialogRef: MatDialogRef<TaskFormMobileComponent>,
       @Inject(MAT_DIALOG_DATA) public data: TaskDialogData
     ) {}
 

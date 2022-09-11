@@ -7,12 +7,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { RouterModule } from '@angular/router';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { CustomFormsModule } from 'ng2-validation';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MatCardModule } from '@angular/material/card';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +14,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { CustomFormsModule } from 'ng2-validation';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { rootRouterConfig } from './app.routes';
@@ -84,7 +85,10 @@ import {
 import { 
   ToDoListComponent,
   TaskComponent,
-  TaskFormComponent
+  TaskFormComponent,
+  ToDoListMobileComponent,
+  TaskMobileComponent,
+  TaskFormMobileComponent
 } from './to-do-list/index';
 
 import { UserComponent } from './user/index';
@@ -99,6 +103,7 @@ import { UserComponent } from './user/index';
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -149,7 +154,10 @@ import { UserComponent } from './user/index';
     ListUsersMobileComponent,
     ToDoListComponent,
     TaskComponent,
-    TaskFormComponent
+    TaskFormComponent,
+    ToDoListMobileComponent,
+    TaskMobileComponent,
+    TaskFormMobileComponent
   ],
   entryComponents: [
     NewOrEditMovieComponent,
