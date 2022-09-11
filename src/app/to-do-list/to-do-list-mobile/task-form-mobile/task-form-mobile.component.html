@@ -1,6 +1,6 @@
 <mat-form-field>
     <mat-label>Title</mat-label>
-    <input matInput cdkFocusInitial [(ngModel)]="data.task.title" />
+    <input matInput type="text" [(ngModel)]="data.task.title" />
 </mat-form-field>
 
 <mat-form-field>
@@ -19,7 +19,7 @@
   
 <mat-form-field>
     <mat-label>Description</mat-label>
-    <textarea matInput [(ngModel)]="data.task.description"></textarea>
+    <textarea matInput type="text" [(ngModel)]="data.task.description"></textarea>
 </mat-form-field>
   
 <div mat-dialog-actions>

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as moment from 'moment';
 
-import { TaskFormComponent } from './task-form/task-form.component';
+import { TaskFormMobileComponent } from './task-form-mobile/task-form-mobile.component';
 
-import { Task } from '../shared/models/task.model';
-import { RangeDays } from '../shared/models/range-day';
-import { TaskDialogResult } from '../shared/models/task-dialog-result';
+import { Task } from '../../shared/models/task.model';
+import { RangeDays } from '../../shared/models/range-day';
+import { TaskDialogResult } from 'src/app/shared/models/task-dialog-result';
 
 
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
@@ -22,12 +22,12 @@ const getObservable = (collection: AngularFirestoreCollection<Task>) => {
 };
 
 @Component({
-    selector: 'to-do-list',
-    templateUrl: './to-do-list.component.html',
-    styleUrls: ['./to-do-list.scss']
+    selector: 'to-do-list-mobile',
+    templateUrl: './to-do-list-mobile.component.html',
+    styleUrls: ['./to-do-list-mobile.scss']
 })
 
-export class ToDoListComponent implements OnInit {
+export class ToDoListMobileComponent implements OnInit {
 
   toDoToday = getObservable(this.store.collection('toDoToday')) as Observable<Task[]>;
   toDoTomorrow = getObservable(this.store.collection('toDoTomorrow')) as Observable<Task[]>;
@@ -62,7 +62,7 @@ export class ToDoListComponent implements OnInit {
     {id: 3, range: 'Next week'},
     {id: 4, range: 'Later'}
   ];
-
+  
   rangeId: number = 0;
 
   constructor(
@@ -123,7 +123,7 @@ export class ToDoListComponent implements OnInit {
 
   editTask(list: 'toDoLater' | 'toDoNextWeek' | 'toDoThisWeek' | 'toDoToday' | 'toDoTomorrow', task: Task): void {
     let firstRange = task.taskToDoIn;
-    const dialogRef = this.dialog.open(TaskFormComponent, {
+    const dialogRef = this.dialog.open(TaskFormMobileComponent, {
       width: '270px',
       data: {
         task,
@@ -201,6 +201,7 @@ export class ToDoListComponent implements OnInit {
 
           this.store.collection(event.container.id).doc(currentTask.id).update(currentTask);
           this.store.collection(event.container.id).doc(previousTask.id).update(previousTask);
+
         }
     }
 
@@ -212,6 +213,7 @@ export class ToDoListComponent implements OnInit {
 
           this.store.collection(event.container.id).doc(currentTask.id).update(currentTask);
           this.store.collection(event.container.id).doc(previousTask.id).update(previousTask);
+
         }
       }
      
@@ -262,7 +264,7 @@ export class ToDoListComponent implements OnInit {
 
   newTask(): void {
 
-    const dialogRef = this.dialog.open(TaskFormComponent, {
+    const dialogRef = this.dialog.open(TaskFormMobileComponent, {
       width: '270px',
       data: {
         task: {},

@@ -5,4 +5,5 @@ export interface Task {
     description: string;
     orderNo: number;
     indexNo: number;
+    taskToDoIn:string;
 }
