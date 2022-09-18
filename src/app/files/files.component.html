@@ -150,7 +150,7 @@
                                     <div class="btns-links-mobile">
                                         <button
                                             type="button"
-                                            *ngIf="user.roleUpdate" 
+                                            *ngIf="user.roleUpdateFile" 
                                             (click)="editLink(link)"
                                             class="btn btn-info"
                                             style="width: 42px;">
@@ -165,7 +165,7 @@
                                             <i class="fa fa-link" aria-hidden="true"></i>
                                         </a><br>                       
                                         <button 
-                                            *ngIf="user.roleDelete" 
+                                            *ngIf="user.roleDeleteFile" 
                                             type="button" 
                                             (click)="deleteLink(link.key)"
                                             class="btn btn-danger"

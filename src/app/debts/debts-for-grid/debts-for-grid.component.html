@@ -212,7 +212,7 @@
                 [hidden]="placeId == 5"
                 class="btn btn-danger float-right" 
                 style="margin-right: 6px;" 
-                (click)="deleteAllByPlace()">
+                (click)="deleteAllByPlace(contentLoading)">
                 <span class="font-weight-bold">Delete all</span>
             </button>
         </div>
@@ -914,4 +914,22 @@
         </div>
     </div>
 
+</ng-template>
+
+<ng-template #contentLoading let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+      <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold text-application">test</h4>
+  
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <div class="modal-body text-application">
+      <div *ngIf="isLoading" class="text-center">
+        <div class="spinner-border" style="width: 10rem; height: 10rem;" role="status"></div><br><br>
+        <h4>Delete debts in progress...</h4>
+      </div>
+    </div>
 </ng-template>

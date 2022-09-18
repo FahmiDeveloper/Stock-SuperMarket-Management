@@ -19,13 +19,15 @@ import { Movie } from 'src/app/shared/models/movie.model';
 export class ShowMoviePictureComponent implements OnInit {
 
   @Input() movie: Movie = new Movie();
-  @Input() isGrid: boolean;
+
+  movieForModal: Movie = new Movie();
 
   pictureMovie: string;
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   isMobile: boolean;
+  dialogRef: any;
 
   constructor(
     public modalService: NgbModal, 
@@ -62,5 +64,9 @@ export class ShowMoviePictureComponent implements OnInit {
       alert('No images selected');
       this.pictureMovie = '';
     }
-   }
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
 }

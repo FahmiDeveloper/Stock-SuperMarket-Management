@@ -39,6 +39,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   pageDetsOutDebt: number = 1;
   sortByDesc: boolean = true;
   selectPlace: boolean = false;
+  isLoading: boolean;
 
   // queryDate: string = "";
   restInPocket: string = "";
@@ -94,6 +95,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   modalRefDetOutDebt: any;
   modalRefChangeStatusInDebt: any;
   modalRefChangeStatusOutDebt: any;
+  modalRefLodaing: any;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 
@@ -1225,7 +1227,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     this.modalRefSearch.close();
   }
 
-  deleteAllByPlace() {
+  deleteAllByPlace(contentLoading) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'Delete all this debts!',
@@ -1235,8 +1237,17 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
+        this.modalRefLodaing = this.modalService.open(contentLoading as Component, { size: 'lg', centered: true });
+
+        this.isLoading = true;
+
         this.filteredDebtsCopie.filter(debt => debt.placeId == this.placeId).forEach(element => {
           this.debtService.delete(element.key);
+        });
+        setTimeout(() => {
+          this.isLoading = false;
+          this.modalRefLodaing.close();
+
           Swal.fire(
             'Debts has been deleted successfully',
             '',
@@ -1246,7 +1257,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
               this.searchByplace(this.placeId);
             }
           })
-        });
+        }, 5000);
       }
     })
   }

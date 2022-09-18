@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -15,6 +17,7 @@ import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
   templateUrl: './movie-form.component.html',
   styleUrls: ['./movie-form.component.scss']
 })
+
 export class MovieFormComponent implements OnInit {
 
   basePath = '/PicturesMovies';
@@ -33,11 +36,13 @@ export class MovieFormComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
-  modalRef: any;
+  formControl = new FormControl('', [Validators.required]);
 
   constructor(
     private movieService: MovieService, 
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    public dialogRef: MatDialogRef<MovieFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Movie
   ) {}
 
   ngOnInit() {
@@ -65,7 +70,7 @@ export class MovieFormComponent implements OnInit {
       'success'
       )
     }
-    this.modalRef.close();
+    this.close();
   }
 
   async onFileChanged(event) {
@@ -84,4 +89,13 @@ export class MovieFormComponent implements OnInit {
       this.movie.imageUrl = '';
     }
   }
+
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
+
 }

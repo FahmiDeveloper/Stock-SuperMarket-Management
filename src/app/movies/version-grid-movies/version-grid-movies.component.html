@@ -1,139 +1,170 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Movies</h1>
-<div class="container mx-auto" style="margin-top: 50px;">
-    <div class="row">
-        <div class="col-md-4">
-            <div style="width: 18rem;margin-inline: auto;">
-                <button type="button" class="btn btn-success" (click)="openModalSearch(contentModalSearch)">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-                <a *ngIf="user.roleAddMovie" (click)="newMovie()" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i></a>  
-            </div> 
-        </div>          
-    </div>
+<h1 class="titleTextInterface text-application">Movies</h1>
 
-    <br>
-    <div class="row text-application">
-        <div class="col-md-4" *ngFor="let movie of (filteredMovies | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-            <div class="card bg-white" style="width: 18rem;margin-inline: auto;">
-                <show-movie-picture [movie]="movie" [isGrid]="isGrid"></show-movie-picture>
-                <div class="card-body text-dark">
-                    <h5 class="card-title text-success font-weight-bold text-center">{{ movie.nameMovie }}</h5>
-                    <div class="row">
-                        <div class="col-4">
-                            <span class="text-primary font-weight-bold">Date:</span>
-                        </div>
-                        <div class="col-8 font-weight-bold">
-                            {{ movie.date | date:'dd/MM/yyyy' }}
-                        </div>
-                    </div>
-                    <!-- <div class="row">
-                        <div class="col-4">
-                            <span class="text-primary font-weight-bold">Time:</span>
-                        </div>
-                        <div class="col-8 font-weight-bold">
-                            {{ movie.time }}
-                        </div>
-                    </div> -->
-                    <div class="row">
-                        <div class="col-4">
-                            <span class="text-primary font-weight-bold">Status:</span>
-                        </div>
-                        <div class="col-8 font-weight-bold">
-                            <span *ngIf="movie.statusId">{{ movie.status }}</span>
-                            <span *ngIf="!movie.statusId">-</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <span class="text-primary font-weight-bold">Note:</span>
-                        </div>
-                        <div class="col-8 font-weight-bold">
-                            {{ movie.note }}
-                        </div>
-                    </div><br>
-                    <div class="row btnswrap justify-content-center">
-                        <button
-                            type="button"
-                            *ngIf="user.roleUpdateMovie" 
-                            (click)="editMovie(movie)" 
-                            class="btn btn-secondary ml-1 mr-3"
-                            style="text-decoration: none;"
-                            [hidden]="movie.statusId == 3">
-                            <i class="fa fa-edit" aria-hidden="true"></i>
-                        </button>
-                        <a 
-                            *ngIf="movie.path && (movie.statusId == 1 || movie.statusId == 2)" 
-                            href="{{ movie.path }}" 
-                            target="_blank" 
-                            class="btn btn-warning ml-1 mr-4">
-                            <i class="fa fa-link" aria-hidden="true"></i>
-                        </a>      
-                        <button 
-                            *ngIf="user.roleDeleteMovie" 
-                            type="button" 
-                            (click)="deleteMovie(movie.key)" 
-                            class="btn btn-danger"
-                            style="text-decoration: none;"
-                            [hidden]="movie.statusId == 3">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                    </div>   
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" (click)="newMovie()" mat-mini-fab color="primary" style="float: right;">
+            <mat-icon style="color: white;">add</mat-icon>
+        </button>
 
-    <div class="row">
-        <div class="col-md-4">
-            <pagination-controls (pageChange)="p = $event" responsive="true"></pagination-controls>
-        </div>        
+        <button 
+            *ngIf="!sortByDesc"
+            type="button"  
+            mat-mini-fab 
+            color="primary" 
+            (click)="sortByRefMovieDesc()" 
+            style="float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+        <button 
+            *ngIf="sortByDesc"
+            type="button"
+            mat-mini-fab
+            color="primary" 
+            (click)="sortByRefMovieAsc()" 
+            style="float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+    </div> 
+</div>
+
+<br>
+ 
+<div class="row">
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput type="text" name="queryName" (keyup)="getAllMovies()" [(ngModel)]="queryName"/>
+        </mat-form-field>
+    </div>
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>Note</mat-label>
+            <input matInput type="text" name="queryNote" (keyup)="getAllMovies()" [(ngModel)]="queryNote"/>
+        </mat-form-field>
+    </div>
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select name="statusMovie" [(ngModel)]="statusId" (selectionChange)="getAllMovies()">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
+                    {{statusMovie.status}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 </div>
 
-<ng-template #contentModalSearch let-modal let-c="close" let-d="dismiss">
+<br>
+  
+<div class="example-container mat-elevation-z8">
+    <div class="example-table-container">
+        <table mat-table [dataSource]="dataSource">
+  
+            <ng-container matColumnDef="picture">
+                <th mat-header-cell *matHeaderCellDef>Picture</th>
+                <td mat-cell *matCellDef="let element"> 
+                    <img *ngIf="element.imageUrl" mat-card-md-image [src]="element.imageUrl" (click)="zoomPicture(element)">
+                    <img *ngIf="!element.imageUrl" mat-card-md-image src="/assets/pictures/NoImageAvailable.png" (click)="zoomPicture(element)">
+                    <span  style="margin-left: 50px;">2h 9m</span>
+                </td>
+            </ng-container>
 
-    <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-application">Search</h4>
-
-        <button type="button" class="close" aria-label="Close" (click)="modalRefSearch.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4" style="display: table;">
-                    <div style="display: table-cell; width: 100%;">
-                        <input [(ngModel)]="queryName" type="text" class="form-control text-application" placeholder="Search by name...">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="gridForLegend">
+                        <div><span>Name:</span></div>
+                        <div><span style="cursor: pointer;" (click)="copyNameMovie(element.nameMovie)">{{ element.nameMovie }}</span></div>
                     </div>
-                    <button type="button" class="btn btn-primary" (click)="getAllMovies()" style="margin-top: -3px;">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4" style="display: table;">
-                    <div style="display: table-cell; width: 100%;">
-                        <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="gridForLegend">
+                        <div><span>Date:</span></div>
+                        <div>{{ element.date | date:'dd/MM/yyyy' }}</div>
                     </div>
-                    <button type="button" class="btn btn-primary" (click)="getAllMovies()" style="margin-top: -3px;">
-                        <i class="fa fa-search"></i>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="gridForLegend">
+                        <div><span>Status:</span></div>
+                        <div>{{ element.status }}</div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="note">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="gridForLegend">
+                        <div><span>Note:</span></div>
+                        <div>{{ element.note }}</div>
+                    </div>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="star">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element:element}">
+                        <mat-icon>more_vert</mat-icon>
                     </button>
-                    <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4">
-                    <select [ngModel]="statusId" (ngModelChange)="getAllMovies($event)" name="statusId" id="statusId" class="form-control">
-                        <option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
-                            {{statusMovie.status}}
-                        </option>
-                    </select>
-                </div>
-            </div>
+                </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+
+        <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+            No results
         </div>
-    </div>        
-</ng-template>
+    
+        <mat-paginator 
+            [pageSizeOptions]="[8]"
+            showFirstLastButtons 
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+</div>
+  
+<mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-movie="element">
+
+        <button 
+            type="button"
+            *ngIf="user.roleUpdateMovie" 
+            (click)="editMovie(movie)"  
+            mat-menu-item 
+            >
+            <mat-icon aria-label="Edit" style="color: #3f51b5;">edit</mat-icon>
+            <span>Edit</span>
+        </button>
+
+        <button
+            type="button"
+            *ngIf="movie.path && (movie.statusId == 1 || movie.statusId == 2)"  mat-menu-item>
+            <mat-icon style="color: #ff4081;">remove_red_eye</mat-icon>
+            <a href="{{ movie.path }}" target="_blank">
+                <span style="color: black !important;">Watch</span>
+            </a>  
+        </button>
+
+        <button 
+            type="button"
+            *ngIf="user.roleDeleteMovie" mat-menu-item (click)="deleteMovie(movie.key)" [hidden]="movie.statusId == 3">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>
+
+    </ng-template>
+</mat-menu>
