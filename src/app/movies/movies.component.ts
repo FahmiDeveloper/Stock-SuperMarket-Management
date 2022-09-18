@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MovieFormComponent } from './movie-form/movie-form.component';
 
@@ -22,9 +24,10 @@ import { Movie, StatusMovies } from '../shared/models/movie.model';
 
 export class MoviesComponent implements OnInit, OnDestroy {
 
-  filteredMovies: Movie[];
+  dataSource = new MatTableDataSource<Movie>();
+  displayedColumns: string[] = ['picture', 'details', 'actions'];
+
   p: number = 1;
-  // queryDate: string = "";
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
@@ -34,6 +37,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
   subscriptionForUser: Subscription;
 
   user: FirebaseUserModel = new FirebaseUserModel();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -47,7 +52,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
     private movieService: MovieService, 
     public userService: UserService,
     public authService: AuthService,
-    protected modalService: NgbModal
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
@@ -55,23 +60,30 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.getRolesUser();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   getAllMovies() {
     this.subscriptionForGetAllMovies = this.movieService
     .getAll()
     .subscribe(movies => {
-      if (this.queryName) 
-      this.filteredMovies = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
+      if (this.queryName) {
+        this.dataSource.data = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
       
-      else if (this.queryNote) 
-      this.filteredMovies = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      else if (this.queryNote) {
+        this.dataSource.data = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
       
-      // else if (this.queryDate) 
-      // this.filteredMovies = movies.filter(movie => movie.date.includes(this.queryDate));
+      else if (this.statusId) {
+        this.dataSource.data = movies.filter(movie => movie.statusId == this.statusId);   
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
       
-      else if (this.statusId) 
-      this.filteredMovies = movies.filter(movie => movie.statusId == this.statusId);   
-      
-      else this.filteredMovies = movies;
+      else this.dataSource.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
 
       this.getStatusMovie();
     });
@@ -118,15 +130,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  clear() {
-    // this.queryDate = "";
-    this.queryName = "";
-    this.statusId = null;
-    this.getAllMovies();
-  }
-
   getStatusMovie() {
-    this.filteredMovies.forEach(element=>{
+    this.dataSource.data.forEach(element=>{
       this.statusMovies.forEach(statusMovie => {
         if (statusMovie.id == element.statusId) {
           element.status = statusMovie.status;
@@ -137,17 +142,13 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   newMovie() {
-    const modalRef = this.modalService.open(MovieFormComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.arrayMovies = this.filteredMovies;
-    modalRef.componentInstance.modalRef = modalRef;
+    const dialogRef = this.dialogService.open(MovieFormComponent, {width: '800px', data: {movie: {}}});
+    dialogRef.componentInstance.arrayMovies = this.dataSource.data; 
   }
 
   editMovie(movie?: Movie) {
-    const modalRef = this.modalService.open(MovieFormComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.modalRef = modalRef;
-    modalRef.componentInstance.movie = movie;
+    const dialogRef = this.dialogService.open(MovieFormComponent, {width: '800px'});
+    dialogRef.componentInstance.movie = movie;
   }
 
   copyNameMovie(nameMovie: string){
@@ -165,13 +166,13 @@ export class MoviesComponent implements OnInit, OnDestroy {
   }
 
   sortByRefMovieDesc() {
-    this.filteredMovies = this.filteredMovies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
     this.sortByDesc = true;
   }
 
   sortByRefMovieAsc() {
-      this.filteredMovies = this.filteredMovies.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
-      this.sortByDesc = false;
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
+    this.sortByDesc = false;
   }
 
   ngOnDestroy() {

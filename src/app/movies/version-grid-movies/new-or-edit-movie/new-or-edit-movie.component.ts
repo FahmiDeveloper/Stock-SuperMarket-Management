@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -19,13 +20,15 @@ import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 export class NewOrEditMovieComponent implements OnInit {
 
+  movie: Movie = new Movie();
+  arrayMovies: Movie[];
+
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   modalRef: any;
 
-  movie: Movie = new Movie();
-  arrayMovies: Movie[];
+  formControl = new FormControl('', [Validators.required]);
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -85,4 +88,9 @@ export class NewOrEditMovieComponent implements OnInit {
       this.movie.imageUrl = '';
     }
   }
+
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
+  }
+
 }

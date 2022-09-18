@@ -13,6 +13,10 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+table {
+  width: 100%;
+}
+
 .table thead th {
   text-align: center;
   font-weight: bold;
@@ -38,11 +42,15 @@
 }
 
 .titleTextInterface {
-  padding-top: 60px;
+  padding-top: 20px;
+  font-weight: bold;
+  color: #dc3545;
 }
 
 .text-application {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
 }
+
 html, body { height: 100%; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

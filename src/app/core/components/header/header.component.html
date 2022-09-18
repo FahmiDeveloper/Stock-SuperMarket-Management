@@ -1,71 +1,49 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" *ngIf="user && isConnected">
+<mat-toolbar color="primary" *ngIf="user && isConnected">
+  <span class="fill-remaining-space text-application">Personal Informations</span>
 
-  <div class="container">
-    <span *ngIf="isMobile">
+  <span class="fill-remaining-space" *ngIf="isMobile">
 
-      <img *ngIf="user.photoURL" [src]="user.photoURL" class="picture">&nbsp;
-      <img *ngIf="!user.photoURL" src="/src/assets/pictures/nopictureuser.jpg" class="picture">&nbsp;
-
-      <span *ngIf="user.displayName" class="text-application" style="color: white;font-weight: bold;">{{ user.displayName }}</span>
-      <span *ngIf="!user.displayName" class="text-application" style="color: white;font-weight: bold;">{{ userName }}</span>
-
-    </span>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="isMobile" routerLink="/home">
-      <i class="fa fa-lg fa-home" aria-hidden="true" style="color: white;"></i>
+    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()" style="float: right;">
+      <mat-icon>menu</mat-icon>
     </button>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" *ngIf="isMobile" (click)="logout()">
-      <i class="fa fa-lg fa-power-off" aria-hidden="true" style="color: white;"></i>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false" yPosition="above" xPosition="before">
+      <span (click)="menuTrigger.closeMenu()">
+
+        <button mat-menu-item>
+          <mat-icon>home</mat-icon>
+          <span routerLink="/home">Home</span>
+        </button>
+
+        <button mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span (click)="logout()">Logout</span>
+        </button>
+
+      </span>
+    </mat-menu>
+  </span>
+
+  <span class="fill-remaining-space" *ngIf="!isMobile">
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" style="float: right;">
+      <mat-icon>menu</mat-icon>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link font-weight-bold text-application" routerLink="/home">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li ngbDropdown class="nav-item dropdown" hidden>
-          <a ngbDropdownToggle class="nav-link dropdown-toggle white-text" id="dropdown01" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">Services</a>
-          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
-        <li class="nav-item" hidden>
-          <a class="nav-link" href="#">About Us</a>
-        </li>
-      </ul>
-      <form id="searchForm" class="navbar-form navbar-right form-inline my-2 my-lg-0" hidden>
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-      <div class="navbar-header navbar-right">
-        <ul class="nav navbar-nav">
-          <li ngbDropdown class="nav-item dropdown">
-            <a *ngIf="user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold text-application" id="dropdown01"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ user.displayName }}
-            </a>
-            <a *ngIf="!user.displayName" ngbDropdownToggle class="nav-link dropdown-toggle font-weight-bold text-application" id="dropdown01"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ userName }}
-            </a>
-            <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Edit profile</a>
-              <a class="dropdown-item" (click)="logout()" style="cursor: pointer;">Sign out</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <img *ngIf="user.photoURL" [src]="user.photoURL" class="picture">
-        <img *ngIf="!user.photoURL" src="/src/assets/pictures/nopictureuser.jpg" class="picture">
-      </div>
-    </div>
-    
-  </div>
-</nav>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false" yPosition="above" xPosition="before">
+      <span (mouseleave)="menuTrigger.closeMenu()">
+
+        <button mat-menu-item>
+          <mat-icon>home</mat-icon>
+          <span routerLink="/home">Home</span>
+        </button>
+
+        <button mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span (click)="logout()">Logout</span>
+        </button>
+
+      </span>
+    </mat-menu>
+  </span>
+</mat-toolbar>

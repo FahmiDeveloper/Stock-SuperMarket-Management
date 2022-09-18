@@ -1,75 +1,57 @@
-<div class="modal-header text-center text-application">
-    <h4 class="modal-title w-100" *ngIf="!movie.key">New Movie</h4>
-    <h4 class="modal-title w-100" *ngIf="movie.key">Edit Movie</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modalRef.close()">
-        <span aria-hidden="true">&times;</span>
-    </button> 
-</div>
+<h3 *ngIf="!movie.key" mat-dialog-title>Add new movie</h3>
+<h3 *ngIf="movie.key" mat-dialog-title>Edit movie</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <form (ngSubmit)="save(f.value)" #f="ngForm">
+
+            <mat-form-field color="accent" style="width: 305px;">
+                <input matInput #input type="text" placeholder="Name" [(ngModel)]="movie.nameMovie" name="nameMovie" required>
+                <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
     
-<div class="modal-body">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-application">
-                <form #f="ngForm" (ngSubmit)="save(f.value)">
-                    <div class="form-group">
-                        <label for="nameMovie">Name</label>
-                        <input #nameMovie="ngModel" [(ngModel)]="movie.nameMovie" name="nameMovie" id="nameMovie"
-                            type="text" class="form-control" required [minlength]="3">
-                        <div class="alert alert-danger" *ngIf="nameMovie.touched && nameMovie.invalid">
-                            <div *ngIf="nameMovie.errors.required"> Name is required.</div>
-                            <div *ngIf="nameMovie.errors?.minlength">Name should contain at least 3 characters or higher.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" hidden>
-                        <label for="date">Date</label>
-                        <input #date="ngModel" [(ngModel)]="movie.date" name="date" id="date" type="date"
-                            class="form-control">
-                    </div>
-                    <div class="form-group" hidden>
-                        <label for="time">Time</label>
-                        <input #time="ngModel" [(ngModel)]="movie.time" name="time" id="time" type="time"
-                            class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="statusId">Status</label>
-                        <select #statusId="ngModel" [(ngModel)]="movie.statusId" name="statusId" id="statusId"
-                            class="form-control" required>
-                            <option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
-                                {{statusMovie.status}}
-                            </option>
-                        </select>
-                        <div class="alert alert-danger" *ngIf="statusId.touched && statusId.invalid">
-                            Status is required.
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="note">Note</label>
-                        <textarea #note="ngModel" [(ngModel)]="movie.note" name="note" id="note" type="text" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group" *ngIf="movie.statusId && (movie.statusId == 1 || movie.statusId == 2)">
-                        <label for="path">Path</label>
-                        <input #path="ngModel" [(ngModel)]="movie.path" name="path" id="path" type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="imageUrl">Picture</label>
-                        <input [(ngModel)]="movie.imageUrl" name="imageUrl" id="imageUrl" type="text" class="form-control"
-                            hidden>
-                        <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
-                            accept=".jpeg,.jpg,.png,.svg" />
-                        <br>
-                        <div *ngIf="progressValue | async as val">
-                            <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
-                            <br />
-                            <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
-                            <span *ngIf="val == 100" class="progressComplete">Completed !</span>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <button type="submit" class="btn btn-primary" [disabled]="f.invalid"><i class="fa fa-save" aria-hidden="true"></i></button>
-                    </div>                    
-                </form>
+            <mat-form-field color="accent" style="width: 305px;">
+                <input matInput #input type="date" placeholder="Date" [(ngModel)]="movie.date" name="date" readonly>
+                <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field color="accent" style="width: 305px;">
+                <mat-select placeholder="Status" [(ngModel)]="movie.statusId" name="statusId" required>
+                    <mat-option value=""></mat-option>
+                    <mat-option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
+                        {{statusMovie.status}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field color="accent" style="width: 305px;">
+                <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="movie.note" name="note" rows="4" cols="40"></textarea>
+            </mat-form-field>
+    
+            <mat-form-field *ngIf="movie.statusId && (movie.statusId == 1 || movie.statusId == 2)" color="accent" style="width: 305px;">
+                <textarea matInput #input type="text" placeholder="Path" [(ngModel)]="movie.path" name="path" rows="4" cols="40"></textarea>
+            </mat-form-field>
+    
+            <mat-form-field style="width: 305px;">
+                <input matInput #input [(ngModel)]="movie.imageUrl" name="imageUrl" id="imageUrl" type="text" hidden>
+                <input type="file" name="file" (input)="onFileChanged($event)" accept=".jpeg,.jpg,.png,.svg">
+            </mat-form-field>
+    
+            <div class="form" *ngIf="progressValue | async as val">
+                <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
             </div>
-        </div>
+    
+            <div class="form" *ngIf="progressValue | async as val">
+                <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
+                <span *ngIf="val == 100" class="progressComplete">Completed !</span>
+            </div>
+        
+            <div mat-dialog-actions>
+                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1">Save</button>
+                <button mat-button type="button" (click)="modalRef.close()" tabindex="-1">Cancel</button>
+            </div>
+        
+        </form>
     </div>
 </div>
