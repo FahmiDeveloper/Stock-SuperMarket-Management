@@ -19,7 +19,7 @@
     <div class="col-md-4">
         <mat-form-field style="width: 285px;">
             <mat-label>Status</mat-label>
-			<mat-select name="statusMovie" [(ngModel)]="statusId" (selectionChange)="getAllMovies()">
+			<mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllMovies()">
                 <mat-option value=""></mat-option>
 				<mat-option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
                     {{statusMovie.status}}
@@ -66,7 +66,12 @@
 
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef class="btns-add-sort">
-                <button type="button" mat-icon-button color="primary" (click)="newMovie()">
+                <button 
+                    *ngIf="user.roleAddMovie" 
+                    type="button" 
+                    mat-icon-button 
+                    color="primary" 
+                    (click)="newMovie()">
                     <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
                 </button>
 
@@ -80,7 +85,13 @@
             </mat-header-cell>
     
             <mat-cell *matCellDef="let row; let i=index;" class="btns-edit-link-delete">
-                <button type="button" mat-icon-button color="primary" (click)="editMovie(row)">
+                <button 
+                    *ngIf="user.roleUpdateMovie"  
+                    type="button" 
+                    mat-icon-button 
+                    color="primary" 
+                    (click)="editMovie(row)"
+                    [hidden]="row.statusId == 3">
                     <mat-icon aria-label="Edit">edit</mat-icon>
                 </button>
 

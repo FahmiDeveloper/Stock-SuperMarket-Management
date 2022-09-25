@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -18,14 +20,13 @@ import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 export class SerieFormComponent implements OnInit {
 
+  serie: Serie = new Serie();
+  arraySeries: Serie[];
+
   basePath = '/PicturesSeries';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   modalRef: any;
-
-  serie: Serie = new Serie();
-
-  arraySeries: Serie[];
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -35,9 +36,13 @@ export class SerieFormComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  formControl = new FormControl('', [Validators.required]);
+
   constructor(
     private serieService: SerieService, 
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    public dialogRef: MatDialogRef<SerieFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Serie
   ) {}
 
   ngOnInit() {
@@ -66,7 +71,7 @@ export class SerieFormComponent implements OnInit {
         'success'
       )
     }
-    this.modalRef.close();
+    this.close();
   }
 
   async onFileChanged(event) {
@@ -84,5 +89,13 @@ export class SerieFormComponent implements OnInit {
       alert('No images selected');
       this.serie.imageUrl = '';
     }
+  }
+
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

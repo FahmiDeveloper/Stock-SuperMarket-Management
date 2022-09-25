@@ -40,11 +40,6 @@ export class ShowMoviePictureComponent implements OnInit {
     this.isMobile = this.deviceService.isMobile();
   }
 
-  showMovieImage(contentMoviePicture) {
-    this.modalService.open(contentMoviePicture, { windowClass :'viewPicture', centered: true });
-    this.pictureMovie = this.movie.imageUrl;
-  }
-
   async onFileChanged(event) {
     const file = event.target.files[0];
     if (file) {

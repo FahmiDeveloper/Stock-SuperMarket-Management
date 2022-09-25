@@ -2,15 +2,44 @@
     width: 90%;
 }
 
-.btnswrap {
-    display: grid;
-    grid-column: auto;
+.btns-add-sort {
     justify-content: center;
     align-content: center;
     gap: 4px;
 }
 
-.iconSort {
-    cursor: pointer;
+.btns-edit-link-delete {
+    display: grid;
+    grid-column: auto;
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
+    margin-top: 170px;
 }
-  
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    padding: 14px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.mat-header-cell {
+    font-size: 20px;
+    min-height: 48px;
+    text-align: center;
+}
+
+.mat-cell {
+    font-size: 20px;
+    min-height: 48px;
+    border-bottom-style: none;
+}
+
+.gridForLegend {
+    display: grid;
+    grid-template-columns: 80px 250px;
+    width: 250px;
+    margin: auto;
+}

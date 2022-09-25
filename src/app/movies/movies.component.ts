@@ -27,7 +27,6 @@ export class MoviesComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Movie>();
   displayedColumns: string[] = ['picture', 'details', 'actions'];
 
-  p: number = 1;
   queryName: string = "";
   queryNote: string = "";
   statusId: number;

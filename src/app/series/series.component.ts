@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { SerieFormComponent } from './serie-form/serie-form.component';
 
@@ -22,18 +24,20 @@ import { Serie, StatusSeries } from '../shared/models/serie.model';
 
 export class SeriesComponent implements OnInit, OnDestroy {
 
-  filteredSeries: Serie[];
-  p: number = 1;
-  // queryDate: string = "";
+  dataSource = new MatTableDataSource<Serie>();
+  displayedColumns: string[] = ['picture', 'details', 'actions'];
+
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
   sortByDesc: boolean = true;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
-
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -47,7 +51,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
     private serieService: SerieService, 
     public userService: UserService,
     public authService: AuthService,
-    protected modalService: NgbModal
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
@@ -55,23 +59,30 @@ export class SeriesComponent implements OnInit, OnDestroy {
     this.getRolesUser();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   getAllSeries() {
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
-      if (this.queryName) 
-      this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+      if (this.queryName) {
+        this.dataSource.data = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
       
-      else if (this.queryNote) 
-      this.filteredSeries = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      else if (this.queryNote) {
+        this.dataSource.data = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
       
-      // else if (this.queryDate) 
-      // this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
+      else if (this.statusId) {
+        this.dataSource.data = series.filter(serie => serie.statusId == this.statusId);   
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
       
-      else if (this.statusId) 
-      this.filteredSeries = series.filter(serie => serie.statusId == this.statusId);   
-      
-      else this.filteredSeries = series;
+      else this.dataSource.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
 
       this.getStatusSerie();
     });
@@ -118,15 +129,8 @@ export class SeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  clear() {
-    // this.queryDate = "";
-    this.queryName = "";
-    this.statusId = null;
-    this.getAllSeries();
-  }
-
   getStatusSerie() {
-    this.filteredSeries.forEach(element=>{
+    this.dataSource.data.forEach(element=>{
       this.statusSeries.forEach(statusSerie => {
         if (statusSerie.id == element.statusId) {
           element.status = statusSerie.status;
@@ -137,17 +141,13 @@ export class SeriesComponent implements OnInit, OnDestroy {
   }
 
   newSerie() {
-    const modalRef = this.modalService.open(SerieFormComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.arraySeries = this.filteredSeries;
-    modalRef.componentInstance.modalRef = modalRef;
+    const dialogRef = this.dialogService.open(SerieFormComponent, {width: '800px', data: {movie: {}}});
+    dialogRef.componentInstance.arraySeries = this.dataSource.data; 
   }
 
   editSerie(serie?: Serie) {
-    const modalRef = this.modalService.open(SerieFormComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.modalRef = modalRef;
-    modalRef.componentInstance.serie = serie;
+    const dialogRef = this.dialogService.open(SerieFormComponent, {width: '800px'});
+    dialogRef.componentInstance.serie = serie;
   }
 
   copyNameSerie(nameSerie: string){
@@ -165,13 +165,13 @@ export class SeriesComponent implements OnInit, OnDestroy {
   }
 
   sortByRefSerieDesc() {
-    this.filteredSeries = this.filteredSeries.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
     this.sortByDesc = true;
   }
 
   sortByRefSerieAsc() {
-      this.filteredSeries = this.filteredSeries.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
-      this.sortByDesc = false;
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
+    this.sortByDesc = false;
   }
 
   ngOnDestroy() {

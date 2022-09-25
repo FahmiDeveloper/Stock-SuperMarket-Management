@@ -1,126 +1,135 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Series</h1>
+<h1 class="titleTextInterface text-application">Series</h1>
 
 <br>
 <br>
 
 <div class="row">
     <div class="col-md-4">
-        <input #query (keyup)="getAllSeries()" [(ngModel)]="queryName" type="text" class="form-control widhtInput text-application" placeholder="Search by name...">
+        <mat-form-field class="widhtInput">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" name="queryName" (keyup)="getAllSeries()" [(ngModel)]="queryName"/>
+        </mat-form-field>
     </div>
     <div class="col-md-4">
-        <input #query (keyup)="getAllSeries()" [(ngModel)]="queryNote" type="text" class="form-control widhtInput text-application" placeholder="Search by note...">
-
-        <!-- <div class="row">
-            <div class="col-md-8">
-                <input [(ngModel)]="queryDate" type="date" class="form-control widhtInput">
-            </div>
-            <div class="col-md-4">
-                <button class="btn btn-primary font-weight-bold" (click)="getAllSeries()">Search</button>
-                <button *ngIf="queryDate" class="btn btn-danger font-weight-bold" (click)="clear()">Clear</button>
-            </div>
-        </div>      -->
+        <mat-form-field class="widhtInput">
+            <mat-label>Note</mat-label>
+            <input matInput type="text" name="queryNote" (keyup)="getAllSeries()" [(ngModel)]="queryNote"/>
+        </mat-form-field>
     </div>
     <div class="col-md-4">
-        <div class="row">
-            <div class="col-md-2"><label for="statusId" class="font-weight-bold text-application">Status</label></div>
-            <div class="col-md-10">
-                <select [(ngModel)]="statusId" name="statusId" id="statusId" class="form-control" (click)="getAllSeries()">
-                    <option value=""></option>
-                    <option *ngFor="let statusSerie of statusSeries" [value]="statusSerie.id">
-                        {{statusSerie.status}}
-                    </option>
-                </select>
-            </div>
-        </div>     
+        <mat-form-field style="width: 285px;">
+            <mat-label>Status</mat-label>
+			<mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllSeries()">
+                <mat-option value=""></mat-option>
+				<mat-option *ngFor="let statusSerie of statusSeries" [value]="statusSerie.id">
+                    {{statusSerie.status}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
     </div>
 </div>
 
 <br>
 
-<div class="row">
-    <table class="table table-striped">
-        <thead class="colorHeaderTable">
-            <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <!-- <th>Time</th> -->
-                <th>Status</th>
-                <th>Note</th>
-                <th>Picture</th>
-                <th>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a *ngIf="user.roleAddSerie" (click)="newSerie()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                        </div>
-                        <div class="col-md-6">
-                            <i 
-                                *ngIf="!sortByDesc" 
-                                class="fa fa-sort-desc iconSort" 
-                                aria-hidden="true" 
-                                (click)="sortByRefSerieDesc()" 
-                                style="vertical-align: -webkit-baseline-middle;">
-                            </i>
-                            <i 
-                                *ngIf="sortByDesc"
-                                class="fa fa-sort-asc iconSort" 
-                                aria-hidden="true" 
-                                (click)="sortByRefSerieAsc()" 
-                                style="vertical-align: -webkit-baseline-middle;">
-                            </i>
-                        </div>
-                    </div>                
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr
-                *ngFor="let serie of (filteredSeries | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                <td>
-                    <span style="cursor: pointer;" (click)="copyNameSerie(serie.nameSerie)">{{ serie.nameSerie }}</span>
-                </td>
-                <td>{{ serie.date | date: 'dd/MM/yyyy' }}</td>
-                <!-- <td>{{ serie.time }}</td> -->
-                <td>
-                    <span *ngIf="serie.statusId">{{ serie.status }}</span>
-                    <span *ngIf="!serie.statusId">-</span>
-                </td>
-                <td>{{ serie.note }}</td>
-                <td>
-                    <show-serie-picture [serie]="serie"></show-serie-picture>
-                </td>
-                <td style="text-align:center;">
-                    <div class="btnswrap">
-                        <button
-                            type="button" 
-                            *ngIf="user.roleUpdateSerie" 
-                            (click)="editSerie(serie)"
-                            class="btn btn-secondary"
-                            [hidden]="serie.statusId == 3">
-                            <i class="fa fa-edit" aria-hidden="true"></i>
-                        </button>                        
-                        <a 
-                            *ngIf="serie.path && (serie.statusId == 1 || serie.statusId == 2)" 
-                            href="{{ serie.path }}" 
-                            target="_blank" 
-                            class="btn btn-warning">
-                            <i class="fa fa-link" aria-hidden="true"></i>
-                        </a>                        
-                        <button 
-                            *ngIf="user.roleDeleteSerie" 
-                            type="button" 
-                            (click)="deleteSerie(serie.key)"
-                            class="btn btn-danger"
-                            [hidden]="serie.statusId == 3">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>                    
-                    </div>
-                </td>
-            </tr>
-        </tbody>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="picture">
+            <th mat-header-cell *matHeaderCellDef style="width: 400px;">Picture</th>
+            <td mat-cell *matCellDef="let element" style="width: 400px;"><show-serie-picture [serie]="element"></show-serie-picture></td>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef>Details</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="gridForLegend">
+                    <div><span>Name:</span></div>
+                    <div><span style="cursor: pointer;" (click)="copyNameSerie(element.nameSerie)">{{ element.nameSerie }}</span></div>
+                </div>
+                <br>
+                <div class="gridForLegend">
+                    <div><span>Date:</span></div>
+                    <div>{{ element.date | date:'dd/MM/yyyy' }}</div>
+                </div>
+                <br>
+                <div class="gridForLegend">
+                    <div><span>Status:</span></div>
+                    <div>{{ element.status }}</div>
+                </div>
+                <br>
+                <div class="gridForLegend">
+                    <div><span>Note:</span></div>
+                    <div>{{ element.note }}</div>
+                </div> 
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef class="btns-add-sort">
+                <button 
+                    *ngIf="user.roleAddSerie" 
+                    type="button" 
+                    mat-icon-button 
+                    color="primary" 
+                    (click)="newSerie()">
+                    <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+                </button>
+
+                <button type="button" *ngIf="!sortByDesc" mat-icon-button color="primary" (click)="sortByRefSerieDesc()">
+                    <mat-icon aria-label="Example icon-button with a heart icon">sort</mat-icon>
+                </button>
+
+                <button type="button" *ngIf="sortByDesc" mat-icon-button color="primary" (click)="sortByRefSerieAsc()">
+                    <mat-icon aria-label="Example icon-button with a heart icon">sort</mat-icon>
+                </button>
+            </mat-header-cell>
+    
+            <mat-cell *matCellDef="let row; let i=index;" class="btns-edit-link-delete">
+                <button 
+                    *ngIf="user.roleUpdateSerie" 
+                    type="button" 
+                    mat-icon-button 
+                    color="primary" 
+                    (click)="editSerie(row)"
+                    [hidden]="row.statusId == 3">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                </button>
+
+                <a 
+                    *ngIf="row.path && (row.statusId == 1 || row.statusId == 2)" 
+                    mat-icon-button 
+                    color="accent" 
+                    href="{{ row.path }}" 
+                    target="_blank">
+                    <mat-icon aria-label="Link">link</mat-icon>
+                </a>
+        
+                <button 
+                    *ngIf="user.roleDeleteSerie" 
+                    type="button" 
+                    mat-icon-button 
+                    color="warn" 
+                    (click)="deleteSerie(row.key)" 
+                    [hidden]="row.statusId == 3">
+                    <mat-icon aria-label="Delete">delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
     </table>
-    <div class="pagination">
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+        No results
     </div>
+    
+    <mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>
 
 

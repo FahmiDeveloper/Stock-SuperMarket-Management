@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AnimeFormComponent } from './anime-form/anime-form.component';
 
@@ -22,18 +24,20 @@ import { Anime, StatusAnimes } from '../shared/models/anime.model';
 
 export class AnimesComponent implements OnInit, OnDestroy {
 
-  filteredAnimes: Anime[];
-  p: number = 1;
-  // queryDate: string = "";
+  dataSource = new MatTableDataSource<Anime>();
+  displayedColumns: string[] = ['picture', 'details', 'actions'];
+
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
   sortByDesc: boolean = true;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
-
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForUser: Subscription;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -47,7 +51,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
     private animeService: AnimeService, 
     public userService: UserService,
     public authService: AuthService,
-    protected modalService: NgbModal
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
@@ -55,23 +59,30 @@ export class AnimesComponent implements OnInit, OnDestroy {
     this.getRolesUser();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   getAllAnimes() {
     this.subscriptionForGetAllAnimes = this.animeService
     .getAll()
     .subscribe(animes => {
-      if (this.queryName) 
-      this.filteredAnimes = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
+      if (this.queryName) {
+        this.dataSource.data = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      }
       
-      else if (this.queryNote) 
-      this.filteredAnimes = animes.filter(anime => anime.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      else if (this.queryNote) {
+        this.dataSource.data = animes.filter(anime => anime.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      }
       
-      // else if (this.queryDate) 
-      // this.filteredAnimes = animes.filter(anime => anime.date.includes(this.queryDate));
+      else if (this.statusId) {
+        this.dataSource.data = animes.filter(anime => anime.statusId == this.statusId);   
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      }
       
-      else if (this.statusId) 
-      this.filteredAnimes = animes.filter(anime => anime.statusId == this.statusId);   
-      
-      else this.filteredAnimes = animes;
+      else this.dataSource.data = animes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
       this.getStatusAnime();
     });
@@ -118,15 +129,8 @@ export class AnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  clear() {
-    // this.queryDate = "";
-    this.queryName = "";
-    this.statusId = null;
-    this.getAllAnimes();
-  }
-
   getStatusAnime() {
-    this.filteredAnimes.forEach(element=>{
+    this.dataSource.data.forEach(element=>{
       this.statusAnimes.forEach(statusAnime => {
         if (statusAnime.id == element.statusId) {
           element.status = statusAnime.status;
@@ -137,17 +141,13 @@ export class AnimesComponent implements OnInit, OnDestroy {
   }
 
   newAnime() {
-    const modalRef = this.modalService.open(AnimeFormComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.arrayAnimes = this.filteredAnimes;
-    modalRef.componentInstance.modalRef = modalRef;
+    const dialogRef = this.dialogService.open(AnimeFormComponent, {width: '800px', data: {movie: {}}});
+    dialogRef.componentInstance.arrayAnimes = this.dataSource.data; 
   }
 
   editAnime(anime?: Anime) {
-    const modalRef = this.modalService.open(AnimeFormComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.modalRef = modalRef;
-    modalRef.componentInstance.anime = anime;
+    const dialogRef = this.dialogService.open(AnimeFormComponent, {width: '800px'});
+    dialogRef.componentInstance.anime = anime;
   }
 
   copyNameAnime(nameAnime: string){
@@ -165,13 +165,13 @@ export class AnimesComponent implements OnInit, OnDestroy {
   }
 
   sortByRefAnimeDesc() {
-    this.filteredAnimes = this.filteredAnimes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
     this.sortByDesc = true;
   }
 
   sortByRefAnimeAsc() {
-      this.filteredAnimes = this.filteredAnimes.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime);
-      this.sortByDesc = false;
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime);
+    this.sortByDesc = false;
   }
 
   ngOnDestroy() {

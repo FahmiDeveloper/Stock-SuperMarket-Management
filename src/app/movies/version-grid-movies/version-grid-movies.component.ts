@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { NewOrEditMovieComponent } from './new-or-edit-movie/new-or-edit-movie.component';
 import { ShowMoviePictureComponent } from '../show-movie-picture/show-movie-picture.component';
@@ -30,11 +29,9 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Movie>();
   displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
 
-  p: number = 1;
-  statusId: number;
-  modalRefSearch: any;
   queryName: string = "";
   queryNote: string = "";
+  statusId: number;
   sortByDesc: boolean = true;
 
   subscriptionForGetAllMovies: Subscription;
@@ -56,7 +53,6 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     private movieService: MovieService, 
     public userService: UserService,
     public authService: AuthService,
-    protected modalService: NgbModal,
     public dialogService: MatDialog
   ) {}
 

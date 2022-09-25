@@ -22,6 +22,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatListModule } from '@angular/material/list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -79,7 +82,9 @@ import {
 
 import { 
   ListUsersComponent,
-  ListUsersMobileComponent
+  ListUsersMobileComponent,
+  ModalPrivilegeComponent,
+  ModalPrivilegeMobileComponent
 } from './list-users/index';
 
 import { 
@@ -120,6 +125,9 @@ import { UserComponent } from './user/index';
     MatProgressBarModule,
     MatGridListModule,
     MatListModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatChipsModule,
     ReactiveFormsModule,
     PdfViewerModule,
     NgbModule,
@@ -166,6 +174,8 @@ import { UserComponent } from './user/index';
     NewOrEditLinkComponent,
     ListUsersComponent,
     ListUsersMobileComponent,
+    ModalPrivilegeComponent,
+    ModalPrivilegeMobileComponent,
     ToDoListComponent,
     TaskComponent,
     TaskFormComponent,

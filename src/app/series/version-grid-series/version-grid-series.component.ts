@@ -1,4 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
@@ -6,6 +9,7 @@ import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { NewOrEditSerieComponent } from './new-or-edit-serie/new-or-edit-serie.component';
+import { ShowSeriePictureComponent } from '../show-serie-picture';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -23,20 +27,20 @@ import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
-  filteredSeries: Serie[];
-  filteredSeriesCopie: Serie[];
-  p: number = 1;
-  isGrid: boolean = false;
-  // queryDate: string = "";
-  statusId: number;
-  modalRefSearch: any;
+  dataSource = new MatTableDataSource<Serie>();
+  displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
+
   queryName: string = "";
   queryNote: string = "";
-
-  user: FirebaseUserModel = new FirebaseUserModel();
+  statusId: number;
+  sortByDesc: boolean = true;
 
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
+
+  user: FirebaseUserModel = new FirebaseUserModel();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -50,37 +54,41 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     private serieService: SerieService, 
     public userService: UserService,
     public authService: AuthService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
     this.getAllSeries();
     this.getRolesUser();
-    this.isGrid = true;
   }
 
-  getAllSeries(event?) {
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  getAllSeries() {
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
-      this.filteredSeriesCopie = series;
-
-      if (this.queryName) 
-      this.filteredSeries = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+      if (this.queryName) {
+        this.dataSource.data = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
       
-      else if (this.queryNote) 
-      this.filteredSeries = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      else if (this.queryNote) {
+        this.dataSource.data = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
       
-      // else if (this.queryDate) 
-      // this.filteredSeries = series.filter(serie => serie.date.includes(this.queryDate));
+      else if (this.statusId) {
+        this.dataSource.data = series.filter(serie => serie.statusId == this.statusId);   
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
       
-      else if (event) 
-      this.filteredSeries = series.filter(serie => serie.statusId == event);   
-      
-      else this.filteredSeries = series;
+      else this.dataSource.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
 
       this.getStatusSerie();
-      if (this.queryName || this.queryNote || event) this.modalRefSearch.close();
     });
   }
 
@@ -125,31 +133,28 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  clear() {
-    this.queryName = "";
-    this.queryNote = "";
-    // this.queryDate = "";
-    this.statusId = null;
-    this.getAllSeries();
-    this.modalRefSearch.close();
-  }
-
   newSerie() {
-    const modalRef = this.modalService.open(NewOrEditSerieComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.modalRef = modalRef;
-    modalRef.componentInstance.arraySeries = this.filteredSeriesCopie;
+    const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
+      width: '98vw',
+      height:'73vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.arraySeries = this.dataSource.data;
+    dialogRef.componentInstance.modalRef = dialogRef;
   }
 
   editSerie(serie?: Serie) {
-    const modalRef = this.modalService.open(NewOrEditSerieComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.modalRef = modalRef;
-    modalRef.componentInstance.serie = serie;
+    const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
+      width: '98vw',
+      height:'73vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.serie = serie;
+    dialogRef.componentInstance.modalRef = dialogRef;
   }
 
   getStatusSerie() {
-    this.filteredSeries.forEach(element=>{
+    this.dataSource.data.forEach(element=>{
       this.statusSeries.forEach(statusSerie => {
         if (statusSerie.id == element.statusId) {
           element.status = statusSerie.status;
@@ -159,13 +164,38 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  openModalSearch(contentModalSearch) {
-    this.queryName = '';
-    this.queryNote = '';
-    this.statusId = null;
-    this.p = 1;
-    this.getAllSeries();
-    this.modalRefSearch = this.modalService.open(contentModalSearch as Component, { size: 'lg', centered: true });
+  zoomPicture(serie?: Serie) {
+    const dialogRef = this.dialogService.open(ShowSeriePictureComponent, {
+      width: '98vw',
+      height:'77vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.serieForModal = serie;
+    dialogRef.componentInstance.dialogRef = dialogRef;
+  }
+
+  copyNameSerie(nameSerie: string){
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = nameSerie;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
+
+  sortByRefSerieDesc() {
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+    this.sortByDesc = true;
+  }
+
+  sortByRefSerieAsc() {
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
+    this.sortByDesc = false;
   }
 
   ngOnDestroy() {

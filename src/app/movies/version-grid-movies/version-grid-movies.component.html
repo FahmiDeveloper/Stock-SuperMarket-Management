@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <button type="button" (click)="newMovie()" mat-mini-fab color="primary" style="float: right;">
+        <button *ngIf="user.roleAddMovie" type="button" (click)="newMovie()" mat-mini-fab color="primary" style="float: right;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
 

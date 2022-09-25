@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -18,14 +20,12 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 export class AnimeFormComponent implements OnInit {
 
+  anime: Anime = new Anime();
+  arrayAnimes: Anime[];
+
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
-  modalRef: any;
-
-  anime: Anime = new Anime();
-
-  arrayAnimes: Anime[];
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -35,9 +35,13 @@ export class AnimeFormComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  formControl = new FormControl('', [Validators.required]);
+
   constructor(
     private animeService: AnimeService, 
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    public dialogRef: MatDialogRef<AnimeFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Anime
   ) {}
 
   ngOnInit() {
@@ -66,7 +70,7 @@ export class AnimeFormComponent implements OnInit {
         'success'
       )
     }
-    this.modalRef.close();
+    this.close();
   }
 
   async onFileChanged(event) {
@@ -85,4 +89,13 @@ export class AnimeFormComponent implements OnInit {
       this.anime.imageUrl = '';
     }
   }
+
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
+  
 }

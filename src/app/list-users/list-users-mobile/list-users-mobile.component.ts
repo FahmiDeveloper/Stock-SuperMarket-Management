@@ -1,13 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { ModalPrivilegeMobileComponent } from './modal-privilege-mobile/modal-privilege-mobile.component';
+
 import { UserService } from 'src/app/shared/services/user.service';
 
-import { FirebaseUserModel, Roles } from 'src/app/shared/models/user.model';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'list-users-mobile',
@@ -17,37 +22,35 @@ import { FirebaseUserModel, Roles } from 'src/app/shared/models/user.model';
 
 export class ListUsersMobileComponent implements OnInit, OnDestroy {
 
-  listUsers: FirebaseUserModel[] = [];
-  currentUser: FirebaseUserModel;
+  dataSource = new MatTableDataSource<FirebaseUserModel>();
+  displayedColumns: string[] = ['picture', 'name', 'email', 'star'];
 
-  p: number = 1;
-  queryName: string = '';
-  modalRefPrivileges: any;
+  queryEmail: string = '';
 
   subscriptionForGetAllUsers: Subscription;
 
-  roles: Roles[] = [
-    {id: 1, roleName: 'Movies'}, 
-    {id: 2, roleName: 'Animes'}, 
-    {id: 3, roleName: 'Series'}, 
-    {id: 4, roleName: 'Files'},
-    {id: 5, roleName: 'Debts'},
-    {id: 6, roleName: 'Users'}
-  ];
-    modalRefRolesUser: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public userService: UserService, protected modalService: NgbModal) {}
+  constructor(
+    public userService: UserService, 
+    protected modalService: NgbModal,
+    public dialogService: MatDialog
+  ) {}
 
   ngOnInit() {
     this.getAllUsers();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   getAllUsers() {
     this.subscriptionForGetAllUsers = this.userService
     .getAll()
     .subscribe((users: FirebaseUserModel[]) => { 
-        if (this.queryName) this.listUsers = users.filter(user => user.email.toLowerCase().includes(this.queryName.toLowerCase()));
-        else this.listUsers = users;
+        if (this.queryEmail) this.dataSource.data = users.filter(user => user.email.toLowerCase().includes(this.queryEmail.toLowerCase()));
+        else this.dataSource.data = users;
     });
   }
 
@@ -100,17 +103,14 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
     })
   }
 
-  openModalRolesUser(contentModalRolesUser, user: FirebaseUserModel) {
-    this.currentUser = user;
-    this.modalRefRolesUser = this.modalService.open(contentModalRolesUser as Component, { size: 'lg', centered: true});
-  }
-
-  openModalPrivileges(contentModalPrivileges) {
-    this.modalRefPrivileges = this.modalService.open(contentModalPrivileges as Component, { size: 'lg', centered: true});
-  }
-
-  changePrivliegeStatus() {
-    this.userService.update(this.currentUser.key, this.currentUser);
+  openModalPrivileges(user: FirebaseUserModel) {
+    const dialogRef = this.dialogService.open(ModalPrivilegeMobileComponent, {
+      width: '98vw',
+      height:'73vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.currentUser = user;
+    dialogRef.componentInstance.dialogRef = dialogRef;
   }
 
   ngOnDestroy() {

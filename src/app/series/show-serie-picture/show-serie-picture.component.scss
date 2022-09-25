@@ -1,40 +1,39 @@
-.sizePicture {
-    border: 1px solid #4d4c4c;
-    height: 120px;
-    width: 120px;
-    color: coral;
-    font-weight: bold;
+.style-picture {
+    width: 300px;
+    height: 435px;
     background-size: cover;
-    border-radius: 50%;
-    cursor: pointer;
+    border-radius: 20px;
+    margin: auto;
+    margin-left: -6px;
 }
 
-.styleProgress {
-    height: 7mm; 
-    width: 100%
+.example-card {
+    border-radius: 20px;
+    width: 324px;
+    height: 463px;
+    border: 1px solid #c5c5c5;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
-.progressIncomplete {
-    color:rgb(255, 60, 0); 
-    font-size: 17px; 
-    font-weight: 410;
+.mat-card-image:first-child {
+    margin-top: -3px;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
 }
 
-.progressComplete {
-    color:rgb(1, 153, 34);  
-    font-size: 17px; 
-    font-weight: 410;
+.example-card-mobile {
+    border-radius: 20px;
+    border: 1px solid #c5c5c5;
+    margin-left: -8px;
+    width: 318px;
 }
 
-.sizePictureForGrid {
-    width: 100%;
-    cursor: pointer;
-    height: 286px;
-    border: 1px solid #222;
+.style-picture-mobile {
+    width: 297px;
+    height: 435px;
+    background-size: cover;
+    border-radius: 20px;
+    margin: auto;
+    margin-left: -6px;
 }
-
-.viewPicture .modal-dialog {
-    width : 70% !important;
-    max-width: 80% !important;
-}
-
