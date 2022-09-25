@@ -3,14 +3,34 @@ input.larger {
     height: 25px;
 }
 
-.PrivilegesModalClass .modal-dialog {
-    max-width: 10px !important;
-}
-
-.btnswrap {
-    display: flex;
-    flex-direction: row;
+.btns-roles-delete {
+    display: grid;
+    grid-column: auto;
     justify-content: center;
     align-content: center;
     gap: 4px;
+}
+
+.widhtInput {
+    width: 90%;
+}
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    padding: 14px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.mat-header-cell {
+    font-size: 20px;
+    min-height: 48px;
+    text-align: center;
+}
+
+.mat-cell {
+    font-size: 20px;
+    min-height: 48px;
+    border-bottom-style: none;
 }

@@ -26,12 +26,12 @@
 
   <span class="fill-remaining-space" *ngIf="!isMobile">
 
-    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" style="float: right;">
+    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()" style="float: right;">
       <mat-icon>menu</mat-icon>
     </button>
 
     <mat-menu #menu="matMenu" [overlapTrigger]="false" yPosition="above" xPosition="before">
-      <span (mouseleave)="menuTrigger.closeMenu()">
+      <span (click)="menuTrigger.closeMenu()">
 
         <button mat-menu-item>
           <mat-icon>home</mat-icon>

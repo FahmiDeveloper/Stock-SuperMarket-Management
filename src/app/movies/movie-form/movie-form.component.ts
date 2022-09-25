@@ -20,13 +20,12 @@ import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 export class MovieFormComponent implements OnInit {
 
+  movie: Movie = new Movie();
+  arrayMovies: Movie[];
+
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
-
-  movie: Movie = new Movie();
-
-  arrayMovies: Movie[];
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 

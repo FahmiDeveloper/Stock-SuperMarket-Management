@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
@@ -19,13 +19,15 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 export class NewOrEditAnimeComponent implements OnInit {
 
+  anime: Anime = new Anime();
+  arrayAnimes: Anime[];
+
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   modalRef: any;
 
-  anime: Anime = new Anime();
-  arrayAnimes: Anime[];
+  formControl = new FormControl('', [Validators.required]);
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -36,7 +38,6 @@ export class NewOrEditAnimeComponent implements OnInit {
   ];
 
   constructor(
-      public modalService: NgbModal, 
       private fireStorage: AngularFireStorage,
       private animeService: AnimeService 
   ) {}
@@ -84,5 +85,9 @@ export class NewOrEditAnimeComponent implements OnInit {
       alert('No images selected');
       this.anime.imageUrl = '';
     }
+  }
+
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
   }
 }

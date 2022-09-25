@@ -1,278 +1,101 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Users</h1>
+<h1 class="titleTextInterface text-application">Users</h1>
 
 <br>
 <br>
 
 <div class="row">
     <div class="col-md-4">
-        <input (keyup)="getAllUsers()" [(ngModel)]="queryName" type="text" class="form-control widhtInput text-application" placeholder="Search by email...">
+        <mat-form-field class="widhtInput">
+            <mat-label>Email</mat-label>
+            <input matInput type="text" name="queryEmail" (keyup)="getAllUsers()" [(ngModel)]="queryEmail"/>
+        </mat-form-field>
     </div>
 </div>
 
 <br>
 
-<div class="row">
-    <table class="table table-striped">
-        <thead class="colorHeaderTable">
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Movies</th>
-                <th>Animes</th>
-                <th>Series</th>
-                <th>Files</th>
-                <th>Debts</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of (listUsers | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-                <td>{{ user.name }}</td>
-                <td>{{ user.email }}</td>
-                <td>
-                    <input 
-                        [(ngModel)]="user.roleMovies" 
-                        name="movie" 
-                        id="movie" 
-                        type="checkbox" 
-                        class="larger"
-                        (ngModelChange)="changeRoleStatus(user)">
-                </td>
-                <td>
-                    <input 
-                        [(ngModel)]="user.roleAnimes" 
-                        name="anime" 
-                        id="anime" 
-                        type="checkbox" 
-                        class="larger"
-                        (ngModelChange)="changeRoleStatus(user)">
-                </td>
-                <td>
-                    <input 
-                        [(ngModel)]="user.roleSeries" 
-                        name="serie" 
-                        id="serie" 
-                        type="checkbox" 
-                        class="larger"
-                        (ngModelChange)="changeRoleStatus(user)">
-                </td>
-                <td>
-                    <input 
-                        [(ngModel)]="user.roleFiles" 
-                        name="file" 
-                        id="file" 
-                        type="checkbox" 
-                        class="larger"
-                        (ngModelChange)="changeRoleStatus(user)">
-                </td>
-                <td>
-                    <input 
-                        [(ngModel)]="user.roleDebts" 
-                        name="debt" 
-                        id="debt" 
-                        type="checkbox" 
-                        class="larger"
-                        (ngModelChange)="changeRoleStatus(user)">
-                </td>
-                <td style="text-align:center;">
-                    <div class="btnswrap">
-                        <button
-                            *ngIf="user.roleMovies || user.roleAnimes || user.roleSeries || user.roleFiles || user.roleDebts"
-                            type="button" 
-                            (click)="openModalPrivileges(contentModalPrivileges, user)"
-                            class="btn btn-warning">
-                            <i class="fa fa-user-secret" aria-hidden="true"></i>
-                        </button>
-                        <button
-                            type="button" 
-                            (click)="deleteUser(user.key)"
-                            class="btn btn-danger">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>  
-                    </div>    
-                </td>
-            </tr>
-        </tbody>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="movies">
+            <th mat-header-cell *matHeaderCellDef>Movies</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <mat-checkbox [(ngModel)]="element.roleMovies" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="animes">
+            <th mat-header-cell *matHeaderCellDef>Animes</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <mat-checkbox [(ngModel)]="element.roleAnimes" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
+            </td>        
+        </ng-container>
+
+        <ng-container matColumnDef="series">
+            <th mat-header-cell *matHeaderCellDef>Series</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <mat-checkbox [(ngModel)]="element.roleSeries" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
+            </td>        
+        </ng-container>
+
+        <ng-container matColumnDef="files">
+            <th mat-header-cell *matHeaderCellDef>Files</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <mat-checkbox [(ngModel)]="element.roleFiles" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
+            </td>        
+        </ng-container>
+
+        <ng-container matColumnDef="debts">
+            <th mat-header-cell *matHeaderCellDef>Debts</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <mat-checkbox [(ngModel)]="element.roleDebts" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
+            </td>        
+        </ng-container>
+        
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    
+            <mat-cell *matCellDef="let row; let i=index;" class="btns-roles-delete">
+                <button
+                    *ngIf="row.roleMovies || row.roleAnimes || row.roleSeries || row.roleFiles || row.roleDebts"
+                    type="button"
+                    mat-icon-button 
+                    color="primary"
+                    (click)="openModalPrivileges(row)">
+                    <mat-icon aria-label="Edit">edit</mat-icon>
+                </button>
+                <button
+                    type="button"
+                    mat-icon-button 
+                    color="warn"
+                    (click)="deleteUser(row.key)">
+                    <mat-icon aria-label="Delete">delete</mat-icon>
+                </button>  
+            </mat-cell>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
+
     </table>
-    <div class="pagination">
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+        No results
     </div>
+    
+    <mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>
-
-<ng-template #contentModalPrivileges let-modal let-c="close" let-d="dismiss">
-
-    <div class="modal-header text-center text-application">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">Privileges</h4>
-
-        <button type="button" class="close" aria-label="Close" (click)="modalRefPrivileges.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body text-application">
-        <div class="row">
-            <table class="table table-striped">
-                <thead class="colorHeaderTable">
-                    <tr>
-                        <th>Role</th>
-                        <th>Add</th>
-                        <th>Update</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngIf="currentUser.roleMovies">
-                        <td>Movies</td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleAddMovie" 
-                                name="add" 
-                                id="add" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleUpdateMovie" 
-                                name="update" 
-                                id="update" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input 
-                                [(ngModel)]="currentUser.roleDeleteMovie" 
-                                name="delete" 
-                                id="delete" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>                                
-                    </tr>
-                    <tr *ngIf="currentUser.roleAnimes">
-                        <td>Animes</td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleAddAnime" 
-                                name="add" 
-                                id="add" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleUpdateAnime" 
-                                name="update" 
-                                id="update" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input 
-                                [(ngModel)]="currentUser.roleDeleteAnime" 
-                                name="delete" 
-                                id="delete" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>                             
-                    </tr>
-                    <tr *ngIf="currentUser.roleSeries">
-                        <td>Series</td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleAddSerie" 
-                                name="add" 
-                                id="add" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleUpdateSerie" 
-                                name="update" 
-                                id="update" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input 
-                                [(ngModel)]="currentUser.roleDeleteSerie" 
-                                name="delete" 
-                                id="delete" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>                             
-                    </tr>
-                    <tr *ngIf="currentUser.roleFiles">
-                        <td>Files</td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleAddFile" 
-                                name="add" 
-                                id="add" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleUpdateFile" 
-                                name="update" 
-                                id="update" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input 
-                                [(ngModel)]="currentUser.roleDeleteFile" 
-                                name="delete" 
-                                id="delete" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>                             
-                    </tr>
-                    <tr *ngIf="currentUser.roleDebts">
-                        <td>Debts</td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleAddDebt" 
-                                name="add" 
-                                id="add" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input
-                                [(ngModel)]="currentUser.roleUpdateDebt" 
-                                name="update" 
-                                id="update" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>
-                        <td>
-                            <input 
-                                [(ngModel)]="currentUser.roleDeleteDebt" 
-                                name="delete" 
-                                id="delete" 
-                                type="checkbox" 
-                                class="larger"
-                                (ngModelChange)="changePrivliegeStatus(currentUser)">
-                        </td>                             
-                    </tr>
-                </tbody>
-            </table>      
-        </div>
-    </div>
-</ng-template>

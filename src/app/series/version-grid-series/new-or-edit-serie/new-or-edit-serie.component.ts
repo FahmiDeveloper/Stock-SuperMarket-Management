@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
@@ -19,13 +19,15 @@ import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 export class NewOrEditSerieComponent implements OnInit {
 
+  serie: Serie = new Serie();
+  arraySeries: Serie[];
+
   basePath = '/PicturesSeries';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   modalRef: any;
 
-  serie: Serie = new Serie();
-  arraySeries: Serie[];
+  formControl = new FormControl('', [Validators.required]);
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -36,7 +38,6 @@ export class NewOrEditSerieComponent implements OnInit {
   ];
 
   constructor(
-      public modalService: NgbModal, 
       private fireStorage: AngularFireStorage, 
       private serieService: SerieService
   ) {}
@@ -84,5 +85,9 @@ export class NewOrEditSerieComponent implements OnInit {
       alert('No images selected');
       this.serie.imageUrl = '';
     }
+  }
+
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
   }
 }

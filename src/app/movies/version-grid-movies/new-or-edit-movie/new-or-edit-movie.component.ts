@@ -4,7 +4,6 @@ import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
@@ -39,7 +38,6 @@ export class NewOrEditMovieComponent implements OnInit {
   ];
 
   constructor(
-      public modalService: NgbModal, 
       private fireStorage: AngularFireStorage, 
       private movieService: MovieService
   ) {}

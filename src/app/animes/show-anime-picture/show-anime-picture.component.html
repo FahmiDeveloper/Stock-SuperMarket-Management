@@ -1,39 +1,9 @@
-<img *ngIf="anime.imageUrl && !isGrid" class="sizePicture" [src]="anime.imageUrl"
-    (click)="showAnimeImage(contentAnimePicture)">
+<mat-card *ngIf="!isMobile" class="example-card">
+    <img *ngIf="anime.imageUrl" mat-card-image [src]="anime.imageUrl" class="style-picture">
+    <img *ngIf="!anime.imageUrl" mat-card-image src="/assets/pictures/NoImageAvailable.png" class="style-picture">
+</mat-card>
 
-<img *ngIf="anime.imageUrl && isGrid" [src]="anime.imageUrl" class="card-img-top sizePictureForGrid"
-    (click)="showAnimeImage(contentAnimePicture)">
-
-<img *ngIf="!anime.imageUrl && !isGrid" src="/assets/pictures/NoImageAvailable.png" class="sizePicture"
-(click)="showAnimeImage(contentAnimePicture)">
-
-<img *ngIf="!anime.imageUrl && isGrid" src="/assets/pictures/NoImageAvailable.png" class="card-img-top sizePictureForGrid"
-    (click)="showAnimeImage(contentAnimePicture)">
-
-<ng-template #contentAnimePicture let-modal let-c="close" let-d="dismiss">
-    <div class="modal-header text-center">
-        <h4 class="modal-title w-100">Anime Picture Preview</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button> 
-    </div>
-    <div class="modal-body">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <img *ngIf="pictureAnime" [src]="pictureAnime" style="width: 100%;">
-                <img *ngIf="!pictureAnime" src="/assets/pictures/NoImageAvailable.png" style="width: 100%;">
-            </div>
-        </div>
-
-        <br>
-        <input type="file" name="file" (input)="onFileChanged($event)" class="form-control"
-            accept=".jpeg,.jpg,.png,.svg" />
-        <br>
-        <div *ngIf="progressValue | async as val">
-            <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
-            <br />
-            <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
-            <span *ngIf="val == 100" class="progressComplete">Completed !</span>
-        </div>
-    </div>
-</ng-template>
+<mat-card *ngIf="isMobile" class="example-card-mobile">
+    <img *ngIf="animeForModal.imageUrl" mat-card-image [src]="animeForModal.imageUrl" class="style-picture-mobile" (click)="closeDialog()">
+    <img *ngIf="!animeForModal.imageUrl" mat-card-image src="/assets/pictures/NoImageAvailable.png" class="style-picture-mobile" (click)="closeDialog()">
+</mat-card>

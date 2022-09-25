@@ -19,13 +19,15 @@ import { Anime } from 'src/app/shared/models/anime.model';
 export class ShowAnimePictureComponent implements OnInit {
 
   @Input() anime: Anime = new Anime();
-  @Input() isGrid: boolean;
+
+  animeForModal: Anime = new Anime();
 
   pictureAnime: string;
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   isMobile: boolean;
+  dialogRef: any;
 
   constructor(
     public modalService: NgbModal, 
@@ -36,11 +38,6 @@ export class ShowAnimePictureComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.deviceService.isMobile();
-  }
-
-  showAnimeImage(contentAnimePicture) {
-    this.modalService.open(contentAnimePicture, { windowClass :'viewPicture', centered: true });
-    this.pictureAnime = this.anime.imageUrl;
   }
 
   async onFileChanged(event) {
@@ -62,5 +59,9 @@ export class ShowAnimePictureComponent implements OnInit {
       alert('No images selected');
       this.pictureAnime = '';
     }
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 }

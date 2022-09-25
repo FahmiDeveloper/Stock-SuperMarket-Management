@@ -19,13 +19,15 @@ import { Serie } from 'src/app/shared/models/serie.model';
 export class ShowSeriePictureComponent implements OnInit {
 
   @Input() serie: Serie = new Serie();
-  @Input() isGrid: boolean;
+
+  serieForModal: Serie = new Serie();
 
   pictureSerie: string;
   basePath = '/PicturesSeries';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   isMobile: boolean;
+  dialogRef: any;
 
   constructor(
     public modalService: NgbModal, 
@@ -36,11 +38,6 @@ export class ShowSeriePictureComponent implements OnInit {
 
   ngOnInit() {
     this.isMobile = this.deviceService.isMobile();
-  }
-
-  showSerieImage(contentSeriePicture) {
-    this.modalService.open(contentSeriePicture, { windowClass :'viewPicture', centered: true });
-    this.pictureSerie = this.serie.imageUrl;
   }
 
   async onFileChanged(event) {
@@ -62,5 +59,9 @@ export class ShowSeriePictureComponent implements OnInit {
       alert('No images selected');
       this.pictureSerie = '';
     }
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 }
