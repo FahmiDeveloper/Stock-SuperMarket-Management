@@ -1,85 +1,88 @@
-<table class="table table-striped">
-  <thead class="colorHeaderTable">
-    <tr>
-        <th>Name</th>
-        <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let file of (filteredFiles | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-      <td>{{ file.fileNameWithoutType }}</td>
-      <td>
-        <section [ngClass]="isMobile ? 'custom-section-mobile' : 'custom-section'">
-          <div>
-            <button
-                *ngIf="!checkIsImage(file.name) && !isZip(file.name)"
-                type="button"
-                (click)="viewOtherFileUpload(file, showOtherFile)"
-                class="btn btn-primary">
-                <i class="fa fa-eye fa-sm" aria-hidden="true"></i>
-            </button>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.fileNameWithoutType }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+
+          <mat-cell *matCellDef="let row; let i=index;" class="btns-view-download-delete">  
 
             <button
-              *ngIf="checkIsImage(file.name)"
+              *ngIf="!checkIsImage(row.name) && !isZip(row.name)"
               type="button"
-              (click)="viewFilePictureUpload(file, showPicture)"
-              class="btn btn-primary">
-              <i class="fa fa-eye fa-sm" aria-hidden="true"></i>
+              color="primary"
+              mat-icon-button 
+              (click)="viewOtherFileUpload(row, showOtherFile)">
+              <mat-icon>remove_red_eye</mat-icon>
             </button>
 
             <button
-              *ngIf="isZip(file.name)"
+              *ngIf="checkIsImage(row.name)"
               type="button"
-              (click)="showZipFile(file, viewZipFile)"
-              class="btn btn-primary">
-              <i class="fa fa-eye fa-sm" aria-hidden="true"></i>
+              color="primary"
+              mat-icon-button 
+              (click)="viewFilePictureUpload(row, showPicture)">
+              <mat-icon>remove_red_eye</mat-icon>
             </button>
-          </div>
 
-          <div>
+            <button
+              *ngIf="isZip(row.name)"
+              type="button"
+              color="primary"
+              mat-icon-button 
+              (click)="showZipFile(row, viewZipFile)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+
             <button
               type="button"
-              (click)="downloadFile(file)"
-              class="btn btn-success">
-              <i class="fa fa-download fa-sm" aria-hidden="true"></i>
+              color="accent"
+              mat-icon-button 
+              (click)="downloadFile(row)">
+              <mat-icon>cloud_download</mat-icon>
             </button>
-          </div>
 
-          <div> 
             <button
               *ngIf="userRoles.roleDeleteFile"
               type="button"
-              (click)="deleteFileUpload(file)"
-              class="btn btn-danger">
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              color="warn"
+              mat-icon-button 
+              (click)="deleteFileUpload(row)">
+              <mat-icon aria-label="Delete">delete</mat-icon>
             </button>
-          </div>
-
-          <div>
+  
             <button
-              *ngIf="isMobile && (checkIsImage(file.name) || isTxt(file.name)  || isPdf(file.name))"
-              type="button" 
-              (click)="shareFile(file)"
-              class="btn btn-warning">
-              <i class="fa fa-share-alt" aria-hidden="true"></i>
+              *ngIf="isMobile && (checkIsImage(row.name) || isTxt(row.name)  || isPdf(row.name))"
+              type="button"
+              color="accent"
+              mat-icon-button 
+              (click)="shareFile(row)">
+              <mat-icon>share</mat-icon>              
             </button>  
-          </div>
+              
+          </mat-cell>
+      </ng-container>
 
-        </section>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
 
-<div class="pagination" *ngIf="!isMobile">
-  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  
+    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+      No results
+    </div>
+  
+    <mat-paginator 
+      [pageSizeOptions]="[8]"
+      showFirstLastButtons 
+      aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>
 
-<div class="row" *ngIf="isMobile">
-  <div class="col-md-4">
-      <pagination-controls (pageChange)="p = $event" responsive="true"></pagination-controls>
-  </div>        
-</div>
 
 <ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
 

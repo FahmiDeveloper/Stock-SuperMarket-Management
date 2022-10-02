@@ -1,223 +1,212 @@
-<div class="modal-header text-center text-application">
-    <h4 class="modal-title w-100" *ngIf="!debt.key">New</h4>
-    <h4 class="modal-title w-100" *ngIf="debt.key">Edit</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modalRef.close()">
-        <span aria-hidden="true">&times;</span>
-    </button> 
-</div>
+<div class="container">
+    <h3 *ngIf="!debt.key" mat-dialog-title>Add new debt</h3>
+    <h3 *ngIf="debt.key" mat-dialog-title>Edit debt</h3>
+  
+    <div class="row">
+        <div class="col-md-12">
+        <form (ngSubmit)="save()" #f="ngForm">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form">
+    
+                        <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                            <mat-grid-tile>Rest money</mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-checkbox name="isRestMoney" [(ngModel)]="debt.isRestMoney" (ngModelChange)="checkAddRestMoney()" style="margin-top: 10px;"></mat-checkbox>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
+                        <br>
+                        <br>
+        
+                        <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                            <mat-grid-tile>Debt to pay</mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-checkbox name="debtForPay" [(ngModel)]="debt.debtForPay" (ngModelChange)="checkDebtForPay()" style="margin-top: 10px;"></mat-checkbox>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
-<div class="modal-body">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-application">
-                <form #f="ngForm" (ngSubmit)="save(f.value)">
-                    <div class="form-group" *ngIf="!debt.key">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label style="padding-top: 10px;margin-left: 145px;" for="checkRestMoney">Rest money</label>
-                                <input 
-                                    [(ngModel)]="debt.isRestMoney" 
-                                    name="isRestMoney" 
-                                    id="isRestMoney" 
-                                    type="checkbox" 
-                                    class="larger" 
-                                    style="margin-left:33px;vertical-align: bottom;"
-                                    (ngModelChange)="checkAddRestMoney()">
-                            </div>
-                        </div><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label style="padding-top: 10px;margin-left: 145px;" for="debtForPay">Debt to pay</label>
-                                <input 
-                                    #debtForPay="ngModel" 
-                                    [(ngModel)]="debt.debtForPay" 
-                                    name="debtForPay" 
-                                    id="debtForPay" 
-                                    type="checkbox" 
-                                    class="larger" 
-                                    style="margin-left:32px;vertical-align: bottom;"
-                                    (ngModelChange)="checkDebtForPay()">
-                            </div>
-                        </div><br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label style="padding-top: 10px;margin-left: 145px;" for="debtToGet">Debt to get</label>
-                                <input 
-                                    #debtToGet="ngModel" 
-                                    [(ngModel)]="debt.debtToGet" 
-                                    name="debtToGet" 
-                                    id="debtToGet" 
-                                    type="checkbox" 
-                                    class="larger" 
-                                    style="margin-left:34px;vertical-align: bottom;"
-                                    (ngModelChange)="checkDebtToGet()">
-                            </div>
-                        </div>                            
+                        <br>
+                        <br>
+        
+                        <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                            <mat-grid-tile>Debt to get</mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-checkbox name="debtToGet" [(ngModel)]="debt.debtToGet" (ngModelChange)="checkDebtToGet()" style="margin-top: 10px;"></mat-checkbox>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        
                     </div>
+                </div>
+    
+                <div class="col-md-8">
                     <div *ngIf="debt.isRestMoney || debt.debtForPay || debt.debtToGet">
-                        <div class="form-group">
-                            <label for="date">Date</label>
-                            <input #date="ngModel" [(ngModel)]="debt.date" name="date" id="date" type="date"
-                                class="form-control">
-                        </div>
-                        <div class="form-group" [hidden]="debt.isRestMoney || debt.debtForPay">
-                            <label for="debtor">Debtor</label>
-                            <input #debtor="ngModel" [(ngModel)]="debt.debtor" name="debtor" id="debtor" type="text"
-                                class="form-control" required>
-                            <div class="alert alert-danger" *ngIf="debtor.touched && debtor.invalid">
-                                Debtor is required.
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-form-field color="accent" style="width: 235px;">
+                                    <input matInput #input type="date" placeholder="Date" [(ngModel)]="debt.date" name="date">
+                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field color="accent" style="width: 235px;">
+                                    <mat-select placeholder="Place" [(ngModel)]="debt.placeId" name="placeId" [required]="debt.isRestMoney">
+                                        <mat-option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id" [hidden]="placeMoney.id == 5 && debt.isRestMoney">
+                                            {{placeMoney.place}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                </mat-form-field> 
                             </div>
                         </div>
-                        <div class="form-group" [hidden]="debt.isRestMoney || debt.debtToGet">
-                            <label for="creditor">Creditor</label>
-                            <input #creditor="ngModel" [(ngModel)]="debt.creditor" name="creditor" id="creditor" type="text"
-                                class="form-control" required>
-                            <div class="alert alert-danger" *ngIf="creditor.touched && creditor.invalid">
-                                Creditor is required.
+                
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-form-field color="accent" *ngIf="debt.isRestMoney" style="width: 235px;">
+                                    <input matInput #input type="text" placeholder="Rest Money" [(ngModel)]="debt.restMoney" name="restMoney" required>
+                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field color="accent" *ngIf="debt.debtForPay || debt.debtToGet" style="width: 235px;">
+                                    <input matInput #input type="text" placeholder="Debt" [(ngModel)]="debt.financialDebt" name="financialDebt" required>
+                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                </mat-form-field>      
                             </div>
-                        </div>
-                        <div class="form-group" [hidden]="debt.isRestMoney">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <label for="financialDebt">Financial Debt</label>
-                                    <input #financialDebt="ngModel" [(ngModel)]="debt.financialDebt" name="financialDebt" id="financialDebt" type="text"
-                                        class="form-control" required>
-                                    <div class="alert alert-danger" *ngIf="financialDebt.touched && financialDebt.invalid">
-                                        Financial Debt is required.
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="selectUnitForFinancialDebt">Unit</label>
-                                    <select #selectUnitForFinancialDebt class="form-control" (change)='onSelectUnitForFinancialDebt(selectUnitForFinancialDebt.value)' required>
-                                        <option *ngFor="let unit of units" [value]="unit.unitName">
+                            <div class="col-md-6">
+                                <mat-form-field color="accent" style="width: 235px;">
+                                    <mat-select placeholder="Unit" [(ngModel)]="selectedUnit" name="selectedUnit" (selectionChange)="onSelectUnit()">
+                                        <mat-option *ngFor="let unit of units" [value]="unit.unitName">
                                             {{unit.unitName}}
-                                        </option>
-                                    </select>
-                                    <div class="alert alert-danger" *ngIf="selectUnitForFinancialDebt.touched && selectUnitForFinancialDebt.invalid">
-                                        Unit is required.
-                                    </div>
-                                </div>
-                            </div>                 
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>                            
                         </div>
-                        <div class="form-group" [hidden]="debt.debtForPay || debt.debtToGet">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <label for="restMoney">Rest Money</label>
-                                    <input #restMoney="ngModel" [(ngModel)]="debt.restMoney" name="restMoney" id="restMoney" type="text"
-                                        class="form-control" required>
-                                    <div class="alert alert-danger" *ngIf="restMoney.touched && restMoney.invalid">
-                                        Rest Money is required.
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="selectUnitForRestMoney">Unit</label>
-                                    <select #selectUnitForRestMoney class="form-control" (change)='onSelectUnitForRestMoney(selectUnitForRestMoney.value)' required>
-                                        <option *ngFor="let unit of units" [value]="unit.unitName">
-                                            {{unit.unitName}}
-                                        </option>
-                                    </select>
-                                    <div class="alert alert-danger" *ngIf="selectUnitForRestMoney.touched && selectUnitForRestMoney.invalid">
-                                        Unit is required.
-                                    </div>
-                                </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <mat-form-field color="accent" *ngIf="debt.debtForPay" style="width: 235px;">
+                                    <input matInput #input type="text" placeholder="Creditor" [(ngModel)]="debt.creditor" name="creditor" required>
+                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field color="accent" *ngIf="debt.debtToGet" style="width: 235px;">
+                                    <input matInput #input type="text" placeholder="Debtor" [(ngModel)]="debt.debtor" name="debtor" required>
+                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6"></div>
+                        </div>
+
+                        <div class="row" *ngIf="debt.debtForPay">
+                            <div class="col-md-12">
+                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                    <mat-grid-tile>Will pay this month</mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <mat-checkbox
+                                            name="toPayThisMonth"
+                                            [(ngModel)]="debt.toPayThisMonth" 
+                                            style="margin-left:30px;vertical-align: bottom;" 
+                                            (ngModelChange)="checkToPayThisMonth()">
+                                        </mat-checkbox>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+
+                                <br>
+                
+                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                    <mat-grid-tile>Will pay next month</mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <mat-checkbox 
+                                            name="toPayNextMonth" 
+                                            [(ngModel)]="debt.toPayNextMonth" 
+                                            style="margin-left:30px;vertical-align: bottom;" 
+                                            (ngModelChange)="checkToPayNextMonth()">
+                                        </mat-checkbox>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+
+                                <br>
+                
+                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                    <mat-grid-tile>Not to pay For Now</mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <mat-checkbox 
+                                            name="notToPayForNow" 
+                                            [(ngModel)]="debt.notToPayForNow" 
+                                            style="margin-left:30px;vertical-align: bottom;" 
+                                            (ngModelChange)="checkNotToPayForNow()">
+                                        </mat-checkbox>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
                             </div>
                         </div>
-                        <div class="form-group" [hidden]="debt.debtForPay || debt.debtToGet">
-                            <label for="placeId">Place</label>
-                            <select #placeId="ngModel" [(ngModel)]="debt.placeId" name="placeId" id="placeId"
-                                class="form-control" required>
-                                <option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id" [hidden]="placeMoney.id == 5 && debt.isRestMoney">
-                                    {{placeMoney.place}}
-                                </option>
-                            </select>
-                            <div class="alert alert-danger" *ngIf="placeId.touched && placeId.invalid">
-                                Status is required.
+
+                        <div class="row" *ngIf="debt.debtToGet">
+                            <div class="col-md-12">
+                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                    <mat-grid-tile>Will get this month</mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <mat-checkbox 
+                                            name="toGetThisMonth" 
+                                            [(ngModel)]="debt.toGetThisMonth" 
+                                            style="margin-left:30px;vertical-align: bottom;" 
+                                            (ngModelChange)="checkToGetThisMonth()">
+                                        </mat-checkbox>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+
+                                <br>
+                
+                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                    <mat-grid-tile>Will get next month</mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <mat-checkbox 
+                                            name="toGetNextMonth" 
+                                            [(ngModel)]="debt.toGetNextMonth" 
+                                            style="margin-left:30px;vertical-align: bottom;" 
+                                            (ngModelChange)="checkToGetNextMonth()">
+                                        </mat-checkbox>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
+
+                                <br>
+                
+                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                    <mat-grid-tile>Not to get For Now</mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <mat-checkbox 
+                                            name="notToGetForNow" 
+                                            [(ngModel)]="debt.notToGetForNow" 
+                                            style="margin-left:30px;vertical-align: bottom;" 
+                                            (ngModelChange)="checkNotToGetForNow()">
+                                        </mat-checkbox>
+                                    </mat-grid-tile>
+                                </mat-grid-list>
                             </div>
                         </div>
-                        <div class="form-group" *ngIf="debt.debtForPay">
-                            <label style="padding-top: 10px;" for="toPayThisMonth">Will pay this month</label>
-                            <input 
-                                #toPayThisMonth="ngModel" 
-                                [(ngModel)]="debt.toPayThisMonth" 
-                                name="toPayThisMonth" 
-                                id="toPayThisMonth" 
-                                type="checkbox" 
-                                class="larger" 
-                                style="margin-left:30px;vertical-align: bottom;"
-                                (ngModelChange)="checkToPayThisMonth()">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <mat-form-field color="accent" style="width: 475px;">
+                                    <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="debt.note" name="note" rows="4" cols="80" required></textarea>
+                                </mat-form-field>
+                            </div>
+                           
                         </div>
-                        <div class="form-group" *ngIf="debt.debtForPay">
-                            <label style="padding-top: 10px;" for="toPayNextMonth">Will pay next month</label>
-                            <input 
-                                #toPayNextMonth="ngModel" 
-                                [(ngModel)]="debt.toPayNextMonth" 
-                                name="toPayNextMonth" 
-                                id="toPayNextMonth" 
-                                type="checkbox" 
-                                class="larger"
-                                style="margin-left:25px;vertical-align: bottom;" 
-                                (ngModelChange)="checkToPayNextMonth()">
-                        </div>
-                        <div class="form-group" *ngIf="debt.debtForPay">
-                            <label style="padding-top: 10px;" for="notToPayForNow">Not to pay For Now</label>
-                            <input 
-                                #notToPayForNow="ngModel" 
-                                [(ngModel)]="debt.notToPayForNow" 
-                                name="notToPayForNow" 
-                                id="notToPayForNow" 
-                                type="checkbox" 
-                                class="larger"
-                                style="margin-left:27px;vertical-align: bottom;"
-                                (ngModelChange)="checkNotToPayForNow()">
-                        </div>
-                        <div class="form-group" *ngIf="debt.debtToGet">
-                            <label style="padding-top: 10px;" for="toGetThisMonth">Will get this month</label>
-                            <input 
-                                #toGetThisMonth="ngModel" 
-                                [(ngModel)]="debt.toGetThisMonth" 
-                                name="toGetThisMonth" 
-                                id="toGetThisMonth" 
-                                type="checkbox" 
-                                class="larger"
-                                style="margin-left:31px;vertical-align: bottom;" 
-                                (ngModelChange)="checkToGetThisMonth()">
-                        </div>
-                        <div class="form-group" *ngIf="debt.debtToGet">
-                            <label style="padding-top: 10px;" for="toGetNextMonth">Will get next month</label>
-                            <input 
-                                #toGetNextMonth="ngModel" 
-                                [(ngModel)]="debt.toGetNextMonth" 
-                                name="toGetNextMonth" 
-                                id="toGetNextMonth" 
-                                type="checkbox" 
-                                class="larger"
-                                style="margin-left:26px;vertical-align: bottom;" 
-                                (ngModelChange)="checkToGetNextMonth()">
-                        </div>
-                        <div class="form-group" *ngIf="debt.debtToGet">
-                            <label style="padding-top: 10px;" for="notToGetForNow">Not to get For Now</label>
-                            <input 
-                                #notToGetForNow="ngModel" 
-                                [(ngModel)]="debt.notToGetForNow" 
-                                name="notToGetForNow" 
-                                id="notToGetForNow" 
-                                type="checkbox" 
-                                class="larger"
-                                style="margin-left:28px;vertical-align: bottom;" 
-                                (ngModelChange)="checkNotToGetForNow()">
-                        </div>
-                        <div class="form-group">
-                            <label for="note">Note</label>
-                            <textarea #note="ngModel" [(ngModel)]="debt.note" name="note" id="note" type="text" class="form-control"></textarea>
-                        </div>
-                        <div class="row justify-content-center">
-                            <button type="submit" class="btn btn-primary" [disabled]="f.invalid"><i class="fa fa-save" aria-hidden="true"></i></button>
-                        </div>
+                        
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+    
+            <div mat-dialog-actions *ngIf="debt.isRestMoney || debt.debtForPay || debt.debtToGet">
+                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1">Save</button>
+                <button mat-button type="button" (click)="close()" tabindex="-1">Cancel</button>
+            </div>
+
+        </form>
+    </div>
     </div>
 </div>
 

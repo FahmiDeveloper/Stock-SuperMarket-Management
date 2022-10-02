@@ -18,12 +18,14 @@ export class FileUpload {
 
 export interface TypesFiles {
   id: number,
+  title: string,
   type: string,
   icon: string
 }
 
 export interface TypesLinks {
   id: number,
+  title: string,
   type: string,
   icon: string
 }

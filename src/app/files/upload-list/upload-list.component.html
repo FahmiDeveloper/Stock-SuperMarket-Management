@@ -1,9 +1,15 @@
 <div class="row">
     <div class="col-md-6" *ngIf="!isMobile">
-        <input #query (input)="filter(query.value)" type="text"  class="form-control widhtInput text-application" placeholder="Search by name...">
+        <mat-form-field class="widhtInput">
+            <mat-label>Name</mat-label>
+            <input matInput #query type="text" name="queryNote" (input)="filter(query.value)"/>
+        </mat-form-field>
     </div>
     <div class="col-md-4" *ngIf="isMobile">
-        <input #query (input)="filter(query.value)" type="text"  class="form-control widhtInput text-application" placeholder="Search by name...">
+        <mat-form-field class="widhtInput">
+            <mat-label>Name</mat-label>
+            <input matInput #query type="text" name="queryNote" (input)="filter(query.value)"/>
+        </mat-form-field>
     </div>
 </div>
 

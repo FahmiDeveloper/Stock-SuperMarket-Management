@@ -1,17 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { DebtService } from 'src/app/shared/services/debt.service';
-import { UserService } from 'src/app/shared/services/user.service';
-import { AuthService } from 'src/app/shared/services/auth.service';
 
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
 
 @Component({
@@ -20,18 +15,12 @@ import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
   styleUrls: ['./new-or-edit-debt.scss']
 })
 
-export class NewOrEditDebtComponent implements OnInit, OnDestroy {
+export class NewOrEditDebtComponent implements OnInit {
 
   debt: Debt = new Debt();
   defaultDebts: Debt[];
-  selectUnitForRestMoney:string;
-  selectUnitForFinancialDebt:string;
-  debtId: string;
-
-  user: FirebaseUserModel = new FirebaseUserModel();
-
-  subscriptionForGetAllDebts: Subscription;
-  subscriptionForUser: Subscription;
+  selectedUnit:string;
+  modalRef: any;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -49,132 +38,75 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
     {unitName: 'Mill'}
   ];
 
+  formControl = new FormControl('', [Validators.required]);
+
   constructor(
     private debtService: DebtService,
-    public userService: UserService,
-    public authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
+    public dialogRef: MatDialogRef<NewOrEditDebtComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Debt
   ) {}
 
   ngOnInit() {
-    this.debtId = this.route.snapshot.paramMap.get('id');
-    this.getDebtData();
-    this.getRolesUser();
-  }
-
-  getDebtData() {
-    if (this.debtId) {
-      this.debtService
-        .getDebtId(this.debtId)
-        .valueChanges()
-        .pipe(take(1))
-        .subscribe(debt => {
-          this.debt = debt;
-        });
-    } else {
+    if (!this.debt.key) {
+      this.debt.isRestMoney = true;
+      this.debt.debtForPay = false;
+      this.debt.debtToGet = false;
       this.debt.date = moment().format('YYYY-MM-DD');
-
-      this.subscriptionForGetAllDebts = this.debtService
-      .getAll()
-      .subscribe(debts => {
-        this.defaultDebts = debts;
-      });
     }
   }
 
-  getRolesUser() {
-    this.subscriptionForUser = this.authService
-      .isConnected
-      .subscribe(res=>{
-        if(res) {
-          this.userService
-          .getCurrentUser()
-          .then(user=>{
-            if(user) {
-              this.userService
-                .get(user.uid)
-                .valueChanges()
-                .subscribe(dataUser=>{
-                  this.user = dataUser;
-                });
-              }
-          });   
-        }
-    })
-  }
+  save() {
+    if (this.debt.placeId == 5) {
+      if (this.debt.toPayThisMonth == undefined) this.debt.toPayThisMonth = false;
+      if (this.debt.toPayNextMonth == undefined) this.debt.toPayNextMonth = false;
+      if (this.debt.notToPayForNow == undefined) this.debt.notToPayForNow = false;
 
-  save(debt) {
-    if (debt.placeId == 5) {
-      if (debt.toPayThisMonth == undefined) debt.toPayThisMonth = false;
-      if (debt.toPayNextMonth == undefined) debt.toPayNextMonth = false;
-      if (debt.notToPayForNow == undefined) debt.notToPayForNow = false;
-
-      if (debt.toGetThisMonth == undefined) debt.toGetThisMonth = false;
-      if (debt.toGetNextMonth == undefined) debt.toGetNextMonth = false;
-      if (debt.notToGetForNow == undefined) debt.notToGetForNow = false;
+      if (this.debt.toGetThisMonth == undefined) this.debt.toGetThisMonth = false;
+      if (this.debt.toGetNextMonth == undefined) this.debt.toGetNextMonth = false;
+      if (this.debt.notToGetForNow == undefined) this.debt.notToGetForNow = false;
     }
 
-    if (this.debtId) {
-      this.debtService.update(this.debtId, debt);
+    if (this.debt.key) {
+      this.debtService.update(this.debt.key, this.debt);
       Swal.fire(
         'Debt data has been Updated successfully',
         '',
         'success'
       )
     } else {
-      if (this.defaultDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) debt.numRefDebt = this.defaultDebts[0].numRefDebt + 1;
-      this.debtService.create(debt);
+      if (this.defaultDebts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0].numRefDebt) this.debt.numRefDebt = this.defaultDebts[0].numRefDebt + 1;
+      this.debtService.create(this.debt);
       Swal.fire(
       'New Debt added successfully',
       '',
       'success'
       )
     }
-    this.router.navigate(['/debts-for-grid']);  
+    this.close();
   }
 
   checkAddRestMoney() {
-    if (!this.debt.key) {
-      if(this.debt.isRestMoney == true) {
-        this.debt.restMoney = "";
-        this.debt.placeId = null;
+    if (!this.debt.key && this.debt.isRestMoney == true) {
         this.debt.debtForPay = false;
         this.debt.debtToGet = false;
-        this.debt.debtor = "-";
-        this.debt.creditor = "-";
-        this.debt.financialDebt = "-";
-      }
     }
   }
 
   checkDebtForPay() {
-    if (!this.debt.key) {
-      if(this.debt.debtForPay == true) {
-        this.debt.financialDebt = "";
-        this.debt.restMoney = "";
-        this.debt.creditor = "";
+    if (!this.debt.key && this.debt.debtForPay == true) {
         this.debt.debtToGet = false;
         this.debt.isRestMoney = false;
         this.debt.debtor = "Fahmi";
-        this.debt.restMoney = "-";
         this.debt.placeId = 5;
-      }
     }
   }
 
   checkDebtToGet() {
-    if (!this.debt.key) {
-      if(this.debt.debtToGet == true) {
-        this.debt.financialDebt = "";
-        this.debt.restMoney = "";
-        this.debt.debtor = "";
+    if (!this.debt.key && this.debt.debtToGet == true) {
         this.debt.debtForPay = false;
         this.debt.isRestMoney = false;
         this.debt.creditor = "Fahmi";
-        this.debt.restMoney = "-";
         this.debt.placeId = 5;
-      }
     }
   }
 
@@ -220,41 +152,17 @@ export class NewOrEditDebtComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectUnitForRestMoney(unitName:string) {
-    this.debt.restMoney = this.debt.restMoney + unitName;
+  onSelectUnit() {
+    if (this.debt.isRestMoney) this.debt.restMoney = this.debt.restMoney + this.selectedUnit;
+    else this.debt.financialDebt = this.debt.financialDebt + this.selectedUnit;
   }
 
-  onSelectUnitForFinancialDebt(unitName:string) {
-    this.debt.financialDebt = this.debt.financialDebt + unitName;
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
   }
 
-  deleteDebt() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this debt!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.debtService.delete(this.debtId);
-        this.router.navigate(['/debts-for-grid']);
-        Swal.fire(
-          'Debt has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
+  close() {
+    this.dialogRef.close();
   }
 
-  cancel() {
-    this.router.navigate(['/debts-for-grid']);
-  }
-
-  ngOnDestroy() {
-    this.subscriptionForUser.unsubscribe();
-    if (!this.debtId) this.subscriptionForGetAllDebts.unsubscribe();
-  }
 }

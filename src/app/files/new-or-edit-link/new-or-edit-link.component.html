@@ -1,35 +1,25 @@
-<div class="modal-header text-center">
-    <h4 class="modal-title w-100" *ngIf="!link.key">New Link</h4>
-    <h4 class="modal-title w-100" *ngIf="link.key">Edit Link</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modalRef.close()">
-        <span aria-hidden="true">&times;</span>
-    </button> 
-</div>
+<h3 *ngIf="!link.key" mat-dialog-title>Add new Link</h3>
+<h3 *ngIf="link.key" mat-dialog-title>Edit Link</h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <form (ngSubmit)="save(f.value)" #f="ngForm">
+
+            <mat-form-field color="accent" style="width: 430px;">
+                <input matInput #input type="text" placeholder="Content" [(ngModel)]="link.content" name="content" required>
+                <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
     
-<div class="modal-body">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <form #f="ngForm" (ngSubmit)="save(f.value)">
-                    <div class="form-group">
-                        <label for="content">Content</label>
-                        <input #content="ngModel" [(ngModel)]="link.content" name="content" id="content"
-                            type="text" class="form-control" required [minlength]="3">
-                        <div class="alert alert-danger" *ngIf="content.touched && content.invalid">
-                            <div *ngIf="content.errors.required"> Content is required.</div>
-                            <div *ngIf="content.errors?.minlength">Content should contain at least 3 characters or higher.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="path">Path</label>
-                        <input #path="ngModel" [(ngModel)]="link.path" name="path" id="path" type="text" class="form-control" required>
-                    </div>
-                    <div class="row justify-content-center">
-                        <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Save</button>
-                    </div>                    
-                </form>
+            <mat-form-field color="accent" style="width: 430px;">
+                <input matInput #input type="text" placeholder="Path" [(ngModel)]="link.path" name="path" required>
+                <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+            </mat-form-field>
+        
+            <div mat-dialog-actions>
+                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1">Save</button>
+                <button mat-button type="button" (click)="modalRef.close()" tabindex="-1">Cancel</button>
             </div>
-        </div>
+        
+        </form>
     </div>
 </div>
