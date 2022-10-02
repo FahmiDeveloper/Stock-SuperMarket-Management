@@ -1,935 +1,438 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">Debts</h1>
-<div class="container mx-auto" style="margin-top: 40px;">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="row btnswrap justify-content-center">
-                <button type="button" class="btn btn-success ml-2 mr-4" (click)="openModalSearch(contentModalSearch)">
-                    <i class="fa fa-search"></i>
-                </button>
-                <button type="button" class="btn btn-info ml-1 mr-4 font-weight-bold text-application" (click)="openModalRestMoneyForeachPlace(contentRestMoneyForeachPlace)">Rest</button>
-                <!-- <button class="btn btn-dark ml-1 mr-3 font-weight-bold text-application" (click)="openModalDebt(contentDebt)">Debt</button> -->
-                <a *ngIf="user.roleAddDebt" routerLink="/debts/new" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>  
-            </div>              
-        </div>          
+<h1 class="titleTextInterface text-application">Debts</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <button
+            *ngIf="user.roleAddDebt"
+            type="button" 
+            (click)="newDebt()" 
+            mat-mini-fab 
+            color="primary" 
+            style="float: right;">
+            <mat-icon style="color: white;">add</mat-icon>
+        </button>
+
+        <button 
+            *ngIf="!sortByDesc"
+            type="button"  
+            mat-mini-fab 
+            color="primary" 
+            (click)="sortByRefDebtDesc()" 
+            style="float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+        <button 
+            *ngIf="sortByDesc"
+            type="button"
+            mat-mini-fab
+            color="primary" 
+            (click)="sortByRefDebtAsc()" 
+            style="float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+        <button 
+            mat-flat-button 
+            color="primary" 
+            (click)="showRest(contentRestMoneyForeachPlace)"
+            style="float: right;margin-right: 20px;margin-top: 3px;">
+            Rest
+        </button>
+    </div> 
+</div>
+
+<br>
+ 
+<div class="row">
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>Note</mat-label>
+            <input matInput type="text" name="queryNote" (keyup)="getAllDebts()" [(ngModel)]="queryNote"/>
+        </mat-form-field>
     </div>
-
-    <br *ngIf="selectPlace">
-
-    <div *ngIf="selectPlace" class="text-application">
-        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 1">
-            <div class="row">
-                <div class="col-6">
-                    <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInPocket }}</span>
-                </div>
-                <div class="col-6 font-weight-bold">
-                    <span class="text-primary" style="font-size: 18px;float: right;">: الجيب</span>
-                </div>
-            </div>
-        </div>
-    
-        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 2"> 
-            <div class="row">
-                <div class="col-5">
-                    <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInWallet }}</span>
-                </div>
-                <div class="col-7 font-weight-bold">
-                    <span class="text-primary"style="font-size: 18px;">: المحفظة</span>
-                </div>
-            </div>
-        </div>
-    
-        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 3">
-            <div class="row">
-                <div class="col-5">
-                    <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInEnvelope }}</span>
-                </div>
-                <div class="col-7 font-weight-bold">
-                    <span class="text-primary" style="font-size: 18px;">: الظرف</span>
-                </div>
-            </div>
-        </div>
-    
-        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 4">
-            <div class="row">
-                <div class="col-5">
-                    <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInBox }}</span>
-                </div>
-                <div class="col-7 font-weight-bold">
-                    <span class="text-primary" style="font-size: 18px;">: الصندوق</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row" *ngIf="placeId && placeId == 5">
-            <div class="col-3"></div>
-            <div class="col-3 font-weight-bold">
-                <label>
-                    <input 
-                        [(ngModel)]="getOutDebt" 
-                        name="getOutDebt" 
-                        id="getOutDebt" 
-                        type="checkbox" 
-                        class="form-check-input larger"
-                        (ngModelChange)="showOutDebt()"
-                        style="margin-left: 5px;">
-                    <span class="text-primary" style="margin-left: -45px;vertical-align: -webkit-baseline-middle;">المسال</span>
-                </label>     
-            </div>
-            <div class="col-3"></div>
-            <div class="col-3 font-weight-bold">
-                <label>
-                    <input 
-                        [(ngModel)]="getInDebt" 
-                        name="getInDebt" 
-                        id="getInDebt" 
-                        type="checkbox" 
-                        class="form-check-input larger"
-                        (ngModelChange)="showInDebt()"
-                        style="margin-left: 0px;">
-                    <span class="text-primary" style="margin-left: -50px;vertical-align: -webkit-baseline-middle;">المتخلد</span>
-                </label>
-            </div>
-        </div>
-
-        <br *ngIf="getInDebt || getOutDebt">
-    
-        <div class="row" *ngIf="getInDebt || getOutDebt">
-            <div class="col-md-4">
-                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                    <div class="card-body text-dark" style="text-align: center;">
-                        <div class="row">
-                            <div class="col-7">
-                                <span *ngIf="getInDebt">
-                                    <span *ngIf="totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebts }}</span>
-                                    <span *ngIf="!totalInDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                </span>
-                                <span *ngIf="getOutDebt">
-                                    <span *ngIf="totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebts }}</span>
-                                <span *ngIf="!totalOutDebts" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                </span>
-                            </div>
-                            <div class="col-5 font-weight-bold">
-                                <span class="text-primary" style="font-size: 18px;">:المجموع</span>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-7">
-                                <select *ngIf="getInDebt" [(ngModel)]="statusInDebtId" name="statuInDebtId" id="statuInDebtId" class="form-control" (ngModelChange)="getTotalInDebtsByStatus($event)">
-                                    <option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
-                                        {{statusInDebt.status}}
-                                    </option>
-                                </select>
-                                <select *ngIf="getOutDebt" [(ngModel)]="statusOutDebtId" name="statusOutDebtId" id="statusOutDebtId" class="form-control" (ngModelChange)="getTotalOutDebtsByStatus($event)">
-                                    <option *ngFor="let statusOutDebt of statusOutDebts" [value]="statusOutDebt.id">
-                                        {{statusOutDebt.status}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-5 font-weight-bold">
-                                <span class="text-primary" style="font-size: 18px;">:الحالة</span>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-7">
-                                    <select *ngIf="getInDebt" [ngModel]="creditorName" (ngModelChange)="getTotalInDebtsByCreditor($event)" name="creditorName" id="creditorName" class="form-control">
-                                    <option *ngFor="let creditor of creditors" [value]="creditor">
-                                        {{creditor}}
-                                    </option>
-                                </select>
-                                <select *ngIf="getOutDebt" [ngModel]="debtorName" (ngModelChange)="getTotalOutDebtsByDebtor($event)" name="debtorName" id="debtorName" class="form-control">
-                                    <option *ngFor="let debtor of debtors" [value]="debtor">
-                                        {{debtor}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-5 font-weight-bold">
-                                <span *ngIf="getInDebt" class="text-primary" style="font-size: 18px;">:الدائنين</span>
-                                <span *ngIf="getOutDebt" class="text-primary" style="font-size: 18px;">:المدينين</span>
-                            </div>
-                        </div>
-                        <br *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
-                        <div class="row" *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
-                            <div class="col-7">
-                                <span *ngIf="statusInDebtId || creditorName">
-                                    <span *ngIf="totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalInDebtsByCreditor }}</span>
-                                    <span *ngIf="!totalInDebtsByCreditor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                </span>
-                                <span *ngIf="statusOutDebtId || debtorName">
-                                    <span *ngIf="totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ totalOutDebtsByDebtor }}</span>
-                                    <span *ngIf="!totalOutDebtsByDebtor" class="font-weight-bold badge badge-warning" style="font-size: 18px;">0DT</span>
-                                </span>           
-                            </div>
-                            <div class="col-5 font-weight-bold">
-                                <span class="text-primary" style="font-size: 18px;">:الدين</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <br *ngIf="getInDebt || getOutDebt">
-        
-        <div style="display: flex;align-items: center;justify-content: center;" *ngIf="placeId == 6">
-            <div class="row">
-                <div class="col-5">
-                    <span class="font-weight-bold badge badge-warning" style="font-size: 18px;">{{ restInPosteAccount }}</span>
-                </div>
-                <div class="col-7 font-weight-bold">
-                    <span class="text-primary" style="font-size: 18px;">: الحساب البريدي</span>
-                </div>
-            </div>
-        </div>
+    <div class="col-md-4">
+        <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select name="placeId" [(ngModel)]="placeId" (selectionChange)="getAllDebts()">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
+                    {{placeMoney.place}}
+				</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
-    
-    <br>
-
-    <div class="row" *ngIf="(filteredDebts?.length) && (filteredDebts?.length > 1)">
-        <div class="col-md-4">
-            <button
-                type="button"
-                *ngIf="!sortByDesc"
-                class="btn btn-warning float-right" 
-                style="margin-right: 6px;" 
-                (click)="sortByRefDebtDesc()">
-                <i class="fa fa-lg fa-sort-desc" aria-hidden="true"></i>
-            </button>
-
-            <button
-                type="button"
-                *ngIf="sortByDesc"
-                class="btn btn-warning float-right" 
-                style="margin-right: 6px;" 
-                (click)="sortByRefDebtAsc()">
-                <i class="fa fa-lg fa-sort-asc" aria-hidden="true"></i>
-            </button>
-
-            <button
-                type="button"
-                *ngIf="selectPlace"
-                [hidden]="placeId == 5"
-                class="btn btn-danger float-right" 
-                style="margin-right: 6px;" 
-                (click)="deleteAllByPlace(contentLoading)">
-                <span class="font-weight-bold">Delete all</span>
-            </button>
-        </div>
-    </div>
-    
-    <div class="row text-application">
-        <div class="col-md-4" *ngFor="let debt of (filteredDebts | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: p })">
-            <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                <div class="card-body text-dark">
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Date:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            {{ debt.date | date:'dd/MM/yyyy' }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Debtor:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            {{ debt.debtor }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Creditor:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            {{ debt.creditor }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Debt:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            {{ debt.financialDebt }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Rest:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            {{ debt.restMoney }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Place:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span *ngIf="debt.placeId">{{ debt.place }}</span>
-                            <span *ngIf="!debt.placeId">-</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">
-                            <span class="text-primary font-weight-bold">Note:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            {{ debt.note }}
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="debt.placeId == 5">
-                        <div class="col-5">
-                            <span *ngIf="debt.debtForPay == true" class="text-primary font-weight-bold">Pay Status:</span>
-                            <span *ngIf="debt.debtToGet == true" class="text-primary font-weight-bold">Get Status:</span>
-                        </div>
-                        <div class="col-7 font-weight-bold">
-                            <span *ngIf="debt.toPayThisMonth">This month</span>
-                            <span *ngIf="debt.toPayNextMonth">Next month</span>
-                            <span *ngIf="debt.notToPayForNow">Not now</span>
-                            <span *ngIf="debt.toGetThisMonth">This month</span>
-                            <span *ngIf="debt.toGetNextMonth">Next month</span>
-                            <span *ngIf="debt.notToGetForNow">Not now</span>
-                        </div>
-                    </div><br>
-                    <div class="row btnswrap justify-content-center">
-                        <button 
-                            *ngIf="user.roleUpdateDebt"
-                            type="button"
-                            [routerLink]="['/debts', debt.key]" 
-                            class="btn btn-secondary ml-1 mr-3"
-                            style="text-decoration: none;">
-                            <i class="fa fa-edit" aria-hidden="true"></i>
-                        </button>     
-                        <button 
-                            *ngIf="user.roleDeleteDebt"
-                            type="button"
-                            [routerLink]="['/debts', debt.key]" 
-                            class="btn btn-danger"
-                            style="text-decoration: none;">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                    </div>   
-                </div>
-            </div><br>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <pagination-controls (pageChange)="p = $event" responsive="true"></pagination-controls>
-        </div>        
+    <div class="col-md-4">
+        <button 
+            *ngIf="(dataSource.data.length) && (dataSource.data.length > 1) && placeId" [hidden]="placeId == 5"
+            mat-flat-button 
+            color="warn" 
+            (click)="deleteAllByPlace(contentLoading)"
+            style="float: right;">
+            Delete all
+        </button>
     </div>
 </div>
 
-<ng-template #contentModalSearch let-modal let-c="close" let-d="dismiss">
+<br>
 
-    <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-application">Search</h4>
+<div *ngIf="placeId == 1">
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile style="color: #dc3545;">{{ restInPocket }}</mat-grid-tile>
+        <mat-grid-tile>: الجيب</mat-grid-tile>
+    </mat-grid-list>
+</div>
 
-        <button type="button" class="close" aria-label="Close" (click)="modalRefSearch.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+<div *ngIf="placeId == 2">
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile style="color: #dc3545;">{{ restInWallet }}</mat-grid-tile>
+        <mat-grid-tile>: المحفظة</mat-grid-tile>
+    </mat-grid-list>
+</div>
 
-    <div class="modal-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4" style="display: table;">
-                    <div style="display: table-cell; width: 100%;">
-                        <input [(ngModel)]="queryNote" type="text" class="form-control text-application" placeholder="Search by note...">
-                    </div>
-                    <button type="button" class="btn btn-primary" (click)="getAllDebts()" style="margin-top: -3px;">
-                        <i class="fa fa-search"></i>
-                    </button>
-                    <!-- <input [(ngModel)]="queryDate" type="date" class="form-control">           -->
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4">
-                    <select [ngModel]="placeId" (ngModelChange)="getAllDebts($event)" name="placeId" id="placeId" class="form-control">
-                        <option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
-                            {{placeMoney.place}}
-                        </option>
-                    </select>
-                </div>
-            </div>
+<div *ngIf="placeId == 3">
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile style="color: #dc3545;">{{ restInEnvelope }}</mat-grid-tile>
+        <mat-grid-tile>: الظرف</mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+<div *ngIf="placeId == 4">
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile style="color: #dc3545;">{{ restInBox }}</mat-grid-tile>
+        <mat-grid-tile>: الصندوق</mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+<div *ngIf="placeId == 5">
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile>
+            <mat-checkbox 
+                name="getInDebt" 
+                [(ngModel)]="getInDebt"         
+                (ngModelChange)="showInDebt()">
+            </mat-checkbox>
+        </mat-grid-tile>        
+        <mat-grid-tile>الدين المتخلد</mat-grid-tile>
+    </mat-grid-list>
+
+    <br>
+
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile>
+            <mat-checkbox 
+                name="getOutDebt" 
+                [(ngModel)]="getOutDebt" 
+                (ngModelChange)="showOutDebt()">
+            </mat-checkbox>
+        </mat-grid-tile>
+        <mat-grid-tile>الدين المسال</mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="row text-application" *ngIf="getInDebt || getOutDebt">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <mat-card>
+                <mat-grid-list cols="2" rowHeight="2:1">
+                    <mat-grid-tile>
+                        <span style="font-size: 20px;">
+                            <span *ngIf="getInDebt">
+                                <span *ngIf="totalInDebts">{{ totalInDebts }}</span>
+                                <span *ngIf="!totalInDebts">0DT</span>
+                            </span>
+                            <span *ngIf="getOutDebt">
+                                <span *ngIf="totalOutDebts">{{ totalOutDebts }}</span>
+                                <span *ngIf="!totalOutDebts">0DT</span>
+                            </span>  
+                        </span>    
+                    </mat-grid-tile>
+                    <mat-grid-tile><span style="font-size: 20px;">المجموع</span></mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <mat-label>وقت الدفع</mat-label>
+                            <mat-select *ngIf="getInDebt" name="statusInDebtId" [(ngModel)]="statusInDebtId" (selectionChange)="getTotalInDebtsByStatus()">
+                                <mat-option value=""></mat-option>
+                                <mat-option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
+                                    {{statusInDebt.status}}
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-select *ngIf="getOutDebt" name="statusOutDebtId" [(ngModel)]="statusOutDebtId" (selectionChange)="getTotalOutDebtsByStatus()">
+                                <mat-option value=""></mat-option>
+                                <mat-option *ngFor="let statusOutDebt of statusOutDebts" [value]="statusOutDebt.id">
+                                    {{statusOutDebt.status}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile><span style="font-size: 20px;">وقت الدفع</span></mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <mat-select *ngIf="getInDebt" name="creditorName" [(ngModel)]="creditorName" (selectionChange)="getTotalInDebtsByCreditor()">
+                                <mat-option value=""></mat-option>
+                                <mat-option *ngFor="let creditor of creditors" [value]="creditor">
+                                    {{creditor}}
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-select *ngIf="getOutDebt" name="debtorName" [(ngModel)]="debtorName" (selectionChange)="getTotalOutDebtsByDebtor()">
+                                <mat-option value=""></mat-option>
+                                <mat-option *ngFor="let debtor of debtors" [value]="debtor">
+                                    {{debtor}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <span *ngIf="getInDebt" style="font-size: 20px;">الدائنين</span>
+                        <span *ngIf="getOutDebt" style="font-size: 20px;">المدينين</span>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
+                        <span *ngIf="statusInDebtId || creditorName" style="font-size: 20px;">
+                            <span *ngIf="totalInDebtsByCreditor">{{ totalInDebtsByCreditor }}</span>
+                            <span *ngIf="!totalInDebtsByCreditor">0DT</span>
+                        </span>                  
+                        <span *ngIf="statusOutDebtId || debtorName" style="font-size: 20px;">
+                            <span *ngIf="totalOutDebtsByDebtor">{{ totalOutDebtsByDebtor }}</span>
+                            <span *ngIf="!totalOutDebtsByDebtor">0DT</span>
+                        </span>     
+                    </mat-grid-tile>
+                    <mat-grid-tile *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
+                        <span style="font-size: 20px;">الدين</span>
+                    </mat-grid-tile>
+                  </mat-grid-list>
+            </mat-card>
         </div>
-    </div>       
-</ng-template>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+<div *ngIf="placeId == 6">
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile style="color: #dc3545;">{{ restInPosteAccount }}</mat-grid-tile>
+        <mat-grid-tile>: الحساب البريدي</mat-grid-tile>
+    </mat-grid-list>
+</div>
+
+<br *ngIf="placeId">
+  
+<div class="example-container mat-elevation-z8">
+<div class="example-table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12">
+                <mat-grid-tile colspan="3"><div>Date:</div></mat-grid-tile>
+                <mat-grid-tile colspan="9"><div style="margin-left: 8px;">{{ element.date | date:'dd/MM/yyyy' }}</div></mat-grid-tile>
+            </mat-grid-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="debtor">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12">
+                <mat-grid-tile colspan="3"><div>Debtor:</div></mat-grid-tile>
+                <mat-grid-tile colspan="9">
+                    <div>
+                        <span *ngIf="element.debtor">{{ element.debtor }}</span>
+                        <span *ngIf="!element.debtor">-</span>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>    
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="creditor">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12">
+                <mat-grid-tile colspan="3"><div>Creditor:</div></mat-grid-tile>
+                <mat-grid-tile colspan="9">
+                    <div>
+                        <span *ngIf="element.creditor">{{ element.creditor }}</span>
+                        <span *ngIf="!element.creditor">-</span>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>  
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="debt">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12">
+                <mat-grid-tile colspan="3"><div>Debt:</div></mat-grid-tile>
+                <mat-grid-tile colspan="9">
+                    <div>
+                        <span *ngIf="element.financialDebt">{{ element.financialDebt }}</span>
+                        <span *ngIf="!element.financialDebt">-</span>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rest">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12">
+                <mat-grid-tile colspan="3"><div>Rest:</div></mat-grid-tile>
+                <mat-grid-tile colspan="9">
+                    <div>
+                        <span *ngIf="element.restMoney">{{ element.restMoney }}</span>
+                        <span *ngIf="!element.restMoney">-</span>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="place">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12">
+                <mat-grid-tile colspan="3"><div>Place:</div></mat-grid-tile>
+                <mat-grid-tile colspan="9"><div>{{ element.place }}</div></mat-grid-tile>
+            </mat-grid-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="topayin">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12" [hidden]="element.isRestMoney">
+                <mat-grid-tile colspan="3">
+                    <div *ngIf="element.debtForPay">To pay in:</div>
+                    <div *ngIf="element.debtToGet">To get in:</div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="9">
+                    <div>
+                        <span *ngIf="element.placeId === 5">
+                            <span *ngIf="element.toPayThisMonth">This month</span>
+                            <span *ngIf="element.toPayNextMonth">Next month</span>
+                            <span *ngIf="element.notToPayForNow">Will be delayed</span>
+                            <span *ngIf="element.toGetThisMonth">This month</span>
+                            <span *ngIf="element.toGetNextMonth">Next month</span>
+                            <span *ngIf="element.notToGetForNow">Will be delayed</span>
+                        </span>
+                        <span *ngIf="element.placeId !== 5">-</span>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="note">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-grid-list cols="12">
+                <mat-grid-tile colspan="3"><div>Note:</div></mat-grid-tile>
+                <mat-grid-tile colspan="9">
+                    <mat-icon style="color: #ff4081;margin-right: 195px;" (click)="viewNote(element.note)">remove_red_eye</mat-icon>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="star">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element"> 
+            <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element:element}">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+        No results
+    </div>
+    
+    <mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>
+  
+<mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-debt="element">
+
+        <button 
+            type="button"
+            *ngIf="user.roleUpdateDebt" 
+            (click)="editDebt(debt)"  
+            mat-menu-item>
+            <mat-icon aria-label="Edit" style="color: #3f51b5;">edit</mat-icon>
+            <span>Edit</span>
+        </button>
+
+        <button 
+            type="button"
+            *ngIf="user.roleDeleteDebt" 
+            mat-menu-item (click)="
+            deleteDebt(debt.key)">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>
+
+    </ng-template>
+</mat-menu>
+
 
 <ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger text-application">Rest Money</h4>
+    <h3 mat-dialog-title style="color: #dc3545;">Rest Money</h3>
 
-        <button type="button" class="close" aria-label="Close" (click)="modalRefRestMoneyForeachPlace.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile>{{ restInPocket }}</mat-grid-tile>
+        <mat-grid-tile>: الجيب</mat-grid-tile>
+    </mat-grid-list>
+    
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile>{{ restInWallet }}</mat-grid-tile>
+        <mat-grid-tile>: المحفظة</mat-grid-tile>
+    </mat-grid-list>
 
-    <div class="modal-body">
-        <div class="container text-application">
-            <div class="row">
-                <div class="col-4">
-                    <span class="font-weight-bold rest-money">{{ restInPocket }}</span>
-                </div>
-                <div class="col-8 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">: الجيب</span>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-4">
-                    <span class="font-weight-bold rest-money" >{{ restInWallet }}</span>
-                </div>
-                <div class="col-8 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">: المحفظة</span>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-4">
-                    <span class="font-weight-bold rest-money">{{ restInEnvelope }}</span>
-                </div>
-                <div class="col-8 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">: الظرف</span>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-4">
-                    <span class="font-weight-bold rest-money">{{ restInBox }}</span>
-                </div>
-                <div class="col-8 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">: الصندوق</span>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-4">
-                    <span class="font-weight-bold rest-money">{{ restInPosteAccount }}</span>
-                </div>
-                <div class="col-8 font-weight-bold label-place">
-                    <span class="text-primary font-weight-bold">: الحساب البريدي</span>
-                </div>
-            </div>
-        </div>
-    </div>        
-</ng-template>
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile>{{ restInEnvelope }}</mat-grid-tile>
+        <mat-grid-tile>: الظرف</mat-grid-tile>
+    </mat-grid-list>
 
-<ng-template #contentDebt let-modal let-c="close" let-d="dismiss">
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile>{{ restInBox }}</mat-grid-tile>
+        <mat-grid-tile>: الصندوق</mat-grid-tile>
+    </mat-grid-list>
 
-    <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold text-danger text-application">Debt</h4>
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+        <mat-grid-tile>{{ restInPosteAccount }}</mat-grid-tile>
+        <mat-grid-tile>: الحساب البريدي</mat-grid-tile>
+    </mat-grid-list>
 
-        <button type="button" class="close" aria-label="Close" (click)="modalRefDebt.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body text-application">
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-4">
-                <button type="button" class="btn btn-warning" (click)="showDetInDebt(contentDetInDebt)">
-                    <span *ngIf="totalInDebts" class="font-weight-bold rest-money">{{ totalInDebts }}</span>
-                    <span *ngIf="!totalInDebts" class="font-weight-bold rest-money">0DT</span>
-                </button>
-            </div>
-            <div class="col-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">المتخلد</span>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-4">
-                <button type="button" class="btn btn-warning" (click)="showDetOutDebt(contentDetOutDebt)">
-                    <span *ngIf="totalOutDebts" class="font-weight-bold rest-money">{{ totalOutDebts }}</span>
-                    <span *ngIf="!totalOutDebts" class="font-weight-bold rest-money">0DT</span>
-                </button>
-            </div>
-            <div class="col-6 font-weight-bold label-place">
-                <span class="text-primary font-weight-bold">المسال</span>
-            </div>
-        </div>
-        <br>
-    </div>
-</ng-template>
-
-<ng-template #contentDetInDebt let-modal let-c="close" let-d="dismiss">
-
-    <div class="modal-header text-center text-application">
-        <h4 *ngIf="totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalInDebtsInModal }}</h4>
-        <h4 *ngIf="!totalInDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
-
-        <button type="button" class="close" aria-label="Close" (click)="modalRefDetInDebt.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body text-application">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="toPayThisMonth" 
-                            name="toPayThisMonth" 
-                            id="toPayThisMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger" 
-                            (ngModelChange)="payThisMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px;">Pay this month</span>
-                    </label>             
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="toPayNextMonth" 
-                            name="toPayNextMonth" 
-                            id="toPayNextMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger" 
-                            (ngModelChange)="payNextMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px;">Pay next month</span>
-                    </label>             
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="notToPay" 
-                            name="notToPay" 
-                            id="notToPay" 
-                            type="checkbox"
-                            class="form-check-input larger" 
-                            (ngModelChange)="notToBePay()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px">Not To pay</span>
-                    </label>             
-                </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="row">
-            <div class="col-md-4">
-                <button
-                    type="button" 
-                    *ngIf="toPayThisMonth && detailsInDebt.length" 
-                    (click)="deleteAll()" 
-                    class="btn btn-danger font-weight-bold"
-                    style="margin-left: 200px;">
-                    Delete all
-                </button> 
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4" *ngFor="let detailInDebt of (detailsInDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsInDebt })">
-                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                    <div class="card-body text-dark">
-                        <div class="row">
-                            <div class="col-12 text-primary font-weight-bold" style="font-size: 20px;text-align: center;">
-                                {{ detailInDebt.creditor }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-12 font-weight-bold text-success" style="font-size: 20px;text-align: center;" (click)="updateInDebtValue(detailInDebt)">
-                                {{ detailInDebt.financialDebt }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: center;">
-                                {{ detailInDebt.note }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-6">
-                                <button 
-                                    type="button" 
-                                    (click)="openModalChangeStatusInDebt(contentChangeStatusInDebt, detailInDebt)"
-                                    class="btn btn-secondary"
-                                    style="float: right;">
-                                    <i class="fa fa-edit" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button 
-                                    *ngIf="user.roleDeleteDebt" 
-                                    type="button" 
-                                    (click)="deleteFromModalInDebts(detailInDebt.key)"
-                                    class="btn btn-danger"
-                                    style="float: left;">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <pagination-controls (pageChange)="pageDetsInDebt = $event" responsive="true"></pagination-controls>
-            </div>        
-        </div>
-
-    </div>
-</ng-template>
-
-<ng-template #contentDetOutDebt let-modal let-c="close" let-d="dismiss">
-
-    <div class="modal-header text-center text-application">
-        <h4 *ngIf="totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">{{ totalOutDebtsInModal }}</h4>
-        <h4 *ngIf="!totalOutDebtsInModal" class="modal-title w-100 font-weight-bold text-danger">0DT</h4>
-
-        <button type="button" class="close" aria-label="Close" (click)="modalRefDetOutDebt.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body text-application">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="toGetThisMonth" 
-                            name="toGetThisMonth" 
-                            id="toGetThisMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger" 
-                            (ngModelChange)="getThisMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px;">Get this month</span>
-                    </label>             
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="toGetNextMonth" 
-                            name="toGetNextMonth" 
-                            id="toGetNextMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger" 
-                            (ngModelChange)="getNextMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px;">Get next month</span>
-                    </label>             
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="notToGet" 
-                            name="notToGet" 
-                            id="notToGet" 
-                            type="checkbox"
-                            class="form-check-input larger" 
-                            (ngModelChange)="notToBeGet()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px">Not to get</span>
-                    </label>             
-                </div>
-            </div>
-        </div>
-                    
-        <br>
-        <div class="row">
-            <div class="col-md-4" *ngFor="let detailOutDebt of (detailsOutDebt | sortBy: 'key' | paginate: { itemsPerPage: 8, currentPage: pageDetsOutDebt })">
-                <div class="card bg-light" style="width: 18rem;margin-inline: auto;">
-                    <div class="card-body text-dark">
-                        <div class="row">
-                            <div class="col-12 font-weight-bold text-primary" style="font-size: 20px;text-align: center;">
-                                {{ detailOutDebt.debtor }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-12 font-weight-bold text-success" style="font-size: 20px;text-align: center;" (click)="updateOutDebtValue(detailOutDebt)">
-                                {{ detailOutDebt.financialDebt }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-12 font-weight-bold" style="font-size: 20px;text-align: center;">
-                                {{ detailOutDebt.note }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-6">
-                                <button 
-                                    type="button" 
-                                    (click)="openModalChangeStatusOutDebt(contentChangeStatusOutDebt, detailOutDebt)"
-                                    class="btn btn-secondary"
-                                    style="float: right;">
-                                    <i class="fa fa-edit" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button 
-                                    *ngIf="user.roleDeleteDebt" 
-                                    type="button" 
-                                    (click)="deleteFromModalOutDebts(detailOutDebt.key)"
-                                    class="btn btn-danger"
-                                    style="float: left;">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <pagination-controls (pageChange)="pageDetsOutDebt = $event" responsive="true"></pagination-controls>
-            </div>        
-        </div>
-
-    </div>
-</ng-template>
-
-<ng-template #contentChangeStatusInDebt let-modal let-c="close" let-d="dismiss">
-
-    <div class="modal-header text-center text-application">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
-
-        <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusInDebt.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body text-application">
-        <div class="container">
-            <div class="row" *ngIf="detailInDebt.toPayThisMonth">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="checkToPayNextMonth" 
-                            name="toPayNextMonth" 
-                            id="toPayNextMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger"
-                            (ngModelChange)="changeStatusToPayNextMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 65px;">Pay next month</span>
-                    </label>             
-                </div>
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="checkNotToPay" 
-                            name="notToPay" 
-                            id="notToPay" 
-                            type="checkbox"
-                            class="form-check-input larger"
-                            (ngModelChange)="changeStatusNotToPayForNow()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 64px">Not payed</span>
-                    </label>             
-                </div>
-            </div>
-            <div class="row" *ngIf="detailInDebt.toPayNextMonth">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="checkToPayThisMonth" 
-                            name="toPayThisMonth" 
-                            id="toPayThisMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger"
-                            (ngModelChange)="changeStatusToPayThisMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px;">Pay this month</span>
-                    </label>             
-                </div>
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="checkNotToPay" 
-                            name="notToPay" 
-                            id="notToPay" 
-                            type="checkbox"
-                            class="form-check-input larger"
-                            (ngModelChange)="changeStatusNotToPayForNow()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px">Not payed</span>
-                    </label>             
-                </div>
-            </div>
-            <div class="row" *ngIf="detailInDebt.notToPayForNow">
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="checkToPayThisMonth" 
-                            name="toPayThisMonth" 
-                            id="toPayThisMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger"
-                            (ngModelChange)="changeStatusToPayThisMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px;">Pay this month</span>
-                    </label>             
-                </div>
-                <div class="col-md-4">
-                    <label>
-                        <input 
-                            [(ngModel)]="checkToPayNextMonth" 
-                            name="toPayNextMonth" 
-                            id="toPayNextMonth" 
-                            type="checkbox" 
-                            class="form-check-input larger"
-                            (ngModelChange)="changeStatusToPayNextMonth()"
-                            style="margin-left: 185px;">
-                        <span style="margin-left: 70px;">Pay next month</span>
-                    </label>             
-                </div>
-            </div>
-        </div>
-        
-    </div>
-
-</ng-template>
-
-<ng-template #contentChangeStatusOutDebt let-modal let-c="close" let-d="dismiss">
-
-    <div class="modal-header text-center text-application">
-        <h4 class="modal-title w-100 font-weight-bold text-danger">Select status</h4>
-
-        <button type="button" class="close" aria-label="Close" (click)="modalRefChangeStatusOutDebt.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body text-application">
-        <div class="row justify-content-center" *ngIf="detailOutDebt.toGetThisMonth">
-            <div class="col-md-6">
-                <label>
-                    <input 
-                        [(ngModel)]="checkToGetNextMonth" 
-                        name="checkToGetNextMonth" 
-                        id="checkToGetNextMonth" 
-                        type="checkbox" 
-                        class="form-check-input larger"
-                        (ngModelChange)="changeStatusToGetNextMonth()"
-                        style="margin-left: 185px;">
-                    <span style="margin-left: 65px;">Get next month</span>
-                </label>             
-            </div>
-            <div class="col-md-6">
-                <label>
-                    <input 
-                        [(ngModel)]="checkNotToGet" 
-                        name="checkNotToGet" 
-                        id="checkNotToGet" 
-                        type="checkbox"
-                        class="form-check-input larger"
-                        (ngModelChange)="changeStatusNotToGetForNow()"
-                        style="margin-left: 185px;">
-                    <span style="margin-left: 65px">Not to get</span>
-                </label>             
-            </div>
-        </div>
-        <div class="row justify-content-center" *ngIf="detailOutDebt.toGetNextMonth">
-            <div class="col-md-6">
-                <label>
-                    <input 
-                        [(ngModel)]="checkToGetThisMonth" 
-                        name="checkToGetThisMonth" 
-                        id="checkToGetThisMonth" 
-                        type="checkbox" 
-                        class="form-check-input larger"
-                        (ngModelChange)="changeStatusToGetThisMonth()"
-                        style="margin-left: 185px;">
-                    <span style="margin-left: 70px;">Get this month</span>
-                </label>             
-            </div>
-            <div class="col-md-6">
-                <label>
-                    <input 
-                        [(ngModel)]="checkNotToGet" 
-                        name="checkNotToGet" 
-                        id="checkNotToGet" 
-                        type="checkbox"
-                        class="form-check-input larger"
-                        (ngModelChange)="changeStatusNotToGetForNow()"
-                        style="margin-left: 185px;">
-                    <span style="margin-left: 70px">Not to get</span>
-                </label>           
-            </div>
-        </div>
-        <div class="row justify-content-center" *ngIf="detailOutDebt.notToGetForNow">
-            <div class="col-md-6">
-                <label>
-                    <input 
-                        [(ngModel)]="checkToGetThisMonth" 
-                        name="checkToGetThisMonth" 
-                        id="checkToGetThisMonth" 
-                        type="checkbox" 
-                        class="form-check-input larger"
-                        (ngModelChange)="changeStatusToGetThisMonth()"
-                        style="margin-left: 185px;">
-                    <span style="margin-left: 70px;">Get this month</span>
-                </label>            
-            </div>
-            <div class="col-md-6">
-                <label>
-                    <input 
-                        [(ngModel)]="checkToGetNextMonth" 
-                        name="checkToGetNextMonth" 
-                        id="checkToGetNextMonth" 
-                        type="checkbox" 
-                        class="form-check-input larger"
-                        (ngModelChange)="changeStatusToGetNextMonth()"
-                        style="margin-left: 185px;">
-                    <span style="margin-left: 70px;">Get next month</span>
-                </label>              
-            </div>
-        </div>
-    </div>
-
-</ng-template>
-
-<ng-template #contentLoading let-modal let-c="close" let-d="dismiss">
-
-    <div class="modal-header text-center">
-      <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold text-application">test</h4>
-  
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  
-    <div class="modal-body text-application">
-      <div *ngIf="isLoading" class="text-center">
-        <div class="spinner-border" style="width: 10rem; height: 10rem;" role="status"></div><br><br>
-        <h4>Delete debts in progress...</h4>
-      </div>
-    </div>
 </ng-template>

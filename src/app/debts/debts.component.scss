@@ -2,53 +2,44 @@
     width: 90%;
 }
 
-.btnswrap {
-    display: grid;
-    grid-column: auto;
+.btns-add-sort {
     justify-content: center;
     align-content: center;
     gap: 4px;
 }
 
-.rest-money {
-    float: right;
+.btns-edit-delete {
+    display: grid;
+    grid-column: auto;
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
+    margin-top: 75px;
+}
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    padding: 14px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.mat-header-cell {
     font-size: 20px;
+    min-height: 48px;
+    text-align: center;
 }
 
-.label-place {
-    display: flex; 
-    justify-content: flex-start;
+.mat-cell {
     font-size: 20px;
+    min-height: 48px;
+    border-bottom-style: none;
 }
 
-::ng-deep .detailsDebtModalClass .modal-dialog {
-    max-width: 50% !important;
-    width: 50% !important;
+.gridForLegend {
+    display: grid;
+    grid-template-columns: 80px 250px;
+    width: 250px;
+    margin: auto;
 }
-
-.debtModalClass .modal-dialog {
-    max-width: 10px !important;
-}
-
-.restModalClass .modal-dialog {
-    max-width: 10px !important;
-}
-
-input.larger {
-    width: 25px;
-    height: 25px;
-    margin-left: 180px;
-}
-
-.statusInDebtModalClass .modal-dialog {
-    max-width: 10px !important;
-}
-
-.statusOutDebtModalClass .modal-dialog {
-    max-width: 10px !important;
-}
-
-.iconSort {
-    cursor: pointer;
-}
-  

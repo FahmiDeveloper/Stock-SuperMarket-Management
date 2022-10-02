@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { LinkService } from 'src/app/shared/services/link.service';
 
 import { Link } from 'src/app/shared/models/link.model';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'new-or-edit-link',
@@ -19,6 +20,8 @@ export class NewOrEditLinkComponent implements OnInit {
   modalRef: any;
 
   @Output() passEntry: EventEmitter<any> = new EventEmitter();
+
+  formControl = new FormControl('', [Validators.required]);
 
   constructor(private linkService: LinkService) {}
 
@@ -43,5 +46,9 @@ export class NewOrEditLinkComponent implements OnInit {
       this.passEntry.emit(true);
     }
     this.modalRef.close();
+  }
+
+  getErrorMessage() {
+    return this.formControl.hasError('required') ? 'Required field' :'';
   }
 }

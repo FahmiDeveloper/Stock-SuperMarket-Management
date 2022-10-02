@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { Subscription } from 'rxjs';
 
@@ -16,6 +18,7 @@ import { UserService } from '../shared/services/user.service';
 import { Link } from '../shared/models/link.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
 import { TypesFiles, TypesLinks } from '../shared/models/file-upload.model';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-files',
@@ -24,6 +27,11 @@ import { TypesFiles, TypesLinks } from '../shared/models/file-upload.model';
 })
 
 export class FilesComponent implements OnInit {
+
+  dataSource = new MatTableDataSource<any>();
+  displayedColumns: string[] = ['content', 'actions'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   filteredLinks: Link[];
   allLinks: Link[];
@@ -48,18 +56,30 @@ export class FilesComponent implements OnInit {
   numContextFile: number;
 
   typesFiles: TypesFiles[] = [
-    {id: 1, type: 'PICTURE', icon: '/assets/pictures/picture-file.jpg'},
-    {id: 2, type: 'PDF', icon: '/assets/pictures/pdf-file.jpg'},
-    {id: 3, type: 'EXCEL', icon: '/assets/pictures/excel-file.png'}, 
-    {id: 4, type: 'TXT', icon: '/assets/pictures/txt-file.PNG'},
-    {id: 5, type: 'ZIP', icon: '/assets/pictures/zip-file.PNG'},
-    {id: 6, type: 'LINKS', icon: '/assets/pictures/links.png'},
-    {id: 7, type: 'WORD', icon: '/assets/pictures/word-file.jpg'}
+    {id: 1, title: 'Pictures', type: 'Picture', icon: '/assets/pictures/picture-file.jpg'},
+    {id: 2, title: 'Pdf', type: 'Pdf', icon: '/assets/pictures/pdf-file.jpg'},
+    {id: 3, title: 'Excel', type: 'Excel', icon: '/assets/pictures/excel-file.png'}, 
+    {id: 4, title: 'Text doc', type: 'Text document', icon: '/assets/pictures/txt-file.PNG'},
+    {id: 5, title: 'Zip', type: 'Zip', icon: '/assets/pictures/zip-file.PNG'},
+    {id: 6, title: 'Links', type: 'Links', icon: '/assets/pictures/links.png'},
+    {id: 7, title: 'Word', type: 'Word', icon: '/assets/pictures/word-file.jpg'}
   ];
 
   typesLinks: TypesLinks[] = [
-    {id: 1, type: 'ANGULAR', icon: '/assets/pictures/links-angular.png'},
-    {id: 2, type: 'Other Contents', icon: '/assets/pictures/other-link.png'}
+    {id: 1, title: 'Angular', type: 'Angular', icon: '/assets/pictures/links-angular.png'},
+    {id: 2, title: 'Other', type: 'Other', icon: '/assets/pictures/other-link.png'}
+  ];
+
+  contracts: Array<Contract> = [
+    { 
+      Id: '1',
+      Name: 'Name 1'
+    },
+    { 
+      Id: '2',
+      Name: 'Name 2'
+    },
+    
   ];
 
   constructor(
@@ -68,13 +88,18 @@ export class FilesComponent implements OnInit {
     protected modalService: NgbModal,
     private linkService: LinkService,
     public userService: UserService,
-    public authService: AuthService
+    public authService: AuthService,
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
     this.isMobile = this.deviceService.isMobile();
     this.getAllLinks();
     this.getRolesUser();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   getAllLinks() {
@@ -123,16 +148,19 @@ export class FilesComponent implements OnInit {
   }
 
   getFilteredLinks() {   
-    this.filteredLinks = this.content ? this.allLinks.filter(link => (link.typeLinkId == this.typeLink.id) && (link.content.toLowerCase().includes(this.content.toLowerCase()))) : this.allLinks.filter(link => link.typeLinkId == this.typeLink.id);     
+    this.dataSource.data = this.content ? this.allLinks.filter(link => (link.typeLinkId == this.typeLink.id) && (link.content.toLowerCase().includes(this.content.toLowerCase()))) : this.allLinks.filter(link => link.typeLinkId == this.typeLink.id);     
   }
 
   newLink() {
-    const modalRef = this.modalService.open(NewOrEditLinkComponent as Component, { size: 'lg', centered: true });
+    const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+      width: '25vw',
+      height:'33vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.typeLinkId = this.typeLink.id;
+    dialogRef.componentInstance.modalRef = dialogRef;
 
-    modalRef.componentInstance.typeLinkId = this.typeLink.id;
-    modalRef.componentInstance.modalRef = modalRef;
-
-    modalRef.componentInstance.passEntry.subscribe((receivedEntry: boolean) => {
+    dialogRef.componentInstance.passEntry.subscribe((receivedEntry: boolean) => {
       if (receivedEntry) {
         this.subscriptionForGetAllLinks = this.linkService
         .getAll()
@@ -144,10 +172,13 @@ export class FilesComponent implements OnInit {
   }
 
   editLink(link?: Link) {
-    const modalRef = this.modalService.open(NewOrEditLinkComponent as Component, { size: 'lg', centered: true });
-
-    modalRef.componentInstance.modalRef = modalRef;
-    modalRef.componentInstance.link = link;
+    const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+      width: '25vw',
+      height:'33vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.link = link;
+    dialogRef.componentInstance.modalRef = dialogRef;
   }
 
   deleteLink(linkId) {
@@ -205,3 +236,19 @@ export class FilesComponent implements OnInit {
     this.numContextFile = refContextFile;
   }
 }
+
+export interface Contract {
+  Id: string;
+  Name: string;
+}
+
+export interface PeriodicElement {
+  name: string;
+
+}
+
+const ELEMENT_DATA: PeriodicElement[] = [
+  {name: 'Hydrogen'},
+  {name: 'Hydrogen'},
+  {name: 'Hydrogen'}
+];

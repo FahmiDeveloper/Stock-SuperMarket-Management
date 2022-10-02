@@ -1,4 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -29,13 +31,17 @@ export class UploadDetailsComponent implements OnChanges {
   @Input() isMobile: boolean;
   @Input() userRoles: FirebaseUserModel;
 
+  dataSource = new MatTableDataSource<any>();
+  displayedColumns: string[] = ['name', 'actions'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   urlFile: string;
   pictureFile: string;
   FileName: string;
 
   $zipFiles: Observable<ZipFile[]>;
   isLoading: boolean;
-  p: number = 1;
   blobForDownload: Blob;
 
   srcExtractedImage: any;
@@ -56,11 +62,15 @@ export class UploadDetailsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
+    console.log(this.paginator)
+
     if (this.filteredFiles) {
-       this.filteredFiles.forEach(element => {
+      this.dataSource.data = this.filteredFiles;
+       this.dataSource.data.forEach(element => {
         element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
       })
-    }  
+    }
+    this.dataSource.paginator = this.paginator;  
   }
 
   viewOtherFileUpload(fileUpload: FileUpload, showFile) {
@@ -77,7 +87,6 @@ export class UploadDetailsComponent implements OnChanges {
   viewFilePictureUpload(fileUpload: FileUpload, showPicture) {
     this.pictureFile = fileUpload.url;
     this.FileName = fileUpload.name;
-
     this.modalService.open(showPicture as Component, { size: 'lg', centered: true });
   }
 

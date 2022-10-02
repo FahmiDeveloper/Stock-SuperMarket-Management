@@ -6,7 +6,13 @@
 }
 
 .imageTypeFile {
-    height: 100%;
+    height: 90%;
+    width: 100%;
+    background-size: cover;
+}
+
+.imageTypeFileMobile {
+    height: 75%;
     width: 100%;
     background-size: cover;
 }
@@ -21,4 +27,136 @@
 .btns-links-mobile {
     justify-content: center;
     align-content: center;
+}
+
+/** No CSS for this example */
+.settings-card {
+    height: 270px;
+    width: 360px;
+}
+
+.mat-card {
+    padding: 16px;
+    padding-top: 12px;
+}
+
+.padRight {
+    display: grid;
+    float: right;
+    text-align: right;
+}
+
+.cardTitle {
+    color: #1f54a6;
+    height: 27px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.25px;
+}
+
+.productIcon {
+    float: right;
+}
+
+.product {
+    height: 16px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.mat-progress-bar {
+    padding-top: 15px;
+    height: 24px;
+}
+
+.mat-progress-bar-fill::after {
+    background-color: #d0021b;
+}
+
+.mat-progress-bar-buffer {
+    fill: #d8d8d8;
+    background-color: #d8d8d8
+}
+
+.barStatus {
+    position: relative;
+    top: -22px;
+    left: 5px;
+    height: 20px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.25px;
+}
+
+.barText {
+    position: relative;
+    top: -26px;
+    color: #d0021b;
+    font-family: Lekton;
+    font-size: 22px;
+    font-weight: 700;
+    padding-left: 2px;
+    width: 15%;
+    text-align: right;
+    display: grid;
+    float: right;
+}
+.cardLabel {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.icon-display {
+    transform: scale(2);
+ }
+
+.widhtInput {
+    width: 100%;
+}
+
+.btns-edit-link-delete-share {
+    display: grid;
+    grid-column: auto;
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
+}
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    padding: 14px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.mat-header-cell {
+    font-size: 20px;
+    min-height: 48px;
+    text-align: center;
+}
+
+.mat-cell {
+    font-size: 20px;
+    min-height: 48px;
+    border-bottom-style: none;
+}
+
+table {
+    width: 100%;
+}
+
+.btn-add {
+    justify-content: center;
+    align-content: center;
+    gap: 4px;
 }

@@ -1,32 +1,25 @@
-<div class="row">
-    <div class="col-md-4">
-        <label>
-            <input 
-            [(ngModel)]="angularContext" 
+<mat-grid-list cols="4" rowHeight="3:1" style="font-size: 20px;">
+        
+    <mat-grid-tile>Angular</mat-grid-tile>
+    <mat-grid-tile>
+        <mat-checkbox 
             name="angularContext" 
-            id="angularContext" 
-            type="checkbox" 
-            class="form-check-input larger"
+            [(ngModel)]="angularContext" 
             (ngModelChange)="checkAngularContext()"
-            style="margin-left: auto;">
-            <span class="text-application" style="margin-left: 35px;vertical-align: sub;">Angular context</span>
-        </label>  
-    </div>
-    <div class="col-md-3">
-        <label>
-            <input 
-            [(ngModel)]="otherContext" 
+            style="margin-top: 10px;">
+        </mat-checkbox>
+    </mat-grid-tile>
+    <mat-grid-tile>Other</mat-grid-tile>
+    <mat-grid-tile>
+        <mat-checkbox 
             name="otherContext" 
-            id="otherContext" 
-            type="checkbox" 
-            class="form-check-input larger"
+            [(ngModel)]="otherContext"         
             (ngModelChange)="checkotherContext()"
-            style="margin-left: auto;">
-            <span class="text-application" style="margin-left: 35px;vertical-align: sub;">Other context</span>
-        </label>  
-    </div>
+            style="margin-top: 10px;">
+        </mat-checkbox>
+    </mat-grid-tile>
     
-</div>
+</mat-grid-list>
 
 <br *ngIf="user.roleAddFile && (angularContext || otherContext)">
 
