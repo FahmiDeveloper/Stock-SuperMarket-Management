@@ -12,6 +12,7 @@ import { MovieFormComponent } from './movie-form/movie-form.component';
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
 import { MovieService } from '../shared/services/movie.service';
+import { UsersListService } from '../shared/services/list-users.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
 import { Movie, StatusMovies } from '../shared/models/movie.model';
@@ -25,6 +26,7 @@ import { Movie, StatusMovies } from '../shared/models/movie.model';
 export class MoviesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Movie>();
+  dataSourceCopie = new MatTableDataSource<Movie>();
   displayedColumns: string[] = ['picture', 'details', 'actions'];
 
   queryName: string = "";
@@ -34,8 +36,9 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
+  subscriptionForGetAllUsers: Subscription;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
+  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -50,6 +53,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
+    public usersListService: UsersListService,
     public authService: AuthService,
     public dialogService: MatDialog
   ) {}
@@ -67,6 +71,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllMovies = this.movieService
     .getAll()
     .subscribe(movies => {
+      this.dataSourceCopie.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+
       if (this.queryName) {
         this.dataSource.data = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
@@ -97,11 +103,19 @@ export class MoviesComponent implements OnInit, OnDestroy {
             .getCurrentUser()
             .then(user=>{
               if(user) {
-                this.userService
-                  .get(user.uid)
+                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
+
+                this.subscriptionForGetAllUsers = this.usersListService
+                .getAll()
+                .subscribe((users: FirebaseUserModel[]) => { 
+                  connectedUserFromList = users.find(element => element.email == user.email);
+
+                  this.usersListService
+                  .get(connectedUserFromList.key)
                   .valueChanges()
                   .subscribe(dataUser=>{
-                    this.user = dataUser;
+                    this.dataUserConnected = dataUser;
+                  });
                 });
               }
           });   
@@ -142,7 +156,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   newMovie() {
     const dialogRef = this.dialogService.open(MovieFormComponent, {width: '800px', data: {movie: {}}});
-    dialogRef.componentInstance.arrayMovies = this.dataSource.data; 
+    dialogRef.componentInstance.arrayMovies = this.dataSourceCopie.data; 
   }
 
   editMovie(movie?: Movie) {
@@ -177,6 +191,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
     this.subscriptionForUser.unsubscribe();
+    this.subscriptionForGetAllUsers.unsubscribe();
   }
 
 }

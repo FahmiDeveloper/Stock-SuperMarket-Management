@@ -1,254 +1,189 @@
 <h1 class="titleTextInterface text-application">Files</h1>
 
 <mat-grid-list cols=2 #grid rowHeight="315px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let typeFile of typesFiles">
-      <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
-        <mat-card-title>
-          {{ typeFile.title }}
-        </mat-card-title>
-        <img [src]="typeFile.icon" [ngClass]="isMobile ? 'imageTypeFileMobile' : 'imageTypeFile'" (click)="openListFiles(contentListFiles, contentLinks, typeFile)">                
-        <mat-card-content>
-          <div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
+  <mat-grid-tile *ngFor="let typeFile of typesFiles">
+    <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
+      <mat-card-title>{{ typeFile.title }}</mat-card-title>
+      <img [src]="typeFile.icon" [ngClass]="isMobile ? 'imageTypeFileMobile' : 'imageTypeFile'" (click)="openListFiles(contentListFiles, contentLinks, typeFile)">
+    </mat-card>
+  </mat-grid-tile>
 </mat-grid-list>
 
 <ng-template #contentListFiles let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
-        <h2 class="modal-title w-100 font-weight-bold text-danger text-application">{{ typeFile.type }} files</h2>
+  <h3 mat-dialog-title style="color: #dc3545;">{{ typeFile.type }} files</h3>
 
-        <button type="button" class="close" aria-label="Close" (click)="modalRefListFiles.close()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+  <div class="row">
+      <div class="col-md-12">
+          <app-upload-form 
+            [typeFileId]="typeFile.id" 
+            [user]="dataUserConnected" 
+            [defaultArrayFiles]="defaultArrayFiles" 
+            (refContextFile)="getRefContextFile($event)">
+          </app-upload-form>
+      </div>
+  </div><br>
+  <div class="row">
+      <div class="col-md-12">
+          <app-upload-list 
+            [isMobile]="isMobile" 
+            [typeFileId]="typeFile.id" 
+            [numContextFile]="numContextFile" 
+            [user]="dataUserConnected" 
+            (arrayFiles)="getDefaultArrayFiles($event)">
+          </app-upload-list>
+      </div>
+  </div>
 
-    <div class="modal-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                     <app-upload-form [typeFileId]="typeFile.id" [user]="user" (refContextFile)="getRefContextFile($event)"></app-upload-form>
-                </div>
-            </div><br>
-            <div class="row">
-                <div class="col-md-12">
-                    <app-upload-list [isMobile]="isMobile" [typeFileId]="typeFile.id" [numContextFile]="numContextFile" [user]="user"></app-upload-list>
-                </div>
-            </div>
-        </div>    
-    </div>
 </ng-template>
   
 <ng-template #contentLinks let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
-        <h2 *ngIf="!clickShowLinks" class="modal-title w-100 font-weight-bold text-danger text-application">{{ typeFile.type }}</h2>
-        <h2 *ngIf="clickShowLinks" class="modal-title w-100 font-weight-bold text-danger text-application">{{ typeLink.type }} links</h2>
+  <h3 *ngIf="!clickShowLinks" mat-dialog-title style="color: #dc3545;">{{ typeFile.type }}</h3>
+  <h3 *ngIf="clickShowLinks" mat-dialog-title style="color: #dc3545;">{{ typeLink.type }} links</h3>
 
-        <button type="button" class="close" aria-label="Close" (click)="modalRefListLinks.close()">
-            <span aria-hidden="true">&times;</span>
+  <mat-grid-list *ngIf="!clickShowLinks && !isMobile" cols=2 #grid rowHeight="315px" gutterSize="15px" style="margin-top: 150px;">
+    <mat-grid-tile *ngFor="let typeLink of typesLinks">
+      <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
+        <mat-card-title>{{ typeLink.title }}</mat-card-title>
+        <img [src]="typeLink.icon" [ngClass]="isMobile ? 'imageTypeFileMobile' : 'imageTypeFile'" (click)="showListTypeLinks(typeLink)">                
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+
+  <mat-grid-list *ngIf="!clickShowLinks && isMobile" cols=2 #grid rowHeight="315px" gutterSize="15px" style="margin-top: 50px;">
+    <mat-grid-tile *ngFor="let typeLink of typesLinks">
+      <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
+        <mat-card-title>{{ typeLink.title }}</mat-card-title>
+        <img [src]="typeLink.icon" [ngClass]="isMobile ? 'imageTypeFileMobile' : 'imageTypeFile'" (click)="showListTypeLinks(typeLink)">
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <div *ngIf="clickShowLinks">
+    <div class="row" *ngIf="!isMobile">
+      <div class="col-md-10">
+        <button mat-mini-fab color="primary" (click)="backToListTypeLinks()"><mat-icon style="color: white;">arrow_back</mat-icon></button>      
+      </div>
+
+      <div class="col-md-2">
+        <button *ngIf="dataUserConnected.roleAddFile" type="button" (click)="newLink()" mat-mini-fab color="primary" style="float: right;">
+          <mat-icon style="color: white;">add</mat-icon>
         </button>
+      </div>
     </div>
 
-    <div class="modal-body">
-        <mat-grid-list cols=2 #grid rowHeight="315px" gutterSize="15px" *ngIf="!clickShowLinks">
-            <mat-grid-tile *ngFor="let typeLink of typesLinks">
-              <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
-                <mat-card-title>
-                  {{ typeLink.title }}
-                </mat-card-title>
-                <img [src]="typeLink.icon" [ngClass]="isMobile ? 'imageTypeFileMobile' : 'imageTypeFile'" (click)="showListTypeLinks(typeLink)">                
-                <mat-card-content>
-                  <div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </mat-grid-tile>
-        </mat-grid-list>
+    <div class="row" *ngIf="isMobile">
+      <div class="col-md-4">
+        <button mat-mini-fab color="primary" (click)="backToListTypeLinks()"><mat-icon style="color: white;">arrow_back</mat-icon></button>
+        <button *ngIf="dataUserConnected.roleAddFile" type="button" (click)="newLink()" mat-mini-fab color="primary" style="float: right;">
+          <mat-icon style="color: white;">add</mat-icon>
+        </button>      
+      </div>
+    </div>
 
-        <div class="container" *ngIf="clickShowLinks">
-            <div class="row">
-                <div class="col-md-12">
-                    <button mat-flat-button color="primary" (click)="backToListTypeLinks()"><mat-icon>arrow_back</mat-icon></button>
-                </div>                    
-            </div>
+    <br>
 
-            <br>
+    <div class="row">
+      <div class="col-md-6" *ngIf="!isMobile">
+        <mat-form-field class="widhtInput">
+          <mat-label>Content</mat-label>
+          <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4" *ngIf="isMobile">
+        <mat-form-field class="widhtInput">
+          <mat-label>Content</mat-label>
+          <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
+        </mat-form-field>
+      </div>
+    </div>
 
-            <div class="row">
-                <div class="col-md-6" *ngIf="!isMobile">
-                    <mat-form-field class="widhtInput">
-                        <mat-label>Content</mat-label>
-                        <input matInput (input)="getFilteredLinks()" type="text" [(ngModel)]="content"/>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-4" *ngIf="isMobile">
-                    <mat-form-field class="widhtInput">
-                        <mat-label>Content</mat-label>
-                        <input matInput (input)="getFilteredLinks()" type="text" [(ngModel)]="content"/>
-                    </mat-form-field>
-                </div>
-            </div>
+    <br>
 
-            <br>
+    <div class="row">   
+      <div class="col-md-12">
 
-            <div class="row">
-                <div class="col-md-12" *ngIf="!isMobile">
-                    <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataSource">
-                      
-                            <ng-container matColumnDef="content">
-                                <th mat-header-cell *matHeaderCellDef>Content</th>
-                                <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.content }}</td>
-                            </ng-container>
-                      
-                            <ng-container matColumnDef="actions">
-                                <mat-header-cell *matHeaderCellDef class="btn-add">
-                                    <button 
-                                        *ngIf="user.roleAddDebt" 
-                                        type="button" 
-                                        mat-icon-button 
-                                        color="primary" 
-                                        (click)="newLink()">
-                                        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-                                    </button>
-                                </mat-header-cell>
-                      
-                                <mat-cell *matCellDef="let row; let i=index;" class="btns-edit-link-delete-share">
-                                    
-                                    <button
-                                        *ngIf="user.roleUpdateFile" 
-                                        type="button"
-                                        color="primary"
-                                        mat-icon-button
-                                        (click)="editLink(row)">
-                                        <mat-icon aria-label="Edit">edit</mat-icon>
-                                    </button>
-    
-                                    <a 
-                                        *ngIf="row.path" 
-                                        href="{{ row.path }}"
-                                        mat-icon-button 
-                                        color="accent" 
-                                        target="_blank">
-                                        <mat-icon aria-label="Link">link</mat-icon>
-                                    </a>
-                            
-                                    <button 
-                                        *ngIf="user.roleDeleteFile" 
-                                        type="button" 
-                                        mat-icon-button 
-                                        color="warn" 
-                                        (click)="deleteLink(row.key)">
-                                        <mat-icon aria-label="Delete">delete</mat-icon>
-                                    </button>
-    
-                                    <button 
-                                        type="button"
-                                        mat-icon-button
-                                        (click)="shareLink(row)">
-                                        <mat-icon>share</mat-icon>              
-                                    </button>    
-                                    
-                                </mat-cell>
-                            </ng-container>
-                      
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
-                      
-                          </table>
-                        
-                          <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
-                            No results
-                          </div>
-                        
-                          <mat-paginator 
-                            [pageSizeOptions]="[8]"
-                            showFirstLastButtons 
-                            aria-label="Select page of periodic elements">
-                          </mat-paginator>
-                    </div>                
-                </div>
-                
-                <div class="col-md-4" *ngIf="isMobile">
-                    <div class="mat-elevation-z8">
-                        <table mat-table [dataSource]="dataSource">
-                      
-                            <ng-container matColumnDef="content">
-                                <th mat-header-cell *matHeaderCellDef>Content</th>
-                                <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.content }}</td>
-                            </ng-container>
-                      
-                            <ng-container matColumnDef="actions">
-                                <mat-header-cell *matHeaderCellDef class="btn-add">
-                                    <button 
-                                        *ngIf="user.roleAddDebt" 
-                                        type="button" 
-                                        mat-icon-button 
-                                        color="primary" 
-                                        (click)="newLink()">
-                                        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-                                    </button>
-                                </mat-header-cell>
-                      
-                                <mat-cell *matCellDef="let row; let i=index;" class="btns-edit-link-delete-share">
-                                    
-                                    <button
-                                        *ngIf="user.roleUpdateFile" 
-                                        type="button"
-                                        color="primary"
-                                        mat-icon-button
-                                        (click)="editLink(row)">
-                                        <mat-icon aria-label="Edit">edit</mat-icon>
-                                    </button>
-    
-                                    <a 
-                                        *ngIf="row.path" 
-                                        href="{{ row.path }}"
-                                        mat-icon-button 
-                                        color="accent" 
-                                        target="_blank">
-                                        <mat-icon aria-label="Link">link</mat-icon>
-                                    </a>
-                            
-                                    <button 
-                                        *ngIf="user.roleDeleteFile" 
-                                        type="button" 
-                                        mat-icon-button 
-                                        color="warn" 
-                                        (click)="deleteLink(row.key)">
-                                        <mat-icon aria-label="Delete">delete</mat-icon>
-                                    </button>
-    
-                                    <button 
-                                        type="button"
-                                        mat-icon-button
-                                        (click)="shareLink(row)">
-                                        <mat-icon>share</mat-icon>              
-                                    </button>    
-                                    
-                                </mat-cell>
-                            </ng-container>
-                      
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
-                      
-                          </table>
-                        
-                          <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
-                            No results
-                          </div>
-                        
-                          <mat-paginator 
-                            [pageSizeOptions]="[8]"
-                            showFirstLastButtons 
-                            aria-label="Select page of periodic elements">
-                          </mat-paginator>
-                    </div>                
-                </div>
+        <div class="example-container mat-elevation-z8">
+            <div class="example-table-container">
+              <table mat-table [dataSource]="dataSource">
+          
+                <ng-container matColumnDef="content">
+                  <th mat-header-cell *matHeaderCellDef>Content</th>
+                  <td mat-cell *matCellDef="let element" class='m-card-title' [ngStyle]="{'height': !isMobile ? '100px' : ''}">{{element.content}}</td>
+                </ng-container>
+          
+                <ng-container matColumnDef="star">
+                  <th mat-header-cell *matHeaderCellDef> </th>
+                  <td mat-cell *matCellDef="let element" [ngStyle]="{'height': !isMobile ? '100px' : ''}"> 
+                    <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element:element}">
+                      <mat-icon>more_vert</mat-icon>
+                  </button>
+                  </td>
+                </ng-container>
+          
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr [ngClass]="!isMobile ? 'trForNotMobile' : ''" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          
+              </table>
+            
+              <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+                No results
+              </div>
+            
+              <mat-paginator 
+                [pageSizeOptions]="[4]"
+                showFirstLastButtons 
+                aria-label="Select page of periodic elements">
+              </mat-paginator>
             </div>
         </div>
+            
+        <mat-menu #menu="matMenu">
+          <ng-template matMenuContent let-link="element">
+
+            <button
+              *ngIf="dataUserConnected.roleUpdateFile" 
+              type="button"
+              mat-menu-item
+              (click)="editLink(link)">
+              <mat-icon style="color: #3f51b5;" aria-label="Edit">edit</mat-icon>
+              <span>Edit</span>
+            </button>
+
+            <button
+              type="button"
+              *ngIf="link.path"  
+              mat-menu-item>
+              <mat-icon style="color: #ff4081;">remove_red_eye</mat-icon>
+              <a href="{{ link.path }}" target="_blank" style="text-decoration: none;">
+                  <span style="color: black !important;">Watch</span>
+              </a>  
+            </button>
+
+            <button 
+                *ngIf="dataUserConnected.roleDeleteFile" 
+                type="button" 
+                mat-menu-item 
+                (click)="deleteLink(link.key)">
+                <mat-icon style="color: #f44336;" aria-label="Delete">delete</mat-icon>
+                <span>Delete</span>
+            </button>
+
+            <button 
+                type="button"
+                mat-menu-item
+                (click)="shareLink(link)">
+                <mat-icon style="color: #ff4081;">share</mat-icon>
+                <span>share</span>                        
+            </button>
+        
+          </ng-template>
+        </mat-menu>
+      </div>
     </div>
+  </div>
+
 </ng-template>

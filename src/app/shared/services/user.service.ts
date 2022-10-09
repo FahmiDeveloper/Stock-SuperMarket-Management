@@ -4,7 +4,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 
 import 'rxjs/add/operator/toPromise';
-import { map } from "rxjs/operators";
 
 import firebase from 'firebase';
 
@@ -16,7 +15,6 @@ import { FirebaseUserModel } from "../models/user.model";
 export class UserService {
 
   aflistUsers: AngularFireList<any>;
-  userName: string;
 
   constructor(
    public db: AngularFirestore,
@@ -67,9 +65,7 @@ export class UserService {
         email: user.email
       });
     } else {
-      this.userName = user.email.substring(0, user.email.lastIndexOf("@"));
       this.dataBase.object('/users/' + user.uid).update({
-        name: this.userName,
         email: user.email
       });
     }  
@@ -77,22 +73,6 @@ export class UserService {
 
   get(uid: string): AngularFireObject<FirebaseUserModel> {
     return this.dataBase.object('/users/' + uid);
-  }
-
-  getAll() {
-    this.aflistUsers = this.dataBase.list('/users', debt => debt.orderByChild('key'));
-    return this.aflistUsers
-    .snapshotChanges()
-    .pipe(map(changes => changes
-    .map(c => ({ key: c.payload.key, ...c.payload.val() }))));
-  }
-
-  update(userId, user) {
-    return this.dataBase.object('/users/' + userId).update(user);
-  }
-
-  delete(userId) {
-    return this.dataBase.object('/users/' + userId).remove();
   }
   
 }

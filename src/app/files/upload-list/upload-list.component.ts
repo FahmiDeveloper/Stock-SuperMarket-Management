@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 import { map } from 'rxjs/operators';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+import { FileUpload } from 'src/app/shared/models/file-upload.model';
 
 @Component({
   selector: 'app-upload-list',
@@ -19,6 +20,8 @@ export class UploadListComponent implements OnChanges {
   @Input() numContextFile: number;
   @Input() user: FirebaseUserModel;
 
+  @Output() arrayFiles = new EventEmitter<FileUpload[]>();
+
   fileUploads?: any[];
   filteredFiles?: any[];
 
@@ -26,22 +29,21 @@ export class UploadListComponent implements OnChanges {
   
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
     this.uploadService.getFiles().snapshotChanges().pipe(
-      map(changes =>
-        // store the key
-        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
-      )
+      map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() })))
     ).subscribe(fileUploads => {
-      if (this.numContextFile) this.filteredFiles = fileUploads.filter(element => (element.typeFileId == this.typeFileId) && (element.contextFile == this.numContextFile));
-      else this.filteredFiles = fileUploads.filter(element => element.typeFileId == this.typeFileId);
+      this.arrayFiles.emit(fileUploads.sort((n1, n2) => n2.numRefFile - n1.numRefFile));
+      if (this.numContextFile) 
+      this.filteredFiles = fileUploads.filter(element => (element.typeFileId == this.typeFileId) && (element.contextFile == this.numContextFile)).sort((n1, n2) => n2.numRefFile - n1.numRefFile);
+      else this.filteredFiles = fileUploads.filter(element => element.typeFileId == this.typeFileId).sort((n1, n2) => n2.numRefFile - n1.numRefFile);
       this.fileUploads = fileUploads;
     });
   }
   
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   filter(query: string) {
     this.filteredFiles = (this.numContextFile)
-    ? this.fileUploads.filter(file => (file.typeFileId == this.typeFileId) && (file.contextFile == this.numContextFile) && (file.name.toLowerCase().includes(query.toLowerCase())))
-    : this.fileUploads.filter(file => (file.typeFileId == this.typeFileId) && (file.name.toLowerCase().includes(query.toLowerCase())));
+    ? this.fileUploads.filter(file => (file.typeFileId == this.typeFileId) && (file.contextFile == this.numContextFile) && (file.name.toLowerCase().includes(query.toLowerCase()))).sort((n1, n2) => n2.numRefFile - n1.numRefFile)
+    : this.fileUploads.filter(file => (file.typeFileId == this.typeFileId) && (file.name.toLowerCase().includes(query.toLowerCase()))).sort((n1, n2) => n2.numRefFile - n1.numRefFile);
   }
 }

@@ -13,6 +13,7 @@ export class Debt {
   isRestMoney: boolean;
   numRefDebt: number;
 
+  // used in debts module
   debtForPay: boolean;
   financialInDebtWithConvert:string;
   financialInDebtInModalWithConvert:string;
@@ -25,7 +26,7 @@ export class Debt {
   firstPartComposedFinancialInDebtByCreditor:string;
   secondPartComposedFinancialInDebtByCreditor:string;
 
-
+  // used in debts module
   debtToGet: boolean;
   financialOutDebtWithConvert:string; 
   financialOutDebtInModalWithConvert:string;  
@@ -37,6 +38,34 @@ export class Debt {
   financialOutDebtWithConvertByDebtor:string;
   firstPartComposedFinancialOutDebtByDebtor:string;
   secondPartComposedFinancialOutDebtByDebtor:string;
+
+  // used for To Pay statistics in home
+  debtWithConvertToPayThisMonth:string;
+  firstPartComposedDebtWithConvertToPayThisMonth:string;
+  secondPartComposedDebtWithConvertToPayThisMonth:string;
+
+  debtWithConvertToPayNextMonth:string;
+  firstPartComposedDebtWithConvertToPayNextMonth:string;
+  secondPartComposedDebtWithConvertToPayNextMonth:string;
+
+  debtWithConvertNotToPayForNow:string;
+  firstPartComposedDebtWithConvertNotToPayForNow:string;
+  secondPartComposedDebtWithConvertNotToPayForNow:string;
+
+
+  // used for To get statistics in home
+  debtWithConvertToGetThisMonth:string;
+  firstPartComposedDebtWithConvertToGetThisMonth:string;
+  secondPartComposedDebtWithConvertToGetThisMonth:string;
+
+  debtWithConvertToGetNextMonth:string;
+  firstPartComposedDebtWithConvertToGetNextMonth:string;
+  secondPartComposedDebtWithConvertToGetNextMonth:string;
+
+  debtWithConvertNotToGetForNow:string;
+  firstPartComposedDebtWithConvertNotToGetForNow:string;
+  secondPartComposedDebtWithConvertNotToGetForNow:string;
+
 
   constructor(){
     this.date = '';
@@ -70,4 +99,3 @@ export interface StatusInDebts{
 export interface Unit {
   unitName: string
 }
-

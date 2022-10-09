@@ -38,33 +38,11 @@ export class LoginComponent implements OnInit{
     });
   }
 
-  tryFacebookLogin(){
-    this.authService.doFacebookLogin()
-    .then(res => {
-      this.onSuccess();
-    })
-  }
-
-  tryTwitterLogin(){
-    this.authService.doTwitterLogin()
-    .then(res => {
-      this.onSuccess();
-    })
-  }
-
-  tryGoogleLogin(){
-    this.authService.doGoogleLogin()
-    .then(res => {
-      this.onSuccess();
-    })
-  }
-
   tryLogin(value){
     this.authService.doLogin(value)
     .then(res => {
       this.onSuccess();
     }, err => {
-      console.log(err);
       this.errorMessage = err.message;
     })
   }
@@ -73,4 +51,5 @@ export class LoginComponent implements OnInit{
     this.router.navigate(['/home']);
     this.authService.isConnected.next(true);
   }
+  
 }

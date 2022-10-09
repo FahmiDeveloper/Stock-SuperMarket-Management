@@ -31,14 +31,13 @@
     />
 </label>
 
-<div *ngIf="currentFileUpload" class="progress mt-2">
-    <div
-        class="progress-bar progress-bar-info"
-        role="progressbar"
-        attr.aria-valuenow="{{ percentage }}"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        [ngStyle]="{ width: percentage + '%' }">
-        {{ percentage }}%
+<div *ngIf="currentFileUpload" class="progress-background">
+    <div class="progress-meter" [ngStyle] = "{'width.%': percentage}"></div>
+</div>
+<div *ngIf="currentFileUpload" class="progress-indicator" [ngStyle] = "{'margin-left.%': percentage-3}">
+    <i class="fa fa-caret-up"></i>
+    <div>
+        <i class="fa fa-motorcycle" style="font-size:24px "></i>
     </div>
+    <span>{{percentage}}%</span>
 </div>

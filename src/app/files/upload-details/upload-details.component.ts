@@ -32,7 +32,7 @@ export class UploadDetailsComponent implements OnChanges {
   @Input() userRoles: FirebaseUserModel;
 
   dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['name', 'actions'];
+  displayedColumns: string[] = ['name', 'star'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -62,8 +62,6 @@ export class UploadDetailsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
-    console.log(this.paginator)
-
     if (this.filteredFiles) {
       this.dataSource.data = this.filteredFiles;
        this.dataSource.data.forEach(element => {
