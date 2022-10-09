@@ -9,11 +9,11 @@ export class FileUpload {
   contextFile: number;
   numRefFile: number;
   
-  constructor(file: File, typeFileId: number, contextFile: number, lastNumRefFile: number) {
+  constructor(file: File, typeFileId: number, contextFile: number, numRefFile: number) {
     this.file = file;
     this.typeFileId = typeFileId;
     this.contextFile = contextFile;
-    this.numRefFile = lastNumRefFile;
+    this.numRefFile = numRefFile;
   }
   
 }
