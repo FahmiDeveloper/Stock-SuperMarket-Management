@@ -4,6 +4,7 @@ export class Link {
   content: string;
   path: string;
   typeLinkId: number;
+  numRefLink: number;
   
   constructor(){
     this.content = '';
