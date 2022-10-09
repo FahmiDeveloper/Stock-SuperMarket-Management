@@ -713,7 +713,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.isMobile) {
       this.modalRefTotalInDebtsDet = this.dialogService.open(contentTotalInDebtsDet, {
         width: '98vw',
-        height:'35vh',
+        height:'45vh',
         maxWidth: '100vw'
       });
     } else {
@@ -731,7 +731,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.isMobile) {
       this.modalRefTotalOutDebtsDet = this.dialogService.open(contentTotalOutDebtsDet, {
         width: '98vw',
-        height:'35vh',
+        height:'45vh',
         maxWidth: '100vw'
       });
     } else {
