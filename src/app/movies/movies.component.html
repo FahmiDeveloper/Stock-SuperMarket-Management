@@ -67,7 +67,7 @@
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef class="btns-add-sort">
                 <button 
-                    *ngIf="user.roleAddMovie" 
+                    *ngIf="dataUserConnected.roleAddMovie" 
                     type="button" 
                     mat-icon-button 
                     color="primary" 
@@ -86,7 +86,7 @@
     
             <mat-cell *matCellDef="let row; let i=index;" class="btns-edit-link-delete">
                 <button 
-                    *ngIf="user.roleUpdateMovie"  
+                    *ngIf="dataUserConnected.roleUpdateMovie"  
                     type="button" 
                     mat-icon-button 
                     color="primary" 
@@ -105,7 +105,7 @@
                 </a>
         
                 <button 
-                    *ngIf="user.roleDeleteMovie" 
+                    *ngIf="dataUserConnected.roleDeleteMovie" 
                     type="button" 
                     mat-icon-button 
                     color="warn" 

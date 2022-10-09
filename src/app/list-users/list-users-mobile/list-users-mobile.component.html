@@ -29,7 +29,7 @@
                             edit
                         </mat-icon>
             
-                        <mat-icon style="color: #f44336;margin-left: 35px;" (click)="deleteUser(element.key)">delete</mat-icon>
+                        <mat-icon style="color: #f44336;margin-left: 25px;" (click)="deleteUser(element.key)">delete</mat-icon>
 
                     </span>
                 </td>
@@ -48,6 +48,14 @@
                 <td mat-cell *matCellDef="let element">
                     <span>Email:</span>&nbsp;
                     <span>{{ element.email }}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="password">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <span>Password:</span>&nbsp;
+                    <span>{{ element.password }}</span>
                 </td>
             </ng-container>
 

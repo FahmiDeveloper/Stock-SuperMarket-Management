@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-12">
         <button
-            *ngIf="user.roleAddDebt"
+            *ngIf="dataUserConnected.roleAddDebt"
             type="button" 
             (click)="newDebt()" 
             mat-mini-fab 
@@ -370,7 +370,7 @@
 
         <button 
             type="button"
-            *ngIf="user.roleUpdateDebt" 
+            *ngIf="dataUserConnected.roleUpdateDebt" 
             (click)="editDebt(debt)"  
             mat-menu-item>
             <mat-icon aria-label="Edit" style="color: #3f51b5;">edit</mat-icon>
@@ -379,7 +379,7 @@
 
         <button 
             type="button"
-            *ngIf="user.roleDeleteDebt" 
+            *ngIf="dataUserConnected.roleDeleteDebt" 
             mat-menu-item (click)="
             deleteDebt(debt.key)">
             <mat-icon style="color: #f44336;">delete</mat-icon>
@@ -435,4 +435,22 @@
         <mat-grid-tile>: الحساب البريدي</mat-grid-tile>
     </mat-grid-list>
 
+</ng-template>
+
+<ng-template #contentLoading let-modal let-c="close" let-d="dismiss">
+
+    <div class="modal-header text-center">
+      <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold text-application">test</h4>
+  
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  
+    <div class="modal-body text-application">
+      <div *ngIf="isLoading">
+            <mat-spinner></mat-spinner><br>
+        <h3 style="text-align: center;">Delete debts in progress...</h3>
+      </div>
+    </div>
 </ng-template>

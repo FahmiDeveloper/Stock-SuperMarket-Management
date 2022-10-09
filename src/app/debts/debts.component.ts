@@ -13,6 +13,7 @@ import { DebtFormComponent } from './debt-form/debt-form.component';
 import { AuthService } from '../shared/services/auth.service';
 import { DebtService } from '../shared/services/debt.service';
 import { UserService } from '../shared/services/user.service';
+import { UsersListService } from '../shared/services/list-users.service';
 
 import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from '../shared/models/debt.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
@@ -71,10 +72,11 @@ export class DebtsComponent implements OnInit, OnDestroy {
   modalRefRestMoneyForeachPlace: any;
   modalRefLodaing: any;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
+  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
+  subscriptionForGetAllUsers: Subscription;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -100,6 +102,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   constructor(
     private debtService: DebtService, 
     public userService: UserService,
+    public usersListService: UsersListService,
     public authService: AuthService,
     protected modalService: NgbModal,
     public dialogService: MatDialog
@@ -142,11 +145,19 @@ export class DebtsComponent implements OnInit, OnDestroy {
             .getCurrentUser()
             .then(user=>{
               if(user) {
-                this.userService
-                  .get(user.uid)
+                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
+
+                this.subscriptionForGetAllUsers = this.usersListService
+                .getAll()
+                .subscribe((users: FirebaseUserModel[]) => { 
+                  connectedUserFromList = users.find(element => element.email == user.email);
+
+                  this.usersListService
+                  .get(connectedUserFromList.key)
                   .valueChanges()
                   .subscribe(dataUser=>{
-                    this.user = dataUser;
+                    this.dataUserConnected = dataUser;
+                  });
                 });
               }
           });   
@@ -647,5 +658,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();
     this.subscriptionForUser.unsubscribe();
+    this.subscriptionForGetAllUsers.unsubscribe();
   }
+  
 }

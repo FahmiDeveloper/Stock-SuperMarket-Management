@@ -1,98 +1,44 @@
-<div class="row textSignOut justify-content-center">
-  <h2 class="text-application">Sign Up</h2>
-</div>
-<br>
-<div class="container card styleCard" *ngIf="!isMobile">
-  <div class="card-body">
-    <form [formGroup]="registerForm">
-      <div class="form-group">
-        <label class="text-application">Email address</label>
-        <input type="email" formControlName="email" class="form-control">
-      </div>
-      <div class="form-group">
-        <label class="text-application">Password</label>
-        <input type="password" class="form-control" formControlName="password">
-        <label class="error">{{errorMessage}}</label>
-        <label class="success">{{successMessage}}</label>
-      </div>
-      <button type="submit" (click)="tryRegister(registerForm.value)"
-        class="btn btn-success styleBtnRegister text-application">Register</button>
-    </form>
-    <br>
-    <label class="textForBtns text-application">Or Sign Up Using</label>
-    <div class="row styleDivBtns">
-      <div class="col-md-3">
-        <button type="button" class="btn btn-block btnFcb" (click)="tryFacebookLogin()">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="col-md-3">
-        <button type="button" class="btn btn-block btnGgle" (click)="tryGoogleLogin()">
-          <i class="fa fa-google-plus" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="col-md-3">
-        <button type="button" class="btn btn-block btnTwit" (click)="tryTwitterLogin()">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<br>
-<div class="card styleCardFooter" *ngIf="!isMobile">
-  <div class="card-body">
-    <div class="row margText">
-      <div class="col-md-12">
-        <p class="text-application">Already have an account? <a href="/login" class="text-application">Login</a></p>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="login-container">
+	<div class="login-content">
+		<mat-toolbar class="login-toolbar" color="primary">Sign Up</mat-toolbar>
 
+		<mat-card>
 
-<!-- code html mobile-->
+      <form [formGroup]="registerForm">
 
-<div class="container card styleCardMobile" *ngIf="isMobile">
-  <div class="card-body">
-    <form [formGroup]="registerForm">
-      <div class="form-group">
-        <label class="text-application">Email address</label>
-        <input type="email" formControlName="email" class="form-control">
-      </div>
-      <div class="form-group">
-        <label class="text-application">Password</label>
-        <input type="password" class="form-control" formControlName="password">
-        <label class="error">{{errorMessage}}</label>
-        <label class="success">{{successMessage}}</label>
-      </div>
-      <button type="submit" (click)="tryRegister(registerForm.value)"
-        class="btn btn-success styleBtnRegister text-application">Register</button>
-    </form>
-    <div class="row justify-content-center text-application">
-      <label>Or Sign Up Using</label>
-    </div>
+				<mat-form-field>
+					<mat-icon matPrefix>email</mat-icon>
+					<input autofocus type="email" matInput placeholder="Email *" formControlName="email">
+					<mat-error *ngIf="checkValidation('email')">
+						{{ emaiErrors() }}
+					</mat-error>
+				</mat-form-field>
 
-    <div class="row justify-content-center">
-      <button type="button" class="btn btnFcb" (click)="tryFacebookLogin()">
-        <i class="fa fa-facebook" aria-hidden="true"></i>
-      </button>&nbsp;
-      <button type="button" class="btn btnGgle" (click)="tryGoogleLogin()">
-        <i class="fa fa-google-plus" aria-hidden="true"></i>
-      </button>&nbsp;
-      <button type="button" class="btn btnTwit" (click)="tryTwitterLogin()">
-        <i class="fa fa-twitter" aria-hidden="true"></i>
-      </button>
-    </div>
+				<mat-form-field>
+					<mat-icon matPrefix>person_outline</mat-icon>
+					<input autofocus type="text" matInput placeholder="Username *" formControlName="username">
+					<mat-error *ngIf="checkValidation('username')">
+						{{ fieldRequired }}
+					</mat-error>
+				</mat-form-field>
 
-  </div>
-</div>
-<br>
+				<mat-form-field>
+					<mat-icon matPrefix>lock_outline</mat-icon>
+					<input type="password" autocomplete="false" matInput placeholder="Password *" formControlName="password">
+          <mat-hint>Choose a password of at least eight characters, one uppercase letter and one number</mat-hint>
+          <mat-error *ngIf="checkValidation('password')">
+            {{ getErrorPassword() }}
+          </mat-error>
+				</mat-form-field>
+				
+        <hr>
+        <div class="socialMediaFlex">
+            <button style="width:50%" [disabled]="registerForm.invalid" type="submit" mat-raised-button color="primary" (click)="tryRegister(registerForm.value)">Submit</button>
+        </div>
 
-<div class="container card styleCardFooterMobile" *ngIf="isMobile">
-  <div class="card-body">
-    <div class="row justify-content-center" style="margin-top: -7px;">
-      <label class="text-application">Already have an account?</label>&nbsp;<a href="/login" class="text-application">Login</a>
-    </div>
-  </div>
+        <br>
+        <span style="text-align: center;">Already have an account ?&nbsp;<a routerLink ='/login'>Sign In</a></span>	
+			</form>
+		</mat-card>
+	</div>
 </div>

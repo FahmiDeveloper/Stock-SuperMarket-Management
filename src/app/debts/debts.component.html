@@ -279,7 +279,7 @@
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef class="btns-add-sort">
                 <button 
-                    *ngIf="user.roleAddDebt" 
+                    *ngIf="dataUserConnected.roleAddDebt" 
                     type="button" 
                     mat-icon-button 
                     color="primary" 
@@ -299,7 +299,7 @@
             <mat-cell *matCellDef="let row; let i=index;" class="btns-edit-delete">  
 
                 <button 
-                    *ngIf="user.roleUpdateDebt"  
+                    *ngIf="dataUserConnected.roleUpdateDebt"  
                     type="button" 
                     mat-icon-button 
                     color="primary" 
@@ -308,7 +308,7 @@
                 </button>
         
                 <button 
-                    *ngIf="user.roleDeleteDebt" 
+                    *ngIf="dataUserConnected.roleDeleteDebt" 
                     type="button" 
                     mat-icon-button 
                     color="warn" 
@@ -396,9 +396,9 @@
     </div>
   
     <div class="modal-body text-application">
-      <div *ngIf="isLoading" class="text-center">
-        <div class="spinner-border" style="width: 10rem; height: 10rem;" role="status"></div><br><br>
-        <h4>Delete debts in progress...</h4>
+      <div *ngIf="isLoading">
+            <mat-spinner></mat-spinner><br>
+        <h3 style="text-align: center;">Delete debts in progress...</h3>
       </div>
     </div>
 </ng-template>

@@ -5,12 +5,12 @@
     <div class="col-md-12">
         <form (ngSubmit)="save(f.value)" #f="ngForm">
 
-            <mat-form-field color="accent" style="width: 430px;">
+            <mat-form-field color="accent" [ngStyle]="{'width': isMobile ? '305px' : '430px'}">
                 <input matInput #input type="text" placeholder="Content" [(ngModel)]="link.content" name="content" required>
                 <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
     
-            <mat-form-field color="accent" style="width: 430px;">
+            <mat-form-field color="accent" [ngStyle]="{'width': isMobile ? '305px' : '430px'}">
                 <input matInput #input type="text" placeholder="Path" [(ngModel)]="link.path" name="path" required>
                 <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>

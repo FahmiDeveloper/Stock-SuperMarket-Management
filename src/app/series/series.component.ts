@@ -12,6 +12,7 @@ import { SerieFormComponent } from './serie-form/serie-form.component';
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
 import { SerieService } from '../shared/services/serie.service';
+import { UsersListService } from '../shared/services/list-users.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
 import { Serie, StatusSeries } from '../shared/models/serie.model';
@@ -25,6 +26,7 @@ import { Serie, StatusSeries } from '../shared/models/serie.model';
 export class SeriesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Serie>();
+  dataSourceCopie = new MatTableDataSource<Serie>();
   displayedColumns: string[] = ['picture', 'details', 'actions'];
 
   queryName: string = "";
@@ -34,8 +36,9 @@ export class SeriesComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
+  subscriptionForGetAllUsers: Subscription;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
+  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -50,6 +53,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
   constructor(
     private serieService: SerieService, 
     public userService: UserService,
+    public usersListService: UsersListService,
     public authService: AuthService,
     public dialogService: MatDialog
   ) {}
@@ -67,6 +71,8 @@ export class SeriesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
+      this.dataSourceCopie.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+
       if (this.queryName) {
         this.dataSource.data = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
@@ -97,11 +103,19 @@ export class SeriesComponent implements OnInit, OnDestroy {
             .getCurrentUser()
             .then(user=>{
               if(user) {
-                this.userService
-                  .get(user.uid)
+                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
+
+                this.subscriptionForGetAllUsers = this.usersListService
+                .getAll()
+                .subscribe((users: FirebaseUserModel[]) => { 
+                  connectedUserFromList = users.find(element => element.email == user.email);
+
+                  this.usersListService
+                  .get(connectedUserFromList.key)
                   .valueChanges()
                   .subscribe(dataUser=>{
-                    this.user = dataUser;
+                    this.dataUserConnected = dataUser;
+                  });
                 });
               }
           });   
@@ -142,7 +156,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
 
   newSerie() {
     const dialogRef = this.dialogService.open(SerieFormComponent, {width: '800px', data: {movie: {}}});
-    dialogRef.componentInstance.arraySeries = this.dataSource.data; 
+    dialogRef.componentInstance.arraySeries = this.dataSourceCopie.data; 
   }
 
   editSerie(serie?: Serie) {
@@ -177,6 +191,8 @@ export class SeriesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForUser.unsubscribe();
+    this.subscriptionForGetAllUsers.unsubscribe();
   }
+  
 }
 

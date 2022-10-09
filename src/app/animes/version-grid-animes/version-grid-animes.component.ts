@@ -13,6 +13,7 @@ import { ShowAnimePictureComponent } from '../show-anime-picture';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { AnimeService } from 'src/app/shared/services/anime.service';
+import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
@@ -26,6 +27,7 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 export class VersionGridAnimesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Anime>();
+  dataSourceCopie = new MatTableDataSource<Anime>();
   displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
 
   queryName: string = "";
@@ -35,8 +37,9 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForUser: Subscription;
+  subscriptionForGetAllUsers: Subscription;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
+  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -51,6 +54,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   constructor(
     private animeService: AnimeService, 
     public userService: UserService,
+    public usersListService: UsersListService,
     public authService: AuthService,
     public dialogService: MatDialog
   ) {}
@@ -68,6 +72,8 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllAnimes = this.animeService
     .getAll()
     .subscribe(animes => {
+      this.dataSourceCopie.data = animes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+
       if (this.queryName) {
         this.dataSource.data = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
@@ -95,14 +101,22 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
       .subscribe(res=>{
         if(res) {
           this.userService
-          .getCurrentUser()
-          .then(user=>{
-            if(user) {
-              this.userService
-                .get(user.uid)
-                .valueChanges()
-                .subscribe(dataUser=>{
-                  this.user = dataUser;
+            .getCurrentUser()
+            .then(user=>{
+              if(user) {
+                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
+
+                this.subscriptionForGetAllUsers = this.usersListService
+                .getAll()
+                .subscribe((users: FirebaseUserModel[]) => { 
+                  connectedUserFromList = users.find(element => element.email == user.email);
+
+                  this.usersListService
+                  .get(connectedUserFromList.key)
+                  .valueChanges()
+                  .subscribe(dataUser=>{
+                    this.dataUserConnected = dataUser;
+                  });
                 });
               }
           });   
@@ -136,7 +150,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
       height:'73vh',
       maxWidth: '100vw'
     });
-    dialogRef.componentInstance.arrayAnimes = this.dataSource.data;
+    dialogRef.componentInstance.arrayAnimes = this.dataSourceCopie.data;
     dialogRef.componentInstance.modalRef = dialogRef;
   }
 
@@ -198,6 +212,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
     this.subscriptionForUser.unsubscribe();
+    this.subscriptionForGetAllUsers.unsubscribe();
   }
 
 }

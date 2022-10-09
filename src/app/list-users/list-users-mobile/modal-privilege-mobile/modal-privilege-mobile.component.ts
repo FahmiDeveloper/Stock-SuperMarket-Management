@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserService } from 'src/app/shared/services/user.service';
+import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
@@ -15,12 +15,12 @@ export class ModalPrivilegeMobileComponent implements OnInit{
     currentUser: FirebaseUserModel;
     dialogRef: any;
 
-    constructor(public userService: UserService) {}
+    constructor(public usersListService: UsersListService) {}
 
     ngOnInit() {}
 
     changePrivliegeStatus(currentUser: FirebaseUserModel) {
-        this.userService.update(currentUser.key, currentUser);
+        this.usersListService.update(currentUser.key, currentUser);
     }
 
 }

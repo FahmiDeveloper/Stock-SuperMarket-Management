@@ -12,6 +12,7 @@ import { AnimeFormComponent } from './anime-form/anime-form.component';
 import { AuthService } from '../shared/services/auth.service';
 import { UserService } from '../shared/services/user.service';
 import { AnimeService } from '../shared/services/anime.service';
+import { UsersListService } from '../shared/services/list-users.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
 import { Anime, StatusAnimes } from '../shared/models/anime.model';
@@ -25,6 +26,7 @@ import { Anime, StatusAnimes } from '../shared/models/anime.model';
 export class AnimesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Anime>();
+  dataSourceCopie = new MatTableDataSource<Anime>();
   displayedColumns: string[] = ['picture', 'details', 'actions'];
 
   queryName: string = "";
@@ -34,8 +36,9 @@ export class AnimesComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForUser: Subscription;
+  subscriptionForGetAllUsers: Subscription;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
+  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -50,6 +53,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
   constructor(
     private animeService: AnimeService, 
     public userService: UserService,
+    public usersListService: UsersListService,
     public authService: AuthService,
     public dialogService: MatDialog
   ) {}
@@ -67,6 +71,8 @@ export class AnimesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllAnimes = this.animeService
     .getAll()
     .subscribe(animes => {
+      this.dataSourceCopie.data = animes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+
       if (this.queryName) {
         this.dataSource.data = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
@@ -97,11 +103,19 @@ export class AnimesComponent implements OnInit, OnDestroy {
             .getCurrentUser()
             .then(user=>{
               if(user) {
-                this.userService
-                  .get(user.uid)
+                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
+
+                this.subscriptionForGetAllUsers = this.usersListService
+                .getAll()
+                .subscribe((users: FirebaseUserModel[]) => { 
+                  connectedUserFromList = users.find(element => element.email == user.email);
+
+                  this.usersListService
+                  .get(connectedUserFromList.key)
                   .valueChanges()
                   .subscribe(dataUser=>{
-                    this.user = dataUser;
+                    this.dataUserConnected = dataUser;
+                  });
                 });
               }
           });   
@@ -142,7 +156,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
 
   newAnime() {
     const dialogRef = this.dialogService.open(AnimeFormComponent, {width: '800px', data: {movie: {}}});
-    dialogRef.componentInstance.arrayAnimes = this.dataSource.data; 
+    dialogRef.componentInstance.arrayAnimes = this.dataSourceCopie.data;
   }
 
   editAnime(anime?: Anime) {
@@ -177,5 +191,7 @@ export class AnimesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
     this.subscriptionForUser.unsubscribe();
+    this.subscriptionForGetAllUsers.unsubscribe();
   }
+  
 }

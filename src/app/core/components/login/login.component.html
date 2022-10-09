@@ -1,94 +1,30 @@
-<div class="row textSignIn justify-content-center">
-  <h2 class="text-application">Sign in</h2>
-</div>
-<br>
-<div class="container card styleCard" *ngIf="!isMobile">
-  <div class="card-body">
-    <form [formGroup]="loginForm">
-      <div class="form-group">
-        <label class="text-application">Email address</label>
-        <input type="email" formControlName="email" class="form-control">
-      </div>
-      <div class="form-group">
-        <label class="text-application">Password</label>
-        <input type="password" class="form-control" formControlName="password">
-        <label class="error">{{errorMessage}}</label>
-      </div>
-      <button type="submit" (click)="tryLogin(loginForm.value)" class="btn btn-success styleBtnLogin text-application">Login</button>
-    </form>
-    <br>
-    <label class="textForBtns text-application">Or Sign In Using</label>
-    <div class="row styleDivBtns">
-      <div class="col-md-3">
-        <button type="button" class="btn btn-block btnFcb" (click)="tryFacebookLogin()">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="col-md-3">
-        <button type="button" class="btn btn-block btnGgle" (click)="tryGoogleLogin()">
-          <i class="fa fa-google-plus" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="col-md-3">
-        <button type="button" class="btn btn-block btnTwit" (click)="tryTwitterLogin()">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<br>
-<div class="card styleCardFooter" *ngIf="!isMobile">
-  <div class="card-body">
-    <div class="row margText">
-      <div class="col-md-12">
-        <p class="text-application">No account yet? <a href="/register" class="text-application">Create an account</a></p>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="login-container">
+	<div class="login-content">
+		<mat-toolbar class="login-toolbar" color="primary">Sign In</mat-toolbar>
+		<mat-card>
+			<form [formGroup]="loginForm">
+        <mat-form-field>
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <input autofocus type="email" matInput placeholder="Email" formControlName="email">
+        </mat-form-field>
 
+        <mat-form-field>
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <input type="password" autocomplete="false" matInput placeholder="Password"  formControlName="password">
+        </mat-form-field>
 
+        <p *ngIf="errorMessage" class="error" [ngStyle]="{'width': isMobile ? '280px' : '358px'}">{{ errorMessage }}</p> 
+          
+        <button type="submit" mat-raised-button color="primary" (click)="tryLogin(loginForm.value)">LOGIN</button>
+      </form>
 
-
-<!-- code html mobile-->
-
-<div class="container card styleCardMobile" *ngIf="isMobile">
-  <div class="card-body">
-    <form [formGroup]="loginForm">
-      <div class="form-group">
-        <label class="text-application">Email address</label>
-        <input type="email" formControlName="email" class="form-control">
+      <mat-toolbar class="login-toolbar" style="background-color:white">login with</mat-toolbar>
+      <div class="socialMediaFlex">
+        <button mat-fab color="primary"><i class="fab fa-facebook-f"></i></button>
+        <button mat-fab color="accent"><i class="fab fa-google"></i></button>
       </div>
-      <div class="form-group">
-        <label class="text-application">Password</label>
-        <input type="password" class="form-control" formControlName="password">
-        <label class="error">{{errorMessage}}</label>
-      </div>
-      <button type="submit" (click)="tryLogin(loginForm.value)" class="btn btn-success styleBtnLogin text-application">Login</button>
-    </form>
-    <div class="row justify-content-center">
-      <label class="text-application">Or Sign In Using</label>
-    </div>
-    <div class="row justify-content-center">
-        <button type="button" class="btn btnFcb" (click)="tryFacebookLogin()">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-        </button>&nbsp;
-        <button type="button" class="btn btnGgle" (click)="tryGoogleLogin()">
-          <i class="fa fa-google-plus" aria-hidden="true"></i>
-        </button>&nbsp;
-        <button type="button" class="btn btnTwit" (click)="tryTwitterLogin()">
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-        </button>
-    </div>
-  </div>
-</div>
-<br>
-
-<div class="container card styleCardFooterMobile" *ngIf="isMobile">
-  <div class="card-body">
-    <div class="row justify-content-center" style="margin-top: -7px;">
-      <label class="text-application">No account yet ?</label>&nbsp;<a href="/register" class="text-application">Create an account</a>
-    </div>  
-  </div>
+      <br>
+      <span>You don't have a account yet, please&nbsp;<a routerLink ='/register'>Sign Up</a></span>	
+		</mat-card>
+	</div>
 </div>

@@ -14,6 +14,7 @@ import { ShowSeriePictureComponent } from '../show-serie-picture';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { SerieService } from 'src/app/shared/services/serie.service';
+import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
@@ -28,6 +29,7 @@ import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Serie>();
+  dataSourceCopie = new MatTableDataSource<Serie>();
   displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
 
   queryName: string = "";
@@ -37,8 +39,9 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
+  subscriptionForGetAllUsers: Subscription;
 
-  user: FirebaseUserModel = new FirebaseUserModel();
+  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -53,6 +56,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   constructor(
     private serieService: SerieService, 
     public userService: UserService,
+    public usersListService: UsersListService,
     public authService: AuthService,
     protected modalService: NgbModal,
     public dialogService: MatDialog
@@ -71,6 +75,8 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
+      this.dataSourceCopie.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+
       if (this.queryName) {
         this.dataSource.data = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
@@ -98,14 +104,22 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
       .subscribe(res=>{
         if(res) {
           this.userService
-          .getCurrentUser()
-          .then(user=>{
-            if(user) {
-              this.userService
-                .get(user.uid)
-                .valueChanges()
-                .subscribe(dataUser=>{
-                  this.user = dataUser;
+            .getCurrentUser()
+            .then(user=>{
+              if(user) {
+                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
+
+                this.subscriptionForGetAllUsers = this.usersListService
+                .getAll()
+                .subscribe((users: FirebaseUserModel[]) => { 
+                  connectedUserFromList = users.find(element => element.email == user.email);
+
+                  this.usersListService
+                  .get(connectedUserFromList.key)
+                  .valueChanges()
+                  .subscribe(dataUser=>{
+                    this.dataUserConnected = dataUser;
+                  });
                 });
               }
           });   
@@ -139,7 +153,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
       height:'73vh',
       maxWidth: '100vw'
     });
-    dialogRef.componentInstance.arraySeries = this.dataSource.data;
+    dialogRef.componentInstance.arraySeries = this.dataSourceCopie.data;
     dialogRef.componentInstance.modalRef = dialogRef;
   }
 
@@ -201,6 +215,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForUser.unsubscribe();
+    this.subscriptionForGetAllUsers.unsubscribe();
   }
 }
 

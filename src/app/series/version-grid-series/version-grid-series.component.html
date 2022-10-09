@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-12">
         <button
-            *ngIf="user.roleAddSerie"
+            *ngIf="dataUserConnected.roleAddSerie"
             type="button" 
             (click)="newSerie()" 
             mat-mini-fab 
@@ -147,7 +147,7 @@
     <ng-template matMenuContent let-serie="element">
 
         <button
-            *ngIf="user.roleUpdateSerie" 
+            *ngIf="dataUserConnected.roleUpdateSerie" 
             type="button"
             (click)="editSerie(serie)"  
             mat-menu-item>
@@ -166,7 +166,7 @@
 
         <button 
             type="button"
-            *ngIf="user.roleDeleteSerie" mat-menu-item (click)="deleteSerie(serie.key)" [hidden]="serie.statusId == 3">
+            *ngIf="dataUserConnected.roleDeleteSerie" mat-menu-item (click)="deleteSerie(serie.key)" [hidden]="serie.statusId == 3">
             <mat-icon style="color: #f44336;">delete</mat-icon>
             <span>Delete</span>
         </button>

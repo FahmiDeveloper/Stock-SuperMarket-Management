@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <button *ngIf="user.roleAddMovie" type="button" (click)="newMovie()" mat-mini-fab color="primary" style="float: right;">
+        <button *ngIf="dataUserConnected.roleAddMovie" type="button" (click)="newMovie()" mat-mini-fab color="primary" style="float: right;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
 
@@ -142,7 +142,7 @@
 
         <button 
             type="button"
-            *ngIf="user.roleUpdateMovie" 
+            *ngIf="dataUserConnected.roleUpdateMovie" 
             (click)="editMovie(movie)"  
             mat-menu-item 
             >
@@ -161,7 +161,7 @@
 
         <button 
             type="button"
-            *ngIf="user.roleDeleteMovie" mat-menu-item (click)="deleteMovie(movie.key)" [hidden]="movie.statusId == 3">
+            *ngIf="dataUserConnected.roleDeleteMovie" mat-menu-item (click)="deleteMovie(movie.key)" [hidden]="movie.statusId == 3">
             <mat-icon style="color: #f44336;">delete</mat-icon>
             <span>Delete</span>
         </button>

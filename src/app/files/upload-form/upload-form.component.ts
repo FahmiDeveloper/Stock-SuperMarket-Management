@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
@@ -11,24 +11,29 @@ import { FirebaseUserModel } from 'src/app/shared/models/user.model';
   styleUrls: ['./upload-form.component.scss']
 })
 
-export class UploadFormComponent implements OnInit {
+export class UploadFormComponent implements OnChanges, OnInit {
 
   @Input() typeFileId: number;
   @Input() user: FirebaseUserModel;
+  @Input() defaultArrayFiles: FileUpload[];
 
   @Output() refContextFile = new EventEmitter<number>();
   
   selectedFiles?: FileList;
   currentFileUpload?: FileUpload;
   percentage = 0;
-
   angularContext: boolean = false;
   otherContext: boolean = false;
   contextFile: number;
+  lastNumRefFile: number;
 
-  constructor(private uploadService: FileUploadService) { }
+  constructor(private uploadService: FileUploadService) {}
 
-  ngOnInit(): void {}
+  ngOnChanges(changes: import("@angular/core").SimpleChanges) {
+    if (this.defaultArrayFiles[0]) this.lastNumRefFile = this.defaultArrayFiles[0].numRefFile;
+  }
+
+  ngOnInit() {}
 
   checkAngularContext() {
     if (this.angularContext == true) this.otherContext = false;
@@ -52,7 +57,7 @@ export class UploadFormComponent implements OnInit {
       const file: File | null = this.selectedFiles.item(0);
       this.selectedFiles = undefined;
       if (file) {
-        this.currentFileUpload = new FileUpload(file, this.typeFileId, this.contextFile);
+        this.currentFileUpload = new FileUpload(file, this.typeFileId, this.contextFile, this.lastNumRefFile + 1);
         this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(
           percentage => {
             this.percentage = Math.round(percentage ? percentage : 0);

@@ -1,163 +1,477 @@
 <h1 class="text-center text-primary text-application" style="padding-top: 20px;font-weight: bold;">Welcome</h1>
 <hr class="bg-dark" />
-<div class="container mx-auto" style="margin-top: 300px;">
-  <div class="row" style="margin-top: -300px;cursor: pointer;">
 
-    <!-------ToDoList mobile-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="isMobile" routerLink="/to-do-list-mobile">
-      <div class="card gr-7">
-        <div class="txt">
-          <h1 class="text-application">To Do List</h1>
+<div class="row justify-content-center">
+  <mat-card class="mat" fxLayout="column" fxFlex [ngStyle]="{'width': isMobile ? '91%' : '83%'}">
+    <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+      <ng-container>
+
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3" *ngIf="dataUserConnected.roleMovies" [routerLink]="isMobile ? '/movies-for-grid' : '/movies'">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
+              <div class="mt-4 heading-text text-application" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Movies</div>
+              <img
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                class="pl-5"
+                src="/assets/pictures/movies-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #3f51b5">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWaitToSort }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesNotDownloadedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWatched }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesToSearchAboutIt }}</span>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #3f51b5">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="5" rowHeight="5:1">
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;{{ moviesWatched }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}</span></mat-grid-tile>
+              </mat-grid-list>
+            </div>
+          </div>
         </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
+
+
+  
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3" *ngIf="dataUserConnected.roleAnimes" [routerLink]="isMobile ? '/animes-for-grid' : '/animes'">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
+              <div class="mt-4 heading-text text-application" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Animes</div>
+              <img
+                class="pl-5"
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                src="/assets/pictures/animes-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #4CAF50">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWaitToSort }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesNotDownloadedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWatched }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesToSearchAboutIt }}</span>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #4CAF50">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="5" rowHeight="5:1">
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;{{ animesWatched }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}</span></mat-grid-tile>
+              </mat-grid-list>
+            </div>
+          </div>
         </div>
-      </div>
+
+
+  
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3" *ngIf="dataUserConnected.roleSeries" [routerLink]="isMobile ? '/series-for-grid' : '/series'">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
+              <div class="mt-4 heading-text text-application" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Series</div>
+              <img
+                class="pl-5"
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                src="/assets/pictures/series-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #ec4b53">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWaitToSort }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesNotDownloadedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWatched }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesToSearchAboutIt }}</span>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #ec4b53">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="5" rowHeight="5:1">
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;{{ seriesWatched }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}</span></mat-grid-tile>
+              </mat-grid-list>
+            </div>
+          </div>
+        </div>
+
+
+  
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3" *ngIf="dataUserConnected.roleFiles" routerLink="/files">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
+              <div class="mt-4 heading-text text-application" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Files</div>
+              <img
+                class="pl-5"
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                src="/assets/pictures/files-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #24a8f2">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Pictures:&nbsp;&nbsp;&nbsp;&nbsp;{{ pictureFilesNbr }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">PDF:&nbsp;&nbsp;&nbsp;&nbsp;{{ pdfFilesNbr }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Excel:&nbsp;&nbsp;&nbsp;&nbsp;{{ excelFilesNbr }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Txt:&nbsp;&nbsp;&nbsp;&nbsp;{{ txtFilesNbr }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Zip:&nbsp;&nbsp;&nbsp;&nbsp;{{ zipFilesNbr }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Word:&nbsp;&nbsp;&nbsp;&nbsp;{{ wordFilesNbr }}</span>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #24a8f2">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="6" rowHeight="5:1">
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Excel:&nbsp;&nbsp;{{ excelFilesNbr }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Txt:&nbsp;&nbsp;{{ txtFilesNbr }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Zip:&nbsp;&nbsp;{{ zipFilesNbr }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Word:&nbsp;&nbsp;{{ wordFilesNbr }}</span></mat-grid-tile>
+              </mat-grid-list>
+            </div>
+          </div>
+        </div>
+
+
+    
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3" *ngIf="dataUserConnected.roleDebts" [routerLink]="isMobile ? '/debts-for-grid' : '/debts'">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
+              <div class="mt-4 heading-text text-application" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Debts</div>
+              <img
+                class="pl-5"
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                src="/assets/pictures/debts-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #ff4081">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalInDebts }}
+              </span>
+              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalOutDebts }}
+              </span>
+              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
+              </span>            
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #ff4081">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="3" rowHeight="8:1">
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                    Total in debt:&nbsp;&nbsp;{{ totalInDebts }}
+                  </span>
+                  <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                    Total in debt:&nbsp;&nbsp;0DT
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                    Total out debt:&nbsp;&nbsp;{{ totalOutDebts }}
+                  </span>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                    Total out debt:&nbsp;&nbsp;0DT
+                  </span>
+                </mat-grid-tile>              
+              </mat-grid-list>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'" 
+              [routerLink]="isMobile ? '/to-do-list-mobile' : '/to-do-list'">
+              <div class="mt-4 heading-text text-application" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">To Do List</div>
+              <img
+                class="pl-5"
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                src="/assets/pictures/to-do-list-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #9C27B0">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Today:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTodayTask }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Tomorrow:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTomorrowTask }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">This week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrThisWeekTask }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Next week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrNextWeekTaskList }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Later:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrLaterTaskList }}</span>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #9C27B0">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="5" rowHeight="5:1">
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Today:&nbsp;&nbsp;{{ nbrTodayTask }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Tomorrow:&nbsp;&nbsp;{{ nbrTomorrowTask }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">This week:&nbsp;&nbsp;{{ nbrThisWeekTask }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Next week:&nbsp;&nbsp;{{ nbrNextWeekTaskList }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Later:&nbsp;&nbsp;{{ nbrLaterTaskList }}</span></mat-grid-tile>
+              </mat-grid-list>
+            </div>
+          </div>
+        </div>
+
+
+      
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3" *ngIf="dataUserConnected.isAdmin">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'" 
+              [routerLink]="isMobile ? '/users-mobile' : '/users'">
+              <div class="mt-4 heading-text text-application" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Users</div>
+              <img
+                class="pl-5"
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                src="/assets/pictures/users-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #B96068">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ waitToSort }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ notDownloadedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ watched }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ downloadedButNotWatchedYet }}</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ toSearchAboutIt }}</span>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #B96068">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="3" rowHeight="8:1">
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;">Total users:&nbsp;&nbsp;{{ totalNbrUsers }}</span>
+                </mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;{{ notDownloadedYet }}</span></mat-grid-tile>
+                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;{{ watched }}</span></mat-grid-tile>
+              </mat-grid-list>
+            </div>
+          </div>
+        </div>
+     
+      </ng-container>
     </div>
-
-    <!-------movies-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && !isMobile" routerLink="/movies">
-      <div class="card gr-1">
-        <div class="txt">
-          <h1 class="text-application">Movies</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-     <!-------movies mobile-->
-     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleMovies && isMobile" routerLink="/movies-for-grid">
-      <div class="card gr-1">
-        <div class="txt">
-          <h1 class="text-application">Movies</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------animes-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && !isMobile" routerLink="/animes">
-      <div class="card gr-4">
-        <div class="txt">
-          <h1 class="text-application">Animes</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------animes mobile-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleAnimes && isMobile" routerLink="/animes-for-grid">
-      <div class="card gr-4">
-        <div class="txt">
-          <h1 class="text-application">Animes</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------series-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleSeries && !isMobile" routerLink="/series">
-      <div class="card gr-2">
-        <div class="txt">
-          <h1 class="text-application">Series</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------series mobile-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleSeries && isMobile" routerLink="/series-for-grid">
-      <div class="card gr-2">
-        <div class="txt">
-          <h1 class="text-application">Series</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------files desktop and mobile-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleFiles" routerLink="/files">
-      <div class="card gr-3">
-        <div class="txt">
-          <h1 class="text-application">Files</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------debts-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.roleDebts && !isMobile" routerLink="/debts">
-      <div class="card gr-6">
-        <div class="txt">
-          <h1 class="text-application">Debts</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-     <!-------debts mobile-->
-     <div class="col-md-6 col-lg-4 column" *ngIf="user.roleDebts && isMobile" routerLink="/debts-for-grid">
-      <div class="card gr-6">
-        <div class="txt">
-          <h1 class="text-application">Debts</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------ToDoList-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="!isMobile" routerLink="/to-do-list">
-      <div class="card gr-7">
-        <div class="txt">
-          <h1 class="text-application">To Do List</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------users-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin && !isMobile" routerLink="/users">
-      <div class="card gr-5">
-        <div class="txt">
-          <h1 class="text-application">Users</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-------users mobile-->
-    <div class="col-md-6 col-lg-4 column" *ngIf="user.isAdmin && isMobile" routerLink="/users-mobile">
-      <div class="card gr-5">
-        <div class="txt">
-          <h1 class="text-application">Users</h1>
-        </div>
-        <div class="ico-card">
-          <i class="fa fa-film"></i>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  </mat-card>
 </div>
+
+
+
+<ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
+
+  <h3 mat-dialog-title style="color: #dc3545;">Rest Money</h3>
+
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>{{ restInPocket }}</mat-grid-tile>
+    <mat-grid-tile>: الجيب</mat-grid-tile>
+  </mat-grid-list>
+  
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>{{ restInWallet }}</mat-grid-tile>
+    <mat-grid-tile>: المحفظة</mat-grid-tile>
+  </mat-grid-list>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>{{ restInEnvelope }}</mat-grid-tile>
+    <mat-grid-tile>: الظرف</mat-grid-tile>
+  </mat-grid-list>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>{{ restInBox }}</mat-grid-tile>
+    <mat-grid-tile>: الصندوق</mat-grid-tile>
+  </mat-grid-list>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>{{ restInPosteAccount }}</mat-grid-tile>
+    <mat-grid-tile>: الحساب البريدي</mat-grid-tile>
+  </mat-grid-list>
+
+</ng-template>
+
+<ng-template #contentTotalInDebtsDet let-modal let-c="close" let-d="dismiss">
+
+  <h3 mat-dialog-title style="color: #dc3545;">To pay</h3>
+
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>This month:</mat-grid-tile>
+    <mat-grid-tile>
+      <span *ngIf="totalInDebtsToPayThisMonth">{{ totalInDebtsToPayThisMonth }}</span>
+      <span *ngIf="!totalInDebtsToPayThisMonth">0DT</span>
+    </mat-grid-tile>
+  </mat-grid-list>
+  
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>Next month:</mat-grid-tile>
+    <mat-grid-tile>
+      <span *ngIf="totalInDebtsToPayNextMonth">{{ totalInDebtsToPayNextMonth }}</span>
+      <span *ngIf="!totalInDebtsToPayNextMonth">0DT</span>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>Delayed:</mat-grid-tile>
+    <mat-grid-tile>
+      <span *ngIf="totalInDebtsNotToPayForNow">{{ totalInDebtsNotToPayForNow }}</span>
+      <span *ngIf="!totalInDebtsNotToPayForNow">0DT</span>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</ng-template>
+
+
+<ng-template #contentTotalOutDebtsDet let-modal let-c="close" let-d="dismiss">
+
+  <h3 mat-dialog-title style="color: #dc3545;">To get</h3>
+
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>This month:</mat-grid-tile>
+    <mat-grid-tile>
+      <span *ngIf="totalOutDebtsToGetThisMonth">{{ totalOutDebtsToGetThisMonth }}</span>
+      <span *ngIf="!totalOutDebtsToGetThisMonth">0DT</span>
+    </mat-grid-tile>
+  </mat-grid-list>
+  
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>Next month:</mat-grid-tile>
+    <mat-grid-tile>
+      <span *ngIf="totalOutDebtsToGetNextMonth">{{ totalOutDebtsToGetNextMonth }}</span>
+      <span *ngIf="!totalOutDebtsToGetNextMonth">0DT</span>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  
+  <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+    <mat-grid-tile>Delayed:</mat-grid-tile>
+    <mat-grid-tile>
+      <span *ngIf="totalOutDebtsNotToGetForNow">{{ totalOutDebtsNotToGetForNow }}</span>
+      <span *ngIf="!totalOutDebtsNotToGetForNow">0DT</span>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</ng-template>
+
+

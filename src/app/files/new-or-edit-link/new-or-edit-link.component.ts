@@ -1,11 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 import Swal from 'sweetalert2';
 
 import { LinkService } from 'src/app/shared/services/link.service';
 
 import { Link } from 'src/app/shared/models/link.model';
-import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'new-or-edit-link',
@@ -16,10 +16,10 @@ import { FormControl, Validators } from '@angular/forms';
 export class NewOrEditLinkComponent implements OnInit {
 
   link: Link = new Link();
+  arrayLinks: Link[];
   typeLinkId: number;
   modalRef: any;
-
-  @Output() passEntry: EventEmitter<any> = new EventEmitter();
+  isMobile: boolean;
 
   formControl = new FormControl('', [Validators.required]);
 
@@ -37,13 +37,14 @@ export class NewOrEditLinkComponent implements OnInit {
       );
     } else {
       link.typeLinkId = this.typeLinkId;
+      if (this.arrayLinks[0].numRefLink) link.numRefLink = this.arrayLinks[0].numRefLink + 1;
+
       this.linkService.create(link);
       Swal.fire(
       'New Link added successfully',
       '',
       'success'
       );
-      this.passEntry.emit(true);
     }
     this.modalRef.close();
   }

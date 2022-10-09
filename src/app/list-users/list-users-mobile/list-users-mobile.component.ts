@@ -10,7 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ModalPrivilegeMobileComponent } from './modal-privilege-mobile/modal-privilege-mobile.component';
 
-import { UserService } from 'src/app/shared/services/user.service';
+import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
@@ -23,7 +23,7 @@ import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 export class ListUsersMobileComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
-  displayedColumns: string[] = ['picture', 'name', 'email', 'star'];
+  displayedColumns: string[] = ['picture', 'name', 'email', 'password', 'star'];
 
   queryEmail: string = '';
 
@@ -32,7 +32,7 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    public userService: UserService, 
+    public usersListService: UsersListService,
     protected modalService: NgbModal,
     public dialogService: MatDialog
   ) {}
@@ -46,11 +46,11 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
   }
 
   getAllUsers() {
-    this.subscriptionForGetAllUsers = this.userService
+    this.subscriptionForGetAllUsers = this.usersListService
     .getAll()
     .subscribe((users: FirebaseUserModel[]) => { 
-        if (this.queryEmail) this.dataSource.data = users.filter(user => user.email.toLowerCase().includes(this.queryEmail.toLowerCase()));
-        else this.dataSource.data = users;
+      if (this.queryEmail) this.dataSource.data = users.filter(user => user.email.toLowerCase().includes(this.queryEmail.toLowerCase())).sort((n1, n2) => n2.numRefUser - n1.numRefUser);
+      else this.dataSource.data = users.sort((n1, n2) => n2.numRefUser - n1.numRefUser);
     });
   }
 
@@ -80,7 +80,7 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
       if (user.roleUpdateDebt == true) user.roleUpdateDebt = false;
       if (user.roleDeleteDebt == true) user.roleDeleteDebt = false;
     }
-    this.userService.update(user.key, user);
+    this.usersListService.update(user.key, user);
   }
 
   deleteUser(userId) {
@@ -93,7 +93,7 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.userService.delete(userId);
+        this.usersListService.delete(userId);
         Swal.fire(
           'User has been deleted successfully',
           '',
@@ -116,4 +116,5 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllUsers.unsubscribe();
   }
+  
 }

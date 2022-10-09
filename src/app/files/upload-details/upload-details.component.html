@@ -1,74 +1,23 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+<div class="example-container mat-elevation-z8">
+  <div class="example-table-container">
+    <table mat-table [dataSource]="dataSource">
 
       <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.fileNameWithoutType }}</td>
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title' [ngStyle]="{'height': !isMobile ? '100px' : ''}">{{element.fileNameWithoutType}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef></mat-header-cell>
-
-          <mat-cell *matCellDef="let row; let i=index;" class="btns-view-download-delete">  
-
-            <button
-              *ngIf="!checkIsImage(row.name) && !isZip(row.name)"
-              type="button"
-              color="primary"
-              mat-icon-button 
-              (click)="viewOtherFileUpload(row, showOtherFile)">
-              <mat-icon>remove_red_eye</mat-icon>
-            </button>
-
-            <button
-              *ngIf="checkIsImage(row.name)"
-              type="button"
-              color="primary"
-              mat-icon-button 
-              (click)="viewFilePictureUpload(row, showPicture)">
-              <mat-icon>remove_red_eye</mat-icon>
-            </button>
-
-            <button
-              *ngIf="isZip(row.name)"
-              type="button"
-              color="primary"
-              mat-icon-button 
-              (click)="showZipFile(row, viewZipFile)">
-              <mat-icon>remove_red_eye</mat-icon>
-            </button>
-
-            <button
-              type="button"
-              color="accent"
-              mat-icon-button 
-              (click)="downloadFile(row)">
-              <mat-icon>cloud_download</mat-icon>
-            </button>
-
-            <button
-              *ngIf="userRoles.roleDeleteFile"
-              type="button"
-              color="warn"
-              mat-icon-button 
-              (click)="deleteFileUpload(row)">
-              <mat-icon aria-label="Delete">delete</mat-icon>
-            </button>
-  
-            <button
-              *ngIf="isMobile && (checkIsImage(row.name) || isTxt(row.name)  || isPdf(row.name))"
-              type="button"
-              color="accent"
-              mat-icon-button 
-              (click)="shareFile(row)">
-              <mat-icon>share</mat-icon>              
-            </button>  
-              
-          </mat-cell>
+      <ng-container matColumnDef="star">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'height': !isMobile ? '100px' : ''}"> 
+          <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element:element}">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr [ngClass]="!isMobile ? 'trForNotMobile' : ''" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
   
@@ -77,11 +26,71 @@
     </div>
   
     <mat-paginator 
-      [pageSizeOptions]="[8]"
+      [pageSizeOptions]="[4]"
       showFirstLastButtons 
       aria-label="Select page of periodic elements">
     </mat-paginator>
+  </div>
 </div>
+
+<mat-menu #menu="matMenu">
+  <ng-template matMenuContent let-file="element">
+
+    <button
+      *ngIf="!checkIsImage(file.name) && !isZip(file.name)"
+      type="button"
+      mat-menu-item 
+      (click)="viewOtherFileUpload(file, showOtherFile)">
+      <mat-icon style="color: #3f51b5;">remove_red_eye</mat-icon>
+      <span>View</span>
+    </button>
+
+    <button
+      *ngIf="checkIsImage(file.name)"
+      type="button"
+      mat-menu-item               
+      (click)="viewFilePictureUpload(file, showPicture)">
+      <mat-icon style="color: #3f51b5;">remove_red_eye</mat-icon>
+      <span>View</span>
+    </button>
+
+    <button
+      *ngIf="isZip(file.name)"
+      type="button"
+      mat-menu-item 
+      (click)="showZipFile(file, viewZipFile)">
+      <mat-icon style="color: #3f51b5;">remove_red_eye</mat-icon>
+      <span>View</span>
+    </button>
+
+    <button
+      type="button"
+      mat-menu-item 
+      (click)="downloadFile(file)">
+      <mat-icon style="color: #ff4081;">cloud_download</mat-icon>
+      <span>Download</span>
+    </button>
+
+    <button
+      *ngIf="userRoles.roleDeleteFile"
+      type="button"
+      mat-menu-item 
+      (click)="deleteFileUpload(file)">
+      <mat-icon style="color: #f44336;">delete</mat-icon>
+      <span>Delete</span>
+    </button>
+
+    <button
+      *ngIf="isMobile && (checkIsImage(file.name) || isTxt(file.name)  || isPdf(file.name))"
+      type="button"
+      mat-menu-item 
+      (click)="shareFile(file)">
+      <mat-icon style="color: #ff4081;">share</mat-icon>
+      <span>share</span>             
+    </button>  
+
+  </ng-template>
+</mat-menu>
 
 
 <ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
@@ -142,26 +151,26 @@
     </div>
     
     <ul *ngIf="!isLoading">
-        <ng-container *ngFor="let file of $zipFiles | async">
-          <li *ngIf="file.fileName">
-            <h5>
-              {{file.fileName}}<br>
-              <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>&nbsp;
-              <button
-                type="button"
-                (click)="viewFileFromZip(file, showContentFilesFromZip)"
-                class="btn btn-primary">
-                <i class="fa fa-eye" aria-hidden="true"></i>
-              </button>&nbsp;
-              <button
-                type="button"
-                (click)="saveFileFromZip(file)"
-                class="btn btn-success">
-                <i class="fa fa-download" aria-hidden="true"></i>
-              </button>
-            </h5> 
-          </li><br *ngIf="file.fileName">
-        </ng-container>
+      <ng-container *ngFor="let file of $zipFiles | async">
+        <li *ngIf="file.fileName">
+          <h5>
+            {{file.fileName}}<br>
+            <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>&nbsp;
+            <button
+              type="button"
+              (click)="viewFileFromZip(file, showContentFilesFromZip)"
+              class="btn btn-primary">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+            </button>&nbsp;
+            <button
+              type="button"
+              (click)="saveFileFromZip(file)"
+              class="btn btn-success">
+              <i class="fa fa-download" aria-hidden="true"></i>
+            </button>
+          </h5> 
+        </li><br *ngIf="file.fileName">
+      </ng-container>
     </ul>
   </div>
 </ng-template>
@@ -169,11 +178,11 @@
 <ng-template #showContentFilesFromZip let-modal let-c="close" let-d="dismiss">
 
   <div class="modal-header text-center text-application">
-      <h4 *ngIf="fileExtractedName" class="modal-title w-100 font-weight-bold">{{ fileExtractedName }}</h4>
+    <h4 *ngIf="fileExtractedName" class="modal-title w-100 font-weight-bold">{{ fileExtractedName }}</h4>
 
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-      </button>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
   </div>
 
   <div class="modal-body">
