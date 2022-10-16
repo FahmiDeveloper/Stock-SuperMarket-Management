@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 @Component({
   selector: 'app-login',
@@ -18,17 +20,21 @@ export class LoginComponent implements OnInit{
   errorMessage: string = '';
 
   isMobile: boolean;
+  allUsers: FirebaseUserModel[] = [];
 
   constructor(
     public authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    public usersListService: UsersListService
+
   ) {}
 
   ngOnInit() {
     this.validateForm();
     this.isMobile = this.deviceService.isMobile();
+    this.getAllUsers();
   }
 
   validateForm() {
@@ -38,14 +44,31 @@ export class LoginComponent implements OnInit{
     });
   }
 
+  getAllUsers() {
+    this.usersListService
+    .getAll()
+    .subscribe((users: FirebaseUserModel[]) => {
+      this.allUsers = users;
+    });
+  }
+
   tryLogin(value){
     this.authService.doLogin(value)
     .then(res => {
       this.onSuccess();
+      this.putCurrentUserConnected(value.email);
     }, err => {
       this.errorMessage = err.message;
     })
   }
+
+  putCurrentUserConnected(email: string) {
+    let connectedUserFromList: FirebaseUserModel;
+    connectedUserFromList = this.allUsers.find(user => user.email == email);
+    connectedUserFromList.isConnected = true;
+    this.usersListService.update(connectedUserFromList.key, connectedUserFromList);
+  }
+
 
   onSuccess(){
     this.router.navigate(['/home']);

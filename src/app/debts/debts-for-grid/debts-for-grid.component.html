@@ -392,7 +392,12 @@
 
 <ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
 
-    <h3 mat-dialog-title style="color: #dc3545;">Rest Money</h3>
+    <div mat-dialog-title class="dialog-title">
+        <h2>Rest Money</h2>
+        <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+    </div>
 
     <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
         <mat-grid-tile>{{ restInPocket }}</mat-grid-tile>
@@ -439,12 +444,11 @@
 
 <ng-template #contentLoading let-modal let-c="close" let-d="dismiss">
 
-    <div class="modal-header text-center">
-      <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold text-application">test</h4>
-  
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-      </button>
+    <div mat-dialog-title class="dialog-title">
+        <h2>Delete debts</h2>
+        <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
     </div>
   
     <div class="modal-body text-application">

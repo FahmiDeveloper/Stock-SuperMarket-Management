@@ -39,8 +39,7 @@
   display: flex;
   justify-content: center;
   padding: 14px;
-  font-size: 14px;
-  font-style: italic;
+  font-size: 20px;
 }
 
 .mat-header-cell {
@@ -95,7 +94,6 @@ td.mat-column-star {
     }
 
     .mat-row {
-      width: 305px;
       display: block;
       overflow: hidden;
       height: auto;
@@ -162,4 +160,17 @@ td.mat-column-star {
 
 .trForNotMobile {
   border-bottom: 1px solid black;
+}
+
+.gridForDelete {
+  display: grid;
+  grid-template-columns: 80px 400px;
+  width: 250px;
+  font-size: 18px;
+}
+
+.gridForDeleteInMobile {
+  display: grid;
+  grid-template-columns: 80px 200px;
+  font-size: 18px;
 }

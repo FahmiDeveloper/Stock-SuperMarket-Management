@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
-import Swal from 'sweetalert2';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 
 import { NewOrEditLinkComponent } from './new-or-edit-link/new-or-edit-link.component';
@@ -18,7 +17,7 @@ import { UsersListService } from '../shared/services/list-users.service';
 
 import { Link } from '../shared/models/link.model';
 import { FirebaseUserModel } from '../shared/models/user.model';
-import { FileUpload, TypesFiles, TypesLinks } from '../shared/models/file-upload.model';
+import { FileUpload, TypesFiles } from '../shared/models/file-upload.model';
 
 @Component({
   selector: 'app-files',
@@ -32,17 +31,21 @@ export class FilesComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Link>();
   displayedColumns: string[] = ['content', 'star'];
 
+  linkToDelete: Link = new Link();
+
   content: string = '';
   numContextFile: number;
   typeFile: TypesFiles;
-  typeLink: TypesLinks;
   isMobile: boolean;
-  clickShowLinks: boolean = false;
   defaultArrayFiles: FileUpload[] = [];
+  angularContext: boolean = false;
+  otherContext: boolean = false;
 
   subscriptionForGetAllLinks: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  modalRefDeleteLink: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -56,11 +59,6 @@ export class FilesComponent implements OnInit, OnDestroy {
     {id: 5, title: 'Zip', type: 'Zip', icon: '/assets/pictures/zip-file.PNG'},
     {id: 6, title: 'Links', type: 'Links', icon: '/assets/pictures/links.png'},
     {id: 7, title: 'Word', type: 'Word', icon: '/assets/pictures/word-file.jpg'}
-  ];
-
-  typesLinks: TypesLinks[] = [
-    {id: 1, title: 'Angular', type: 'Angular', icon: '/assets/pictures/links-angular.png'},
-    {id: 2, title: 'Other', type: 'Other', icon: '/assets/pictures/other-link.png'}
   ];
 
   constructor(
@@ -108,32 +106,35 @@ export class FilesComponent implements OnInit, OnDestroy {
   }
 
   openListFiles(contentListFiles, contentLinks, typeFile: TypesFiles) {
-    this.clickShowLinks = false;
     this.typeFile = typeFile;
     this.numContextFile = null;
     if (this.typeFile.id == 6) {
+      this.content = '';
+      this.angularContext = false;
+      this.otherContext = false;
+      this.getAllLinks()
       if (this.isMobile) {
-        const dialogRef = this.dialogService.open(contentLinks, {
+        this.dialogService.open(contentLinks, {
           width: '98vw',
-          height:'81vh',
+          height:'85vh',
           maxWidth: '100vw'
         });
       } else {
-        const dialogRef = this.dialogService.open(contentLinks, {
+        this.dialogService.open(contentLinks, {
           width: '30vw',
-          height:'80vh',
+          height:'85vh',
           maxWidth: '100vw'
         });
       }
     } else {
       if (this.isMobile) {
-        const dialogRef = this.dialogService.open(contentListFiles, {
+        this.dialogService.open(contentListFiles, {
           width: '98vw',
           height:'81vh',
           maxWidth: '100vw'
         });
       } else {
-        const dialogRef = this.dialogService.open(contentListFiles, {
+        this.dialogService.open(contentListFiles, {
           width: '30vw',
           height:'80vh',
           maxWidth: '100vw'
@@ -142,21 +143,25 @@ export class FilesComponent implements OnInit, OnDestroy {
     } 
   }
 
-  showListTypeLinks(typeLink: TypesLinks) {
-    this.clickShowLinks = true;
-    this.content = '';
-    this.typeLink = typeLink;
-    this.getAllLinks();
-  }
-
   getAllLinks() {
     this.subscriptionForGetAllLinks = this.linkService
     .getAll()
     .subscribe(links => {
       this.dataSourceCopie.data = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
-      this.dataSource.data = 
-      this.content ? links.filter(link => (link.typeLinkId == this.typeLink.id) && (link.content.toLowerCase().includes(this.content.toLowerCase()))).sort((n1, n2) => n2.numRefLink - n1.numRefLink) : 
-      links.filter(link => link.typeLinkId == this.typeLink.id).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      if (this.angularContext && this.content) {
+        this.dataSource.data = links.filter(link => (link.typeLinkId == 1) && (link.content.toLowerCase().includes(this.content.toLowerCase()))).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      } 
+      else if (this.angularContext && !this.content) {
+        this.dataSource.data = links.filter(link => (link.typeLinkId == 1)).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      } 
+      else if (this.otherContext && this.content) {
+        this.dataSource.data = links.filter(link => (link.typeLinkId == 2) && (link.content.toLowerCase().includes(this.content.toLowerCase()))).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      } 
+      else if (this.otherContext && !this.content) {
+        this.dataSource.data = links.filter(link => (link.typeLinkId == 2)).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      } 
+      else this.dataSource.data = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -169,7 +174,7 @@ export class FilesComponent implements OnInit, OnDestroy {
         maxWidth: '100vw'
       });
 
-      dialogRef.componentInstance.typeLinkId = this.typeLink.id;
+      dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
       dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
@@ -180,7 +185,7 @@ export class FilesComponent implements OnInit, OnDestroy {
         maxWidth: '100vw'
       });
 
-      dialogRef.componentInstance.typeLinkId = this.typeLink.id;
+      dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
       dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
@@ -210,31 +215,6 @@ export class FilesComponent implements OnInit, OnDestroy {
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
     }
-  }
-
-  deleteLink(linkId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this link!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.linkService.delete(linkId);
-        Swal.fire(
-          'Link has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
-  backToListTypeLinks() {
-    this.clickShowLinks = false;
-    this.content = '';
   }
 
   shareLink(link: Link) {
@@ -270,6 +250,43 @@ export class FilesComponent implements OnInit, OnDestroy {
     if (this.subscriptionForGetAllLinks) this.subscriptionForGetAllLinks.unsubscribe();
     this.subscriptionForUser.unsubscribe();
     this.subscriptionForGetAllUsers.unsubscribe();
+  }
+
+  checkAngularContext() {
+    if (this.angularContext == true) this.otherContext = false;
+    if (this.content) this.content = '';
+    this.getAllLinks();
+  }
+
+  checkotherContext() {
+    if (this.otherContext == true) this.angularContext = false;
+    if (this.content) this.content = '';
+    this.getAllLinks();
+  }
+
+  openDeleteLinkModal(link: Link, contentDeleteLink) {
+    this.linkToDelete = link;
+    if (this.isMobile) {
+      this.modalRefDeleteLink =  this.dialogService.open(contentDeleteLink, {
+        width: '98vw',
+       height:'30vh',
+       maxWidth: '100vw'
+     });
+   } else {
+    this.modalRefDeleteLink =  this.dialogService.open(contentDeleteLink, {
+      width: '30vw',
+      height:'30vh',
+      maxWidth: '100vw'
+    }); 
+   }
+  }
+
+  confirmDelete() {
+    this.linkService.delete(this.linkToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteLink.close();
   }
 
 }

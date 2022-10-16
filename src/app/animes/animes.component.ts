@@ -5,8 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
-
 import { AnimeFormComponent } from './anime-form/anime-form.component';
 
 import { AuthService } from '../shared/services/auth.service';
@@ -29,6 +27,8 @@ export class AnimesComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Anime>();
   displayedColumns: string[] = ['picture', 'details', 'actions'];
 
+  animeToDelete: Anime = new Anime();
+
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
@@ -37,6 +37,8 @@ export class AnimesComponent implements OnInit, OnDestroy {
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  modalRefDeleteAnime: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -123,24 +125,21 @@ export class AnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteAnime(animeId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this anime!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.animeService.delete(animeId);
-        Swal.fire(
-          'Anime has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
+  openDeleteAnimeModal(anime: Anime, contentDeleteAnime) {
+    this.animeToDelete = anime;
+    this.modalRefDeleteAnime =  this.dialogService.open(contentDeleteAnime, {
+      width: '30vw',
+      height:'35vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.animeService.delete(this.animeToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteAnime.close();
   }
 
   getStatusAnime() {

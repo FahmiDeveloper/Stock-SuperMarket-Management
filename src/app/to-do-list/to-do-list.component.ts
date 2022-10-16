@@ -55,6 +55,8 @@ export class ToDoListComponent implements OnInit {
   laterTaskListCopie: Task[] = [];
   laterTaskName: string = '';
 
+  rangeId: number = 0;
+
   rangeDays: RangeDays[] = [
     {id: 0, range: 'Today'},
     {id: 1, range: 'Tomorrow'},
@@ -63,14 +65,12 @@ export class ToDoListComponent implements OnInit {
     {id: 4, range: 'Later'}
   ];
 
-  rangeId: number = 0;
-
   constructor(
     private dialog: MatDialog,
     private store: AngularFirestore
   ){}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadTaskList();
   }
 
@@ -121,10 +121,13 @@ export class ToDoListComponent implements OnInit {
     })
   }
 
-  editTask(list: 'toDoLater' | 'toDoNextWeek' | 'toDoThisWeek' | 'toDoToday' | 'toDoTomorrow', task: Task): void {
+  editTask(list: 'toDoLater' | 'toDoNextWeek' | 'toDoThisWeek' | 'toDoToday' | 'toDoTomorrow', task: Task, event: Event){
+    event.stopPropagation();
     let firstRange = task.taskToDoIn;
     const dialogRef = this.dialog.open(TaskFormComponent, {
-      width: '270px',
+      width: '25vw',
+      height:'33vh',
+      maxWidth: '100vw',
       data: {
         task,
         enableDelete: true,
@@ -263,7 +266,9 @@ export class ToDoListComponent implements OnInit {
   newTask(): void {
 
     const dialogRef = this.dialog.open(TaskFormComponent, {
-      width: '270px',
+      width: '25vw',
+      height:'33vh',
+      maxWidth: '100vw',
       data: {
         task: {},
       },

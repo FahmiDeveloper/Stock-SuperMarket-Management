@@ -5,8 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
-
 import { MovieFormComponent } from './movie-form/movie-form.component';
 
 import { AuthService } from '../shared/services/auth.service';
@@ -29,6 +27,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Movie>();
   displayedColumns: string[] = ['picture', 'details', 'actions'];
 
+  movieToDelete: Movie = new Movie();
+
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
@@ -37,6 +37,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  modalRefDeleteMovie: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -123,24 +125,21 @@ export class MoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteMovie(movieId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this movie!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.movieService.delete(movieId);
-        Swal.fire(
-          'Movie has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
+  openDeleteMovieModal(movie: Movie, contentDeleteMovie) {
+    this.movieToDelete = movie;
+    this.modalRefDeleteMovie =  this.dialogService.open(contentDeleteMovie, {
+      width: '30vw',
+      height:'35vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.movieService.delete(this.movieToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteMovie.close();
   }
 
   getStatusMovie() {

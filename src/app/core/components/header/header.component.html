@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" *ngIf="user && isConnected">
-  <span class="fill-remaining-space text-application">Personal Informations</span>
+  <span class="fill-remaining-space text-application" style="cursor: pointer;" routerLink="/home">Personal Informations</span>
 
   <span class="fill-remaining-space" *ngIf="isMobile">
 
@@ -12,12 +12,12 @@
 
         <button mat-menu-item>
           <mat-icon>home</mat-icon>
-          <span routerLink="/home">Home</span>
+          <span routerLink="/home" class="text-application">Home</span>
         </button>
 
         <button mat-menu-item>
           <mat-icon>exit_to_app</mat-icon>
-          <span (click)="logout()">Logout</span>
+          <span (click)="logout()" class="text-application">Logout</span>
         </button>
 
       </span>
@@ -35,12 +35,12 @@
 
         <button mat-menu-item>
           <mat-icon>home</mat-icon>
-          <span routerLink="/home">Home</span>
+          <span routerLink="/home" class="text-application">Home</span>
         </button>
 
         <button mat-menu-item>
           <mat-icon>exit_to_app</mat-icon>
-          <span (click)="logout()">Logout</span>
+          <span (click)="logout()" class="text-application">Logout</span>
         </button>
 
       </span>

@@ -25,6 +25,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -126,6 +127,7 @@ import { UserComponent } from './user/index';
     MatGridListModule,
     MatListModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
     MatCheckboxModule,
     MatChipsModule,
     ReactiveFormsModule,

@@ -122,6 +122,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // users variables
   totalNbrUsers: number= 0;
+  nbrUsersConnected: number = 0;
+  nbrUsersNotConnected: number= 0;
 
   subscripton: Subscription;
   subscriptionForGetAllMovies: Subscription;
@@ -135,10 +137,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscriptionForGetNextWeekWork: Subscription;
   subscriptionForGetLaterWork: Subscription;
   subscriptionForGetAllUsers: Subscription;
-
-  modalRefRestMoneyForeachPlace: any;
-  modalRefTotalInDebtsDet: any;
-  modalRefTotalOutDebtsDet: any;
 
   constructor(
     public userService: UserService,
@@ -177,6 +175,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 .subscribe((users: FirebaseUserModel[]) => { 
                   connectedUserFromList = users.find(element => element.email == user.email);
                   this.totalNbrUsers = users.length;
+                  this.nbrUsersConnected = users.filter(user => user.isConnected == true).length;
+                  this.nbrUsersNotConnected = users.filter(user => user.isConnected == false).length;
 
                   this.usersListService
                   .get(connectedUserFromList.key)
@@ -693,15 +693,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     e.stopPropagation();
 
     if (this.isMobile) {
-      this.modalRefRestMoneyForeachPlace = this.dialogService.open(contentRestMoneyForeachPlace, {
+      this.dialogService.open(contentRestMoneyForeachPlace, {
         width: '98vw',
         height:'70vh',
         maxWidth: '100vw'
       });
     } else {
-      this.modalRefRestMoneyForeachPlace = this.dialogService.open(contentRestMoneyForeachPlace, {
-        width: '20vw',
-        height:'45vh',
+      this.dialogService.open(contentRestMoneyForeachPlace, {
+        width: '18vw',
+        height:'50vh',
         maxWidth: '100vw'
       });
     }  
@@ -711,15 +711,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     e.stopPropagation();
 
     if (this.isMobile) {
-      this.modalRefTotalInDebtsDet = this.dialogService.open(contentTotalInDebtsDet, {
+      this.dialogService.open(contentTotalInDebtsDet, {
         width: '98vw',
-        height:'45vh',
+        height:'50vh',
         maxWidth: '100vw'
       });
     } else {
-      this.modalRefTotalInDebtsDet = this.dialogService.open(contentTotalInDebtsDet, {
+      this.dialogService.open(contentTotalInDebtsDet, {
         width: '20vw',
-        height:'30vh',
+        height:'35vh',
         maxWidth: '100vw'
       });
     }  
@@ -729,15 +729,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     e.stopPropagation();
 
     if (this.isMobile) {
-      this.modalRefTotalOutDebtsDet = this.dialogService.open(contentTotalOutDebtsDet, {
+      this.dialogService.open(contentTotalOutDebtsDet, {
         width: '98vw',
-        height:'45vh',
+        height:'50vh',
         maxWidth: '100vw'
       });
     } else {
-      this.modalRefTotalOutDebtsDet = this.dialogService.open(contentTotalOutDebtsDet, {
+      this.dialogService.open(contentTotalOutDebtsDet, {
         width: '20vw',
-        height:'30vh',
+        height:'35vh',
         maxWidth: '100vw'
       });
     }  

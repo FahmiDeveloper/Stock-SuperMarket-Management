@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ModalPrivilegeMobileComponent } from './modal-privilege-mobile/modal-privilege-mobile.component';
 
@@ -23,7 +22,7 @@ import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 export class ListUsersMobileComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
-  displayedColumns: string[] = ['picture', 'name', 'email', 'password', 'star'];
+  displayedColumns: string[] = ['picture', 'name', 'email', 'password', 'connected' , 'star'];
 
   queryEmail: string = '';
 
@@ -33,7 +32,6 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
 
   constructor(
     public usersListService: UsersListService,
-    protected modalService: NgbModal,
     public dialogService: MatDialog
   ) {}
 

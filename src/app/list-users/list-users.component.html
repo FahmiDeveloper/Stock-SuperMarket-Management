@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <mat-form-field class="widhtInput">
+        <mat-form-field class="widhtInput text-application">
             <mat-label>Email</mat-label>
             <input matInput type="text" name="queryEmail" (keyup)="getAllUsers()" [(ngModel)]="queryEmail"/>
         </mat-form-field>
@@ -18,52 +18,59 @@
     <table mat-table [dataSource]="dataSource">
 
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.name }}</td>
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Name</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.name }}</td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.email }}</td>
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Email</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.email }}</td>
         </ng-container>
 
         <ng-container matColumnDef="password">
-            <th mat-header-cell *matHeaderCellDef>Password</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">{{ element.password }}</td>
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Password</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.password }}</td>
         </ng-container>
 
         <ng-container matColumnDef="movies">
-            <th mat-header-cell *matHeaderCellDef>Movies</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Movies</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
                 <mat-checkbox [(ngModel)]="element.roleMovies" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
             </td>
         </ng-container>
 
         <ng-container matColumnDef="animes">
-            <th mat-header-cell *matHeaderCellDef>Animes</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Animes</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
                 <mat-checkbox [(ngModel)]="element.roleAnimes" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
             </td>        
         </ng-container>
 
         <ng-container matColumnDef="series">
-            <th mat-header-cell *matHeaderCellDef>Series</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Series</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
                 <mat-checkbox [(ngModel)]="element.roleSeries" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
             </td>        
         </ng-container>
 
         <ng-container matColumnDef="files">
-            <th mat-header-cell *matHeaderCellDef>Files</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Files</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
                 <mat-checkbox [(ngModel)]="element.roleFiles" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
             </td>        
         </ng-container>
 
         <ng-container matColumnDef="debts">
-            <th mat-header-cell *matHeaderCellDef>Debts</th>
-            <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Debts</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
                 <mat-checkbox [(ngModel)]="element.roleDebts" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
+            </td>        
+        </ng-container>
+
+        <ng-container matColumnDef="connected">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Connected</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                {{ element.isConnected }}
             </td>        
         </ng-container>
         
@@ -75,7 +82,7 @@
                     *ngIf="row.roleMovies || row.roleAnimes || row.roleSeries || row.roleFiles || row.roleDebts"
                     type="button"
                     mat-icon-button 
-                    color="primary"
+                    style="color: #9C27B0"
                     (click)="openModalPrivileges(row)">
                     <mat-icon aria-label="Edit">edit</mat-icon>
                 </button>
@@ -83,18 +90,18 @@
                     type="button"
                     mat-icon-button 
                     color="warn"
-                    (click)="deleteUser(row.key)">
+                    (click)="openDeleteUserModal(row, contentDeleteUser)" >
                     <mat-icon aria-label="Delete">delete</mat-icon>
                 </button>  
             </mat-cell>
         </ng-container>
     
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
 
-    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
         No results
     </div>
     
@@ -104,3 +111,52 @@
         aria-label="Select page of periodic elements">
     </mat-paginator>
 </div>
+
+<ng-template #contentDeleteUser let-modal let-c="close" let-d="dismiss">
+
+    <div mat-dialog-title class="dialog-title">
+      <h2 class="text-application">Are you sure ?</h2>
+    </div>
+  
+    <div mat-dialog-content>
+        <div class="gridForDelete text-application">
+            <div><span>Name:</span></div>
+            <div>{{ userToDelete.name }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Email:</span></div>
+            <div>{{ userToDelete.email }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Pwd:</span></div>
+            <div>{{ userToDelete.password }}</div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row justify-content-center" mat-dialog-actions>
+        <button 
+            mat-button 
+            type="button" 
+            [mat-dialog-close]="1" 
+            (click)="confirmDelete()" 
+            style="background:rgb(221, 51, 51);color: white;" 
+            class="text-application">
+            Delete
+        </button>
+
+        <button 
+            mat-button 
+            type="button" 
+            (click)="close()" 
+            tabindex="-1" 
+            style="background:#607D8B;color: white;" 
+            class="text-application">
+            Cancel
+        </button>
+    </div>
+  
+</ng-template>

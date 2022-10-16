@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 import { DebtFormComponent } from './debt-form/debt-form.component';
@@ -31,6 +30,8 @@ export class DebtsComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'details', 'actions'];
   filteredDebtsByPlaceAndDebtForPay: Debt[];
   filteredDebtsByPlaceAndDebtToGet: Debt[];
+  
+  debtToDelete: Debt = new Debt();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -69,8 +70,8 @@ export class DebtsComponent implements OnInit, OnDestroy {
   defaultTotalOutDebtsByDebtor: number;
   customTotalOutDebtsByDebtor: number;
 
-  modalRefRestMoneyForeachPlace: any;
   modalRefLodaing: any;
+  modalRefDeleteDebt: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -104,7 +105,6 @@ export class DebtsComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    protected modalService: NgbModal,
     public dialogService: MatDialog
   ) {}
 
@@ -231,26 +231,6 @@ export class DebtsComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteDebt(debtId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this debt!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.debtService.delete(debtId);
-        Swal.fire(
-          'Debt has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
   newDebt() {
     const dialogRef = this.dialogService.open(DebtFormComponent, {width: '800px', data: {movie: {}}});
     dialogRef.componentInstance.defaultDebts = this.dataSourceCopie.data; 
@@ -262,8 +242,8 @@ export class DebtsComponent implements OnInit, OnDestroy {
   }
 
   showRest(contentRestMoneyForeachPlace) {
-    this.modalRefRestMoneyForeachPlace = this.dialogService.open(contentRestMoneyForeachPlace, {
-      width: '20vw',
+    this.dialogService.open(contentRestMoneyForeachPlace, {
+      width: '18vw',
       height:'50vh',
       maxWidth: '100vw'
     });
@@ -620,8 +600,11 @@ export class DebtsComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.modalRefLodaing = this.modalService.open(contentLoading as Component, { size: 'lg', centered: true });
-
+        this.modalRefLodaing = this.dialogService.open(contentLoading, {
+          width: '98vw',
+          height:'70vh',
+          maxWidth: '100vw'
+        });
         this.isLoading = true;
 
         this.dataSourceCopie.data.filter(debt => debt.placeId == this.placeId).forEach(element => {
@@ -653,6 +636,23 @@ export class DebtsComponent implements OnInit, OnDestroy {
   sortByRefDebtAsc() {
     this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefDebt - n2.numRefDebt);
     this.sortByDesc = false;
+  }
+
+  openDeleteDebtModal(debt: Debt, contentDeleteDebt) {
+    this.debtToDelete = debt;
+    this.modalRefDeleteDebt =  this.dialogService.open(contentDeleteDebt, {
+      width: '30vw',
+      height:'55vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.debtService.delete(this.debtToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteDebt.close();
   }
 
   ngOnDestroy() {

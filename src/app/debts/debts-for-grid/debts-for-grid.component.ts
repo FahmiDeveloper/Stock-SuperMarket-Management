@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 import { NewOrEditDebtComponent } from './new-or-edit-debt/new-or-edit-debt.component';
@@ -68,7 +67,6 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   defaultTotalOutDebtsByDebtor: number;
   customTotalOutDebtsByDebtor: number;
 
-  modalRefRestMoneyForeachPlace: any;
   modalRefLodaing: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
@@ -103,7 +101,6 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    protected modalService: NgbModal,
     public dialogService: MatDialog
   ) {}
 
@@ -585,7 +582,11 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.modalRefLodaing = this.modalService.open(contentLoading as Component, { size: 'lg', centered: true });
+        this.modalRefLodaing = this.dialogService.open(contentLoading, {
+          width: '98vw',
+          height:'81vh',
+          maxWidth: '100vw'
+        });
 
         this.isLoading = true;
 
@@ -631,7 +632,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   }
 
   showRest(contentRestMoneyForeachPlace) {
-    this.modalRefRestMoneyForeachPlace = this.dialogService.open(contentRestMoneyForeachPlace, {
+    this.dialogService.open(contentRestMoneyForeachPlace, {
       width: '98vw',
       height:'70vh',
       maxWidth: '100vw'

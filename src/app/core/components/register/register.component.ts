@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   subscriptionForGetAllUsers: Subscription;
   lastNumRefUser: number;
   usersList: FirebaseUserModel[] = [];
+  allUsersForUpdateConnectedUserStatus: FirebaseUserModel[] = [];
 
   constructor(
     public authService: AuthService,
@@ -57,6 +58,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllUsers = this.usersListService
     .getAll()
     .subscribe((users: FirebaseUserModel[]) => {
+      this.allUsersForUpdateConnectedUserStatus = users;
       this.usersList = users.sort((n1, n2) => n2.numRefUser - n1.numRefUser);
       if (this.usersList[0] &&this.usersList[0].numRefUser) this.lastNumRefUser = this.usersList[0].numRefUser + 1;      
       else this.lastNumRefUser = 1;
@@ -97,6 +99,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.errorMessage = "";
       this.successMessage = "Your account has been created";
       this.onSuccess();
+      this.putRegistredUserConnected(value.email);
     }, err => {
       console.log(err);
       this.errorMessage = err.message;
@@ -107,6 +110,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   onSuccess(){
     this.router.navigate(['/home']);
     this.authService.isConnected.next(true);
+  }
+
+  putRegistredUserConnected(email: string) {
+    let connectedUserFromList: FirebaseUserModel;
+    connectedUserFromList = this.allUsersForUpdateConnectedUserStatus.find(user => user.email == email);
+    connectedUserFromList.isConnected = true;
+    this.usersListService.update(connectedUserFromList.key, connectedUserFromList);
   }
 
   ngOnDestroy() {

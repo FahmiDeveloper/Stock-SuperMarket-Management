@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ModalPrivilegeComponent } from './modal-privilege/modal-privilege.component';
 
@@ -23,9 +22,12 @@ import { FirebaseUserModel } from '../shared/models/user.model';
 export class ListUsersComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
-  displayedColumns: string[] = ['name', 'email', 'password', 'movies', 'animes', 'series', 'files', 'debts', 'actions'];
-
+  displayedColumns: string[] = ['name', 'email', 'password', 'movies', 'animes', 'series', 'files', 'debts', 'connected', 'actions'];
   queryEmail: string = '';
+
+  userToDelete: FirebaseUserModel = new FirebaseUserModel();
+
+  modalRefDeleteUser: any;
 
   subscriptionForGetAllUsers: Subscription;
 
@@ -33,7 +35,6 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     public usersListService: UsersListService,
-    protected modalService: NgbModal,
     public dialogService: MatDialog
   ) {}
 
@@ -106,6 +107,23 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   openModalPrivileges(user: FirebaseUserModel) {
     const dialogRef = this.dialogService.open(ModalPrivilegeComponent, {width: '500px'});
     dialogRef.componentInstance.currentUser = user;
+  }
+
+  openDeleteUserModal(user: FirebaseUserModel, contentDeleteUser) {
+    this.userToDelete = user;
+    this.modalRefDeleteUser =  this.dialogService.open(contentDeleteUser, {
+      width: '30vw',
+      height:'35vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.usersListService.delete(this.userToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteUser.close();
   }
 
   ngOnDestroy() {

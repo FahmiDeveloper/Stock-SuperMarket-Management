@@ -25,13 +25,6 @@ export interface TypesFiles {
   icon: string
 }
 
-export interface TypesLinks {
-  id: number,
-  title: string,
-  type: string,
-  icon: string
-}
-
 export interface ZipFile {
   readonly name: string;
   readonly dir: boolean;
