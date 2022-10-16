@@ -145,9 +145,9 @@
   </div>
 
   <div class="modal-body text-application">
-    <div *ngIf="isLoading" class="text-center">
-      <div class="spinner-border" style="width: 10rem; height: 10rem;" role="status"></div><br><br>
-      <h4>Extract files in progress...</h4>
+    <div *ngIf="isLoading">
+      <mat-spinner [ngStyle]="{'margin-left': isMobile ? '95px' : '325px'}"></mat-spinner><br>
+      <h4 style="text-align: center;">Extract files in progress...</h4>
     </div>
     
     <ul *ngIf="!isLoading">

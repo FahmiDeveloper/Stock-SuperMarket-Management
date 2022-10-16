@@ -701,7 +701,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else {
       this.modalRefRestMoneyForeachPlace = this.dialogService.open(contentRestMoneyForeachPlace, {
         width: '20vw',
-        height:'45vh',
+        height:'50vh',
         maxWidth: '100vw'
       });
     }  
@@ -719,7 +719,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else {
       this.modalRefTotalInDebtsDet = this.dialogService.open(contentTotalInDebtsDet, {
         width: '20vw',
-        height:'30vh',
+        height:'35vh',
         maxWidth: '100vw'
       });
     }  
@@ -737,7 +737,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else {
       this.modalRefTotalOutDebtsDet = this.dialogService.open(contentTotalOutDebtsDet, {
         width: '20vw',
-        height:'30vh',
+        height:'35vh',
         maxWidth: '100vw'
       });
     }  
