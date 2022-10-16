@@ -1,4 +1,4 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">To Do List</h1>
+<h1 class="titleTextInterface text-application">To Do List</h1>
 
 <br>
 
@@ -6,16 +6,16 @@
 	<div class="col-md-5"></div>
 	<div class="col-md-4">
 		<mat-form-field>
-			<mat-select [(ngModel)]="rangeId">
+			<mat-select [(ngModel)]="rangeId" class="text-application">
 				<mat-option *ngFor="let range of rangeDays" [value]="range.id">
-				{{ range.range }}
+				<span class="text-application">{{ range.range }}</span>
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
 	</div>
 	<div class="col-md-2">
-		<button (click)="newTask()" mat-mini-fab color="accent">
-			<mat-icon>add</mat-icon>
+		<button (click)="newTask()" mat-mini-fab style="background: #2196F3;">
+			<mat-icon style="color: white;">add</mat-icon>
 		</button>
 	</div>
 	<div class="col-md-1"></div>
@@ -25,7 +25,7 @@
     <div class="content-wrapper">
 		<div class="container-wrapper" *ngIf="rangeId == 0">
 			<div class="container">
-				<mat-form-field>
+				<mat-form-field class="text-application">
 					<mat-label>Search</mat-label>
 					<input matInput type="text" [(ngModel)]="todayTaskName" (input)="searchByTask()"/>
 				</mat-form-field>
@@ -37,15 +37,15 @@
 					[cdkDropListData]="todayTaskList"
 					(cdkDropListDropped)="drop($event)"
 					class="list">
-					<p class="empty-label" *ngIf="todayTaskList?.length === 0">Empty list</p>
-					<task (edit)="editTask('toDoToday', $event)" *ngFor="let task of todayTaskList" cdkDrag [task]="task" [currentList]="'toDoToday'"></task>
+					<p class="empty-label text-application" *ngIf="todayTaskList?.length === 0">Empty list</p>
+					<task (click)="editTask('toDoToday', task, $event)" *ngFor="let task of todayTaskList" cdkDrag [task]="task" [currentList]="'toDoToday'"></task>
 				</mat-card>	
 			</div>
 		</div>
 
 		<div class="container-wrapper" *ngIf="rangeId == 1">
 			<div class="container">
-				<mat-form-field>
+				<mat-form-field class="text-application">
 					<mat-label>Search</mat-label>
 					<input matInput type="text" [(ngModel)]="tomorrowTaskName" (input)="searchByTask()"/>
 				</mat-form-field>
@@ -57,15 +57,15 @@
 					[cdkDropListData]="tomorrowTaskList"
 					(cdkDropListDropped)="drop($event)"
 					class="list">
-					<p class="empty-label" *ngIf="tomorrowTaskList?.length === 0">Empty list</p>
-					<task (edit)="editTask('toDoTomorrow', $event)" *ngFor="let task of tomorrowTaskList" cdkDrag [task]="task" [currentList]="'toDoTomorrow'"></task>
+					<p class="empty-label text-application" *ngIf="tomorrowTaskList?.length === 0">Empty list</p>
+					<task (click)="editTask('toDoTomorrow', task, $event)" *ngFor="let task of tomorrowTaskList" cdkDrag [task]="task" [currentList]="'toDoTomorrow'"></task>
 				</mat-card>
 			</div>
 		</div>
 
 		<div class="container-wrapper" *ngIf="rangeId == 2">
 			<div class="container">
-				<mat-form-field>
+				<mat-form-field class="text-application">
 					<mat-label>Search</mat-label>
 					<input matInput type="text" [(ngModel)]="thisWeekTaskName" (input)="searchByTask()"/>
 				</mat-form-field>
@@ -77,15 +77,15 @@
 					[cdkDropListData]="thisWeekTaskList"
 					(cdkDropListDropped)="drop($event)"
 					class="list">
-					<p class="empty-label" *ngIf="thisWeekTaskList?.length === 0">Empty list</p>
-					<task (edit)="editTask('toDoThisWeek', $event)" *ngFor="let task of thisWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoThisWeek'"></task>
+					<p class="empty-label text-application" *ngIf="thisWeekTaskList?.length === 0">Empty list</p>
+					<task (click)="editTask('toDoThisWeek', task, $event)" *ngFor="let task of thisWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoThisWeek'"></task>
 				</mat-card>
 			</div>
 		</div>
 
 		<div class="container-wrapper" *ngIf="rangeId == 3">
 			<div class="container">
-				<mat-form-field>
+				<mat-form-field class="text-application">
 					<mat-label>Search</mat-label>
 					<input matInput type="text" [(ngModel)]="nextWeekTaskName" (input)="searchByTask()"/>
 				</mat-form-field>
@@ -97,15 +97,15 @@
 					[cdkDropListData]="nextWeekTaskList"
 					(cdkDropListDropped)="drop($event)"
 					class="list">
-					<p class="empty-label" *ngIf="nextWeekTaskList?.length === 0">Empty list</p>
-					<task (edit)="editTask('toDoNextWeek', $event)" *ngFor="let task of nextWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoNextWeek'"></task>
+					<p class="empty-label text-application" *ngIf="nextWeekTaskList?.length === 0">Empty list</p>
+					<task (click)="editTask('toDoNextWeek', task, $event)" *ngFor="let task of nextWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoNextWeek'"></task>
 				</mat-card>
 			</div>
 		</div>
 
 		<div *ngIf="rangeId == 4">
 			<div class="container">
-				<mat-form-field>
+				<mat-form-field class="text-application">
 					<mat-label>Search</mat-label>
 					<input matInput type="text" [(ngModel)]="laterTaskName" (input)="searchByTask()"/>
 				</mat-form-field>
@@ -117,8 +117,8 @@
 					[cdkDropListData]="laterTaskList"
 					(cdkDropListDropped)="drop($event)"
 					class="list">
-					<p class="empty-label" *ngIf="laterTaskList?.length === 0">Empty list</p>
-					<task (edit)="editTask('toDoLater', $event)" *ngFor="let task of laterTaskList" cdkDrag [task]="task" [currentList]="'toDoLater'"></task>
+					<p class="empty-label text-application" *ngIf="laterTaskList?.length === 0">Empty list</p>
+					<task (click)="editTask('toDoLater', task, $event)" *ngFor="let task of laterTaskList" cdkDrag [task]="task" [currentList]="'toDoLater'"></task>
 				</mat-card>
 			</div>
 		</div>

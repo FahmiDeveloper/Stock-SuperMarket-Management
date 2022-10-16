@@ -1,28 +1,58 @@
-<mat-form-field>
-    <mat-label>Title</mat-label>
-    <input matInput cdkFocusInitial [(ngModel)]="data.task.title" />
-</mat-form-field>
+<h3 *ngIf="!data.task.id" mat-dialog-title class="text-application">Add new task</h3>
+<h3 *ngIf="data.task.id" mat-dialog-title class="text-application">Edit task</h3>
 
-<mat-form-field>
-    <mat-label>Date</mat-label>
-    <mat-select [(ngModel)]="data.task.taskToDoIn">
-        <mat-option *ngFor="let range of rangeDays" [value]="range">
-        {{range}}
-        </mat-option>
-    </mat-select>
-</mat-form-field>
+<div class="row">
+    <div class="col-md-12">
 
-<mat-form-field *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'">
-    <mat-label>Date</mat-label>
-    <input matInput type="date" [(ngModel)]="data.task.date"/>
-</mat-form-field>
-  
-<mat-form-field>
-    <mat-label>Description</mat-label>
-    <textarea matInput [(ngModel)]="data.task.description"></textarea>
-</mat-form-field>
-  
-<div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="{ task: data.task }">OK</button>
-    <button mat-button (click)="cancel()">Cancel</button>
+        <mat-form-field color="accent" style="width: 430px;">
+            <mat-placeholder class="text-application"><span>Title</span></mat-placeholder>
+            <input matInput #input type="text" [(ngModel)]="data.task.title" name="title" required class="text-application">
+            <mat-error *ngIf="!data.task.title" class="text-application">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field color="accent" style="width: 430px;">
+            <mat-placeholder class="text-application"><span>To do in</span></mat-placeholder>
+            <mat-select [(ngModel)]="data.task.taskToDoIn" name="taskToDoIn" required class="text-application">
+              <mat-option value=""></mat-option>
+              <mat-option *ngFor="let range of rangeDays" [value]="range">
+                <span class="text-application">{{range}}</span>
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!data.task.taskToDoIn" class="text-application">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent" style="width: 430px;">
+            <mat-placeholder class="text-application"><span>Date</span></mat-placeholder>
+            <input matInput #input type="date" [(ngModel)]="data.task.date" name="date" required class="text-application">
+            <mat-error *ngIf="!data.task.date" class="text-application">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field color="accent" style="width: 430px;">
+            <mat-placeholder class="text-application"><span>Description</span></mat-placeholder>
+            <input matInput #input type="text" [(ngModel)]="data.task.description" name="description" class="text-application">
+        </mat-form-field>
+
+        <div class="row justify-content-center" mat-dialog-actions>
+            <button 
+                mat-button 
+                type="button" 
+                [disabled]="!data.task.title || !data.task.taskToDoIn || !data.task.date" 
+                [mat-dialog-close]="{ task: data.task }" 
+                style="background:#FF5722;color: white;" 
+                class="text-application">
+                Save
+            </button>
+
+            <button 
+                mat-button 
+                type="button" 
+                (click)="cancel()" 
+                tabindex="-1" 
+                style="background:#607D8B;color: white;" 
+                class="text-application">
+                Cancel
+            </button>
+        </div>
+        
+    </div>
 </div>

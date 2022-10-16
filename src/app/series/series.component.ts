@@ -5,8 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
-
 import { SerieFormComponent } from './serie-form/serie-form.component';
 
 import { AuthService } from '../shared/services/auth.service';
@@ -29,6 +27,8 @@ export class SeriesComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Serie>();
   displayedColumns: string[] = ['picture', 'details', 'actions'];
 
+  serieToDelete: Serie = new Serie();
+
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
@@ -37,6 +37,8 @@ export class SeriesComponent implements OnInit, OnDestroy {
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  modalRefDeleteSerie: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -123,24 +125,21 @@ export class SeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteSerie(serieId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this serie!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.serieService.delete(serieId);
-        Swal.fire(
-          'Serie has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
+  openDeleteSerieModal(serie: Serie, contentDeleteSerie) {
+    this.serieToDelete = serie;
+    this.modalRefDeleteSerie =  this.dialogService.open(contentDeleteSerie, {
+      width: '30vw',
+      height:'35vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.serieService.delete(this.serieToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteSerie.close();
   }
 
   getStatusSerie() {

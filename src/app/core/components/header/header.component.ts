@@ -9,6 +9,9 @@ import firebase from 'firebase';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { UsersListService } from 'src/app/shared/services/list-users.service';
+
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -23,18 +26,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userName: string;
   subscriptipn: Subscription;
   isMobile: boolean;
+  allUsers: FirebaseUserModel[] = [];
+
 
   constructor(
     private afAuth: AngularFireAuth, 
     public authService: AuthService, 
     private router: Router,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    public usersListService: UsersListService
+
   ) {}
 
   ngOnInit() {
     this.getUserData();
     this.checkIfUserIsConnected();
     this.isMobile = this.deviceService.isMobile();
+    this.getAllUsers();
   }
 
   getUserData() {
@@ -58,15 +66,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
     })
   }
 
+  getAllUsers() {
+    this.usersListService
+    .getAll()
+    .subscribe((users: FirebaseUserModel[]) => {
+      this.allUsers = users;
+    });
+  }
+
   logout(){
     this.authService
       .doLogout()
       .then((res) => {
         this.router.navigate(['/login']);
         this.authService.isConnected.next(false);
+        this.putCurrentUserConnected(this.user.email);
       }, (error) => {
         console.log("Logout error", error);
     });
+  }
+  
+
+  putCurrentUserConnected(email: string) {
+    let connectedUserFromList: FirebaseUserModel;
+    connectedUserFromList = this.allUsers.find(user => user.email == email);
+    connectedUserFromList.isConnected = false;
+    this.usersListService.update(connectedUserFromList.key, connectedUserFromList);
   }
 
   ngOnDestroy() {

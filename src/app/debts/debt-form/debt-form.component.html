@@ -1,6 +1,6 @@
 <div class="container">
-    <h3 *ngIf="!debt.key" mat-dialog-title>Add new debt</h3>
-    <h3 *ngIf="debt.key" mat-dialog-title>Edit debt</h3>
+    <h3 *ngIf="!debt.key" mat-dialog-title class="text-application">Add new debt</h3>
+    <h3 *ngIf="debt.key" mat-dialog-title class="text-application">Edit debt</h3>
   
     <div class="row">
         <div class="col-md-12">
@@ -9,7 +9,7 @@
                 <div class="col-md-4">
                     <div class="form">
     
-                        <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                        <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                             <mat-grid-tile>Rest money</mat-grid-tile>
                             <mat-grid-tile>
                                 <mat-checkbox name="isRestMoney" [(ngModel)]="debt.isRestMoney" (ngModelChange)="checkAddRestMoney()" style="margin-top: 10px;"></mat-checkbox>
@@ -19,7 +19,7 @@
                         <br>
                         <br>
         
-                        <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                        <mat-grid-list cols="2" rowHeight="4:1"  class="text-application" style="font-size: 20px;">
                             <mat-grid-tile>Debt to pay</mat-grid-tile>
                             <mat-grid-tile>
                                 <mat-checkbox name="debtForPay" [(ngModel)]="debt.debtForPay" (ngModelChange)="checkDebtForPay()" style="margin-top: 10px;"></mat-checkbox>
@@ -29,7 +29,7 @@
                         <br>
                         <br>
         
-                        <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                        <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                             <mat-grid-tile>Debt to get</mat-grid-tile>
                             <mat-grid-tile>
                                 <mat-checkbox name="debtToGet" [(ngModel)]="debt.debtToGet" (ngModelChange)="checkDebtToGet()" style="margin-top: 10px;"></mat-checkbox>
@@ -44,40 +44,40 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <mat-form-field color="accent" style="width: 235px;">
+                                <mat-form-field color="accent" class="text-application" style="width: 235px;">
                                     <input matInput #input type="date" placeholder="Date" [(ngModel)]="debt.date" name="date">
-                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                    <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-md-6">
-                                <mat-form-field color="accent" style="width: 235px;">
+                                <mat-form-field color="accent" class="text-application" style="width: 235px;">
                                     <mat-select placeholder="Place" [(ngModel)]="debt.placeId" name="placeId" [required]="debt.isRestMoney">
                                         <mat-option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id" [hidden]="placeMoney.id == 5 && debt.isRestMoney">
-                                            {{placeMoney.place}}
+                                            <span class="text-application">{{placeMoney.place}}</span>
                                         </mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                    <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
                                 </mat-form-field> 
                             </div>
                         </div>
                 
                         <div class="row">
                             <div class="col-md-6">
-                                <mat-form-field color="accent" *ngIf="debt.isRestMoney" style="width: 235px;">
+                                <mat-form-field color="accent" *ngIf="debt.isRestMoney" class="text-application" style="width: 235px;">
                                     <input matInput #input type="text" placeholder="Rest Money" [(ngModel)]="debt.restMoney" name="restMoney" required>
-                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                    <mat-error *ngIf="f.invalid"  class="text-application">{{getErrorMessage()}}</mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field color="accent" *ngIf="debt.debtForPay || debt.debtToGet" style="width: 235px;">
+                                <mat-form-field color="accent" *ngIf="debt.debtForPay || debt.debtToGet" class="text-application" style="width: 235px;">
                                     <input matInput #input type="text" placeholder="Debt" [(ngModel)]="debt.financialDebt" name="financialDebt" required>
-                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                    <mat-error *ngIf="f.invalid"  class="text-application">{{getErrorMessage()}}</mat-error>
                                 </mat-form-field>      
                             </div>
                             <div class="col-md-6">
-                                <mat-form-field color="accent" style="width: 235px;">
+                                <mat-form-field color="accent" class="text-application" style="width: 235px;">
                                     <mat-select placeholder="Unit" [(ngModel)]="selectedUnit" name="selectedUnit" (selectionChange)="onSelectUnit()">
                                         <mat-option *ngFor="let unit of units" [value]="unit.unitName">
-                                            {{unit.unitName}}
+                                            <span class="text-application">{{unit.unitName}}</span>
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -86,14 +86,14 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <mat-form-field color="accent" *ngIf="debt.debtForPay" style="width: 235px;">
+                                <mat-form-field color="accent" *ngIf="debt.debtForPay" class="text-application" style="width: 235px;">
                                     <input matInput #input type="text" placeholder="Creditor" [(ngModel)]="debt.creditor" name="creditor" required>
-                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                    <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field color="accent" *ngIf="debt.debtToGet" style="width: 235px;">
+                                <mat-form-field color="accent" *ngIf="debt.debtToGet" class="text-application" style="width: 235px;">
                                     <input matInput #input type="text" placeholder="Debtor" [(ngModel)]="debt.debtor" name="debtor" required>
-                                    <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+                                    <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-md-6"></div>
@@ -101,7 +101,7 @@
 
                         <div class="row" *ngIf="debt.debtForPay">
                             <div class="col-md-12">
-                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                                     <mat-grid-tile>Will pay this month</mat-grid-tile>
                                     <mat-grid-tile>
                                         <mat-checkbox
@@ -115,7 +115,7 @@
 
                                 <br>
                 
-                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                                     <mat-grid-tile>Will pay next month</mat-grid-tile>
                                     <mat-grid-tile>
                                         <mat-checkbox 
@@ -129,7 +129,7 @@
 
                                 <br>
                 
-                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                                     <mat-grid-tile>Not to pay For Now</mat-grid-tile>
                                     <mat-grid-tile>
                                         <mat-checkbox 
@@ -145,7 +145,7 @@
 
                         <div class="row" *ngIf="debt.debtToGet">
                             <div class="col-md-12">
-                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                                     <mat-grid-tile>Will get this month</mat-grid-tile>
                                     <mat-grid-tile>
                                         <mat-checkbox 
@@ -159,7 +159,7 @@
 
                                 <br>
                 
-                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                                     <mat-grid-tile>Will get next month</mat-grid-tile>
                                     <mat-grid-tile>
                                         <mat-checkbox 
@@ -173,7 +173,7 @@
 
                                 <br>
                 
-                                <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
+                                <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
                                     <mat-grid-tile>Not to get For Now</mat-grid-tile>
                                     <mat-grid-tile>
                                         <mat-checkbox 
@@ -189,7 +189,7 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <mat-form-field color="accent" style="width: 475px;">
+                                <mat-form-field color="accent" class="text-application" style="width: 475px;">
                                     <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="debt.note" name="note" rows="4" cols="80" required></textarea>
                                 </mat-form-field>
                             </div>
@@ -199,10 +199,10 @@
                     </div>
                 </div>
             </div>
-    
-            <div mat-dialog-actions *ngIf="debt.isRestMoney || debt.debtForPay || debt.debtToGet">
-                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1">Save</button>
-                <button mat-button type="button" (click)="close()" tabindex="-1">Cancel</button>
+
+            <div class="row justify-content-center" mat-dialog-actions *ngIf="debt.isRestMoney || debt.debtForPay || debt.debtToGet">
+                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;" class="text-application">Save</button>
+                <button mat-button type="button" (click)="close()" tabindex="-1" style="background:#607D8B;color: white;" class="text-application">Cancel</button>
             </div>
 
         </form>

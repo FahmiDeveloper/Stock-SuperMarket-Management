@@ -1,4 +1,9 @@
-<h3 mat-dialog-title style="color: #dc3545;">Privileges</h3>
+<div mat-dialog-title class="dialog-title">
+    <h2>Privileges</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+</div>
 
 <mat-grid-list cols="4" rowHeight="4:1">
     <mat-grid-tile></mat-grid-tile>
@@ -116,8 +121,7 @@
 
 <br>
 
-<div mat-dialog-actions>
+<div class="row justify-content-center" mat-dialog-actions>
     <button mat-button type="button" (click)="changePrivliegeStatus(currentUser)" [mat-dialog-close]="1">Save</button>
-    <button mat-button type="button" (click)="dialogRef.close()" tabindex="-1">Cancel</button>
 </div>
       

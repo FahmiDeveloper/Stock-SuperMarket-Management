@@ -3,8 +3,8 @@
     <table mat-table [dataSource]="dataSource">
 
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element" class='m-card-title' [ngStyle]="{'height': !isMobile ? '100px' : ''}">{{element.fileNameWithoutType}}</td>
+        <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Name</th>
+        <td mat-cell *matCellDef="let element" class='m-card-title text-application' [ngStyle]="{'height': !isMobile ? '100px' : ''}">{{element.fileNameWithoutType}}</td>
       </ng-container>
 
       <ng-container matColumnDef="star">
@@ -16,12 +16,12 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
       <tr [ngClass]="!isMobile ? 'trForNotMobile' : ''" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
   
-    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
       No results
     </div>
   
@@ -40,8 +40,9 @@
       *ngIf="!checkIsImage(file.name) && !isZip(file.name)"
       type="button"
       mat-menu-item 
-      (click)="viewOtherFileUpload(file, showOtherFile)">
-      <mat-icon style="color: #3f51b5;">remove_red_eye</mat-icon>
+      (click)="viewOtherFileUpload(file, showOtherFile)"
+      class="text-application">
+      <mat-icon style="color: #283593;">remove_red_eye</mat-icon>
       <span>View</span>
     </button>
 
@@ -49,8 +50,9 @@
       *ngIf="checkIsImage(file.name)"
       type="button"
       mat-menu-item               
-      (click)="viewFilePictureUpload(file, showPicture)">
-      <mat-icon style="color: #3f51b5;">remove_red_eye</mat-icon>
+      (click)="viewFilePictureUpload(file, showPicture)"
+      class="text-application">
+      <mat-icon style="color: #283593;">remove_red_eye</mat-icon>
       <span>View</span>
     </button>
 
@@ -58,24 +60,27 @@
       *ngIf="isZip(file.name)"
       type="button"
       mat-menu-item 
-      (click)="showZipFile(file, viewZipFile)">
-      <mat-icon style="color: #3f51b5;">remove_red_eye</mat-icon>
+      (click)="showZipFile(file, viewZipFile)"
+      class="text-application">
+      <mat-icon style="color: #283593;">remove_red_eye</mat-icon>
       <span>View</span>
     </button>
 
     <button
       type="button"
       mat-menu-item 
-      (click)="downloadFile(file)">
-      <mat-icon style="color: #ff4081;">cloud_download</mat-icon>
+      (click)="downloadFile(file)"
+      class="text-application">
+      <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
       <span>Download</span>
     </button>
 
     <button
       *ngIf="userRoles.roleDeleteFile"
       type="button"
-      mat-menu-item 
-      (click)="deleteFileUpload(file)">
+      mat-menu-item
+      (click)="openDeleteFileModal(file, contentDeleteFile)" 
+      class="text-application">
       <mat-icon style="color: #f44336;">delete</mat-icon>
       <span>Delete</span>
     </button>
@@ -84,7 +89,8 @@
       *ngIf="isMobile && (checkIsImage(file.name) || isTxt(file.name)  || isPdf(file.name))"
       type="button"
       mat-menu-item 
-      (click)="shareFile(file)">
+      (click)="shareFile(file)"
+      class="text-application">
       <mat-icon style="color: #ff4081;">share</mat-icon>
       <span>share</span>             
     </button>  
@@ -95,97 +101,92 @@
 
 <ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
 
-  <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
-
-      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-      </button>
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">{{ FileName }}</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 
-  <div class="modal-body">
-      <div class="container">
-          <div class="row">        
-            <ngx-doc-viewer
-              *ngIf="urlFile" 
-              [url]="urlFile" 
-              viewer="google" 
-              [ngClass]="isMobile ? 'otherFileMobile' : 'otherFile'">
-            </ngx-doc-viewer>
-          </div>  
-      </div>
-  </div>        
+  <div class="row">        
+    <ngx-doc-viewer
+      *ngIf="urlFile" 
+      [url]="urlFile" 
+      viewer="google" 
+      [ngClass]="isMobile ? 'otherFileMobile' : 'otherFile'">
+    </ngx-doc-viewer>
+  </div>
+
 </ng-template>
 
 
 <ng-template #showPicture let-modal let-c="close" let-d="dismiss">
 
-  <div class="modal-header text-center">
-    <h4 class="modal-title w-100 font-weight-bold">{{ FileName }}</h4>
-
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">{{ FileName }}</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
     </button>
   </div>
 
-  <div class="modal-body">
-      <img *ngIf="pictureFile" [src]='pictureFile' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
-  </div>
+  <div class="row">
+    <img *ngIf="pictureFile" [src]='pictureFile' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
+  </div>       
+
 </ng-template>
 
 
 <ng-template #viewZipFile let-modal let-c="close" let-d="dismiss">
 
-  <div class="modal-header text-center">
-    <h4 *ngIf="FileName" class="modal-title w-100 font-weight-bold text-application">{{ FileName }}</h4>
-
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">{{ FileName }}</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
     </button>
   </div>
 
-  <div class="modal-body text-application">
-    <div *ngIf="isLoading">
-      <mat-spinner [ngStyle]="{'margin-left': isMobile ? '95px' : '325px'}"></mat-spinner><br>
-      <h4 style="text-align: center;">Extract files in progress...</h4>
-    </div>
-    
-    <ul *ngIf="!isLoading">
-      <ng-container *ngFor="let file of $zipFiles | async">
-        <li *ngIf="file.fileName">
-          <h5>
-            {{file.fileName}}<br>
-            <small style="font-weight: bold;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</small>&nbsp;
-            <button
-              type="button"
-              (click)="viewFileFromZip(file, showContentFilesFromZip)"
-              class="btn btn-primary">
-              <i class="fa fa-eye" aria-hidden="true"></i>
-            </button>&nbsp;
-            <button
-              type="button"
-              (click)="saveFileFromZip(file)"
-              class="btn btn-success">
-              <i class="fa fa-download" aria-hidden="true"></i>
-            </button>
-          </h5> 
-        </li><br *ngIf="file.fileName">
-      </ng-container>
-    </ul>
+  <div *ngIf="isLoading">
+    <mat-spinner [ngStyle]="{'margin-left': isMobile ? '110px' : '350px', 'margin-top': isMobile ? '150px' : '250px'}"></mat-spinner><br>
+    <h4 class="text-application" style="text-align: center;">Extract files in progress...</h4>
   </div>
+
+  <div *ngIf="!isLoading">
+    <span *ngFor="let file of $zipFiles | async" class="text-application">
+      <span *ngIf="file.fileName">
+        {{file.fileName}}
+        <span style="font-size: 14px;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</span>
+        <br>
+        <button
+          type="button"
+          mat-icon-button
+          color="accent"
+          (click)="viewFileFromZip(file, showContentFilesFromZip)">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </button>&nbsp;
+        <button
+          type="button"
+          mat-icon-button
+          color="primary"
+          (click)="saveFileFromZip(file)">
+          <i class="fa fa-download" aria-hidden="true"></i>
+        </button> 
+      </span>
+      <br *ngIf="file.fileName">
+      <mat-divider *ngIf="file.fileName"></mat-divider>
+    </span>
+  </div>
+  
 </ng-template>
 
 <ng-template #showContentFilesFromZip let-modal let-c="close" let-d="dismiss">
 
-  <div class="modal-header text-center text-application">
-    <h4 *ngIf="fileExtractedName" class="modal-title w-100 font-weight-bold">{{ fileExtractedName }}</h4>
-
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-        <span aria-hidden="true">&times;</span>
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">{{ fileExtractedName }}</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
     </button>
   </div>
 
-  <div class="modal-body">
 
     <img *ngIf="checkIsImage(fileExtractedName)" [src]='srcExtractedImage' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
 
@@ -258,5 +259,43 @@
 
     <div *ngIf="isWord(fileExtractedName) && !isMobile" id="contentWord"></div>
 
-  </div>        
+</ng-template>
+
+<ng-template #contentDeleteFile let-modal let-c="close" let-d="dismiss">
+
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">Are you sure ?</h2>
+  </div>
+
+  <div mat-dialog-content>
+      <div [ngClass]="isMobile ? 'gridForDeleteInMobile' : 'gridForDelete'" class="text-application">
+          <div><span>Name:</span></div>
+          <div>{{ fileToDelete.fileNameWithoutType }}</div>
+      </div>
+  </div>
+
+  <br>
+
+  <div class="row justify-content-center" mat-dialog-actions>
+      <button 
+          mat-button 
+          type="button" 
+          [mat-dialog-close]="1" 
+          (click)="confirmDelete()" 
+          style="background:rgb(221, 51, 51);color: white;" 
+          class="text-application">
+          Delete
+      </button>
+
+      <button 
+          mat-button 
+          type="button" 
+          (click)="close()" 
+          tabindex="-1" 
+          style="background:#607D8B;color: white;" 
+          class="text-application">
+          Cancel
+      </button>
+  </div>
+
 </ng-template>

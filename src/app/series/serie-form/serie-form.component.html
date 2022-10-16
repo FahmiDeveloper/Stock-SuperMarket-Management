@@ -1,6 +1,6 @@
 <div class="container">
-    <h3 *ngIf="!serie.key" mat-dialog-title>Add new serie</h3>
-    <h3 *ngIf="serie.key" mat-dialog-title>Edit serie</h3>
+    <h3 *ngIf="!serie.key" mat-dialog-title class="text-application">Add new serie</h3>
+    <h3 *ngIf="serie.key" mat-dialog-title class="text-application">Edit serie</h3>
   
     <div class="row">
       <div class="col-md-6">
@@ -8,39 +8,44 @@
   
           <div class="form">
             <mat-form-field color="accent">
-              <input matInput #input type="text" placeholder="Name" [(ngModel)]="serie.nameSerie" name="nameSerie" required>
-              <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+              <mat-placeholder class="text-application"><span>Name</span></mat-placeholder>
+              <input matInput #input type="text" [(ngModel)]="serie.nameSerie" name="nameSerie" required class="text-application">
+              <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
           </div>
       
           <div class="form">
             <mat-form-field color="accent">
-              <input matInput #input type="date" placeholder="Date" [(ngModel)]="serie.date" name="date" readonly>
-              <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+              <mat-placeholder class="text-application"><span>Date</span></mat-placeholder>
+              <input matInput #input type="date" [(ngModel)]="serie.date" name="date" readonly class="text-application">
+              <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
           </div>
       
           <div class="form">
             <mat-form-field color="accent">
-              <mat-select placeholder="Status" [(ngModel)]="serie.statusId" name="statusId" required>
+              <mat-placeholder class="text-application"><span>Status</span></mat-placeholder>
+              <mat-select [(ngModel)]="serie.statusId" name="statusId" required class="text-application">
                 <mat-option value=""></mat-option>
                 <mat-option *ngFor="let statusSerie of statusSeries" [value]="statusSerie.id">
-                    {{statusSerie.status}}
+                    <span class="text-application">{{statusSerie.status}}</span>
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
+              <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
           </div>
     
           <div class="form">
             <mat-form-field color="accent">
-              <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="serie.note" name="note" rows="4" cols="40"></textarea>
+              <mat-placeholder class="text-application"><span>Note</span></mat-placeholder>
+              <textarea matInput #input type="text" [(ngModel)]="serie.note" name="note" rows="4" cols="40" class="text-application"></textarea>
             </mat-form-field>
           </div>
     
           <div class="form" *ngIf="serie.statusId && (serie.statusId == 1 || serie.statusId == 2)">
             <mat-form-field color="accent">
-              <input matInput #input type="text" placeholder="Path" [(ngModel)]="serie.path" name="path">
+              <mat-placeholder class="text-application"><span>Path</span></mat-placeholder>
+              <input matInput #input type="text" [(ngModel)]="serie.path" name="path" class="text-application">
             </mat-form-field>
           </div>
     
@@ -58,9 +63,9 @@
             <span *ngIf="val == 100" class="progressComplete">Completed !</span>
           </div>
       
-          <div mat-dialog-actions>
-            <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1">Save</button>
-            <button mat-button type="button" (click)="close()" tabindex="-1">Cancel</button>
+          <div class="row justify-content-center" mat-dialog-actions>
+            <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;" class="text-application">Save</button>
+            <button mat-button type="button" (click)="close()" tabindex="-1" style="background:#607D8B;color: white;" class="text-application">Cancel</button>
           </div>
       
         </form>

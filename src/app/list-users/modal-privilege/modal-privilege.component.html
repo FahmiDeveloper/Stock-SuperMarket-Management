@@ -1,4 +1,9 @@
-<h3 mat-dialog-title style="color: #dc3545;">Privileges</h3>
+<div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">Privileges</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+</div>
 
 <mat-grid-list cols="4" rowHeight="4:1">
     <mat-grid-tile></mat-grid-tile>
@@ -18,7 +23,7 @@
 <br>
 
 <mat-grid-list cols="4" rowHeight="4:1" *ngIf="currentUser.roleMovies">
-    <mat-grid-tile>Movies</mat-grid-tile>
+    <mat-grid-tile class="text-application" style="font-size: 20px;">Movies</mat-grid-tile>
 
     <mat-grid-tile>
         <mat-checkbox [(ngModel)]="currentUser.roleAddMovie" (ngModelChange)="changePrivliegeStatus(currentUser)"></mat-checkbox>
@@ -39,7 +44,7 @@
 <br *ngIf="currentUser.roleMovies">
 
 <mat-grid-list cols="4" rowHeight="4:1" *ngIf="currentUser.roleAnimes">
-    <mat-grid-tile>Animes</mat-grid-tile>
+    <mat-grid-tile class="text-application" style="font-size: 20px;">Animes</mat-grid-tile>
 
     <mat-grid-tile>
         <mat-checkbox [(ngModel)]="currentUser.roleAddAnime" (ngModelChange)="changePrivliegeStatus(currentUser)"></mat-checkbox>
@@ -59,7 +64,7 @@
 <br *ngIf="currentUser.roleAnimes">
 
 <mat-grid-list cols="4" rowHeight="4:1" *ngIf="currentUser.roleSeries">
-    <mat-grid-tile>Series</mat-grid-tile>
+    <mat-grid-tile class="text-application" style="font-size: 20px;">Series</mat-grid-tile>
 
     <mat-grid-tile>
         <mat-checkbox [(ngModel)]="currentUser.roleAddSerie" (ngModelChange)="changePrivliegeStatus(currentUser)"></mat-checkbox>
@@ -79,7 +84,7 @@
 <br *ngIf="currentUser.roleSeries">
 
 <mat-grid-list cols="4" rowHeight="4:1" *ngIf="currentUser.roleFiles">
-    <mat-grid-tile>Files</mat-grid-tile>
+    <mat-grid-tile class="text-application" style="font-size: 20px;">Files</mat-grid-tile>
 
     <mat-grid-tile>
         <mat-checkbox [(ngModel)]="currentUser.roleAddFile" (ngModelChange)="changePrivliegeStatus(currentUser)"></mat-checkbox>
@@ -99,7 +104,7 @@
 <br *ngIf="currentUser.roleFiles">
 
 <mat-grid-list cols="4" rowHeight="4:1" *ngIf="currentUser.roleDebts">
-    <mat-grid-tile>Debts</mat-grid-tile>
+    <mat-grid-tile class="text-application" style="font-size: 20px;">Debts</mat-grid-tile>
 
     <mat-grid-tile>
         <mat-checkbox [(ngModel)]="currentUser.roleAddDebt" (ngModelChange)="changePrivliegeStatus(currentUser)"></mat-checkbox>

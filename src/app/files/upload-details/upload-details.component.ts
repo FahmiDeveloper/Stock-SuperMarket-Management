@@ -1,12 +1,11 @@
 import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import Swal from 'sweetalert2';
 import * as fileSaver from 'file-saver';
 import * as JSZip from 'jszip/dist/jszip';
 import { utils, write as XlsxWrite, read as XlsxRead } from 'ts-xlsx';
@@ -34,6 +33,8 @@ export class UploadDetailsComponent implements OnChanges {
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['name', 'star'];
 
+  fileToDelete: FileUpload;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   urlFile: string;
@@ -53,12 +54,13 @@ export class UploadDetailsComponent implements OnChanges {
   headData: any;
   arrayBuffer: any;
   wordFile: File;
+  modalRefDeleteFile: any;
 
   constructor(
     private uploadService: FileUploadService,
     protected ngNavigatorShareService: NgNavigatorShareService,
     private sanitizer : DomSanitizer,
-    protected modalService: NgbModal
+    public dialogService: MatDialog
   ) {}
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
@@ -76,16 +78,37 @@ export class UploadDetailsComponent implements OnChanges {
     this.FileName = fileUpload.name;
 
     if (this.isMobile) {
-       this.modalService.open(showFile as Component, { windowClass: 'my-class-mobile', centered: true });
+       this.dialogService.open(showFile, {
+        width: '98vw',
+        height:'81vh',
+        maxWidth: '100vw'
+      });
     } else {
-       this.modalService.open(showFile as Component, { windowClass: 'my-class', centered: true });
+      this.dialogService.open(showFile, {
+        width: '60vw',
+        height:'95vh',
+        maxWidth: '100vw'
+      });
     }
   }
 
   viewFilePictureUpload(fileUpload: FileUpload, showPicture) {
     this.pictureFile = fileUpload.url;
     this.FileName = fileUpload.name;
-    this.modalService.open(showPicture as Component, { size: 'lg', centered: true });
+
+    if (this.isMobile) {
+      this.dialogService.open(showPicture, {
+       width: '98vw',
+       height:'81vh',
+       maxWidth: '100vw'
+     });
+   } else {
+     this.dialogService.open(showPicture, {
+       width: '40vw',
+       height:'85vh',
+       maxWidth: '100vw'
+     });
+   }
   }
 
   showZipFile(fileUpload: FileUpload, viewZipFile) {
@@ -110,7 +133,19 @@ export class UploadDetailsComponent implements OnChanges {
           element.fileName = element.name.substring(n + 1);
         })        
       })
-      this.modalService.open(viewZipFile as Component, { size: 'lg', centered: true });     
+      if (this.isMobile) {
+        this.dialogService.open(viewZipFile, {
+         width: '98vw',
+         height:'81vh',
+         maxWidth: '100vw'
+       });
+     } else {
+      this.dialogService.open(viewZipFile, {
+        width: '45vw',
+        height:'85vh',
+        maxWidth: '100vw'
+      });
+     }
     });
     setTimeout(() => this.isLoading = false, 5000); 
   }
@@ -121,26 +156,6 @@ export class UploadDetailsComponent implements OnChanges {
     .then(blob => {
       fileSaver.saveAs(blob, fileUpload.name);
     });
-  }
-
-  deleteFileUpload(fileUpload: FileUpload) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this file!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.uploadService.deleteFile(fileUpload);
-        Swal.fire(
-          'File has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
   }
 
   viewFileFromZip(file: ZipFile, showContentFilesFromZip) {
@@ -225,10 +240,35 @@ export class UploadDetailsComponent implements OnChanges {
               reader.readAsArrayBuffer(this.wordFile);
           };
 
-          if (this.checkIsImage(file.fileName) || this.isMobile) this.modalService.open(showContentFilesFromZip as Component, { size: 'lg', centered: true });
-          else if (this.isTxt(file.fileName) || this.isPdf(file.fileName)) 
-          this.modalService.open(showContentFilesFromZip as Component, { windowClass: 'class-md', centered: true });
-          else this.modalService.open(showContentFilesFromZip as Component, { windowClass: 'class-lg', centered: true });
+          if (this.isTxt(file.fileName) || this.isPdf(file.fileName) ||this.isWord(file.fileName) || this.isExcel(file.fileName)) {
+            if (this.isMobile) {
+              this.dialogService.open(showContentFilesFromZip, {
+               width: '98vw',
+               height:'81vh',
+               maxWidth: '100vw'
+             });
+           } else {
+             this.dialogService.open(showContentFilesFromZip, {
+               width: '60vw',
+               height:'95vh',
+               maxWidth: '100vw'
+             });
+           }
+          } else {
+            if (this.isMobile) {
+              this.dialogService.open(showContentFilesFromZip, {
+               width: '98vw',
+               height:'81vh',
+               maxWidth: '100vw'
+             });
+           } else {
+             this.dialogService.open(showContentFilesFromZip, {
+               width: '40vw',
+               height:'85vh',
+               maxWidth: '100vw'
+             });
+           }
+          }      
         });
         }   
       });
@@ -355,6 +395,31 @@ export class UploadDetailsComponent implements OnChanges {
     let n = path.lastIndexOf('.');
     let extention: string = path.substring(n + 1);
     return extentionvideo.indexOf(extention.toLocaleLowerCase()) != -1;
+  }
+
+  openDeleteFileModal(file: FileUpload, contentDeleteFile) {
+    this.fileToDelete = file;
+    if (this.isMobile) {
+      this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {
+        width: '98vw',
+       height:'30vh',
+       maxWidth: '100vw'
+     });
+   } else {
+    this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {
+      width: '30vw',
+      height:'30vh',
+      maxWidth: '100vw'
+    }); 
+   }
+  }
+
+  confirmDelete() {
+    this.uploadService.deleteFile(this.fileToDelete);
+  }
+
+  close() {
+    this.modalRefDeleteFile.close();
   }
   
 }

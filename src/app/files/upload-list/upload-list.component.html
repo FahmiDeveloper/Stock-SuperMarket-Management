@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-md-6" *ngIf="!isMobile">
-        <mat-form-field class="widhtInput">
+        <mat-form-field class="widhtInput text-application">
             <mat-label>Name</mat-label>
             <input matInput #query type="text" name="queryNote" (input)="filter(query.value)"/>
         </mat-form-field>
     </div>
     <div class="col-md-4" *ngIf="isMobile">
-        <mat-form-field class="widhtInput">
+        <mat-form-field class="widhtInput text-application">
             <mat-label>Name</mat-label>
             <input matInput #query type="text" name="queryNote" (input)="filter(query.value)"/>
         </mat-form-field>

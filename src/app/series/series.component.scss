@@ -21,11 +21,11 @@
     display: flex;
     justify-content: center;
     padding: 14px;
-    font-size: 14px;
-    font-style: italic;
+    font-size: 20px;
 }
 
 .mat-header-cell {
+    color:white;
     font-size: 20px;
     min-height: 48px;
     text-align: center;
@@ -42,4 +42,11 @@
     grid-template-columns: 80px 250px;
     width: 250px;
     margin: auto;
+}
+
+.gridForDelete {
+    display: grid;
+    grid-template-columns: 80px 400px;
+    width: 250px;
+    font-size: 18px;
 }

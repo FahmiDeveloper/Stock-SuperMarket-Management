@@ -19,8 +19,7 @@ input.larger {
     display: flex;
     justify-content: center;
     padding: 14px;
-    font-size: 14px;
-    font-style: italic;
+    font-size: 20px;
 }
 
 .mat-header-cell {
@@ -33,4 +32,11 @@ input.larger {
     font-size: 20px;
     min-height: 48px;
     border-bottom-style: none;
+}
+
+.gridForDelete {
+    display: grid;
+    grid-template-columns: 80px 400px;
+    width: 250px;
+    font-size: 18px;
 }

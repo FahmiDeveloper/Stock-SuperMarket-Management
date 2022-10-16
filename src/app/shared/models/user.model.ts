@@ -8,6 +8,7 @@ export class FirebaseUserModel {
   isAdmin: boolean;
   numRefUser: number;
   password: string;
+  isConnected: boolean;
 
   roleMovies: boolean;
   roleAddMovie: boolean;
