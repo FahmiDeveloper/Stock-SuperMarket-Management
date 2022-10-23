@@ -92,14 +92,14 @@
       (click)="shareFile(file)"
       class="text-application">
       <mat-icon style="color: #ff4081;">share</mat-icon>
-      <span>share</span>             
+      <span>Share</span>             
     </button>  
 
   </ng-template>
 </mat-menu>
 
 
-<ng-template #showOtherFile let-modal let-c="close" let-d="dismiss">
+<ng-template #showOtherFile>
 
   <div mat-dialog-title class="dialog-title">
     <h2 class="text-application">{{ FileName }}</h2>
@@ -120,7 +120,7 @@
 </ng-template>
 
 
-<ng-template #showPicture let-modal let-c="close" let-d="dismiss">
+<ng-template #showPicture>
 
   <div mat-dialog-title class="dialog-title">
     <h2 class="text-application">{{ FileName }}</h2>
@@ -136,7 +136,7 @@
 </ng-template>
 
 
-<ng-template #viewZipFile let-modal let-c="close" let-d="dismiss">
+<ng-template #viewZipFile>
 
   <div mat-dialog-title class="dialog-title">
     <h2 class="text-application">{{ FileName }}</h2>
@@ -178,7 +178,7 @@
   
 </ng-template>
 
-<ng-template #showContentFilesFromZip let-modal let-c="close" let-d="dismiss">
+<ng-template #showContentFilesFromZip>
 
   <div mat-dialog-title class="dialog-title">
     <h2 class="text-application">{{ fileExtractedName }}</h2>
@@ -261,7 +261,7 @@
 
 </ng-template>
 
-<ng-template #contentDeleteFile let-modal let-c="close" let-d="dismiss">
+<ng-template #contentDeleteFile>
 
   <div mat-dialog-title class="dialog-title">
     <h2 class="text-application">Are you sure ?</h2>

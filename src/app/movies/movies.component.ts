@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 
@@ -25,7 +26,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Movie>();
   dataSourceCopie = new MatTableDataSource<Movie>();
-  displayedColumns: string[] = ['picture', 'details', 'actions'];
+  displayedColumns: string[] = ['picture', 'details'];
 
   movieToDelete: Movie = new Movie();
 
@@ -43,6 +44,11 @@ export class MoviesComponent implements OnInit, OnDestroy {
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -67,6 +73,7 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    console.log(this.dataSource.paginator)    
   }
 
   getAllMovies() {
@@ -186,6 +193,15 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
     this.sortByDesc = false;
   }
+
+  onContextMenu(event: MouseEvent, movie: Movie) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'movie': movie };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+  }   
 
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();

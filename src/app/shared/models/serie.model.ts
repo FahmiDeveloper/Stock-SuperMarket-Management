@@ -10,6 +10,8 @@ export class Serie {
   status: string;// get name of status foreach movie using statusId
   path: string;
   numRefSerie: number;
+  currentEpisode: number;
+  totalEpisodes: number;
 
   constructor(){
     this.nameSerie = '';

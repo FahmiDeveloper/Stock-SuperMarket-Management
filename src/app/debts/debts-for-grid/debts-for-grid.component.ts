@@ -29,6 +29,8 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Debt>();
   displayedColumns: string[] = ['date', 'debtor', 'creditor', 'debt', 'rest', 'place', 'topayin','note', 'star'];
 
+  debtToDelete: Debt = new Debt();
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   filteredDebtsByPlaceAndDebtForPay: Debt[];
@@ -68,6 +70,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
   customTotalOutDebtsByDebtor: number;
 
   modalRefLodaing: any;
+  modalRefDeleteDebt: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -611,26 +614,6 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteDebt(debtId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this debt!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.debtService.delete(debtId);
-        Swal.fire(
-          'Debt has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
   showRest(contentRestMoneyForeachPlace) {
     this.dialogService.open(contentRestMoneyForeachPlace, {
       width: '98vw',
@@ -666,6 +649,23 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     }).then();
+  }
+
+  openDeleteDebtModal(debt: Debt, contentDeleteDebt) {
+    this.debtToDelete = debt;
+    this.modalRefDeleteDebt =  this.dialogService.open(contentDeleteDebt, {
+      width: '98vw',
+      height:'75vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.debtService.delete(this.debtToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteDebt.close();
   }
 
   ngOnDestroy() {

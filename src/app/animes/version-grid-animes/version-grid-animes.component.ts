@@ -5,8 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
-
 import { NewOrEditAnimeComponent } from './new-or-edit-anime/new-or-edit-anime.component';
 import { ShowAnimePictureComponent } from '../show-anime-picture';
 
@@ -30,6 +28,8 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Anime>();
   displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
 
+  animeToDelete: Anime = new Anime();
+
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
@@ -38,6 +38,8 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  modalRefDeleteAnime: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -124,26 +126,6 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteAnime(animeId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this anime!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.animeService.delete(animeId);
-        Swal.fire(
-          'Anime has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
   newAnime() {
     const dialogRef = this.dialogService.open(NewOrEditAnimeComponent, {
       width: '98vw',
@@ -175,7 +157,7 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  zoomPicture(anime?: Anime) {
+  zoomPicture(anime: Anime) {
     const dialogRef = this.dialogService.open(ShowAnimePictureComponent, {
       width: '98vw',
       height:'77vh',
@@ -207,6 +189,23 @@ export class VersionGridAnimesComponent implements OnInit, OnDestroy {
   sortByRefAnimeAsc() {
     this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime);
     this.sortByDesc = false;
+  }
+
+  openDeleteAnimeModal(anime: Anime, contentDeleteAnime) {
+    this.animeToDelete = anime;
+    this.modalRefDeleteAnime =  this.dialogService.open(contentDeleteAnime, {
+      width: '98vw',
+      height:'50vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.animeService.delete(this.animeToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteAnime.close();
   }
 
   ngOnDestroy() {

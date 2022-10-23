@@ -1,0 +1,90 @@
+<div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">Movies
+        <span *ngIf="currentStatusForMovie == 1">wait to sort</span>
+        <span *ngIf="currentStatusForMovie == 2">not downloaded yet</span>
+        <span *ngIf="currentStatusForMovie == 3">watched</span>
+        <span *ngIf="currentStatusForMovie == 4">not watched yet</span>
+        <span *ngIf="currentStatusForMovie == 5">to search about it</span>
+    </h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="picture">
+            <th mat-header-cell *matHeaderCellDef>Picture</th>
+            <td mat-cell *matCellDef="let element"> 
+                <img *ngIf="element.imageUrl" mat-card-md-image [src]="element.imageUrl" (click)="zoomPicture(element)">
+                <img *ngIf="!element.imageUrl" mat-card-md-image src="/assets/pictures/NoImageAvailable.png" (click)="zoomPicture(element)">
+                
+                <span [ngStyle]="{'margin-left': element.year ? '24px' : '40px'}">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;
+                    <span *ngIf="element.year">{{ element.year }}</span>
+                    <span *ngIf="!element.year">?</span>
+                </span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <div class="gridForLegend">
+                    <div><span>Name:</span></div>
+                    <div><span style="cursor: pointer;" (click)="copyNameMovie(element.nameMovie)">{{ element.nameMovie }}</span></div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="note">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <div class="gridForLegend">
+                    <div><span>Note:</span></div>
+                    <div>{{ element.note }}</div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="star">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element:element}">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+        No results
+    </div>
+
+    <mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>
+  
+<mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-movie="element">
+
+        <button mat-menu-item *ngIf="movie.statusId !== 3"> 
+            <mat-icon *ngIf="movie.statusId !== 5" style="color: #EF6C00;">remove_red_eye</mat-icon>
+            <mat-icon *ngIf="movie.statusId == 5" style="color: #EF6C00;">search</mat-icon>
+            <a href="{{ movie.path }}" target="_blank" style="text-decoration: none;">
+              <span *ngIf="movie.statusId == 1" style="color: black !important;">Check</span>
+              <span *ngIf="movie.statusId == 2 || movie.statusId == 4" style="color: black !important;">Watch</span>
+              <span *ngIf="movie.statusId == 5" style="color: black !important;">Search</span>
+            </a>  
+        </button>
+
+    </ng-template>
+</mat-menu>

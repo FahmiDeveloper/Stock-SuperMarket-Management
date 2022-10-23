@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Task } from 'src/app/shared/models/task.model';
 
@@ -16,11 +17,25 @@ export class TaskMobileComponent {
 
   @Output() edit = new EventEmitter<Task>();
 
-  constructor(private store: AngularFirestore) {}
+  modalRefDeleteTask: any;
 
-  deleteTask(event) {
+  constructor(private store: AngularFirestore, public dialogService: MatDialog) {}
+
+  openDeleteTaskModal(contentDeleteTask, event) {
     event.stopPropagation();
+    this.modalRefDeleteTask =  this.dialogService.open(contentDeleteTask, {
+      width: '98vw',
+      height:'60vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
     this.store.collection(this.currentList).doc(this.task.id).delete();
+  }
+
+  close() {
+    this.modalRefDeleteTask.close();
   }
 
 }

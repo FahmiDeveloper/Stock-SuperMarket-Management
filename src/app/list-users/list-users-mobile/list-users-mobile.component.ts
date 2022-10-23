@@ -5,8 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
-
 import { ModalPrivilegeMobileComponent } from './modal-privilege-mobile/modal-privilege-mobile.component';
 
 import { UsersListService } from 'src/app/shared/services/list-users.service';
@@ -23,6 +21,10 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
   displayedColumns: string[] = ['picture', 'name', 'email', 'password', 'connected' , 'star'];
+
+  userToDelete: FirebaseUserModel = new FirebaseUserModel();
+
+  modalRefDeleteUser: any;
 
   queryEmail: string = '';
 
@@ -81,26 +83,6 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
     this.usersListService.update(user.key, user);
   }
 
-  deleteUser(userId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this user!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.usersListService.delete(userId);
-        Swal.fire(
-          'User has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
   openModalPrivileges(user: FirebaseUserModel) {
     const dialogRef = this.dialogService.open(ModalPrivilegeMobileComponent, {
       width: '98vw',
@@ -109,6 +91,23 @@ export class ListUsersMobileComponent implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.currentUser = user;
     dialogRef.componentInstance.dialogRef = dialogRef;
+  }
+
+  openDeleteUserModal(user: FirebaseUserModel, contentDeleteUser) {
+    this.userToDelete = user;
+    this.modalRefDeleteUser =  this.dialogService.open(contentDeleteUser, {
+      width: '98vw',
+      height:'50vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.usersListService.delete(this.userToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteUser.close();
   }
 
   ngOnDestroy() {

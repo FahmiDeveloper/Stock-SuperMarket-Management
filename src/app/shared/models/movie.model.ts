@@ -10,6 +10,7 @@ export class Movie {
   status: string;// get name of status foreach movie using statusId
   path: string;
   numRefMovie: number;
+  year: number;
 
   constructor(){
     this.nameMovie = '';
@@ -19,6 +20,7 @@ export class Movie {
     this.imageUrl = '';
     this.statusId = null;
     this.path = '';
+    this.year = null;
   }
   
 }

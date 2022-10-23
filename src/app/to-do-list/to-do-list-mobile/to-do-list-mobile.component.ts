@@ -123,13 +123,17 @@ export class ToDoListMobileComponent implements OnInit {
 
   editTask(list: 'toDoLater' | 'toDoNextWeek' | 'toDoThisWeek' | 'toDoToday' | 'toDoTomorrow', task: Task): void {
     let firstRange = task.taskToDoIn;
+    
     const dialogRef = this.dialog.open(TaskFormMobileComponent, {
-      width: '270px',
+      width: '98vw',
+      height:'60vh',
+      maxWidth: '100vw',
       data: {
         task,
         enableDelete: true,
       },
     });
+
     dialogRef.afterClosed().subscribe((result: TaskDialogResult|undefined) => {
       if (!result) {
         return;
@@ -265,11 +269,15 @@ export class ToDoListMobileComponent implements OnInit {
   newTask(): void {
 
     const dialogRef = this.dialog.open(TaskFormMobileComponent, {
-      width: '270px',
+      width: '98vw',
+      height:'60vh',
+      maxWidth: '100vw',
       data: {
         task: {},
       },
     });
+
+  
     dialogRef
       .afterClosed()
       .subscribe((result: TaskDialogResult|undefined) => {

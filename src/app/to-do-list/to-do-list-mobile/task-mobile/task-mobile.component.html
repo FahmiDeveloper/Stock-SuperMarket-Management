@@ -1,15 +1,82 @@
 <mat-card class="item" *ngIf="task" (click)="edit.emit(task)">
     <div class="row">
-      <div class="col-md-12">
-        <h3 style="margin-bottom: 5px;font-weight: 500;font-size: large;">{{ task.title }}</h3>
+      <div class="col-md-1">
+        <button mat-mini-fab color="accent">
+         <span class="text-application" style="font-size: larger;">{{ task.indexNo }}</span>
+        </button>
+      </div>
+      <div class="col-md-11">
+        <h3 style="margin-bottom: 5px;font-weight: 500;font-size: large;margin-top: 7px;">{{ task.title }}</h3>
         <br *ngIf="task.description">
         <span style="font-size: initial;">{{ task.description }}</span>
         <br *ngIf="task.description">
         <br *ngIf="task.description">
         <div style="display: inline;">
           <span style="font-size: small;">{{ task.date | date: 'dd/MM/yyyy' }}</span>
-          <mat-icon color="warn" style="float: right;" (click)="deleteTask($event)">delete</mat-icon>
+          <mat-icon 
+            color="warn" 
+            style="float: right;" 
+            (click)="openDeleteTaskModal(contentDeleteTask, $event)">
+            delete
+          </mat-icon>
         </div>
       </div>
     </div>
 </mat-card>
+
+<ng-template #contentDeleteTask>
+
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">Are you sure ?</h2>
+  </div>
+
+  <div mat-dialog-content>
+    <div class="gridForDelete text-application">
+        <div><span>No:</span></div>
+        <div>{{ task.indexNo }}</div>
+    </div>
+    <br>
+    <div class="gridForDelete text-application">
+      <div><span>Task:</span></div>
+      <div>{{ task.title }}</div>
+    </div>
+    <br>
+    <div class="gridForDelete text-application">
+      <div><span>Desc:</span></div>
+      <div>
+        <span *ngIf="task.description">{{ task.description }}</span>
+        <span *ngIf="!task.description">-</span>
+      </div>
+    </div> 
+    <br>
+    <div class="gridForDelete text-application">
+      <div><span>Date:</span></div>
+      <div>{{ task.date | date:'dd/MM/yyyy' }}</div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row justify-content-center" mat-dialog-actions>
+    <button 
+      mat-button 
+      type="button" 
+      [mat-dialog-close]="1" 
+      (click)="confirmDelete()" 
+      style="background:rgb(221, 51, 51);color: white;" 
+      class="text-application">
+      Delete
+    </button>
+
+    <button 
+      mat-button 
+      type="button" 
+      (click)="close()" 
+      tabindex="-1" 
+      style="background:#607D8B;color: white;" 
+      class="text-application">
+      Cancel
+    </button>
+  </div>
+
+</ng-template>

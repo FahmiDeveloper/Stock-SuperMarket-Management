@@ -66,7 +66,7 @@ export class UploadDetailsComponent implements OnChanges {
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
     if (this.filteredFiles) {
       this.dataSource.data = this.filteredFiles;
-       this.dataSource.data.forEach(element => {
+      this.dataSource.data.forEach(element => {
         element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
       })
     }
@@ -401,9 +401,9 @@ export class UploadDetailsComponent implements OnChanges {
     this.fileToDelete = file;
     if (this.isMobile) {
       this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {
-        width: '98vw',
-       height:'30vh',
-       maxWidth: '100vw'
+      width: '98vw',
+      height:'50vh',
+      maxWidth: '100vw'
      });
    } else {
     this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {

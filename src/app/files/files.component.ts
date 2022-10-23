@@ -269,7 +269,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     if (this.isMobile) {
       this.modalRefDeleteLink =  this.dialogService.open(contentDeleteLink, {
         width: '98vw',
-       height:'30vh',
+       height:'40vh',
        maxWidth: '100vw'
      });
    } else {

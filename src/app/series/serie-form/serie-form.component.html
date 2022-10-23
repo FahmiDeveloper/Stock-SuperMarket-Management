@@ -34,6 +34,32 @@
               <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
           </div>
+
+          <div class="row">
+            <div class="col-md-6">
+                <mat-form-field color="accent" style="width: 100px;">
+                  <mat-placeholder class="text-application"><span>Curr ep</span></mat-placeholder>
+                    <mat-select [(ngModel)]="serie.currentEpisode" name="currentEpisode">
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let nbr of nbrsList" [value]="nbr">
+                            {{nbr}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </div>
+            <div class="col-md-6">
+                <mat-form-field color="accent" style="width: 100px;">
+                  <mat-placeholder class="text-application"><span>Total ep</span></mat-placeholder>
+                    <mat-select [(ngModel)]="serie.totalEpisodes" name="totalEpisodes">
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let nbr of nbrsList" [value]="nbr">
+                            {{nbr}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+          </div>
     
           <div class="form">
             <mat-form-field color="accent">

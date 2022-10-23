@@ -124,3 +124,10 @@
   font-size: 14px;
   font-style: italic;
 }
+
+.gridForDelete {
+  display: grid;
+  grid-template-columns: 80px 220px;
+  width: 250px;
+  font-size: 18px;
+}

@@ -26,6 +26,8 @@ export class MovieFormComponent implements OnInit {
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
+  selectedYear: number;
+  years: number[] = [];
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -48,6 +50,10 @@ export class MovieFormComponent implements OnInit {
     if (!this.movie.key) {
       this.movie.date = moment().format('YYYY-MM-DD');
       this.movie.time = moment().format('HH:mm');
+    }
+    this.selectedYear = new Date().getFullYear() + 2;
+    for (let year = this.selectedYear; year >= 2010; year--) {
+      this.years.push(year);
     }
   }
 

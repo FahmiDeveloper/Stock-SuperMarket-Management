@@ -2,10 +2,9 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
-
-import Swal from 'sweetalert2';
 
 import { ModalPrivilegeComponent } from './modal-privilege/modal-privilege.component';
 
@@ -22,7 +21,7 @@ import { FirebaseUserModel } from '../shared/models/user.model';
 export class ListUsersComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
-  displayedColumns: string[] = ['name', 'email', 'password', 'movies', 'animes', 'series', 'files', 'debts', 'connected', 'actions'];
+  displayedColumns: string[] = ['picture','details', 'movies', 'animes', 'series', 'files', 'debts'];
   queryEmail: string = '';
 
   userToDelete: FirebaseUserModel = new FirebaseUserModel();
@@ -32,6 +31,11 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   subscriptionForGetAllUsers: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+  
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   constructor(
     public usersListService: UsersListService,
@@ -54,6 +58,15 @@ export class ListUsersComponent implements OnInit, OnDestroy {
         else this.dataSource.data = users.sort((n1, n2) => n2.numRefUser - n1.numRefUser);
     });
   }
+
+  onContextMenu(event: MouseEvent, user: FirebaseUserModel) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'user': user };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
+}  
 
   changeRoleStatus(user: FirebaseUserModel) {
     if (user.roleMovies == false) {
@@ -82,26 +95,6 @@ export class ListUsersComponent implements OnInit, OnDestroy {
       if (user.roleDeleteDebt == true) user.roleDeleteDebt = false;
     }
     this.usersListService.update(user.key, user);
-  }
-
-  deleteUser(userId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this user!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.usersListService.delete(userId);
-        Swal.fire(
-          'User has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
   }
 
   openModalPrivileges(user: FirebaseUserModel) {

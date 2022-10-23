@@ -1,5 +1,5 @@
-<h3 *ngIf="!anime.key" mat-dialog-title>Add new movie</h3>
-<h3 *ngIf="anime.key" mat-dialog-title>Edit movie</h3>
+<h3 *ngIf="!anime.key" mat-dialog-title>Add new anime</h3>
+<h3 *ngIf="anime.key" mat-dialog-title>Edit anime</h3>
 
 <div class="row">
     <div class="col-md-12">
@@ -24,6 +24,30 @@
                 </mat-select>
                 <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-form-field color="accent" style="width: 100px;">
+                        <mat-select placeholder="Curr ep" [(ngModel)]="anime.currentEpisode" name="currentEpisode">
+                            <mat-option value=""></mat-option>
+                            <mat-option *ngFor="let nbr of nbrsList" [value]="nbr">
+                                {{nbr}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+                    <mat-form-field color="accent" style="width: 100px;">
+                        <mat-select placeholder="Total ep" [(ngModel)]="anime.totalEpisodes" name="totalEpisodes">
+                            <mat-option value=""></mat-option>
+                            <mat-option *ngFor="let nbr of nbrsList" [value]="nbr">
+                                {{nbr}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
     
             <mat-form-field color="accent" style="width: 305px;">
                 <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="anime.note" name="note" rows="4" cols="40"></textarea>
@@ -46,10 +70,10 @@
                 <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
                 <span *ngIf="val == 100" class="progressComplete">Completed !</span>
             </div>
-        
+
             <div class="row justify-content-center" mat-dialog-actions>
-                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1">Save</button>
-                <button mat-button type="button" (click)="modalRef.close()" tabindex="-1">Cancel</button>
+                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;">Save</button>
+                <button mat-button type="button" (click)="modalRef.close()" tabindex="-1" style="background:#607D8B;color: white;">Cancel</button>
             </div>
         
         </form>
