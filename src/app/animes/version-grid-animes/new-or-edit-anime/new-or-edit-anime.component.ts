@@ -26,6 +26,7 @@ export class NewOrEditAnimeComponent implements OnInit {
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   modalRef: any;
+  nbrsList: number[] = [];
 
   formControl = new FormControl('', [Validators.required]);
 
@@ -46,6 +47,9 @@ export class NewOrEditAnimeComponent implements OnInit {
     if (!this.anime.key) {
       this.anime.date = moment().format('YYYY-MM-DD');
       this.anime.time = moment().format('HH:mm');
+    }
+    for (let i = 1; i <= 100; i++) {
+      this.nbrsList.push(i);
     }
   }
 

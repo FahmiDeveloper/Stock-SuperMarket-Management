@@ -1,0 +1,1 @@
+export * from './list-series-by-status-desktop.component';

@@ -17,19 +17,36 @@
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Name</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.name }}</td>
+        <ng-container matColumnDef="picture">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Picture</th>
+            <td mat-cell *matCellDef="let element"> 
+                <img mat-card-md-image src="/assets/pictures/NoImageAvailable.png">
+            </td>
         </ng-container>
 
-        <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Email</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.email }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="password">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Password</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.password }}</td>
+        <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Details</th>
+            <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element)">
+                <div class="gridForLegend text-application">
+                    <div><span>Name:</span></div>
+                    <div>{{ element.name }}</div>
+                </div>
+                <br>
+                <div class="gridForLegend text-application">
+                    <div><span>Email:</span></div>
+                    <div>{{ element.email }}</div>
+                </div>
+                <br>
+                <div class="gridForLegend text-application">
+                    <div><span>Pwd:</span></div>
+                    <div>{{ element.password }}</div>
+                </div>
+                <br>
+                <div class="gridForLegend text-application">
+                    <div><span>Con:</span></div>
+                    <div>{{ element.isConnected }}</div>
+                </div>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="movies">
@@ -66,35 +83,6 @@
                 <mat-checkbox [(ngModel)]="element.roleDebts" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
             </td>        
         </ng-container>
-
-        <ng-container matColumnDef="connected">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Connected</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                {{ element.isConnected }}
-            </td>        
-        </ng-container>
-        
-        <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    
-            <mat-cell *matCellDef="let row; let i=index;" class="btns-roles-delete">
-                <button
-                    *ngIf="row.roleMovies || row.roleAnimes || row.roleSeries || row.roleFiles || row.roleDebts"
-                    type="button"
-                    mat-icon-button 
-                    style="color: #9C27B0"
-                    (click)="openModalPrivileges(row)">
-                    <mat-icon aria-label="Edit">edit</mat-icon>
-                </button>
-                <button
-                    type="button"
-                    mat-icon-button 
-                    color="warn"
-                    (click)="openDeleteUserModal(row, contentDeleteUser)" >
-                    <mat-icon aria-label="Delete">delete</mat-icon>
-                </button>  
-            </mat-cell>
-        </ng-container>
     
         <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -112,7 +100,38 @@
     </mat-paginator>
 </div>
 
-<ng-template #contentDeleteUser let-modal let-c="close" let-d="dismiss">
+<div style="visibility: hidden; position: fixed"
+  [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y"
+  [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu="matMenu">
+	<ng-template matMenuContent let-user="user">
+
+        <button
+            *ngIf="user.roleMovies || user.roleAnimes || user.roleSeries || user.roleFiles || user.roleDebts"
+            type="button"
+            mat-menu-item 
+            (click)="openModalPrivileges(user)"
+            class="text-application">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
+        </button>
+
+        <button
+            type="button"
+            mat-menu-item 
+            (click)="openDeleteUserModal(user, contentDeleteUser)"
+            class="text-application">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>  
+
+	</ng-template>
+</mat-menu>
+
+<ng-template #contentDeleteUser>
 
     <div mat-dialog-title class="dialog-title">
       <h2 class="text-application">Are you sure ?</h2>

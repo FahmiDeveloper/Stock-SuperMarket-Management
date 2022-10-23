@@ -26,6 +26,7 @@ export class NewOrEditSerieComponent implements OnInit {
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
   modalRef: any;
+  nbrsList: number[] = [];
 
   formControl = new FormControl('', [Validators.required]);
 
@@ -46,6 +47,9 @@ export class NewOrEditSerieComponent implements OnInit {
     if (!this.serie.key) {
       this.serie.date = moment().format('YYYY-MM-DD');
       this.serie.time = moment().format('HH:mm');
+    }
+    for (let i = 1; i <= 100; i++) {
+      this.nbrsList.push(i);
     }
   }
 

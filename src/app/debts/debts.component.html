@@ -1,6 +1,42 @@
 <h1 class="titleTextInterface text-application">Debts</h1>
 
 <br>
+
+<div class="row">
+    <div class="col-md-12">
+        <button
+            *ngIf="dataUserConnected.roleAddDebt"
+            type="button" 
+            (click)="newDebt()" 
+            mat-mini-fab 
+            color="primary" 
+            style="background: #2196F3;float: right;">
+            <mat-icon style="color: white;">add</mat-icon>
+        </button>
+
+        <button 
+            *ngIf="!sortByDesc"
+            type="button"  
+            mat-mini-fab 
+            color="primary" 
+            (click)="sortByRefDebtDesc()" 
+            style="background: #2196F3;float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+        <button 
+            *ngIf="sortByDesc"
+            type="button"
+            mat-mini-fab
+            color="primary" 
+            (click)="sortByRefDebtAsc()" 
+            style="background: #2196F3;float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>
+
+    </div> 
+</div>
+
 <br>
 
 <div class="row">
@@ -241,7 +277,7 @@
 
         <ng-container matColumnDef="details">
             <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Details</th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element)">
                 <div style="margin-top: 50px;margin-bottom: 50px;">
                     <div class="gridForLegend text-application">
                         <div><span>Date:</span></div>
@@ -276,51 +312,8 @@
                 
             </td>
         </ng-container>
-
-        <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef class="btns-add-sort">
-                <button 
-                    *ngIf="dataUserConnected.roleAddDebt" 
-                    type="button" 
-                    mat-icon-button 
-                    color="primary" 
-                    (click)="newDebt()">
-                    <mat-icon aria-label="Example icon-button with a heart icon" style="color: white;">add</mat-icon>
-                </button>
-
-                <button type="button" *ngIf="(dataSource.data.length) && (dataSource.data.length > 1) && !sortByDesc" mat-icon-button color="primary" (click)="sortByRefDebtDesc()">
-                    <mat-icon aria-label="Example icon-button with a heart icon" style="color: white;">sort</mat-icon>
-                </button>
-
-                <button type="button" *ngIf="(dataSource.data.length) && (dataSource.data.length > 1) && sortByDesc" mat-icon-button color="primary" (click)="sortByRefDebtAsc()">
-                    <mat-icon aria-label="Example icon-button with a heart icon" style="color: white;">sort</mat-icon>
-                </button>
-            </mat-header-cell>
     
-            <mat-cell *matCellDef="let row; let i=index;" class="btns-edit-delete">  
-
-                <button 
-                    *ngIf="dataUserConnected.roleUpdateDebt"  
-                    type="button" 
-                    mat-icon-button 
-                    style="color: #9C27B0" 
-                    (click)="editDebt(row)">
-                    <mat-icon aria-label="Edit">edit</mat-icon>
-                </button>
-        
-                <button 
-                    *ngIf="dataUserConnected.roleDeleteDebt" 
-                    type="button" 
-                    mat-icon-button 
-                    color="warn"
-                    (click)="openDeleteDebtModal(row, contentDeleteDebt)">
-                    <mat-icon aria-label="Delete">delete</mat-icon>
-                </button>
-                
-            </mat-cell>
-        </ng-container>
-    
-        <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row style="background: #ff4081;" *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
 
     </table>
@@ -336,8 +329,39 @@
     </mat-paginator>
 </div>
 
+<div style="visibility: hidden; position: fixed"
+  [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y"
+  [matMenuTriggerFor]="contextMenu">
+</div>
 
-<ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
+<mat-menu #contextMenu="matMenu">
+	<ng-template matMenuContent let-debt="debt">
+
+        <button 
+            *ngIf="dataUserConnected.roleUpdateDebt"  
+            type="button" 
+            mat-menu-item 
+            (click)="editDebt(debt)">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
+        </button>
+
+        <button
+            *ngIf="dataUserConnected.roleDeleteDebt" 
+            type="button"
+            mat-menu-item 
+            (click)="openDeleteDebtModal(debt, contentDeleteDebt)" 
+            class="text-application">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>
+
+	</ng-template>
+</mat-menu>
+
+
+<ng-template #contentRestMoneyForeachPlace>
 
     <div mat-dialog-title class="dialog-title">
         <h2 class="text-application">Rest Money</h2>
@@ -391,7 +415,7 @@
 
 
 
-<ng-template #contentLoading let-modal let-c="close" let-d="dismiss">
+<ng-template #contentLoading>
 
     <div mat-dialog-title class="dialog-title">
         <h2 class="text-application">Delete debts</h2>
@@ -408,7 +432,7 @@
     </div>
 </ng-template>
 
-<ng-template #contentDeleteDebt let-modal let-c="close" let-d="dismiss">
+<ng-template #contentDeleteDebt>
 
     <div mat-dialog-title class="dialog-title">
       <h2 class="text-application">Are you sure ?</h2>

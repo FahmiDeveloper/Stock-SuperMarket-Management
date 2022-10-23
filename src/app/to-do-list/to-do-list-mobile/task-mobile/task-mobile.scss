@@ -9,3 +9,10 @@
     border-radius: 20px;
     width: 275px;
 }
+
+.gridForDelete {
+    display: grid;
+    grid-template-columns: 80px 220px;
+    width: 250px;
+    font-size: 18px;
+}

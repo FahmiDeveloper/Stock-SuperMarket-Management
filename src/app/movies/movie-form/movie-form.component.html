@@ -34,6 +34,18 @@
             <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
         </div>
+
+        <div class="form">
+          <mat-form-field color="accent">
+            <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
+            <mat-select [(ngModel)]="movie.year" name="year" class="text-application">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let year of years" [value]="year">
+                  <span class="text-application">{{year}}</span>
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
   
         <div class="form">
           <mat-form-field color="accent">

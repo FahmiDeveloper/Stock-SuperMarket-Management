@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { NewOrEditSerieComponent } from './new-or-edit-serie/new-or-edit-serie.component';
@@ -32,6 +31,8 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Serie>();
   displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
 
+  serieToDelete: Serie = new Serie();
+
   queryName: string = "";
   queryNote: string = "";
   statusId: number;
@@ -40,6 +41,8 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  modalRefDeleteSerie: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -127,26 +130,6 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteSerie(serieId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this serie!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.serieService.delete(serieId);
-        Swal.fire(
-          'Serie has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
   newSerie() {
     const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
       width: '98vw',
@@ -178,7 +161,7 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  zoomPicture(serie?: Serie) {
+  zoomPicture(serie: Serie) {
     const dialogRef = this.dialogService.open(ShowSeriePictureComponent, {
       width: '98vw',
       height:'77vh',
@@ -210,6 +193,23 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   sortByRefSerieAsc() {
     this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
     this.sortByDesc = false;
+  }
+
+  openDeleteSerieModal(serie: Serie, contentDeleteSerie) {
+    this.serieToDelete = serie;
+    this.modalRefDeleteSerie =  this.dialogService.open(contentDeleteSerie, {
+      width: '98vw',
+      height:'50vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.serieService.delete(this.serieToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteSerie.close();
   }
 
   ngOnDestroy() {

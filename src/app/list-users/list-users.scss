@@ -40,3 +40,22 @@ input.larger {
     width: 250px;
     font-size: 18px;
 }
+
+.mat-card-md-image {
+    width: 145px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.gridForLegend {
+    display: grid;
+    grid-template-columns: 80px 250px;
+    width: 250px;
+    margin: auto;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

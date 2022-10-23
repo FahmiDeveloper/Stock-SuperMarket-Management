@@ -20,6 +20,9 @@ import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Task } from 'src/app/shared/models/task.model';
 import { Debt } from 'src/app/shared/models/debt.model';
+import { Movie } from 'src/app/shared/models/movie.model';
+import { Anime } from 'src/app/shared/models/anime.model';
+import { Serie } from 'src/app/shared/models/serie.model';
 
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
   const subject = new BehaviorSubject<Task[]>([]);
@@ -47,6 +50,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   moviesWatched: number= 0;
   moviesDownloadedButNotWatchedYet: number= 0;
   moviesToSearchAboutIt: number= 0;
+  listMovies: Movie[] = [];
+  currentStatusForMovie: number;
 
   // animes variables
   animesWaitToSort: number = 0;
@@ -54,6 +59,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   animesWatched: number= 0;
   animesDownloadedButNotWatchedYet: number= 0;
   animesToSearchAboutIt: number= 0;
+  listAnimes: Anime[] = [];
+  currentStatusForAnime: number;
 
   // series variables
   seriesWaitToSort: number = 0;
@@ -61,6 +68,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   seriesWatched: number= 0;
   seriesDownloadedButNotWatchedYet: number= 0;
   seriesToSearchAboutIt: number= 0;
+  listSeries: Serie[] = [];
+  currentStatusForSerie: number;
 
   // files variables
   pictureFilesNbr: number = 0;
@@ -69,6 +78,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   txtFilesNbr: number = 0;
   zipFilesNbr: number = 0;
   wordFilesNbr: number = 0;
+  listFiles: any[] = [];
+  fileByType: number;
 
   // debts variables
   totalInDebt: number= 0;
@@ -119,11 +130,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   nbrThisWeekTask: number= 0;
   nbrNextWeekTaskList: number= 0;
   nbrLaterTaskList: number= 0;
+  tasksByStatus: number;
+  taskListForToday: Task[] = [];
+  taskListForTomorrow: Task[]= [];
+  taskListForThisWeek: Task[]= [];
+  taskListForNextWeek: Task[]= [];
+  laterTaskList: Task[]= [];
+  tasksListByStatus: Task[]= [];
 
   // users variables
   totalNbrUsers: number= 0;
   nbrUsersConnected: number = 0;
   nbrUsersNotConnected: number= 0;
+  totalUsers: FirebaseUserModel[] = [];
+  totalUsersConnected: FirebaseUserModel[] = [];
+  totalUsersNotConnected: FirebaseUserModel[] = [];
+  usersListByStatus: FirebaseUserModel[]= [];
+  usersByStatus: number;
 
   subscripton: Subscription;
   subscriptionForGetAllMovies: Subscription;
@@ -178,6 +201,10 @@ export class HomeComponent implements OnInit, OnDestroy {
                   this.nbrUsersConnected = users.filter(user => user.isConnected == true).length;
                   this.nbrUsersNotConnected = users.filter(user => user.isConnected == false).length;
 
+                  this.totalUsers = users.sort((n1, n2) => n2.numRefUser - n1.numRefUser);
+                  this.totalUsersConnected = users.filter(user => user.isConnected == true).sort((n1, n2) => n2.numRefUser - n1.numRefUser);
+                  this.totalUsersNotConnected = users.filter(user => user.isConnected == false).sort((n1, n2) => n2.numRefUser - n1.numRefUser);
+
                   this.usersListService
                   .get(connectedUserFromList.key)
                   .valueChanges()
@@ -198,13 +225,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getFilesStatistics();
     this.getAllDebtsStatistics();
     this.getToDoListsStatistics();
-    this.getUsersStatistics();
   }
 
   getMoviesStatistics() {
     this.subscriptionForGetAllMovies = this.movieService
     .getAll()
     .subscribe(movies => {
+        this.listMovies = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
         this.moviesWaitToSort = movies.filter(movie => movie.statusId == 1).length;
         this.moviesNotDownloadedYet = movies.filter(movie => movie.statusId == 2).length;
         this.moviesWatched = movies.filter(movie => movie.statusId == 3).length;     
@@ -218,6 +245,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllAnimes = this.animeService
     .getAll()
     .subscribe(animes => {
+        this.listAnimes = animes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
         this.animesWaitToSort = animes.filter(anime => anime.statusId == 1).length;
         this.animesNotDownloadedYet = animes.filter(anime => anime.statusId == 2).length;
         this.animesWatched = animes.filter(anime => anime.statusId == 3).length;     
@@ -231,6 +259,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
+        this.listSeries = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
         this.seriesWaitToSort = series.filter(serie => serie.statusId == 1).length;
         this.seriesNotDownloadedYet = series.filter(serie => serie.statusId == 2).length;
         this.seriesWatched = series.filter(serie => serie.statusId == 3).length;     
@@ -244,6 +273,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllFiles = this.uploadService.getFiles().snapshotChanges().pipe(
       map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() })))
     ).subscribe(fileUploads => {
+       this.listFiles = fileUploads.sort((n1, n2) => n2.numRefFile - n1.numRefFile);
        this.pictureFilesNbr = fileUploads.filter(element => element.typeFileId == 1).length;
        this.pdfFilesNbr = fileUploads.filter(element => element.typeFileId == 2).length;
        this.excelFilesNbr = fileUploads.filter(element => element.typeFileId == 3).length;
@@ -745,27 +775,175 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getToDoListsStatistics() {
     this.subscriptionForGetTodayWork = this.toDoToday.subscribe(res => {
+      this.taskListForToday = res.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.taskListForToday.forEach((task, index) => {
+        task.indexNo = index + 1;
+      })
       this.nbrTodayTask = res.length;
     })
 
     this.subscriptionForGetTomorrowWork = this.toDoTomorrow.subscribe(res => {
+      this.taskListForTomorrow = res.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.taskListForTomorrow.forEach((task, index) => {
+        task.indexNo = index + 1;
+      })
       this.nbrTomorrowTask = res.length;
     })
 
     this.subscriptionForGetThisWeekWork = this.toDoThisWeek.subscribe(res => {
+      this.taskListForThisWeek = res.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.taskListForThisWeek.forEach((task, index) => {
+        task.indexNo = index + 1;
+      })
       this.nbrThisWeekTask = res.length;
     })
 
     this.subscriptionForGetNextWeekWork = this.toDoNextWeek.subscribe(res => {
+      this.taskListForNextWeek = res.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.taskListForNextWeek.forEach((task, index) => {
+        task.indexNo = index + 1;
+      })
       this.nbrNextWeekTaskList = res.length;
     })
 
     this.subscriptionForGetLaterWork = this.toDoLater.subscribe(res => {
+      this.laterTaskList = res.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.laterTaskList.forEach((task, index) => {
+        task.indexNo = index + 1;
+      })
       this.nbrLaterTaskList = res.length;
     })
   }
 
-  getUsersStatistics() {}
+  showListMoviesByStatus(status: number, contentListMoviesByStatus, e: Event) {
+    e.stopPropagation();
+    this.currentStatusForMovie = status;
+
+    if (this.isMobile) {
+      this.dialogService.open(contentListMoviesByStatus, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentListMoviesByStatus, {
+        width: '35vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    }    
+  }
+
+  showListAnimesByStatus(status: number, contentListAnimesByStatus, e: Event) {
+    e.stopPropagation();
+    this.currentStatusForAnime = status;
+
+    if (this.isMobile) {
+      this.dialogService.open(contentListAnimesByStatus, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentListAnimesByStatus, {
+        width: '35vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    }    
+  }
+
+  showListSeriesByStatus(status: number, contentListSeriesByStatus, e: Event) {
+    e.stopPropagation();
+    this.currentStatusForSerie = status;
+
+    if (this.isMobile) {
+      this.dialogService.open(contentListSeriesByStatus, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentListSeriesByStatus, {
+        width: '35vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    }    
+  }
+
+  showListFilesByType(type: number, contentListFilesByType, e: Event) {
+    e.stopPropagation();
+    this.fileByType = type;
+
+    if (this.isMobile) {
+      this.dialogService.open(contentListFilesByType, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentListFilesByType, {
+        width: '35vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    }   
+  }
+
+  showTaskList(status: number, contentTaskList, e: Event) {
+    e.stopPropagation();
+    this.tasksByStatus = status;
+
+    if (this.tasksByStatus == 1) this.tasksListByStatus = this.taskListForToday;
+
+    else if (this.tasksByStatus == 2) this.tasksListByStatus = this.taskListForTomorrow;
+
+    else if (this.tasksByStatus == 3) this.tasksListByStatus = this.taskListForThisWeek;
+
+    else if (this.tasksByStatus == 4) this.tasksListByStatus = this.taskListForNextWeek;
+
+    else this.tasksListByStatus = this.laterTaskList;
+
+    if (this.isMobile) {
+      this.dialogService.open(contentTaskList, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentTaskList, {
+        width: '35vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    }   
+  }
+
+  showUsersList(status: number, contentUsersList, e: Event) {
+    e.stopPropagation();
+    this.usersByStatus = status;
+
+    if (this.usersByStatus == 1) this.usersListByStatus = this.totalUsers;
+
+    else if (this.usersByStatus == 2) this.usersListByStatus = this.totalUsersConnected;
+
+    else this.usersListByStatus = this.totalUsersNotConnected;
+
+    if (this.isMobile) {
+      this.dialogService.open(contentUsersList, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentUsersList, {
+        width: '35vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    }   
+  }
 
   ngOnDestroy() {
     this.subscripton.unsubscribe();

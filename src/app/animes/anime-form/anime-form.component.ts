@@ -26,6 +26,7 @@ export class AnimeFormComponent implements OnInit {
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
+  nbrsList: number[] = [];
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -48,7 +49,10 @@ export class AnimeFormComponent implements OnInit {
     if (!this.anime.key) {
       this.anime.date = moment().format('YYYY-MM-DD');
       this.anime.time = moment().format('HH:mm');
-    }  
+    }
+    for (let i = 1; i <= 100; i++) {
+      this.nbrsList.push(i);
+    }
   }
 
   save(anime) {

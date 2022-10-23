@@ -24,6 +24,15 @@
                 </mat-select>
                 <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
+
+            <mat-form-field color="accent" style="width: 305px;">
+                <mat-select placeholder="Year" [(ngModel)]="movie.year" name="year">
+                    <mat-option value=""></mat-option>
+                    <mat-option *ngFor="let year of years" [value]="year">
+                        {{year}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
     
             <mat-form-field color="accent" style="width: 305px;">
                 <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="movie.note" name="note" rows="4" cols="40"></textarea>
@@ -46,10 +55,10 @@
                 <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
                 <span *ngIf="val == 100" class="progressComplete">Completed !</span>
             </div>
-        
+
             <div class="row justify-content-center" mat-dialog-actions>
-                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1">Save</button>
-                <button mat-button type="button" (click)="modalRef.close()" tabindex="-1">Cancel</button>
+                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;">Save</button>
+                <button mat-button type="button" (click)="modalRef.close()" tabindex="-1" style="background:#607D8B;color: white;">Cancel</button>
             </div>
         
         </form>

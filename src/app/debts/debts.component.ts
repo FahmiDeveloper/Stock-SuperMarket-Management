@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 
@@ -27,7 +28,7 @@ export class DebtsComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Debt>();
   dataSourceCopie = new MatTableDataSource<Debt>();
-  displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'details', 'actions'];
+  displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'details'];
   filteredDebtsByPlaceAndDebtForPay: Debt[];
   filteredDebtsByPlaceAndDebtToGet: Debt[];
   
@@ -74,6 +75,11 @@ export class DebtsComponent implements OnInit, OnDestroy {
   modalRefDeleteDebt: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
+
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
@@ -653,6 +659,15 @@ export class DebtsComponent implements OnInit, OnDestroy {
 
   close() {
     this.modalRefDeleteDebt.close();
+  }
+
+  onContextMenu(event: MouseEvent, debt: Debt) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu.menuData = { 'debt': debt };
+    this.contextMenu.menu.focusFirstItem('mouse');
+    this.contextMenu.openMenu();
   }
 
   ngOnDestroy() {

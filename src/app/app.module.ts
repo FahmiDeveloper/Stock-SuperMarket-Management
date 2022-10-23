@@ -92,7 +92,19 @@ import {
   HeaderComponent,
   HomeComponent,
   LoginComponent,
-  RegisterComponent
+  RegisterComponent,
+  ListMoviesByStatusForDesktopComponent,
+  ListMoviesByStatusForMobileComponent,
+  ListAnimesByStatusForDesktopComponent,
+  ListAnimesByStatusForMobileComponent,
+  ListSeriesByStatusForDesktopComponent,
+  ListSeriesByStatusForMobileComponent,
+  ListFilesByTypeComponent,
+  ListTasksForDesktopComponent,
+  ListTasksForMobileComponent,
+  TaskDataComponent,
+  ListUsersByStatusForDesktopComponent,
+  ListUsersByStatusForMobileComponent
 } from './core/components/index';
 
 import { 
@@ -183,14 +195,38 @@ import { UserComponent } from './user/index';
     TaskFormComponent,
     ToDoListMobileComponent,
     TaskMobileComponent,
-    TaskFormMobileComponent
+    TaskFormMobileComponent,
+    ListMoviesByStatusForDesktopComponent,
+    ListMoviesByStatusForMobileComponent,
+    ListAnimesByStatusForDesktopComponent,
+    ListAnimesByStatusForMobileComponent,
+    ListSeriesByStatusForDesktopComponent,
+    ListSeriesByStatusForMobileComponent,
+    ListFilesByTypeComponent,
+    ListTasksForDesktopComponent,
+    ListTasksForMobileComponent,
+    TaskDataComponent,
+    ListUsersByStatusForDesktopComponent,
+    ListUsersByStatusForMobileComponent
   ],
   entryComponents: [
     NewOrEditMovieComponent,
     NewOrEditAnimeComponent,
     NewOrEditSerieComponent,
     NewOrEditDebtComponent,
-    NewOrEditLinkComponent
+    NewOrEditLinkComponent,
+    ListMoviesByStatusForDesktopComponent,
+    ListMoviesByStatusForMobileComponent,
+    ListAnimesByStatusForDesktopComponent,
+    ListAnimesByStatusForMobileComponent,
+    ListSeriesByStatusForDesktopComponent,
+    ListSeriesByStatusForMobileComponent,
+    ListFilesByTypeComponent,
+    ListTasksForDesktopComponent,
+    ListTasksForMobileComponent,
+    TaskDataComponent,
+    ListUsersByStatusForDesktopComponent,
+    ListUsersByStatusForMobileComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

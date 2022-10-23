@@ -5,8 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 
-import Swal from 'sweetalert2';
-
 import { NewOrEditMovieComponent } from './new-or-edit-movie/new-or-edit-movie.component';
 import { ShowMoviePictureComponent } from '../show-movie-picture/show-movie-picture.component';
 
@@ -29,7 +27,9 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Movie>();
   dataSourceCopie = new MatTableDataSource<Movie>();
-  displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
+  displayedColumns: string[] = ['picture', 'name', 'status', 'note', 'star'];
+
+  movieToDelete: Movie = new Movie();
 
   queryName: string = "";
   queryNote: string = "";
@@ -39,6 +39,8 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  modalRefDeleteMovie: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -125,26 +127,6 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  deleteMovie(movieId) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'delete this movie!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.value) {
-        this.movieService.delete(movieId);
-        Swal.fire(
-          'Movie has been deleted successfully',
-          '',
-          'success'
-        )
-      }
-    })
-  }
-
   newMovie() {
     const dialogRef = this.dialogService.open(NewOrEditMovieComponent, {
       width: '98vw',
@@ -208,6 +190,23 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   sortByRefMovieAsc() {
     this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
     this.sortByDesc = false;
+  }
+
+  openDeleteMovieModal(movie: Movie, contentDeleteMovie) {
+    this.movieToDelete = movie;
+    this.modalRefDeleteMovie =  this.dialogService.open(contentDeleteMovie, {
+      width: '98vw',
+      height:'50vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.movieService.delete(this.movieToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteMovie.close();
   }
 
   ngOnDestroy() {

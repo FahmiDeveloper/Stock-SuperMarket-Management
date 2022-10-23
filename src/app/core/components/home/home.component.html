@@ -21,29 +21,59 @@
           </div>
           <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #3f51b5">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWaitToSort }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(1, contentListMoviesByStatus, $event)">
+                Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWaitToSort }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesNotDownloadedYet }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(2, contentListMoviesByStatus, $event)">
+                Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWatched }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(3, contentListMoviesByStatus, $event)">
+                Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWatched }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(4, contentListMoviesByStatus, $event)">
+                Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesToSearchAboutIt }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(5, contentListMoviesByStatus, $event)">
+                To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
+              </span>
             </div>
           </div>
           <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #3f51b5">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;{{ moviesWatched }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}</span></mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(1, contentListMoviesByStatus, $event)">
+                    Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(2, contentListMoviesByStatus, $event)">
+                    Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(3, contentListMoviesByStatus, $event)">
+                    Watched:&nbsp;&nbsp;{{ moviesWatched }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(4, contentListMoviesByStatus, $event)">
+                    Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(5, contentListMoviesByStatus, $event)">
+                    To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
+                  </span>
+                </mat-grid-tile>
               </mat-grid-list>
             </div>
           </div>
@@ -66,29 +96,59 @@
           </div>
           <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #4CAF50">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWaitToSort }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(1, contentListAnimesByStatus, $event)">
+                Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWaitToSort }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesNotDownloadedYet }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(2, contentListAnimesByStatus, $event)">
+                Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesNotDownloadedYet }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWatched }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(3, contentListAnimesByStatus, $event)">
+                Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWatched }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(4, contentListAnimesByStatus, $event)">
+                Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesToSearchAboutIt }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(5, contentListAnimesByStatus, $event)">
+                To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesToSearchAboutIt }}
+              </span>
             </div>
           </div>
           <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #4CAF50">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;{{ animesWatched }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}</span></mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(1, contentListAnimesByStatus, $event)">
+                    Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(2, contentListAnimesByStatus, $event)">
+                    Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(3, contentListAnimesByStatus, $event)">
+                    Watched:&nbsp;&nbsp;{{ animesWatched }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(4, contentListAnimesByStatus, $event)">
+                    Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(5, contentListAnimesByStatus, $event)">
+                    To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}
+                  </span>
+                </mat-grid-tile>
               </mat-grid-list>
             </div>
           </div>
@@ -111,29 +171,59 @@
           </div>
           <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #ec4b53">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWaitToSort }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(1, contentListSeriesByStatus, $event)">
+                Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWaitToSort }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesNotDownloadedYet }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(2, contentListSeriesByStatus, $event)">
+                Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWatched }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(3, contentListSeriesByStatus, $event)">
+                Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWatched }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(4, contentListSeriesByStatus, $event)">
+                Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesToSearchAboutIt }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(5, contentListSeriesByStatus, $event)">
+                To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
+              </span>
             </div>
           </div>
           <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #ec4b53">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Watched:&nbsp;&nbsp;{{ seriesWatched }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}</span></mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(1, contentListSeriesByStatus, $event)">
+                    Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(2, contentListSeriesByStatus, $event)">
+                    Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(3, contentListSeriesByStatus, $event)">
+                    Watched:&nbsp;&nbsp;{{ seriesWatched }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(4, contentListSeriesByStatus, $event)">
+                    Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(5, contentListSeriesByStatus, $event)">
+                    To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
+                  </span>
+                </mat-grid-tile>
               </mat-grid-list>
             </div>
           </div>
@@ -156,33 +246,69 @@
           </div>
           <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #24a8f2">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Pictures:&nbsp;&nbsp;&nbsp;&nbsp;{{ pictureFilesNbr }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
+                Pictures:&nbsp;&nbsp;&nbsp;&nbsp;{{ pictureFilesNbr }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">PDF:&nbsp;&nbsp;&nbsp;&nbsp;{{ pdfFilesNbr }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
+                PDF:&nbsp;&nbsp;&nbsp;&nbsp;{{ pdfFilesNbr }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Excel:&nbsp;&nbsp;&nbsp;&nbsp;{{ excelFilesNbr }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
+                Excel:&nbsp;&nbsp;&nbsp;&nbsp;{{ excelFilesNbr }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Txt:&nbsp;&nbsp;&nbsp;&nbsp;{{ txtFilesNbr }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
+                Txt:&nbsp;&nbsp;&nbsp;&nbsp;{{ txtFilesNbr }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Zip:&nbsp;&nbsp;&nbsp;&nbsp;{{ zipFilesNbr }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
+                Zip:&nbsp;&nbsp;&nbsp;&nbsp;{{ zipFilesNbr }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Word:&nbsp;&nbsp;&nbsp;&nbsp;{{ wordFilesNbr }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
+                Word:&nbsp;&nbsp;&nbsp;&nbsp;{{ wordFilesNbr }}
+              </span>
             </div>
           </div>
           <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #24a8f2">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <mat-grid-list cols="6" rowHeight="5:1">
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Excel:&nbsp;&nbsp;{{ excelFilesNbr }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Txt:&nbsp;&nbsp;{{ txtFilesNbr }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Zip:&nbsp;&nbsp;{{ zipFilesNbr }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Word:&nbsp;&nbsp;{{ wordFilesNbr }}</span></mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
+                  Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
+                </span>
+              </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
+                  PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
+                </span>
+              </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
+                  Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
+                </span>
+              </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
+                  Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
+                </span>
+              </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
+                  Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
+                </span>
+              </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
+                  Word:&nbsp;&nbsp;{{ wordFilesNbr }}
+                </span>
+              </mat-grid-tile>
               </mat-grid-list>
             </div>
           </div>
@@ -269,29 +395,59 @@
           </div>
           <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #9C27B0">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Today:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTodayTask }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(1, contentTaskList, $event)">
+                Today:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTodayTask }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Tomorrow:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTomorrowTask }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(2, contentTaskList, $event)">
+                Tomorrow:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTomorrowTask }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">This week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrThisWeekTask }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(3, contentTaskList, $event)">
+                This week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrThisWeekTask }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Next week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrNextWeekTaskList }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(4, contentTaskList, $event)">
+                Next week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrNextWeekTaskList }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Later:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrLaterTaskList }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(5, contentTaskList, $event)">
+                Later:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrLaterTaskList }}
+              </span>
             </div>
           </div>
           <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #9C27B0">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Today:&nbsp;&nbsp;{{ nbrTodayTask }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Tomorrow:&nbsp;&nbsp;{{ nbrTomorrowTask }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">This week:&nbsp;&nbsp;{{ nbrThisWeekTask }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Next week:&nbsp;&nbsp;{{ nbrNextWeekTaskList }}</span></mat-grid-tile>
-                <mat-grid-tile><span style="font-weight: 500;font-size: revert;">Later:&nbsp;&nbsp;{{ nbrLaterTaskList }}</span></mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(1, contentTaskList, $event)">
+                    Today:&nbsp;&nbsp;{{ nbrTodayTask }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(2, contentTaskList, $event)">
+                    Tomorrow:&nbsp;&nbsp;{{ nbrTomorrowTask }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(3, contentTaskList, $event)">
+                    This week:&nbsp;&nbsp;{{ nbrThisWeekTask }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(4, contentTaskList, $event)">
+                    Next week:&nbsp;&nbsp;{{ nbrNextWeekTaskList }}
+                  </span>
+              </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(5, contentTaskList, $event)">
+                    Later:&nbsp;&nbsp;{{ nbrLaterTaskList }}
+                  </span>
+                </mat-grid-tile>
               </mat-grid-list>
             </div>
           </div>
@@ -315,26 +471,38 @@
           </div>
           <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #B96068">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Total users:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalNbrUsers }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showUsersList(1, contentUsersList, $event)">
+                Total users:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalNbrUsers }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Connected:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrUsersConnected }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showUsersList(2, contentUsersList, $event)">
+                Connected:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrUsersConnected }}
+              </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">Not connected:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrUsersNotConnected }}</span>
+              <span style="font-weight: 500;font-size: revert;" (click)="showUsersList(3, contentUsersList, $event)">
+                Not connected:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrUsersNotConnected }}
+              </span>
             </div>
           </div>
           <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #B96068">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <mat-grid-list cols="3" rowHeight="8:1">
                 <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;">Total users:&nbsp;&nbsp;{{ totalNbrUsers }}</span>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(1, contentUsersList, $event)">
+                    Total users:&nbsp;&nbsp;{{ totalNbrUsers }}
+                  </span>
                 </mat-grid-tile>
                 <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;">Connected:&nbsp;&nbsp;{{ nbrUsersConnected }}</span>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(2, contentUsersList, $event)">
+                    Connected:&nbsp;&nbsp;{{ nbrUsersConnected }}
+                  </span>
                 </mat-grid-tile>
                 <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;">Not connected:&nbsp;&nbsp;{{ nbrUsersNotConnected }}</span>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(3, contentUsersList, $event)">
+                    Not connected:&nbsp;&nbsp;{{ nbrUsersNotConnected }}
+                  </span>
                 </mat-grid-tile>
               </mat-grid-list>
             </div>
@@ -348,7 +516,7 @@
 
 
 
-<ng-template #contentRestMoneyForeachPlace let-modal let-c="close" let-d="dismiss">
+<ng-template #contentRestMoneyForeachPlace>
 
   <div mat-dialog-title class="dialog-title text-application">
     <h2 class="text-application">Rest Money</h2>
@@ -400,7 +568,7 @@
 
 </ng-template>
 
-<ng-template #contentTotalInDebtsDet let-modal let-c="close" let-d="dismiss">
+<ng-template #contentTotalInDebtsDet>
 
   <div mat-dialog-title class="dialog-title">
     <h2 class="text-application">To pay</h2>
@@ -444,7 +612,7 @@
 </ng-template>
 
 
-<ng-template #contentTotalOutDebtsDet let-modal let-c="close" let-d="dismiss">
+<ng-template #contentTotalOutDebtsDet>
 
   <div mat-dialog-title class="dialog-title">
     <h2 class="text-application">To get</h2>
@@ -484,6 +652,52 @@
       <span *ngIf="!totalOutDebtsNotToGetForNow">0DT</span>
     </mat-grid-tile>
   </mat-grid-list>
+
+</ng-template>
+
+<ng-template #contentListMoviesByStatus>
+
+  <list-movies-by-status-desktop *ngIf="!isMobile" [listMovies]="listMovies" [currentStatusForMovie]="currentStatusForMovie"></list-movies-by-status-desktop>
+
+  <list-movies-by-status-mobile *ngIf="isMobile" [listMovies]="listMovies" [currentStatusForMovie]="currentStatusForMovie"></list-movies-by-status-mobile>
+
+</ng-template>
+
+<ng-template #contentListAnimesByStatus>
+
+  <list-animes-by-status-desktop *ngIf="!isMobile" [listAnimes]="listAnimes" [currentStatusForAnime]="currentStatusForAnime"></list-animes-by-status-desktop>
+
+  <list-animes-by-status-mobile *ngIf="isMobile" [listAnimes]="listAnimes" [currentStatusForAnime]="currentStatusForAnime"></list-animes-by-status-mobile>
+
+</ng-template>
+
+<ng-template #contentListSeriesByStatus>
+
+  <list-series-by-status-desktop *ngIf="!isMobile" [listSeries]="listSeries" [currentStatusForSerie]="currentStatusForSerie"></list-series-by-status-desktop>
+
+  <list-series-by-status-mobile *ngIf="isMobile" [listSeries]="listSeries" [currentStatusForSerie]="currentStatusForSerie"></list-series-by-status-mobile>
+
+</ng-template>
+
+<ng-template #contentListFilesByType>
+
+  <list-files-by-type [listFiles]="listFiles" [fileByType]="fileByType" [isMobile]="isMobile"></list-files-by-type>
+
+</ng-template>
+
+<ng-template #contentTaskList>
+
+  <list-tasks-desktop *ngIf="!isMobile" [tasksListByStatus]="tasksListByStatus" [tasksByStatus]="tasksByStatus" [isMobile]="isMobile"></list-tasks-desktop>
+
+  <list-tasks-mobile *ngIf="isMobile" [tasksListByStatus]="tasksListByStatus" [tasksByStatus]="tasksByStatus" [isMobile]="isMobile"></list-tasks-mobile>
+
+</ng-template>
+
+<ng-template #contentUsersList>
+
+  <list-users-by-status-desktop *ngIf="!isMobile" [usersListByStatus]="usersListByStatus" [usersByStatus]="usersByStatus"></list-users-by-status-desktop>
+
+  <list-users-by-status-mobile *ngIf="isMobile" [usersListByStatus]="usersListByStatus" [usersByStatus]="usersByStatus"></list-users-by-status-mobile>
 
 </ng-template>
 

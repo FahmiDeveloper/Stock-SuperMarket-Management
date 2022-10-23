@@ -10,6 +10,8 @@ export class Anime {
   status: string;// get name of status foreach anime using statusId
   path: string;
   numRefAnime: number;
+  currentEpisode: number;
+  totalEpisodes: number;
 
   constructor(){
     this.nameAnime = '';

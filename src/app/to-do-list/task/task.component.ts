@@ -16,8 +16,8 @@ export class TaskComponent {
   @Input() currentList: string | null = null;
 
   @Output() edit = new EventEmitter<Task>();
+  
   modalRefDeleteTask: any;
-  event: any;
 
   constructor(private store: AngularFirestore, public dialogService: MatDialog) {}
 
