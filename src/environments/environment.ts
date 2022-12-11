@@ -5,14 +5,14 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyBsRNqCCntneHgZRhwDOKTEh1YsJStpXvQ",
-    authDomain: "stockdb-22747.firebaseapp.com",
-    databaseURL: "https://stockdb-22747-default-rtdb.firebaseio.com",
-    projectId: "stockdb-22747",
-    storageBucket: "stockdb-22747.appspot.com",
-    messagingSenderId: "42554469994",
-    appId: "1:42554469994:web:3551c3850661b2267fe413",
-    measurementId: "G-S48YNMZWVD"
+    apiKey: "AIzaSyB4pcvdeVJmtSVTSjxyDg1nX5_MCbyBCSg",
+    authDomain: "oshop-d014d.firebaseapp.com",
+    databaseURL: "https://oshop-d014d-default-rtdb.firebaseio.com",
+    projectId: "oshop-d014d",
+    storageBucket: "oshop-d014d.appspot.com",
+    messagingSenderId: "518036013869",
+    appId: "1:518036013869:web:2deb19fcbf297f4826c9a4",
+    measurementId: "G-8NKHFC5WMX"
   }
 };
 
