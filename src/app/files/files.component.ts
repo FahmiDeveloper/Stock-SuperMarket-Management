@@ -112,7 +112,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       this.content = '';
       this.angularContext = false;
       this.otherContext = false;
-      this.getAllLinks()
+      this.getAllLinks();
       if (this.isMobile) {
         this.dialogService.open(contentLinks, {
           width: '98vw',
