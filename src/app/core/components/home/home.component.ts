@@ -1196,7 +1196,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetNextWeekWork.unsubscribe();
     this.subscriptionForGetLaterWork.unsubscribe();
     this.subscriptionForGetAllUsers.unsubscribe();
-    this.subscriptionForGetAllLinks.unsubscribe();
+    if (this.subscriptionForGetAllLinks) this.subscriptionForGetAllLinks.unsubscribe();
     this.subscriptionForGetAllClockings.unsubscribe();
   }
   
