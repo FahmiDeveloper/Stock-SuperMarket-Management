@@ -11,6 +11,37 @@
     </button>
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+
+        <mat-form-field style="width: 180px;">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" name="queryName" (keyup)="filterSeries()" [(ngModel)]="queryName"/>
+        </mat-form-field>
+
+        <button 
+            *ngIf="!sortByDesc && currentStatusForSerie == 2"
+            type="button"  
+            mat-mini-fab 
+            color="primary" 
+            (click)="sortByRefSerieDesc()" 
+            style="background: #2196F3;float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+        <button 
+            *ngIf="sortByDesc && currentStatusForSerie == 2"
+            type="button"
+            mat-mini-fab
+            color="primary" 
+            (click)="sortByRefSerieAsc()" 
+            style="background: #2196F3;float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+    </div> 
+</div>
+
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 
@@ -19,20 +50,13 @@
             <td mat-cell *matCellDef="let element"> 
                 <img *ngIf="element.imageUrl" mat-card-md-image [src]="element.imageUrl" (click)="zoomPicture(element)">
                 <img *ngIf="!element.imageUrl" mat-card-md-image src="/assets/pictures/NoImageAvailable.png" (click)="zoomPicture(element)">
-                <span *ngIf="element.currentEpisode && element.totalEpisodes">
-                    <span *ngIf="element.currentEpisode == 100 && element.totalEpisodes == 100" style="margin-left: 14px;">
-                        {{ element.currentEpisode }} / {{ element.totalEpisodes }}
-                    </span>
-                    <span *ngIf="element.currentEpisode >= 10 && element.totalEpisodes <= 99" style="margin-left: 30px;">
-                        {{ element.currentEpisode }} / {{ element.totalEpisodes }}
-                    </span>
-                    <span *ngIf="element.currentEpisode < 10 && element.totalEpisodes >= 10 && element.totalEpisodes !== 100" style="margin-left: 30px;">
-                        {{ element.currentEpisode }} / {{ element.totalEpisodes }}
-                    </span>
+                
+                <span [ngStyle]="{'margin-left': element.year ? '24px' : '50px'}">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;
+                    <span *ngIf="element.year">{{ element.year }}</span>
+                    <span *ngIf="!element.year">?</span>
                 </span>
-                <span *ngIf="element.currentEpisode && !element.totalEpisodes" style="margin-left: 35px;">{{ element.currentEpisode }} / ?</span>
-                <span *ngIf="!element.currentEpisode && element.totalEpisodes" style="margin-left: 35px;">? / {{ element.totalEpisodes }}</span>
-                <span *ngIf="!element.currentEpisode && !element.totalEpisodes" style="margin-left: 40px;">? / ?</span>
+               
             </td>
         </ng-container>
 
@@ -42,6 +66,33 @@
                 <div class="gridForLegend">
                     <div><span>Name:</span></div>
                     <div><span style="cursor: pointer;" (click)="copyNameSerie(element.nameSerie)">{{ element.nameSerie }}</span></div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="season">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <div class="gridForLegend">
+                    <div>
+                        <span>Season:&nbsp;&nbsp;{{ element.season }}</span>
+                        <span *ngIf="!element.season">?</span>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="episodes">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <div class="gridForLegend" *ngIf="element.statusId !== 3">
+                    <div><span>Eps:</span></div>
+                    <div>
+                        <span *ngIf="element.currentEpisode && element.totalEpisodes">{{ element.currentEpisode }} / {{ element.totalEpisodes }}</span>
+                        <span *ngIf="element.currentEpisode && !element.totalEpisodes">{{ element.currentEpisode }} / ?</span>
+                        <span *ngIf="!element.currentEpisode && element.totalEpisodes">? / {{ element.totalEpisodes }}</span>
+                        <span *ngIf="!element.currentEpisode && !element.totalEpisodes">? / ?</span>
+                    </div>
                 </div>
             </td>
         </ng-container>
@@ -80,19 +131,93 @@
         aria-label="Select page of periodic elements">
     </mat-paginator>
 </div>
-  
+
 <mat-menu #menu="matMenu">
     <ng-template matMenuContent let-serie="element">
 
-        <button mat-menu-item *ngIf="serie.statusId !== 3"> 
-            <mat-icon *ngIf="serie.statusId !== 5" style="color: #EF6C00;">remove_red_eye</mat-icon>
+        <button 
+            *ngIf="dataUserConnected.roleUpdateSerie"  
+            type="button" 
+            mat-menu-item 
+            (click)="editSerie(serie)">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
+        </button>
+
+		<button mat-menu-item *ngIf="serie.statusId !== 3" [hidden]="serie.statusId == 4"> 
+            <mat-icon *ngIf="serie.statusId == 1" style="color: #EF6C00;">remove_red_eye</mat-icon>
+            <mat-icon *ngIf="serie.statusId == 2" style="color: #2E7D32;">cloud_download</mat-icon>
             <mat-icon *ngIf="serie.statusId == 5" style="color: #EF6C00;">search</mat-icon>
             <a href="{{ serie.path }}" target="_blank" style="text-decoration: none;">
               <span *ngIf="serie.statusId == 1" style="color: black !important;">Check</span>
-              <span *ngIf="serie.statusId == 2 || serie.statusId == 4" style="color: black !important;">Watch</span>
+              <span *ngIf="serie.statusId == 2" style="color: black !important;">Download</span>
               <span *ngIf="serie.statusId == 5" style="color: black !important;">Search</span>
             </a>  
         </button>
 
-    </ng-template>
+        <button
+            *ngIf="dataUserConnected.roleDeleteSerie" 
+            type="button"
+            mat-menu-item 
+            (click)="openDeleteSerieModal(serie, contentDeleteSerie)" 
+            class="text-application">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>
+
+	</ng-template>
 </mat-menu>
+
+<ng-template #contentDeleteSerie>
+
+    <div mat-dialog-title class="dialog-title">
+      <h2 class="text-application">Are you sure ?</h2>
+    </div>
+  
+    <div mat-dialog-content>
+        <div class="gridForDelete text-application">
+            <div><span>Name:</span></div>
+            <div>{{ serieToDelete.nameSerie }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Date:</span></div>
+            <div>{{ serieToDelete.date | date:'dd/MM/yyyy' }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Status:</span></div>
+            <div>{{ serieToDelete.status }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Note:</span></div>
+            <div>{{ serieToDelete.note }}</div>
+        </div> 
+    </div>
+
+    <br>
+
+    <div class="row justify-content-center" mat-dialog-actions>
+        <button 
+            mat-button 
+            type="button" 
+            [mat-dialog-close]="1" 
+            (click)="confirmDelete()" 
+            style="background:rgb(221, 51, 51);color: white;" 
+            class="text-application">
+            Delete
+        </button>
+
+        <button 
+            mat-button 
+            type="button" 
+            (click)="close()" 
+            tabindex="-1" 
+            style="background:#607D8B;color: white;" 
+            class="text-application">
+            Cancel
+        </button>
+    </div>
+  
+</ng-template>

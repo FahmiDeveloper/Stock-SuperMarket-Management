@@ -1,0 +1,1 @@
+export * from './list-parts-desktop.component';

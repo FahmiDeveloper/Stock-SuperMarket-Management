@@ -20,14 +20,19 @@ import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 export class SerieFormComponent implements OnInit {
 
-  serie: Serie = new Serie();
   arraySeries: Serie[];
+  allSeries: Serie[];
+  listSeriesByNameForCreate: Serie[];
+  listSeriesByNameForUpdate: Serie[];
+
+  serie: Serie = new Serie();
+
+  firstSeriePriority: number;
+  fromModalSeasonsSeriesList: boolean;
 
   basePath = '/PicturesSeries';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
-  modalRef: any;
-  nbrsList: number[] = [];
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -51,15 +56,26 @@ export class SerieFormComponent implements OnInit {
       this.serie.date = moment().format('YYYY-MM-DD');
       this.serie.time = moment().format('HH:mm');
     }
-    for (let i = 1; i <= 100; i++) {
-      this.nbrsList.push(i);
-    }
+    if (this.serie.key) this.firstSeriePriority = this.serie.priority;
   }
 
-  save(serie) {
-    if (!serie.path) serie.path = "";
+  save() {
+    if (!this.serie.path) this.serie.path = "";
     if (this.serie.key) {
-      this.serieService.update(this.serie.key, serie);
+      if (this.fromModalSeasonsSeriesList == true) {
+        this.listSeriesByNameForUpdate = this.allSeries
+        .filter(serie => (serie.nameSerie.toLowerCase().includes(this.serie.nameSerie.toLowerCase())) && (serie.priority == this.serie.priority))
+        .sort((n1, n2) => n1.priority - n2.priority);
+  
+        this.listSeriesByNameForUpdate.forEach(element => {
+          if (element.key !== this.serie.key) {
+            element.priority = this.firstSeriePriority;
+            this.serieService.update(element.key, element);
+          }
+        })
+      }
+
+      this.serieService.update(this.serie.key, this.serie);
       Swal.fire(
         'Serie data has been Updated successfully',
         '',
@@ -67,8 +83,17 @@ export class SerieFormComponent implements OnInit {
       )
     }
     else {
-      if (this.arraySeries[0].numRefSerie) serie.numRefSerie = this.arraySeries[0].numRefSerie + 1;
-      this.serieService.create(serie);
+      if (this.arraySeries[0].numRefSerie) this.serie.numRefSerie = this.arraySeries[0].numRefSerie + 1;
+
+      this.listSeriesByNameForCreate = this.allSeries.filter(serie => (serie.nameSerie.toLowerCase().includes(this.serie.nameSerie.toLowerCase()))).sort((n1, n2) => n1.priority - n2.priority);
+
+      for (let j = 0; j < this.listSeriesByNameForCreate.length; j++) {
+        if (this.listSeriesByNameForCreate[j].priority >= this.serie.priority)
+        this.listSeriesByNameForCreate[j].priority = this.listSeriesByNameForCreate[j].priority + 1;
+        this.serieService.update(this.listSeriesByNameForCreate[j].key, this.listSeriesByNameForCreate[j]);
+      }
+
+      this.serieService.create(this.serie);
       Swal.fire(
         'New Serie added successfully',
         '',

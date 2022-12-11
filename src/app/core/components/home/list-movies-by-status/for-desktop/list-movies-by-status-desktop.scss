@@ -38,3 +38,10 @@ img {
     margin-left: auto;
     margin-right: auto;
 }
+
+.gridForDelete {
+    display: grid;
+    grid-template-columns: 80px 400px;
+    width: 250px;
+    font-size: 18px;
+}

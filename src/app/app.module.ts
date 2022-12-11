@@ -47,7 +47,9 @@ import {
   MovieFormComponent,
   ShowMoviePictureComponent,
   VersionGridMoviesComponent,
-  NewOrEditMovieComponent
+  NewOrEditMovieComponent,
+  ListPartsForDesktopComponent,
+  ListPartsForMobileComponent
 } from './movies/index';
 
 import { 
@@ -55,7 +57,9 @@ import {
   AnimeFormComponent,
   ShowAnimePictureComponent,
   VersionGridAnimesComponent,
-  NewOrEditAnimeComponent
+  NewOrEditAnimeComponent,
+  ListSeasonsMoviesForDesktopComponent,
+  ListSeasonsMoviesForMobileComponent
 } from './animes/index';
 
 import { 
@@ -63,7 +67,9 @@ import {
   SerieFormComponent,
   ShowSeriePictureComponent,
   VersionGridSeriesComponent,
-  NewOrEditSerieComponent
+  NewOrEditSerieComponent,
+  ListSeasonsForDesktopComponent,
+  ListSeasonsForMobileComponent
 } from './series/index';
 
 import { 
@@ -73,6 +79,13 @@ import {
   UploadDetailsComponent,
   NewOrEditLinkComponent
 } from './files/index';
+
+import { 
+  ClockingForDesktopComponent,
+  ClockingFormDesktopComponent,
+  ClockingForMobileComponent,
+  ClockingFormMobileComponent,
+ } from './clocking/index';
 
 import { 
   DebtsComponent,
@@ -171,7 +184,9 @@ import { UserComponent } from './user/index';
     ShowAnimePictureComponent,
     VersionGridAnimesComponent,
     NewOrEditMovieComponent,
-    NewOrEditAnimeComponent,
+    NewOrEditAnimeComponent,  
+    ListSeasonsMoviesForDesktopComponent,
+    ListSeasonsMoviesForMobileComponent,
     SeriesComponent,
     SerieFormComponent,
     ShowSeriePictureComponent,
@@ -207,11 +222,21 @@ import { UserComponent } from './user/index';
     ListTasksForMobileComponent,
     TaskDataComponent,
     ListUsersByStatusForDesktopComponent,
-    ListUsersByStatusForMobileComponent
+    ListUsersByStatusForMobileComponent,
+    ListPartsForDesktopComponent,
+    ListPartsForMobileComponent,
+    ListSeasonsForDesktopComponent,
+    ListSeasonsForMobileComponent,
+    ClockingForDesktopComponent,
+    ClockingFormDesktopComponent,
+    ClockingForMobileComponent,
+    ClockingFormMobileComponent
   ],
   entryComponents: [
     NewOrEditMovieComponent,
-    NewOrEditAnimeComponent,
+    NewOrEditAnimeComponent,  
+    ListSeasonsMoviesForDesktopComponent,
+    ListSeasonsMoviesForMobileComponent,
     NewOrEditSerieComponent,
     NewOrEditDebtComponent,
     NewOrEditLinkComponent,

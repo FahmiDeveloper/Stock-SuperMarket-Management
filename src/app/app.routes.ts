@@ -21,10 +21,11 @@ import { VersionGridSeriesComponent } from './series/version-grid-series/version
 import { UserComponent } from './user/user.component';
 import { ToDoListComponent } from './to-do-list/to-do-list.component';
 import { ToDoListMobileComponent } from './to-do-list/to-do-list-mobile/to-do-list-mobile.component';
+import { ClockingForDesktopComponent } from './clocking/clocking-for-desktop/clocking-for-desktop.component';
+import { ClockingForMobileComponent } from './clocking/clocking-for-mobile/clocking-for-mobile.component';
 
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
-
 
 export const rootRouterConfig: Routes = [
   
@@ -62,6 +63,9 @@ export const rootRouterConfig: Routes = [
   { path: 'users-mobile', component: ListUsersMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'to-do-list', component: ToDoListComponent,  resolve: { data: SharedResolver}},
-  { path: 'to-do-list-mobile', component: ToDoListMobileComponent,  resolve: { data: SharedResolver}}
+  { path: 'to-do-list-mobile', component: ToDoListMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'clocking', component: ClockingForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'clocking-mobile', component: ClockingForMobileComponent,  resolve: { data: SharedResolver}}
 
 ]; 

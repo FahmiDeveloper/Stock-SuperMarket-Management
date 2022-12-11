@@ -587,7 +587,7 @@ export class DebtsForGridComponent implements OnInit, OnDestroy {
       if (result.value) {
         this.modalRefLodaing = this.dialogService.open(contentLoading, {
           width: '98vw',
-          height:'81vh',
+          height:'40vh',
           maxWidth: '100vw'
         });
 

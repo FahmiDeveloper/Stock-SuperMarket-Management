@@ -1,18 +1,20 @@
-.styleProgress {
-    height: 7mm; 
-    width: 100%
+.progress-background {
+    width: 100%;
+    background: gray;
+    height: 5px;
+    border-radius: 5px;  
 }
 
-.progressIncomplete {
-    color:rgb(255, 60, 0); 
-    font-size: 17px; 
-    font-weight: 410;
+.progress-indicator {
+    text-align: center;
+    width:24px;
+    color:rgb(73, 4, 163);
 }
 
-.progressComplete {
-    color:rgb(1, 153, 34);  
-    font-size: 17px; 
-    font-weight: 410;
+.progress-meter {
+    background: rgb(73, 4, 163);
+    height:5px;
+    border-radius: 5px;
 }
 
 .container {

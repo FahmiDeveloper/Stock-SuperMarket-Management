@@ -113,7 +113,7 @@
 
 .gridForLegend {
   display: grid;
-  grid-template-columns: 50px 200px;
+  grid-template-columns: 60px 200px;
 }
 
 .no-results {
@@ -121,6 +121,13 @@
   justify-content: center;
   padding: 14px;
   font-size: 20px;
+}
+
+.gridForDelete {
+  display: grid;
+  grid-template-columns: 80px 220px;
+  width: 250px;
+  font-size: 18px;
 }
   
  

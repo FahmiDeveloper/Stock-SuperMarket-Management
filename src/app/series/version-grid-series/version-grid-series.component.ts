@@ -29,20 +29,22 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Serie>();
   dataSourceCopie = new MatTableDataSource<Serie>();
-  displayedColumns: string[] = ['picture', 'name', 'date', 'status', 'note', 'star'];
+  displayedColumns: string[] = ['picture', 'name', 'status', 'note', 'star'];
+  allSeries: Serie[] = [];
+  listSeriesByCurrentName: Serie[] = [];
 
   serieToDelete: Serie = new Serie();
 
   queryName: string = "";
-  queryNote: string = "";
+  // queryNote: string = "";
   statusId: number;
   sortByDesc: boolean = true;
+  currentName: string = '';
+  modalRefDeleteSerie: any;
 
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
-
-  modalRefDeleteSerie: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -53,7 +55,8 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     {id: 2, status: 'Not downloaded yet'}, 
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 5, status: 'To search about it'},
+    {id: 6, status: 'Seasons'}
   ];
 
   constructor(
@@ -66,39 +69,12 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getAllSeries();
     this.getRolesUser();
+    this.getAllSeries();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  getAllSeries() {
-    this.subscriptionForGetAllSeries = this.serieService
-    .getAll()
-    .subscribe(series => {
-      this.dataSourceCopie.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-
-      if (this.queryName) {
-        this.dataSource.data = series.filter(serie => serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-      }
-      
-      else if (this.queryNote) {
-        this.dataSource.data = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-      }
-      
-      else if (this.statusId) {
-        this.dataSource.data = series.filter(serie => serie.statusId == this.statusId);   
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-      }
-      
-      else this.dataSource.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-
-      this.getStatusSerie();
-    });
   }
 
   getRolesUser() {
@@ -130,24 +106,35 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  newSerie() {
-    const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
-      width: '98vw',
-      height:'73vh',
-      maxWidth: '100vw'
-    });
-    dialogRef.componentInstance.arraySeries = this.dataSourceCopie.data;
-    dialogRef.componentInstance.modalRef = dialogRef;
-  }
+  getAllSeries() {
+    this.subscriptionForGetAllSeries = this.serieService
+    .getAll()
+    .subscribe(series => {
+      this.dataSourceCopie.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      this.allSeries = series;
 
-  editSerie(serie?: Serie) {
-    const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
-      width: '98vw',
-      height:'73vh',
-      maxWidth: '100vw'
+      if (this.queryName) {
+        this.dataSource.data = series.filter(serie => (serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase())) && (serie.isFirst == true));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
+      
+      // else if (this.queryNote) {
+      //   this.dataSource.data = series.filter(serie => serie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      //   this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      // }
+      
+      else if (this.statusId) {
+        if (this.statusId == 6) this.dataSource.data = series.filter(serie => (serie.priority) && (serie.isFirst == true));
+
+        else this.dataSource.data = series.filter(serie => (serie.statusId == this.statusId) && (serie.isFirst == true) && (!serie.priority));
+           
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
+      
+      else this.dataSource.data = series.filter(serie => serie.isFirst == true).sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+
+      this.getStatusSerie();
     });
-    dialogRef.componentInstance.serie = serie;
-    dialogRef.componentInstance.modalRef = dialogRef;
   }
 
   getStatusSerie() {
@@ -161,38 +148,23 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
     })
   }
 
-  zoomPicture(serie: Serie) {
-    const dialogRef = this.dialogService.open(ShowSeriePictureComponent, {
+  newSerie() {
+    const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
       width: '98vw',
-      height:'77vh',
+      height:'73vh',
       maxWidth: '100vw'
     });
-    dialogRef.componentInstance.serieForModal = serie;
-    dialogRef.componentInstance.dialogRef = dialogRef;
+    dialogRef.componentInstance.arraySeries = this.dataSourceCopie.data;
+    dialogRef.componentInstance.allSeries = this.allSeries; 
   }
 
-  copyNameSerie(nameSerie: string){
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = nameSerie;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
-  }
-
-  sortByRefSerieDesc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-    this.sortByDesc = true;
-  }
-
-  sortByRefSerieAsc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
-    this.sortByDesc = false;
+  editSerie(serie?: Serie) {
+    const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
+      width: '98vw',
+      height:'73vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.serie = serie;
   }
 
   openDeleteSerieModal(serie: Serie, contentDeleteSerie) {
@@ -210,6 +182,51 @@ export class VersionGridSeriesComponent implements OnInit, OnDestroy {
 
   close() {
     this.modalRefDeleteSerie.close();
+  }
+
+  copyNameSerie(nameSerie: string){
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = nameSerie;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
+
+  zoomPicture(serie: Serie) {
+    const dialogRef = this.dialogService.open(ShowSeriePictureComponent, {
+      width: '98vw',
+      height:'77vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.serieForModal = serie;
+    dialogRef.componentInstance.dialogRef = dialogRef;
+  }
+
+  sortByRefSerieDesc() {
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+    this.sortByDesc = true;
+  }
+
+  sortByRefSerieAsc() {
+    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
+    this.sortByDesc = false;
+  }
+
+  viewOtherSeasons(currentSerie: Serie, contentSeasonsList) {
+    this.currentName = currentSerie.nameSerie;
+    this.listSeriesByCurrentName = this.allSeries.filter(serie => (serie.nameSerie.toLowerCase().includes(currentSerie.nameSerie.toLowerCase())));
+
+    this.dialogService.open(contentSeasonsList, {
+      width: '98vw',
+      height:'70vh',
+      maxWidth: '100vw'
+    }); 
   }
 
   ngOnDestroy() {

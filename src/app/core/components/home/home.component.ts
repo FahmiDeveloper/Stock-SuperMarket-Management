@@ -1,12 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NgNavigatorShareService } from 'ng-navigator-share';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
+
+import { NewOrEditLinkComponent } from 'src/app/files/new-or-edit-link/new-or-edit-link.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -16,6 +21,8 @@ import { AnimeService } from 'src/app/shared/services/anime.service';
 import { SerieService } from 'src/app/shared/services/serie.service';
 import { DebtService } from 'src/app/shared/services/debt.service';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
+import { LinkService } from 'src/app/shared/services/link.service';
+import { ClockingService } from 'src/app/shared/services/clocking.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Task } from 'src/app/shared/models/task.model';
@@ -23,6 +30,8 @@ import { Debt } from 'src/app/shared/models/debt.model';
 import { Movie } from 'src/app/shared/models/movie.model';
 import { Anime } from 'src/app/shared/models/anime.model';
 import { Serie } from 'src/app/shared/models/serie.model';
+import { Link } from 'src/app/shared/models/link.model';
+import { Clocking } from 'src/app/shared/models/clocking.model';
 
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
   const subject = new BehaviorSubject<Task[]>([]);
@@ -81,6 +90,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   listFiles: any[] = [];
   fileByType: number;
 
+  // links variables
+  dataSource = new MatTableDataSource<Link>();
+  dataSourceCopie = new MatTableDataSource<Link>();
+  displayedColumns: string[] = ['content', 'star'];
+  angularContext: boolean = false;
+  otherContext: boolean = false;
+  content: string = '';
+  linkToDelete: Link = new Link();
+  modalRefDeleteLink: any;
+
   // debts variables
   totalInDebt: number= 0;
   totalOutDebt: number= 0;
@@ -118,6 +137,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalOutDebtsNotToGetForNow: string;
   customTotalInDebtsNotToGetForNow: number;
   defaultTotalInDebtsNotToGetForNow: number;
+
+  // Clocking variables
+  currentMonthAndYear: string;
+  clockingsList: Clocking[] = [];
+  totalClockingLate: number = 0;
+  minutePartList: number[] = [];
+  sumClockingLate: number;
+  totalClockingLateByHoursMinute: string = '';
+  vacationLimitDays: number = 4.25;
 
   // to do list variables
   toDoToday = getObservable(this.store.collection('toDoToday')) as Observable<Task[]>;
@@ -160,6 +188,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscriptionForGetNextWeekWork: Subscription;
   subscriptionForGetLaterWork: Subscription;
   subscriptionForGetAllUsers: Subscription;
+  subscriptionForGetAllLinks: Subscription;
+  subscriptionForGetAllClockings: Subscription;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public userService: UserService,
@@ -167,11 +199,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     private movieService: MovieService,
     private animeService: AnimeService,
     private serieService: SerieService,
+    private linkService: LinkService,
     private uploadService: FileUploadService,
     private debtService: DebtService,
+    public clockingService: ClockingService,
     private store: AngularFirestore,
     public usersListService: UsersListService,
     private deviceService: DeviceDetectorService,
+    protected ngNavigatorShareService: NgNavigatorShareService,
     public dialogService: MatDialog,
     protected router: Router
   ) {}
@@ -180,6 +215,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getRolesUser();
     this.loadDataStatistics();
     this.isMobile = this.deviceService.isMobile();
+
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const d = new Date();
+    this.currentMonthAndYear = month[d.getMonth()] + ' ' + d.getFullYear();
   }
 
   getRolesUser() {
@@ -223,7 +262,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getAnimesStatistics();
     this.getSeriesStatistics();
     this.getFilesStatistics();
+    this.getAllLinks();
     this.getAllDebtsStatistics();
+    this.getAllClockingsStatistics();
     this.getToDoListsStatistics();
   }
 
@@ -773,6 +814,37 @@ export class HomeComponent implements OnInit, OnDestroy {
     }  
   }
 
+  getAllClockingsStatistics() {
+    this.subscriptionForGetAllClockings = this.clockingService
+    .getAll()
+    .subscribe((clockings: Clocking[]) => {
+
+      this.clockingsList = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == String(new Date().getMonth()+ 1)).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+  
+      this.minutePartList = [];
+      if (this.clockingsList.length > 0) {
+        this.clockingsList.forEach(clocking => {
+          if (clocking.timeClocking > '08:00') this.calculTotalClockingLate(clocking.timeClocking);
+        })
+      } else {
+        this.totalClockingLate = 0;
+        this.totalClockingLateByHoursMinute = '0 Min';
+      }   
+    });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+  }
+
+  calculTotalClockingLate(timeClocking: string) {
+    const composedFinancialDebt = timeClocking.split(':');
+    this.minutePartList.push(Number(composedFinancialDebt[1]))
+    this.sumClockingLate = this.minutePartList.reduce((accumulator, current) => {return accumulator + current;}, 0);
+    if (this.sumClockingLate < 60) {this.totalClockingLate = this.sumClockingLate;}
+    else {
+      let hours = Math.floor(this.sumClockingLate / 60);
+      let minutes = this.sumClockingLate - (hours * 60);
+      this.totalClockingLateByHoursMinute = hours +"H "+ minutes +"Min";
+    }
+  }
+
   getToDoListsStatistics() {
     this.subscriptionForGetTodayWork = this.toDoToday.subscribe(res => {
       this.taskListForToday = res.sort((n1, n2) => n2.orderNo - n1.orderNo);
@@ -945,6 +1017,172 @@ export class HomeComponent implements OnInit, OnDestroy {
     }   
   }
 
+  showLinksList(contentLinks, e: Event) {
+    e.stopPropagation();
+    this.content = '';
+    this.angularContext = false;
+    this.otherContext = false;
+    if (this.isMobile) {
+      this.dialogService.open(contentLinks, {
+        width: '98vw',
+        height:'85vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentLinks, {
+        width: '30vw',
+        height:'85vh',
+        maxWidth: '100vw'
+      });
+    } 
+  }
+
+  getAllLinks() {
+    this.subscriptionForGetAllLinks = this.linkService
+    .getAll()
+    .subscribe(links => {
+
+      this.dataSourceCopie.data = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+
+      if (this.angularContext) {
+        if (this.content) this.filterLinksList(1, this.content);
+        else this.filterLinksList(1);
+      } 
+      
+      else if (this.otherContext) {
+        if (this.content) this.filterLinksList(2, this.content);
+        else this.filterLinksList(2);
+      } 
+
+      else if (this.content && (!this.angularContext || !this.otherContext)) {
+        this.dataSource.data = this.dataSourceCopie.data.filter(link => link.content.toLowerCase().includes(this.content.toLowerCase()));
+      }
+
+      else this.dataSource.data = this.dataSourceCopie.data;
+
+      this.dataSource.paginator = this.paginator;
+
+    });
+  }
+
+  filterLinksList(refLinkContent?: number, linkContent?: string) {
+    if (linkContent) {
+      this.dataSource.data = this.dataSourceCopie.data.filter(link => (link.typeLinkId == refLinkContent) && (link.content.toLowerCase().includes(linkContent.toLowerCase())));
+    } else {
+      this.dataSource.data = this.dataSourceCopie.data.filter(link => link.typeLinkId == refLinkContent);
+    }
+    this.dataSource.paginator = this.paginator;
+  }
+
+  checkAngularContext() {
+    if (this.angularContext == true) this.otherContext = false;
+    if (this.content) this.content = '';
+    this.getAllLinks();
+  }
+
+  checkotherContext() {
+    if (this.otherContext == true) this.angularContext = false;
+    if (this.content) this.content = '';
+    this.getAllLinks();
+  }
+
+  newLink() {
+    if (this.isMobile) {
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+        width: '98vw',
+        height:'40vh',
+        maxWidth: '100vw'
+      });
+
+      dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
+      dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
+      dialogRef.componentInstance.isMobile = this.isMobile;
+      dialogRef.componentInstance.modalRef = dialogRef;
+    } else {
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+        width: '25vw',
+        height:'33vh',
+        maxWidth: '100vw'
+      });
+
+      dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
+      dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
+      dialogRef.componentInstance.isMobile = this.isMobile;
+      dialogRef.componentInstance.modalRef = dialogRef;
+    }
+  }
+
+  editLink(link?: Link) {
+    if (this.isMobile) {
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+        width: '98vw',
+        height:'40vh',
+        maxWidth: '100vw'
+      });
+      
+      dialogRef.componentInstance.link = link;
+      dialogRef.componentInstance.isMobile = this.isMobile;
+      dialogRef.componentInstance.modalRef = dialogRef;
+
+    } else {
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+        width: '25vw',
+        height:'33vh',
+        maxWidth: '100vw'
+      });
+
+      dialogRef.componentInstance.link = link;
+      dialogRef.componentInstance.isMobile = this.isMobile;
+      dialogRef.componentInstance.modalRef = dialogRef;
+    }
+  }
+
+  openDeleteLinkModal(link: Link, contentDeleteLink) {
+    this.linkToDelete = link;
+    if (this.isMobile) {
+      this.modalRefDeleteLink =  this.dialogService.open(contentDeleteLink, {
+        width: '98vw',
+       height:'40vh',
+       maxWidth: '100vw'
+     });
+   } else {
+    this.modalRefDeleteLink =  this.dialogService.open(contentDeleteLink, {
+      width: '30vw',
+      height:'30vh',
+      maxWidth: '100vw'
+    }); 
+   }
+  }
+
+  confirmDelete() {
+    this.linkService.delete(this.linkToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteLink.close();
+  }
+
+  shareLink(link: Link) {
+    if (this.isMobile) {
+      if (!this.ngNavigatorShareService.canShare()) {
+        alert(`This service/api is not supported in your Browser`);
+        return;
+      }
+
+      this.ngNavigatorShareService.share({
+        title: link.content,
+        text: '',
+        url: link.path
+      }).then( (response) => {
+        console.log(response);
+      })
+      .catch( (error) => {
+        console.log(error);
+      });
+    } else
+    window.open("https://web.whatsapp.com/send?text=" + link.path,'_blank');
+  }
+
   ngOnDestroy() {
     this.subscripton.unsubscribe();
     this.subscriptionForGetAllMovies.unsubscribe();
@@ -958,6 +1196,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetNextWeekWork.unsubscribe();
     this.subscriptionForGetLaterWork.unsubscribe();
     this.subscriptionForGetAllUsers.unsubscribe();
+    this.subscriptionForGetAllLinks.unsubscribe();
+    this.subscriptionForGetAllClockings.unsubscribe();
   }
   
 }

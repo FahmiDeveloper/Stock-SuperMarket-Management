@@ -42,12 +42,12 @@
             <input matInput type="text" name="queryName" (keyup)="getAllMovies()" [(ngModel)]="queryName"/>
         </mat-form-field>
     </div>
-    <div class="col-md-4">
+    <!-- <div class="col-md-4">
         <mat-form-field>
             <mat-label>Note</mat-label>
             <input matInput type="text" name="queryNote" (keyup)="getAllMovies()" [(ngModel)]="queryNote"/>
         </mat-form-field>
-    </div>
+    </div> -->
     <div class="col-md-4">
         <mat-form-field>
             <mat-label>Status</mat-label>
@@ -73,7 +73,7 @@
                     <img *ngIf="element.imageUrl" mat-card-md-image [src]="element.imageUrl" (click)="zoomPicture(element)">
                     <img *ngIf="!element.imageUrl" mat-card-md-image src="/assets/pictures/NoImageAvailable.png" (click)="zoomPicture(element)">
 
-                   <span [ngStyle]="{'margin-left': element.year ? '35px' : '50px'}">
+                   <span *ngIf="!element.part" [ngStyle]="{'margin-left': element.year ? '35px' : '50px'}">
                     <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;
                     <span *ngIf="element.year">{{ element.year }}</span>
                     <span *ngIf="!element.year">?</span>
@@ -94,7 +94,7 @@
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="gridForLegend">
+                    <div class="gridForLegend" *ngIf="!element.part">
                         <div><span>Status:</span></div>
                         <div>{{ element.status }}</div>
                     </div>
@@ -104,7 +104,7 @@
             <ng-container matColumnDef="note">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="gridForLegend">
+                    <div class="gridForLegend" *ngIf="!element.part">
                         <div><span>Note:</span></div>
                         <div>{{ element.note }}</div>
                     </div>
@@ -136,33 +136,45 @@
         </mat-paginator>
     </div>
 </div>
-  
+
 <mat-menu #menu="matMenu">
     <ng-template matMenuContent let-movie="element">
 
-        <button 
+        <button
+            *ngIf="dataUserConnected.roleUpdateMovie && !movie.part" 
             type="button"
-            *ngIf="dataUserConnected.roleUpdateMovie" 
-            (click)="editMovie(movie)">
-            <mat-icon aria-label="Edit" style="color: #9C27B0">edit</mat-icon>
+            (click)="editMovie(movie)"
+            mat-menu-item>
+            <mat-icon aria-label="Edit" style="color: #9C27B0;">edit</mat-icon>
             <span>Edit</span>
         </button>
 
-        <button
-            type="button"
-            *ngIf="movie.path && (movie.statusId == 1 || movie.statusId == 2)"  mat-menu-item>
-            <mat-icon style="color: #EF6C00">remove_red_eye</mat-icon>
-            <a href="{{ movie.path }}" target="_blank">
-                <span style="color: black !important;">Watch</span>
+        <button 
+            *ngIf="movie.part"  
+            type="button" 
+            mat-menu-item 
+            (click)="viewParts(movie, contentPartsList)">
+            <mat-icon style="color: #0935c5">list</mat-icon>
+            <span>Parts</span>
+        </button>
+
+        <button mat-menu-item *ngIf="movie.statusId !== 3 && !movie.part" [hidden]="movie.statusId == 4"> 
+            <mat-icon *ngIf="movie.statusId == 1" style="color: #EF6C00;">remove_red_eye</mat-icon>
+            <mat-icon *ngIf="movie.statusId == 2" style="color: #2E7D32;">cloud_download</mat-icon>
+            <mat-icon *ngIf="movie.statusId == 5" style="color: #EF6C00;">search</mat-icon>
+            <a href="{{ movie.path }}" target="_blank" style="text-decoration: none;">
+            <span *ngIf="movie.statusId == 1" style="color: black !important;">Check</span>
+            <span *ngIf="movie.statusId == 2" style="color: black !important;">Download</span>
+            <span *ngIf="movie.statusId == 5" style="color: black !important;">Search</span>
             </a>  
         </button>
 
-        <button 
+        <button
+            *ngIf="dataUserConnected.roleDeleteMovie && !movie.part" 
             type="button"
-            *ngIf="dataUserConnected.roleDeleteMovie" 
-            mat-menu-item
+            mat-menu-item 
             (click)="openDeleteMovieModal(movie, contentDeleteMovie)" 
-            [hidden]="movie.statusId == 3">
+            class="text-application">
             <mat-icon style="color: #f44336;">delete</mat-icon>
             <span>Delete</span>
         </button>
@@ -222,4 +234,15 @@
         </button>
     </div>
   
+</ng-template>
+
+<ng-template #contentPartsList>
+
+    <list-parts-mobile 
+        [listPartsByCurrentName]="listPartsByCurrentName" 
+        [currentName]="currentName" 
+        [dataUserConnected]="dataUserConnected"
+        [allMovies]="allMovies">
+    </list-parts-mobile>
+    
 </ng-template>

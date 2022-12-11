@@ -12,6 +12,10 @@ export class Anime {
   numRefAnime: number;
   currentEpisode: number;
   totalEpisodes: number;
+  season: number;
+  priority: number;
+  type: string;
+  isFirst: boolean;
 
   constructor(){
     this.nameAnime = '';
