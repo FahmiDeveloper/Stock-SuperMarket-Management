@@ -262,7 +262,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getAnimesStatistics();
     this.getSeriesStatistics();
     this.getFilesStatistics();
-    this.getAllLinks();
     this.getAllDebtsStatistics();
     this.getAllClockingsStatistics();
     this.getToDoListsStatistics();
@@ -1022,6 +1021,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.content = '';
     this.angularContext = false;
     this.otherContext = false;
+    this.getAllLinks();
     if (this.isMobile) {
       this.dialogService.open(contentLinks, {
         width: '98vw',
