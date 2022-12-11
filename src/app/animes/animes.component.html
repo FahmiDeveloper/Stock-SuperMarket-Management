@@ -82,7 +82,7 @@
                     <div><span style="cursor: pointer;" (click)="copyNameAnime(element.nameAnime)">{{ element.nameAnime }}</span></div>
                 </div>
                 <br *ngIf="!element.priority">
-                <div class="gridForLegend text-application">
+                <div class="gridForLegend text-application" *ngIf="!element.priority">
                     <div><span>Type:</span></div>
                     <div><span>{{ element.type }}</span></div>
                 </div>
