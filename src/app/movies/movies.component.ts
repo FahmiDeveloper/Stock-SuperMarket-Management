@@ -27,13 +27,16 @@ export class MoviesComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Movie>();
   dataSourceCopie = new MatTableDataSource<Movie>();
   displayedColumns: string[] = ['picture', 'details'];
+  allMovies: Movie[] = [];
+  listPartsByCurrentName: Movie[] = [];
 
   movieToDelete: Movie = new Movie();
 
-  queryName: string = "";
-  queryNote: string = "";
+  queryName: string = '';
+  queryNote: string = '';
   statusId: number;
   sortByDesc: boolean = true;
+  currentName: string = '';
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
@@ -55,7 +58,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
     {id: 2, status: 'Not downloaded yet'}, 
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 5, status: 'To search about it'},
+    {id: 6, status: 'Parts'}
   ];
 
   constructor(
@@ -67,40 +71,12 @@ export class MoviesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getAllMovies();
     this.getRolesUser();
+    this.getAllMovies();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    console.log(this.dataSource.paginator)    
-  }
-
-  getAllMovies() {
-    this.subscriptionForGetAllMovies = this.movieService
-    .getAll()
-    .subscribe(movies => {
-      this.dataSourceCopie.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-
-      if (this.queryName) {
-        this.dataSource.data = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else if (this.queryNote) {
-        this.dataSource.data = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else if (this.statusId) {
-        this.dataSource.data = movies.filter(movie => movie.statusId == this.statusId);   
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else this.dataSource.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-
-      this.getStatusMovie();
-    });
   }
 
   getRolesUser() {
@@ -132,21 +108,35 @@ export class MoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  openDeleteMovieModal(movie: Movie, contentDeleteMovie) {
-    this.movieToDelete = movie;
-    this.modalRefDeleteMovie =  this.dialogService.open(contentDeleteMovie, {
-      width: '30vw',
-      height:'35vh',
-      maxWidth: '100vw'
-    }); 
-  }
+  getAllMovies() {
+    this.subscriptionForGetAllMovies = this.movieService
+    .getAll()
+    .subscribe(movies => {
+      this.dataSourceCopie.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      this.allMovies = movies;
 
-  confirmDelete() {
-    this.movieService.delete(this.movieToDelete.key);
-  }
+      if (this.queryName) {
+        this.dataSource.data = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()) && (movie.isFirst == true)));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
+      
+      // else if (this.queryNote) {
+      //   this.dataSource.data = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      //   this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      // }
+      
+      else if (this.statusId) {
+        if (this.statusId == 6) this.dataSource.data = movies.filter(movie => (movie.part) && (movie.isFirst == true));
 
-  close() {
-    this.modalRefDeleteMovie.close();
+        else this.dataSource.data = movies.filter(movie => (movie.statusId == this.statusId) && (movie.isFirst == true) && (!movie.part));
+           
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
+      
+      else this.dataSource.data = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+
+      this.getStatusMovie();
+    });
   }
 
   getStatusMovie() {
@@ -162,13 +152,31 @@ export class MoviesComponent implements OnInit, OnDestroy {
 
   newMovie() {
     const dialogRef = this.dialogService.open(MovieFormComponent, {width: '800px', data: {movie: {}}});
-    dialogRef.componentInstance.arrayMovies = this.dataSourceCopie.data; 
+    dialogRef.componentInstance.arrayMovies = this.dataSourceCopie.data;
+    dialogRef.componentInstance.allMovies = this.allMovies;
   }
 
   editMovie(movie?: Movie) {
     const dialogRef = this.dialogService.open(MovieFormComponent, {width: '800px'});
     dialogRef.componentInstance.movie = movie;
   }
+
+  openDeleteMovieModal(movie: Movie, contentDeleteMovie) {
+    this.movieToDelete = movie;
+    this.modalRefDeleteMovie =  this.dialogService.open(contentDeleteMovie, {
+      width: '30vw',
+      height:'35vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.movieService.delete(this.movieToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteMovie.close();
+  } 
 
   copyNameMovie(nameMovie: string){
     let selBox = document.createElement('textarea');
@@ -201,7 +209,18 @@ export class MoviesComponent implements OnInit, OnDestroy {
     this.contextMenu.menuData = { 'movie': movie };
     this.contextMenu.menu.focusFirstItem('mouse');
     this.contextMenu.openMenu();
-  }   
+  }
+
+  viewParts(currentMovie: Movie, contentPartsList) {
+    this.currentName = currentMovie.nameMovie
+    this.listPartsByCurrentName = this.allMovies.filter(movie => (movie.nameMovie.toLowerCase() == (currentMovie.nameMovie.toLowerCase())));
+
+    this.dialogService.open(contentPartsList, {
+      width: '40vw',
+      height:'70vh',
+      maxWidth: '100vw'
+    }); 
+  }
 
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();

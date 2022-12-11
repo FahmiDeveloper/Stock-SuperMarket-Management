@@ -28,19 +28,21 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Movie>();
   dataSourceCopie = new MatTableDataSource<Movie>();
   displayedColumns: string[] = ['picture', 'name', 'status', 'note', 'star'];
+  allMovies: Movie[] = [];
+  listPartsByCurrentName: Movie[] = [];
 
   movieToDelete: Movie = new Movie();
 
-  queryName: string = "";
-  queryNote: string = "";
+  queryName: string = '';
+  // queryNote: string = "";
   statusId: number;
   sortByDesc: boolean = true;
+  currentName: string = '';
+  modalRefDeleteMovie: any;
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
-
-  modalRefDeleteMovie: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -51,7 +53,8 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     {id: 2, status: 'Not downloaded yet'}, 
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 5, status: 'To search about it'},
+    {id: 6, status: 'Parts'}
   ];
 
   constructor(
@@ -63,39 +66,12 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getAllMovies();
     this.getRolesUser();
+    this.getAllMovies();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  getAllMovies() {
-    this.subscriptionForGetAllMovies = this.movieService
-    .getAll()
-    .subscribe(movies => {
-      this.dataSourceCopie.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-
-      if (this.queryName) {
-        this.dataSource.data = movies.filter(movie => movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else if (this.queryNote) {
-        this.dataSource.data = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else if (this.statusId) {
-        this.dataSource.data = movies.filter(movie => movie.statusId == this.statusId);   
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else this.dataSource.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-
-      this.getStatusMovie();
-    });
   }
 
   getRolesUser() {
@@ -127,24 +103,35 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     })
   }
 
-  newMovie() {
-    const dialogRef = this.dialogService.open(NewOrEditMovieComponent, {
-      width: '98vw',
-      height:'73vh',
-      maxWidth: '100vw'
-    });
-    dialogRef.componentInstance.arrayMovies = this.dataSourceCopie.data;
-    dialogRef.componentInstance.modalRef = dialogRef;
-  }
+  getAllMovies() {
+    this.subscriptionForGetAllMovies = this.movieService
+    .getAll()
+    .subscribe(movies => {
+      this.dataSourceCopie.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      this.allMovies = movies;
 
-  editMovie(movie?: Movie) {
-    const dialogRef = this.dialogService.open(NewOrEditMovieComponent, {
-      width: '98vw',
-      height:'73vh',
-      maxWidth: '100vw'
+      if (this.queryName) {
+        this.dataSource.data = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()) && (movie.isFirst == true)));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
+      
+      // else if (this.queryNote) {
+      //   this.dataSource.data = movies.filter(movie => movie.note.toLowerCase().includes(this.queryNote.toLowerCase()));
+      //   this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      // }
+      
+      else if (this.statusId) {
+        if (this.statusId == 6) this.dataSource.data = movies.filter(movie => (movie.part) && (movie.isFirst == true));
+
+        else this.dataSource.data = movies.filter(movie => (movie.statusId == this.statusId) && (movie.isFirst == true) && (!movie.part));
+           
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
+      
+      else this.dataSource.data = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+
+      this.getStatusMovie();
     });
-    dialogRef.componentInstance.movie = movie;
-    dialogRef.componentInstance.modalRef = dialogRef;
   }
 
   getStatusMovie() {
@@ -156,6 +143,42 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
         }
       })
     })
+  }
+
+  newMovie() {
+    const dialogRef = this.dialogService.open(NewOrEditMovieComponent, {
+      width: '98vw',
+      height:'73vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.arrayMovies = this.dataSourceCopie.data;
+    dialogRef.componentInstance.allMovies = this.allMovies;
+  }
+
+  editMovie(movie?: Movie) {
+    const dialogRef = this.dialogService.open(NewOrEditMovieComponent, {
+      width: '98vw',
+      height:'73vh',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.movie = movie;
+  }
+
+  openDeleteMovieModal(movie: Movie, contentDeleteMovie) {
+    this.movieToDelete = movie;
+    this.modalRefDeleteMovie =  this.dialogService.open(contentDeleteMovie, {
+      width: '98vw',
+      height:'50vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.movieService.delete(this.movieToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteMovie.close();
   }
 
   zoomPicture(movie: Movie) {
@@ -192,21 +215,15 @@ export class VersionGridMoviesComponent implements OnInit, OnDestroy {
     this.sortByDesc = false;
   }
 
-  openDeleteMovieModal(movie: Movie, contentDeleteMovie) {
-    this.movieToDelete = movie;
-    this.modalRefDeleteMovie =  this.dialogService.open(contentDeleteMovie, {
+  viewParts(currentMovie: Movie, contentPartsList) {
+    this.currentName = currentMovie.nameMovie
+    this.listPartsByCurrentName = this.allMovies.filter(movie => (movie.nameMovie.toLowerCase() == (currentMovie.nameMovie.toLowerCase())));
+
+    this.dialogService.open(contentPartsList, {
       width: '98vw',
-      height:'50vh',
+      height:'70vh',
       maxWidth: '100vw'
     }); 
-  }
-
-  confirmDelete() {
-    this.movieService.delete(this.movieToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteMovie.close();
   }
 
   ngOnDestroy() {

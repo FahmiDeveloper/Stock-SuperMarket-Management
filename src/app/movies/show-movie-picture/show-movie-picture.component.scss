@@ -1,6 +1,6 @@
 .style-picture {
-    width: 300px;
-    height: 435px;
+    width: 250px;
+    height: 335px;
     background-size: cover;
     border-radius: 20px;
     margin: auto;
@@ -9,11 +9,14 @@
 
 .example-card {
     border-radius: 20px;
-    width: 324px;
-    height: 463px;
+    width: 274px;
+    height: 363px;
     border: 1px solid #c5c5c5;
     margin-top: 20px;
-    margin-left: 20px;
+    margin-bottom: 20px;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .mat-card-image:first-child {

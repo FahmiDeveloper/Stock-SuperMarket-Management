@@ -12,6 +12,10 @@ export class Serie {
   numRefSerie: number;
   currentEpisode: number;
   totalEpisodes: number;
+  season: number;
+  priority: number;
+  isFirst: boolean;
+  year: number;
 
   constructor(){
     this.nameSerie = '';

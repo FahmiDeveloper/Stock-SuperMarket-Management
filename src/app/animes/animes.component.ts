@@ -27,13 +27,16 @@ export class AnimesComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Anime>();
   dataSourceCopie = new MatTableDataSource<Anime>();
   displayedColumns: string[] = ['picture', 'details'];
+  allAnimes: Anime[] = [];
+  listAnimesByCurrentName: Anime[] = [];
 
   animeToDelete: Anime = new Anime();
 
-  queryName: string = "";
-  queryNote: string = "";
+  queryName: string = '';
+  // queryNote: string = '';
   statusId: number;
   sortByDesc: boolean = true;
+  currentName: string = '';
 
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForUser: Subscription;
@@ -55,7 +58,8 @@ export class AnimesComponent implements OnInit, OnDestroy {
     {id: 2, status: 'Not downloaded yet'}, 
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 5, status: 'To search about it'},
+    {id: 6, status: 'Seasons and/or movies'}
   ];
 
   constructor(
@@ -67,39 +71,12 @@ export class AnimesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getAllAnimes();
     this.getRolesUser();
+    this.getAllAnimes();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  getAllAnimes() {
-    this.subscriptionForGetAllAnimes = this.animeService
-    .getAll()
-    .subscribe(animes => {
-      this.dataSourceCopie.data = animes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
-
-      if (this.queryName) {
-        this.dataSource.data = animes.filter(anime => anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
-      }
-      
-      else if (this.queryNote) {
-        this.dataSource.data = animes.filter(anime => anime.note.toLowerCase().includes(this.queryNote.toLowerCase()));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
-      }
-      
-      else if (this.statusId) {
-        this.dataSource.data = animes.filter(anime => anime.statusId == this.statusId);   
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
-      }
-      
-      else this.dataSource.data = animes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
-
-      this.getStatusAnime();
-    });
   }
 
   getRolesUser() {
@@ -131,21 +108,35 @@ export class AnimesComponent implements OnInit, OnDestroy {
     })
   }
 
-  openDeleteAnimeModal(anime: Anime, contentDeleteAnime) {
-    this.animeToDelete = anime;
-    this.modalRefDeleteAnime =  this.dialogService.open(contentDeleteAnime, {
-      width: '30vw',
-      height:'35vh',
-      maxWidth: '100vw'
-    }); 
-  }
+  getAllAnimes() {
+    this.subscriptionForGetAllAnimes = this.animeService
+    .getAll()
+    .subscribe(animes => {
+      this.dataSourceCopie.data = animes.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      this.allAnimes = animes;
 
-  confirmDelete() {
-    this.animeService.delete(this.animeToDelete.key);
-  }
+      if (this.queryName) {
+        this.dataSource.data = animes.filter(anime => (anime.nameAnime.toLowerCase().includes(this.queryName.toLowerCase()) && (anime.isFirst == true)));
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      }
+      
+      // else if (this.queryNote) {
+      //   this.dataSource.data = animes.filter(anime => (anime.note.toLowerCase().includes(this.queryNote.toLowerCase())) && (anime.isFirst == true));
+      //   this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      // }
+      
+      else if (this.statusId) {
+        if (this.statusId == 6) this.dataSource.data = animes.filter(anime => (anime.season) && (anime.isFirst == true));
 
-  close() {
-    this.modalRefDeleteAnime.close();
+        else this.dataSource.data = animes.filter(anime => (anime.statusId == this.statusId) && (anime.isFirst == true) && (!anime.season));
+           
+        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      }
+      
+      else this.dataSource.data = animes.filter(anime => anime.isFirst == true).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+
+      this.getStatusAnime();
+    });
   }
 
   getStatusAnime() {
@@ -162,12 +153,30 @@ export class AnimesComponent implements OnInit, OnDestroy {
   newAnime() {
     const dialogRef = this.dialogService.open(AnimeFormComponent, {width: '800px', data: {movie: {}}});
     dialogRef.componentInstance.arrayAnimes = this.dataSourceCopie.data;
+    dialogRef.componentInstance.allAnimes = this.allAnimes;
   }
 
   editAnime(anime?: Anime) {
     const dialogRef = this.dialogService.open(AnimeFormComponent, {width: '800px'});
     dialogRef.componentInstance.anime = anime;
   }
+
+  openDeleteAnimeModal(anime: Anime, contentDeleteAnime) {
+    this.animeToDelete = anime;
+    this.modalRefDeleteAnime =  this.dialogService.open(contentDeleteAnime, {
+      width: '30vw',
+      height:'35vh',
+      maxWidth: '100vw'
+    }); 
+  }
+
+  confirmDelete() {
+    this.animeService.delete(this.animeToDelete.key);
+  }
+
+  close() {
+    this.modalRefDeleteAnime.close();
+  } 
 
   copyNameAnime(nameAnime: string){
     let selBox = document.createElement('textarea');
@@ -200,6 +209,17 @@ export class AnimesComponent implements OnInit, OnDestroy {
     this.contextMenu.menuData = { 'anime': anime };
     this.contextMenu.menu.focusFirstItem('mouse');
     this.contextMenu.openMenu();
+  }
+
+  viewOtherSeasonsAndMovies(currentAnime: Anime, contentSeasonAndMoviesList) {
+    this.currentName = currentAnime.nameAnime;
+    this.listAnimesByCurrentName = this.allAnimes.filter(anime => (anime.nameAnime.toLowerCase().includes(currentAnime.nameAnime.toLowerCase())));
+
+    this.dialogService.open(contentSeasonAndMoviesList, {
+      width: '40vw',
+      height:'70vh',
+      maxWidth: '100vw'
+    }); 
   }
 
   ngOnDestroy() {

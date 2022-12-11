@@ -4,7 +4,7 @@
 
   <div class="row">
     <div class="col-md-6">
-      <form (ngSubmit)="save(f.value)" #f="ngForm">
+      <form (ngSubmit)="save()" #f="ngForm">
 
         <div class="form">
           <mat-form-field color="accent">
@@ -35,15 +35,45 @@
           </mat-form-field>
         </div>
 
-        <div class="form">
+        <div class="form row">
+          <div class="col-md-4">
+            <mat-form-field color="accent" style="width: 100px;">
+              <mat-placeholder class="text-application"><span>Part</span></mat-placeholder>
+              <input matInput #input type="number" [(ngModel)]="movie.part" name="part" class="text-application">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <div style="margin-top: 20px;">
+              <mat-checkbox name="isFirst" [(ngModel)]="movie.isFirst" class="mat-checkbox-layout"><span>First</span></mat-checkbox>
+            </div>
+          </div>           
+        </div>
+
+        <div class="form row">
+          <div class="col-md-4">
+            <mat-form-field color="accent" style="width: 100px;">
+              <mat-placeholder class="text-application"><span>Priority</span></mat-placeholder>
+              <input matInput #input type="number" [(ngModel)]="movie.priority" name="priority" class="text-application">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field color="accent" style="width: 100px;">
+              <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
+              <mat-select [(ngModel)]="movie.year" name="year" class="text-application">
+                  <mat-option value=""></mat-option>
+                  <mat-option *ngFor="let year of years" [value]="year">
+                    <span class="text-application">{{year}}</span>
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>           
+        </div>
+
+        <div class="form" *ngIf="movie.part">
           <mat-form-field color="accent">
-            <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
-            <mat-select [(ngModel)]="movie.year" name="year" class="text-application">
-                <mat-option value=""></mat-option>
-                <mat-option *ngFor="let year of years" [value]="year">
-                  <span class="text-application">{{year}}</span>
-                </mat-option>
-            </mat-select>
+            <mat-placeholder class="text-application"><span>Full Name</span></mat-placeholder>
+            <input matInput #input type="text" [(ngModel)]="movie.fullNameMovie" name="fullNameMovie" required class="text-application">
+            <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
           </mat-form-field>
         </div>
   
@@ -65,14 +95,18 @@
           <input matInput #input [(ngModel)]="movie.imageUrl" name="imageUrl" id="imageUrl" type="text" hidden>
           <input type="file" name="file" (input)="onFileChanged($event)" accept=".jpeg,.jpg,.png,.svg">
         </div>
-  
-        <div class="form" *ngIf="progressValue | async as val">
-          <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
-        </div>
 
-        <div class="form" *ngIf="progressValue | async as val">
-          <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
-          <span *ngIf="val == 100" class="progressComplete">Completed !</span>
+        <br>
+
+        <div *ngIf="progressValue | async as val" class="progress-background">
+          <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
+        </div>
+        <div *ngIf="progressValue | async as val" class="progress-indicator" [ngStyle] = "{'margin-left.%': val-3}">
+            <i class="fa fa-caret-up"></i>
+            <div>
+                <i class="fa fa-motorcycle" style="font-size:24px "></i>
+            </div>
+            <span>{{ val | number }}%</span>
         </div>
     
         <div class="row justify-content-center" mat-dialog-actions>

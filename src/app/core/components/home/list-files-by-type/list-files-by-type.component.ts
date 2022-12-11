@@ -13,7 +13,10 @@ import * as JSZip from 'jszip/dist/jszip';
 import { utils, write as XlsxWrite, read as XlsxRead } from 'ts-xlsx';
 import { renderAsync } from 'docx-preview';
 
+import { FileUploadService } from 'src/app/shared/services/file-upload.service';
+
 import { FileUpload, ZipFile } from 'src/app/shared/models/file-upload.model';
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
     selector: 'list-files-by-type',
@@ -26,6 +29,7 @@ export class ListFilesByTypeComponent implements OnChanges {
     @Input() listFiles: any[];
     @Input() fileByType: number;
     @Input() isMobile: boolean;
+    @Input() dataUserConnected: FirebaseUserModel;
 
     dataSource = new MatTableDataSource<any>();
     displayedColumns: string[] = ['name', 'star'];
@@ -35,11 +39,9 @@ export class ListFilesByTypeComponent implements OnChanges {
     urlFile: string;
     pictureFile: string;
     FileName: string;
-  
     $zipFiles: Observable<ZipFile[]>;
     isLoading: boolean;
     blobForDownload: Blob;
-  
     srcExtractedImage: any;
     fileExtractedName: string = '';
     contentTxtFile: string = '';
@@ -50,9 +52,17 @@ export class ListFilesByTypeComponent implements OnChanges {
     arrayBuffer: any;
     wordFile: File;
     modalRefDeleteFile: any;
+    angularContext: boolean = false;
+    otherContext: boolean = false;
+    selectedFiles?: FileList;
+    currentFileUpload?: FileUpload;
+    percentage = 0;
+    fileToDelete: FileUpload;
+    fileName: string = '';
   
     constructor(
       protected ngNavigatorShareService: NgNavigatorShareService,
+      private uploadService: FileUploadService,
       private sanitizer : DomSanitizer,
       public dialogService: MatDialog
     ) {}
@@ -60,23 +70,53 @@ export class ListFilesByTypeComponent implements OnChanges {
     ngOnChanges(changes: import("@angular/core").SimpleChanges) {
 
         if (this.fileByType == 1) {
-            this.dataSource.data = this.listFiles.filter(file => file.typeFileId == 1);
-        } else if (this.fileByType == 2) {
-            this.dataSource.data = this.listFiles.filter(file => file.typeFileId == 2);
-        } else if (this.fileByType == 3) {
-            this.dataSource.data = this.listFiles.filter(file => file.typeFileId == 3);
-        } else if (this.fileByType == 4) {
-            this.dataSource.data = this.listFiles.filter(file => file.typeFileId == 4);
-        } else if (this.fileByType == 5) {
-            this.dataSource.data = this.listFiles.filter(file => file.typeFileId == 5);
-        } else {
-            this.dataSource.data = this.listFiles.filter(file => file.typeFileId == 7);
+            if (this.angularContext) {this.getListfilesByTypeAndContent(1, 1);} 
+            else if (this.otherContext) {this.getListfilesByTypeAndContent(1, 2);} 
+            else {this.getListfilesByTypeAndContent(1);}
         }
+
+        else if (this.fileByType == 2) {
+            if (this.angularContext) {this.getListfilesByTypeAndContent(2, 1);} 
+            else if (this.otherContext) {this.getListfilesByTypeAndContent(2, 2);} 
+            else {this.getListfilesByTypeAndContent(2);}
+        } 
+
+        else if (this.fileByType == 3) {
+            if (this.angularContext) {this.getListfilesByTypeAndContent(3, 1);} 
+            else if (this.otherContext) {this.getListfilesByTypeAndContent(3, 2);} 
+            else {this.getListfilesByTypeAndContent(3);}
+        } 
+
+        else if (this.fileByType == 4) {
+            if (this.angularContext) {this.getListfilesByTypeAndContent(4, 1);} 
+            else if (this.otherContext) {this.getListfilesByTypeAndContent(4, 2);} 
+            else {this.getListfilesByTypeAndContent(4);}
+        } 
+
+        else if (this.fileByType == 5) {
+            if (this.angularContext) {this.getListfilesByTypeAndContent(5, 1);} 
+            else if (this.otherContext) {this.getListfilesByTypeAndContent(5, 2);} 
+            else {this.getListfilesByTypeAndContent(5);}
+        } 
+
+        else {
+            if (this.angularContext) {this.getListfilesByTypeAndContent(7, 1);} 
+            else if (this.otherContext) {this.getListfilesByTypeAndContent(7, 2);} 
+            else {this.getListfilesByTypeAndContent(7);}
+        }   
+
+    }
+
+    getListfilesByTypeAndContent(fileType: number, refFileContent?: number) {
+        if (refFileContent) {this.dataSource.data = this.listFiles.filter(file => (file.typeFileId == fileType) && (file.contextFile == refFileContent));}
+
+        else {this.dataSource.data = this.listFiles.filter(file => (file.typeFileId == fileType));}
+
         this.dataSource.data.forEach(element => {
             element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
         })
-        this.dataSource.paginator = this.paginator;
 
+        this.dataSource.paginator = this.paginator;
     }
 
     viewOtherFileUpload(fileUpload: FileUpload, showFile) {
@@ -140,17 +180,17 @@ export class ListFilesByTypeComponent implements OnChanges {
             })        
             })
             if (this.isMobile) {
-            this.dialogService.open(viewZipFile, {
-                width: '98vw',
-                height:'81vh',
-                maxWidth: '100vw'
-            });
+                this.dialogService.open(viewZipFile, {
+                    width: '98vw',
+                    height:'81vh',
+                    maxWidth: '100vw'
+                });
             } else {
-            this.dialogService.open(viewZipFile, {
-            width: '45vw',
-            height:'85vh',
-            maxWidth: '100vw'
-            });
+                this.dialogService.open(viewZipFile, {
+                    width: '45vw',
+                    height:'85vh',
+                    maxWidth: '100vw'
+                });
             }
         });
         setTimeout(() => this.isLoading = false, 5000); 
@@ -359,6 +399,98 @@ export class ListFilesByTypeComponent implements OnChanges {
             });
             }    
         });  
+    }
+
+    filterFilesByAngularContent() {
+        if (this.angularContext) {
+            this.otherContext = false;
+            this.fileName = '';
+            this.dataSource.data = 
+            this.listFiles.filter(file => (file.typeFileId == this.fileByType) && (file.contextFile == 1))
+            .sort((n1, n2) => n2.numRefFile - n1.numRefFile);
+
+            this.dataSource.data.forEach(element => {
+                element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
+            })
+        }
+    }
+
+    filterFilesByOtherContent() {
+        if (this.otherContext) {
+            this.angularContext = false;
+            this.fileName = '';
+            this.dataSource.data = 
+            this.listFiles.filter(file => (file.typeFileId == this.fileByType) && (file.contextFile == 2))
+            .sort((n1, n2) => n2.numRefFile - n1.numRefFile);
+
+            this.dataSource.data.forEach(element => {
+                element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
+            })
+        }
+    }
+
+    filter() {
+        if (this.angularContext) {
+            this.dataSource.data = 
+            this.listFiles.filter(file => (file.typeFileId == this.fileByType) && (file.contextFile == 1) && (file.name.toLowerCase().includes(this.fileName.toLowerCase())))
+            .sort((n1, n2) => n2.numRefFile - n1.numRefFile) 
+        } else if (this.otherContext) {
+            this.dataSource.data = 
+            this.listFiles.filter(file => (file.typeFileId == this.fileByType) && (file.contextFile == 2) && (file.name.toLowerCase().includes(this.fileName.toLowerCase())))
+            .sort((n1, n2) => n2.numRefFile - n1.numRefFile) 
+        } else {
+            this.dataSource.data = 
+            this.listFiles.filter(file => (file.typeFileId == this.fileByType) && (file.name.toLowerCase().includes(this.fileName.toLowerCase())))
+            .sort((n1, n2) => n2.numRefFile - n1.numRefFile)
+        }
+    }
+
+    selectFile(event: any): void {
+        this.selectedFiles = event.target.files;
+        this.upload();
+    }
+    
+    upload(): void {
+        if (this.selectedFiles) {
+            const file: File | null = this.selectedFiles.item(0);
+            this.selectedFiles = undefined;
+            if (file) {
+            this.currentFileUpload = this.angularContext ? new FileUpload(file, this.fileByType, 1, this.listFiles[0].numRefFile + 1) : new FileUpload(file, this.fileByType, 2, this.listFiles[0].numRefFile + 1);
+            this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(
+                percentage => {
+                this.percentage = Math.round(percentage ? percentage : 0);
+                },
+                error => {
+                console.log(error);
+                }
+            );
+            }
+        }
+    }
+
+    openDeleteFileModal(file: FileUpload, contentDeleteFile) {
+        this.fileToDelete = file;
+        if (this.isMobile) {
+            this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {
+                width: '98vw',
+                height:'50vh',
+                maxWidth: '100vw'
+            });
+       } else {
+            this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {
+                width: '30vw',
+                height:'30vh',
+                maxWidth: '100vw'
+            }); 
+        }
+    }
+    
+    confirmDelete() {
+        this.uploadService.deleteFile(this.fileToDelete);
+    }
+    
+    close() {
+        this.modalRefDeleteFile.close();
     }
 
     checkIsImage(path) {

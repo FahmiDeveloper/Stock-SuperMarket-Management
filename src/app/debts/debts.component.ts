@@ -607,8 +607,8 @@ export class DebtsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.value) {
         this.modalRefLodaing = this.dialogService.open(contentLoading, {
-          width: '98vw',
-          height:'70vh',
+          width: '20vw',
+          height:'20vw',
           maxWidth: '100vw'
         });
         this.isLoading = true;

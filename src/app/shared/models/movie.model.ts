@@ -2,6 +2,7 @@ export class Movie {
 
   key: string;
   nameMovie: string;
+  fullNameMovie: string;
   date: string;
   time: string;
   note: string;
@@ -11,6 +12,9 @@ export class Movie {
   path: string;
   numRefMovie: number;
   year: number;
+  part: number;
+  priority: number;
+  isFirst: boolean;
 
   constructor(){
     this.nameMovie = '';

@@ -226,3 +226,39 @@ td.mat-column-star {
 .mat-divider {
   border-top-color: black;
 }
+
+.widhtInput {
+  width: 100%;
+}
+
+.progress-background {
+  width: 100%;
+  background: gray;
+  height: 5px;
+  border-radius: 5px;  
+}
+
+.progress-indicator {
+  text-align: center;
+  width:24px;
+  color:rgb(73, 4, 163);
+}
+
+.progress-meter {
+  background: rgb(73, 4, 163);
+  height:5px;
+  border-radius: 5px;
+}
+
+.gridForDelete {
+  display: grid;
+  grid-template-columns: 80px 400px;
+  width: 250px;
+  font-size: 18px;
+}
+
+.gridForDeleteInMobile {
+  display: grid;
+  grid-template-columns: 80px 220px;
+  font-size: 18px;
+}

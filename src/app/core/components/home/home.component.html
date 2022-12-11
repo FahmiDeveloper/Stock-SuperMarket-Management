@@ -231,11 +231,11 @@
 
 
   
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleFiles" routerLink="/files">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleFiles">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
+              [ngClass]="isMobile ? 'overview-cart-links-mobile' : 'overview-cart-links'">
               <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Files</div>
               <img
                 class="pl-5"
@@ -275,40 +275,50 @@
                 Word:&nbsp;&nbsp;&nbsp;&nbsp;{{ wordFilesNbr }}
               </span>
             </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showLinksList(contentLinks, $event)">
+                Links
+              </span>
+            </div>
           </div>
           <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #24a8f2">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="6" rowHeight="5:1">
+              <mat-grid-list cols="7" rowHeight="5:1">
                 <mat-grid-tile>
                   <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
-                  Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
-                </span>
-              </mat-grid-tile>
+                    Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
+                  </span>
+                </mat-grid-tile>
                 <mat-grid-tile>
                   <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
-                  PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
-                </span>
-              </mat-grid-tile>
+                    PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
+                  </span>
+                </mat-grid-tile>
                 <mat-grid-tile>
                   <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
-                  Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
-                </span>
-              </mat-grid-tile>
+                    Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
+                  </span>
+                </mat-grid-tile>
                 <mat-grid-tile>
                   <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
-                  Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
-                </span>
-              </mat-grid-tile>
+                    Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
+                  </span>
+                </mat-grid-tile>
                 <mat-grid-tile>
                   <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
-                  Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
-                </span>
-              </mat-grid-tile>
+                    Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
+                  </span>
+                </mat-grid-tile>
                 <mat-grid-tile>
                   <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
-                  Word:&nbsp;&nbsp;{{ wordFilesNbr }}
-                </span>
-              </mat-grid-tile>
+                    Word:&nbsp;&nbsp;{{ wordFilesNbr }}
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showLinksList(contentLinks, $event)">
+                    Links
+                  </span>
+                </mat-grid-tile>
               </mat-grid-list>
             </div>
           </div>
@@ -377,6 +387,57 @@
           </div>
         </div>
 
+
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" [routerLink]="isMobile ? '/clocking-mobile' : '/clocking'">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" 
+              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
+              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Clocking</div>
+              <img
+                class="pl-5"
+                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                src="/assets/pictures/clocking-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #868d25">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                Clocking late in {{ currentMonthAndYear }}:<br>
+                <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                Vacation limit days in {{ currentMonthAndYear }}:<br>
+                <span *ngIf="vacationLimitDays">{{ vacationLimitDays }}&nbsp;Day(s)</span>
+                <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
+              </span>         
+            </div>
+          </div>
+          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #868d25">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <mat-grid-list cols="2" rowHeight="10:1">
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                    Clocking late in {{ currentMonthAndYear }}:&nbsp;&nbsp;
+                    <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                    <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                  </span>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                    Vacation limit days in {{ currentMonthAndYear }}:&nbsp;&nbsp;
+                    <span *ngIf="vacationLimitDays">{{ vacationLimitDays }}&nbsp;Day(s)</span>
+                    <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
+                  </span>
+                </mat-grid-tile>              
+              </mat-grid-list>
+            </div>
+          </div>
+        </div>
 
 
         <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -657,47 +718,293 @@
 
 <ng-template #contentListMoviesByStatus>
 
-  <list-movies-by-status-desktop *ngIf="!isMobile" [listMovies]="listMovies" [currentStatusForMovie]="currentStatusForMovie"></list-movies-by-status-desktop>
+  <list-movies-by-status-desktop 
+    *ngIf="!isMobile" 
+    [listMovies]="listMovies" 
+    [currentStatusForMovie]="currentStatusForMovie" 
+    [dataUserConnected]="dataUserConnected">
+  </list-movies-by-status-desktop>
 
-  <list-movies-by-status-mobile *ngIf="isMobile" [listMovies]="listMovies" [currentStatusForMovie]="currentStatusForMovie"></list-movies-by-status-mobile>
+  <list-movies-by-status-mobile 
+    *ngIf="isMobile" 
+    [listMovies]="listMovies" 
+    [currentStatusForMovie]="currentStatusForMovie"
+    [dataUserConnected]="dataUserConnected">
+  </list-movies-by-status-mobile>
 
 </ng-template>
 
 <ng-template #contentListAnimesByStatus>
 
-  <list-animes-by-status-desktop *ngIf="!isMobile" [listAnimes]="listAnimes" [currentStatusForAnime]="currentStatusForAnime"></list-animes-by-status-desktop>
+  <list-animes-by-status-desktop 
+    *ngIf="!isMobile"
+    [listAnimes]="listAnimes" 
+    [currentStatusForAnime]="currentStatusForAnime"
+    [dataUserConnected]="dataUserConnected">
+  </list-animes-by-status-desktop>
 
-  <list-animes-by-status-mobile *ngIf="isMobile" [listAnimes]="listAnimes" [currentStatusForAnime]="currentStatusForAnime"></list-animes-by-status-mobile>
+  <list-animes-by-status-mobile 
+    *ngIf="isMobile" 
+    [listAnimes]="listAnimes" 
+    [currentStatusForAnime]="currentStatusForAnime"
+    [dataUserConnected]="dataUserConnected">
+  </list-animes-by-status-mobile>
 
 </ng-template>
 
 <ng-template #contentListSeriesByStatus>
 
-  <list-series-by-status-desktop *ngIf="!isMobile" [listSeries]="listSeries" [currentStatusForSerie]="currentStatusForSerie"></list-series-by-status-desktop>
+  <list-series-by-status-desktop 
+    *ngIf="!isMobile" 
+    [listSeries]="listSeries" 
+    [currentStatusForSerie]="currentStatusForSerie"
+    [dataUserConnected]="dataUserConnected">
+  </list-series-by-status-desktop>
 
-  <list-series-by-status-mobile *ngIf="isMobile" [listSeries]="listSeries" [currentStatusForSerie]="currentStatusForSerie"></list-series-by-status-mobile>
+  <list-series-by-status-mobile 
+    *ngIf="isMobile" 
+    [listSeries]="listSeries" 
+    [currentStatusForSerie]="currentStatusForSerie"
+    [dataUserConnected]="dataUserConnected">
+  </list-series-by-status-mobile>
 
 </ng-template>
 
 <ng-template #contentListFilesByType>
 
-  <list-files-by-type [listFiles]="listFiles" [fileByType]="fileByType" [isMobile]="isMobile"></list-files-by-type>
+  <list-files-by-type 
+    [listFiles]="listFiles" 
+    [fileByType]="fileByType" 
+    [isMobile]="isMobile" 
+    [dataUserConnected]="dataUserConnected">
+  </list-files-by-type>
 
 </ng-template>
 
 <ng-template #contentTaskList>
 
-  <list-tasks-desktop *ngIf="!isMobile" [tasksListByStatus]="tasksListByStatus" [tasksByStatus]="tasksByStatus" [isMobile]="isMobile"></list-tasks-desktop>
+  <list-tasks-desktop 
+    *ngIf="!isMobile" 
+    [tasksListByStatus]="tasksListByStatus" 
+    [tasksByStatus]="tasksByStatus" 
+    [isMobile]="isMobile">
+  </list-tasks-desktop>
 
-  <list-tasks-mobile *ngIf="isMobile" [tasksListByStatus]="tasksListByStatus" [tasksByStatus]="tasksByStatus" [isMobile]="isMobile"></list-tasks-mobile>
+  <list-tasks-mobile 
+    *ngIf="isMobile" 
+    [tasksListByStatus]="tasksListByStatus" 
+    [tasksByStatus]="tasksByStatus" 
+    [isMobile]="isMobile">
+  </list-tasks-mobile>
 
 </ng-template>
 
 <ng-template #contentUsersList>
 
-  <list-users-by-status-desktop *ngIf="!isMobile" [usersListByStatus]="usersListByStatus" [usersByStatus]="usersByStatus"></list-users-by-status-desktop>
+  <list-users-by-status-desktop 
+    *ngIf="!isMobile" 
+    [usersListByStatus]="usersListByStatus" 
+    [usersByStatus]="usersByStatus">
+  </list-users-by-status-desktop>
 
-  <list-users-by-status-mobile *ngIf="isMobile" [usersListByStatus]="usersListByStatus" [usersByStatus]="usersByStatus"></list-users-by-status-mobile>
+  <list-users-by-status-mobile 
+    *ngIf="isMobile" 
+    [usersListByStatus]="usersListByStatus" 
+    [usersByStatus]="usersByStatus">
+  </list-users-by-status-mobile>
+
+</ng-template>
+
+<ng-template #contentLinks>
+
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">Links</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-grid-list cols="4" rowHeight="3:1" class="text-application" style="font-size: 20px;">
+      
+    <mat-grid-tile>Angular</mat-grid-tile>
+    <mat-grid-tile>
+        <mat-checkbox 
+            name="angularContext" 
+            [(ngModel)]="angularContext" 
+            (ngModelChange)="checkAngularContext()"
+            style="margin-top: 10px;">
+        </mat-checkbox>
+    </mat-grid-tile>
+    <mat-grid-tile>Other</mat-grid-tile>
+    <mat-grid-tile>
+        <mat-checkbox 
+            name="otherContext" 
+            [(ngModel)]="otherContext"         
+            (ngModelChange)="checkotherContext()"
+            style="margin-top: 10px;">
+        </mat-checkbox>
+    </mat-grid-tile>
+      
+  </mat-grid-list>
+
+  <br *ngIf="angularContext || otherContext">
+
+  <button 
+    *ngIf="dataUserConnected.roleAddFile && (angularContext || otherContext)"
+    type="button"  
+    (click)="newLink()" 
+    mat-mini-fab
+    [ngStyle]="{'margin-left': isMobile ? '240px' : '445px'}"
+    style="background: #2196F3 !important;">
+    <mat-icon style="color: white;">add</mat-icon>
+  </button>
+
+  <br *ngIf="angularContext || otherContext">
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-6" *ngIf="!isMobile">
+      <mat-form-field class="widhtInput text-application">
+        <mat-label>Content</mat-label>
+        <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4" *ngIf="isMobile">
+      <mat-form-field class="widhtInput text-application">
+        <mat-label>Content</mat-label>
+        <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">   
+    <div class="col-md-12">
+
+      <div class="example-container mat-elevation-z8">
+        <div class="example-table-container">
+          <table mat-table [dataSource]="dataSource">
+      
+            <ng-container matColumnDef="content">
+              <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Content</th>
+              <td mat-cell *matCellDef="let element" class='m-card-title text-application' [ngStyle]="{'height': !isMobile ? '100px' : ''}">{{element.content}}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="star">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element" [ngStyle]="{'height': !isMobile ? '100px' : ''}"> 
+                <button mat-icon-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element:element}">
+                  <mat-icon>more_vert</mat-icon>
+              </button>
+              </td>
+            </ng-container>
+      
+            <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
+            <tr [ngClass]="!isMobile ? 'trForNotMobile' : ''" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
+          </table>
+        
+          <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+            No results
+          </div>
+        
+          <mat-paginator 
+            [pageSizeOptions]="[4]"
+            showFirstLastButtons 
+            aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </div>
+      </div>
+          
+      <mat-menu #menu="matMenu">
+        <ng-template matMenuContent let-link="element">
+
+          <button
+            *ngIf="dataUserConnected.roleUpdateFile" 
+            type="button"
+            mat-menu-item
+            (click)="editLink(link)"
+            class="text-application">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
+          </button>
+
+          <button
+            type="button"
+            *ngIf="link.path"  
+            mat-menu-item
+            class="text-application">
+            <mat-icon style="color: #283593;">remove_red_eye</mat-icon>
+            <a href="{{ link.path }}" target="_blank" style="text-decoration: none;">
+              <span style="color: black !important;">View</span>
+            </a>  
+          </button>
+
+          <button 
+            *ngIf="dataUserConnected.roleDeleteFile" 
+            type="button" 
+            mat-menu-item
+            (click)="openDeleteLinkModal(link, contentDeleteLink)" 
+            class="text-application">
+            <mat-icon style="color: #f44336;" aria-label="Delete">delete</mat-icon>
+            <span>Delete</span>
+          </button>
+
+          <button 
+            type="button"
+            mat-menu-item
+            (click)="shareLink(link)"
+            class="text-application">
+            <mat-icon style="color: #ff4081;">share</mat-icon>
+            <span>Share</span>                        
+          </button>
+      
+        </ng-template>
+      </mat-menu>
+
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #contentDeleteLink>
+
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">Are you sure ?</h2>
+  </div>
+
+  <div mat-dialog-content>
+    <div [ngClass]="isMobile ? 'gridForDeleteInMobile' : 'gridForDelete'" class="text-application">
+      <div><span>Content:</span></div>
+      <div>{{ linkToDelete.content }}</div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row justify-content-center" mat-dialog-actions>
+      <button 
+          mat-button 
+          type="button" 
+          [mat-dialog-close]="1" 
+          (click)="confirmDelete()" 
+          style="background:rgb(221, 51, 51);color: white;" 
+          class="text-application">
+          Delete
+      </button>
+
+      <button 
+          mat-button 
+          type="button" 
+          (click)="close()" 
+          tabindex="-1" 
+          style="background:#607D8B;color: white;" 
+          class="text-application">
+          Cancel
+      </button>
+  </div>
 
 </ng-template>
 

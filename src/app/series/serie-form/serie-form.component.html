@@ -4,7 +4,7 @@
   
     <div class="row">
       <div class="col-md-6">
-        <form (ngSubmit)="save(f.value)" #f="ngForm">
+        <form (ngSubmit)="save()" #f="ngForm">
   
           <div class="form">
             <mat-form-field color="accent">
@@ -35,29 +35,47 @@
             </mat-form-field>
           </div>
 
-          <div class="row">
-            <div class="col-md-6">
-                <mat-form-field color="accent" style="width: 100px;">
-                  <mat-placeholder class="text-application"><span>Curr ep</span></mat-placeholder>
-                    <mat-select [(ngModel)]="serie.currentEpisode" name="currentEpisode">
-                        <mat-option value=""></mat-option>
-                        <mat-option *ngFor="let nbr of nbrsList" [value]="nbr">
-                            {{nbr}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
+          <div class="form row">
+            <div class="col-md-3">
+              <div style="margin-top: 20px;">
+                <mat-checkbox name="isFirst" [(ngModel)]="serie.isFirst" class="mat-checkbox-layout"><span>First</span></mat-checkbox>
+              </div>               
             </div>
-            <div class="col-md-6">
-                <mat-form-field color="accent" style="width: 100px;">
-                  <mat-placeholder class="text-application"><span>Total ep</span></mat-placeholder>
-                    <mat-select [(ngModel)]="serie.totalEpisodes" name="totalEpisodes">
-                        <mat-option value=""></mat-option>
-                        <mat-option *ngFor="let nbr of nbrsList" [value]="nbr">
-                            {{nbr}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <mat-form-field color="accent" style="width: 80px;">
+                <mat-placeholder class="text-application"><span>Curr ep</span></mat-placeholder>
+                <input matInput #input type="number" [(ngModel)]="serie.currentEpisode" name="currentEpisode" class="text-application">
+              </mat-form-field>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+              <mat-form-field color="accent" style="width: 80px;">
+                <mat-placeholder class="text-application"><span>Total ep</span></mat-placeholder>
+                <input matInput #input type="number" [(ngModel)]="serie.totalEpisodes" name="totalEpisodes" class="text-application">
+              </mat-form-field>       
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <mat-form-field color="accent" style="width: 80px;">
+                <mat-placeholder class="text-application"><span>Season</span></mat-placeholder>
+                <input matInput #input type="number" [(ngModel)]="serie.season" name="season" class="text-application">
+              </mat-form-field>   
+            </div>
+            <div class="col-md-4">
+              <mat-form-field color="accent" style="width: 80px;">
+                <mat-placeholder class="text-application"><span>Priority</span></mat-placeholder>
+                <input matInput #input type="number" [(ngModel)]="serie.priority" name="priority" class="text-application">
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field color="accent" style="width: 80px;">
+                <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
+                <input matInput #input type="number" [(ngModel)]="serie.year" name="year" class="text-application">
+              </mat-form-field>
             </div>
           </div>
     
@@ -80,13 +98,17 @@
             <input type="file" name="file" (input)="onFileChanged($event)" accept=".jpeg,.jpg,.png,.svg">
           </div>
     
-          <div class="form" *ngIf="progressValue | async as val">
-            <progress type="warning" [value]="val" class="styleProgress" max="100"></progress>
+          <br>
+
+          <div *ngIf="progressValue | async as val" class="progress-background">
+            <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
           </div>
-  
-          <div class="form" *ngIf="progressValue | async as val">
-            <span *ngIf="val<100" class="progressIncomplete">{{ val | number}}% </span>
-            <span *ngIf="val == 100" class="progressComplete">Completed !</span>
+          <div *ngIf="progressValue | async as val" class="progress-indicator" [ngStyle] = "{'margin-left.%': val-3}">
+              <i class="fa fa-caret-up"></i>
+              <div>
+                  <i class="fa fa-motorcycle" style="font-size:24px "></i>
+              </div>
+              <span>{{ val | number }}%</span>
           </div>
       
           <div class="row justify-content-center" mat-dialog-actions>

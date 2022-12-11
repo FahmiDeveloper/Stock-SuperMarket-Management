@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
 import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'new-or-edit-anime',
@@ -19,16 +20,19 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 export class NewOrEditAnimeComponent implements OnInit {
 
-  anime: Anime = new Anime();
   arrayAnimes: Anime[];
+  allAnimes: Anime[];
+  listAnimesByNameForCreate: Anime[];
+  listAnimesByNameForUpdate: Anime[];
+  
+  anime: Anime = new Anime();
+
+  firstAnimePriority: number;
+  fromModalSeasonsMoviesList: boolean;
 
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
-  modalRef: any;
-  nbrsList: number[] = [];
-
-  formControl = new FormControl('', [Validators.required]);
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -38,9 +42,13 @@ export class NewOrEditAnimeComponent implements OnInit {
     {id: 5, status: 'To search about it'}
   ];
 
+  formControl = new FormControl('', [Validators.required]);
+
   constructor(
-      private fireStorage: AngularFireStorage,
-      private animeService: AnimeService 
+    private animeService: AnimeService, 
+    private fireStorage: AngularFireStorage,
+    public dialogRef: MatDialogRef<NewOrEditAnimeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Anime
   ) {}
 
   ngOnInit() {
@@ -48,30 +56,51 @@ export class NewOrEditAnimeComponent implements OnInit {
       this.anime.date = moment().format('YYYY-MM-DD');
       this.anime.time = moment().format('HH:mm');
     }
-    for (let i = 1; i <= 100; i++) {
-      this.nbrsList.push(i);
-    }
+    if (this.anime.key) this.firstAnimePriority = this.anime.priority;
   }
 
-  save(anime) {
-    if (!anime.path) anime.path = "";
+  save() {
+    if (!this.anime.path) this.anime.path = "";
     if (this.anime.key) {
-      this.animeService.update(this.anime.key, anime);
+      if (this.fromModalSeasonsMoviesList == true) {
+        this.listAnimesByNameForUpdate = this.allAnimes
+        .filter(anime => (anime.nameAnime.toLowerCase().includes(this.anime.nameAnime.toLowerCase())) && (anime.priority == this.anime.priority))
+        .sort((n1, n2) => n1.priority - n2.priority);
+  
+        this.listAnimesByNameForUpdate.forEach(element => {
+          if (element.key !== this.anime.key) {
+            element.priority = this.firstAnimePriority;
+            this.animeService.update(element.key, element);
+          }
+        })
+      }
+      
+      this.animeService.update(this.anime.key, this.anime);
       Swal.fire(
         'Anime data has been Updated successfully',
         '',
         'success'
       )
-    } else {
-      if (this.arrayAnimes[0].numRefAnime) anime.numRefAnime = this.arrayAnimes[0].numRefAnime + 1;
-      this.animeService.create(anime);
+    }
+    else {
+      if (this.arrayAnimes[0].numRefAnime) this.anime.numRefAnime = this.arrayAnimes[0].numRefAnime + 1;
+
+      this.listAnimesByNameForCreate = this.allAnimes.filter(anime => (anime.nameAnime.toLowerCase().includes(this.anime.nameAnime.toLowerCase()))).sort((n1, n2) => n1.priority - n2.priority);
+
+      for (let j = 0; j < this.listAnimesByNameForCreate.length; j++) {
+        if (this.listAnimesByNameForCreate[j].priority >= this.anime.priority)
+        this.listAnimesByNameForCreate[j].priority = this.listAnimesByNameForCreate[j].priority + 1;
+        this.animeService.update(this.listAnimesByNameForCreate[j].key, this.listAnimesByNameForCreate[j]);
+      }
+
+      this.animeService.create(this.anime);
       Swal.fire(
-      'New Anime added successfully',
-      '',
-      'success'
+        'New Anime added successfully',
+        '',
+        'success'
       )
     }
-    this.modalRef.close();
+    this.close();
   }
   
   async onFileChanged(event) {
@@ -93,5 +122,9 @@ export class NewOrEditAnimeComponent implements OnInit {
 
   getErrorMessage() {
     return this.formControl.hasError('required') ? 'Required field' :'';
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

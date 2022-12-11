@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { MovieService } from 'src/app/shared/services/movie.service';
 
 import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'new-or-edit-movie',
@@ -19,16 +20,21 @@ import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 export class NewOrEditMovieComponent implements OnInit {
 
-  movie: Movie = new Movie();
   arrayMovies: Movie[];
+  allMovies: Movie[];
+  listMoviesByNameForCreate: Movie[];
+  listMoviesByNameForUpdate: Movie[];
+  
+  movie: Movie = new Movie();
+
+  firstMoviePriority: number;
+  fromModalPartsList: boolean;
+  selectedYear: number;
+  years: number[] = [];
 
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
-  selectedYear: number;
-  years: number[] = [];
-
-  modalRef: any;
 
   formControl = new FormControl('', [Validators.required]);
 
@@ -41,8 +47,10 @@ export class NewOrEditMovieComponent implements OnInit {
   ];
 
   constructor(
-      private fireStorage: AngularFireStorage, 
-      private movieService: MovieService
+    private movieService: MovieService, 
+    private fireStorage: AngularFireStorage,
+    public dialogRef: MatDialogRef<NewOrEditMovieComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Movie
   ) {}
 
   ngOnInit() {
@@ -50,31 +58,50 @@ export class NewOrEditMovieComponent implements OnInit {
       this.movie.date = moment().format('YYYY-MM-DD');
       this.movie.time = moment().format('HH:mm');
     }
-    this.selectedYear = new Date().getFullYear() + 2;
-    for (let year = this.selectedYear; year >= 2010; year--) {
-      this.years.push(year);
-    }
+    if (this.movie.key) this.firstMoviePriority = this.movie.priority;
   }
 
-  save(movie) {
-    if (!movie.path) movie.path = "";
+  save() {
+    if (!this.movie.path) this.movie.path = "";
     if (this.movie.key) {
-      this.movieService.update(this.movie.key, movie);
+      if (this.fromModalPartsList == true) {
+        this.listMoviesByNameForUpdate = this.allMovies
+        .filter(movie => (movie.nameMovie.toLowerCase().includes(this.movie.nameMovie.toLowerCase())) && (movie.priority == this.movie.priority))
+        .sort((n1, n2) => n1.priority - n2.priority);
+  
+        this.listMoviesByNameForUpdate.forEach(element => {
+          if (element.key !== this.movie.key) {
+            element.priority = this.firstMoviePriority;
+            this.movieService.update(element.key, element);
+          }
+        })
+      }
+
+      this.movieService.update(this.movie.key, this.movie);
       Swal.fire(
         'Movie data has been Updated successfully',
         '',
         'success'
       )
     } else {
-      if (this.arrayMovies[0].numRefMovie) movie.numRefMovie = this.arrayMovies[0].numRefMovie + 1;
-      this.movieService.create(movie);
+      if (this.arrayMovies[0].numRefMovie) this.movie.numRefMovie = this.arrayMovies[0].numRefMovie + 1;
+
+      this.listMoviesByNameForCreate = this.allMovies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.movie.nameMovie.toLowerCase()))).sort((n1, n2) => n1.priority - n2.priority);
+
+      for (let j = 0; j < this.listMoviesByNameForCreate.length; j++) {
+        if (this.listMoviesByNameForCreate[j].priority >= this.movie.priority)
+        this.listMoviesByNameForCreate[j].priority = this.listMoviesByNameForCreate[j].priority + 1;
+        this.movieService.update(this.listMoviesByNameForCreate[j].key, this.listMoviesByNameForCreate[j]);
+      }
+
+      this.movieService.create(this.movie);
       Swal.fire(
       'New Movie added successfully',
       '',
       'success'
       )
     }
-    this.modalRef.close();
+    this.close();
   }
   
   async onFileChanged(event) {
@@ -96,6 +123,10 @@ export class NewOrEditMovieComponent implements OnInit {
 
   getErrorMessage() {
     return this.formControl.hasError('required') ? 'Required field' :'';
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 
 }
