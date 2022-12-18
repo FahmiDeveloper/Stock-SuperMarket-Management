@@ -32,6 +32,8 @@ import { Anime } from 'src/app/shared/models/anime.model';
 import { Serie } from 'src/app/shared/models/serie.model';
 import { Link } from 'src/app/shared/models/link.model';
 import { Clocking } from 'src/app/shared/models/clocking.model';
+import { Expiration } from 'src/app/shared/models/expiration.model';
+import { ExpirationService } from 'src/app/shared/services/expiration.service';
 
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
   const subject = new BehaviorSubject<Task[]>([]);
@@ -166,6 +168,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   laterTaskList: Task[]= [];
   tasksListByStatus: Task[]= [];
 
+   // Expiration variables
+   expirationsList: Expiration[] = [];
+   allExpirationsList: Expiration[] = [];
+
   // users variables
   totalNbrUsers: number= 0;
   nbrUsersConnected: number = 0;
@@ -190,6 +196,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscriptionForGetAllUsers: Subscription;
   subscriptionForGetAllLinks: Subscription;
   subscriptionForGetAllClockings: Subscription;
+  subscriptionForGetAllExpirations: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -203,6 +210,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private uploadService: FileUploadService,
     private debtService: DebtService,
     public clockingService: ClockingService,
+    public expirationService: ExpirationService,
     private store: AngularFirestore,
     public usersListService: UsersListService,
     private deviceService: DeviceDetectorService,
@@ -264,6 +272,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getFilesStatistics();
     this.getAllDebtsStatistics();
     this.getAllClockingsStatistics();
+    this.getAllExpirationsStatistics();
     this.getToDoListsStatistics();
   }
 
@@ -813,6 +822,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     }  
   }
 
+  getAllExpirationsStatistics() {
+    this.subscriptionForGetAllExpirations = this.expirationService
+    .getAll()
+    .subscribe((expirations: Expiration[]) => {
+
+      this.expirationsList = expirations.sort((n1, n2) => n2.numRefExpiration - n1.numRefExpiration);
+
+      this.allExpirationsList = expirations.sort((n1, n2) => n2.numRefExpiration - n1.numRefExpiration);
+    
+    });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+  }
+
   getAllClockingsStatistics() {
     this.subscriptionForGetAllClockings = this.clockingService
     .getAll()
@@ -1016,6 +1037,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     }   
   }
 
+  showClockingList(contentClockingList, e: Event) {
+    e.stopPropagation();
+    if (this.isMobile) {
+      this.dialogService.open(contentClockingList, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentClockingList, {
+        width: '45vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } 
+  }
+
+  showExpirationContent(contentExpirationsList, e: Event) {
+    e.stopPropagation();
+    if (this.isMobile) {
+      this.dialogService.open(contentExpirationsList, {
+        width: '98vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } else {
+      this.dialogService.open(contentExpirationsList, {
+        width: '45vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } 
+  }
+
   showLinksList(contentLinks, e: Event) {
     e.stopPropagation();
     this.content = '';
@@ -1198,6 +1253,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllUsers.unsubscribe();
     if (this.subscriptionForGetAllLinks) this.subscriptionForGetAllLinks.unsubscribe();
     this.subscriptionForGetAllClockings.unsubscribe();
+    this.subscriptionForGetAllExpirations.unsubscribe();
   }
   
 }

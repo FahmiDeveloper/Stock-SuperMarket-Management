@@ -1,0 +1,73 @@
+<div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">Clocking</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div class="row justify-content-center">
+    <mat-form-field class="text-application" style="width: 200px;">
+        <mat-label>Subject</mat-label>
+        <mat-select name="subjectSelectedId" class="text-application" [(ngModel)]="subjectSelectedId" (selectionChange)="filterBySubject()">
+            <mat-option value=""></mat-option>
+            <mat-option *ngFor="let subject of subjectList" [value]="subject.id">
+                <span class="text-application">{{subject.subjectName}}</span>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<br>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Date</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.dateClocking | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="day">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 200px;">Day</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.day }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Time</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center; ">
+                <span *ngIf="element.timeClocking">{{ element.timeClocking }}</span>
+                <span *ngIf="!element.timeClocking">-</span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="clockingNbr">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 200px;">Clocking Nbr</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;  ">
+                <span *ngIf="element.clockingNbr">{{ element.clockingNbr }}</span>
+                <span *ngIf="!element.clockingNbr">-</span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="note">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Note</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                <span *ngIf="element.note">{{ element.note }}</span>
+                <span *ngIf="!element.note">-</span>
+            </td>
+        </ng-container>
+    
+        <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+        No results
+    </div>
+    
+    <mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

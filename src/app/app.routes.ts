@@ -23,6 +23,8 @@ import { ToDoListComponent } from './to-do-list/to-do-list.component';
 import { ToDoListMobileComponent } from './to-do-list/to-do-list-mobile/to-do-list-mobile.component';
 import { ClockingForDesktopComponent } from './clocking/clocking-for-desktop/clocking-for-desktop.component';
 import { ClockingForMobileComponent } from './clocking/clocking-for-mobile/clocking-for-mobile.component';
+import { ExpirationForDesktopComponent } from './expiration/expiration-for-desktop/expiration-for-desktop.component';
+import { ExpirationForMobileComponent } from './expiration/expiration-for-mobile/expiration-for-mobile.component';
 
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
@@ -66,6 +68,9 @@ export const rootRouterConfig: Routes = [
   { path: 'to-do-list-mobile', component: ToDoListMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'clocking', component: ClockingForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'clocking-mobile', component: ClockingForMobileComponent,  resolve: { data: SharedResolver}}
+  { path: 'clocking-mobile', component: ClockingForMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'expiration', component: ExpirationForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'expiration-mobile', component: ExpirationForMobileComponent,  resolve: { data: SharedResolver}}
 
 ]; 

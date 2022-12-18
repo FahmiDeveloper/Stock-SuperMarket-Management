@@ -1,0 +1,1 @@
+export * from './expiration-form-mobile.component';

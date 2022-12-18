@@ -1,460 +1,187 @@
 <h1 class="text-center text-primary text-application" style="padding-top: 20px;font-weight: bold;">Welcome</h1>
 <hr class="bg-dark" />
 
-<div class="row justify-content-center">
-  <mat-card class="mat" fxLayout="column" fxFlex [ngStyle]="{'width': isMobile ? '91%' : '83%'}">
+<div *ngIf="isMobile" class="row justify-content-center">
+  <mat-card class="mat" fxLayout="column" fxFlex style="width: 91%;">
     <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
       <ng-container>
 
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" [routerLink]="isMobile ? '/movies-for-grid' : '/movies'">
+        <!--Movies-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies-for-grid">
           <div fxLayout class="overview-style">
             <div
-              [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Movies</div>
+              [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }"
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
               <img
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                style="margin-left: 7rem;"
                 class="pl-5"
                 src="/assets/pictures/movies-logo.png"
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #3f51b5">
+          <div class="content pl-3" style="border: 1px solid #3f51b5">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(1, contentListMoviesByStatus, $event)">
-                Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWaitToSort }}
+                Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(2, contentListMoviesByStatus, $event)">
-                Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
+                Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(3, contentListMoviesByStatus, $event)">
-                Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesWatched }}
+                Watched:&nbsp;&nbsp;{{ moviesWatched }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(4, contentListMoviesByStatus, $event)">
-                Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
+                Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(5, contentListMoviesByStatus, $event)">
-                To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
+                To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
               </span>
-            </div>
-          </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #3f51b5">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(1, contentListMoviesByStatus, $event)">
-                    Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(2, contentListMoviesByStatus, $event)">
-                    Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(3, contentListMoviesByStatus, $event)">
-                    Watched:&nbsp;&nbsp;{{ moviesWatched }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(4, contentListMoviesByStatus, $event)">
-                    Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(5, contentListMoviesByStatus, $event)">
-                    To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
-                  </span>
-                </mat-grid-tile>
-              </mat-grid-list>
             </div>
           </div>
         </div>
 
-
-  
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" [routerLink]="isMobile ? '/animes-for-grid' : '/animes'">
+        <!--Animes-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes-for-grid">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Animes</div>
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
               <img
                 class="pl-5"
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                style="margin-left: 7rem;"
                 src="/assets/pictures/animes-logo.png"
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #4CAF50">
+          <div class="content pl-3" style="border: 1px solid #4CAF50">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(1, contentListAnimesByStatus, $event)">
-                Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWaitToSort }}
+                Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(2, contentListAnimesByStatus, $event)">
-                Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesNotDownloadedYet }}
+                Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(3, contentListAnimesByStatus, $event)">
-                Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesWatched }}
+                Watched:&nbsp;&nbsp;{{ animesWatched }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(4, contentListAnimesByStatus, $event)">
-                Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
+                Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(5, contentListAnimesByStatus, $event)">
-                To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ animesToSearchAboutIt }}
+                To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}
               </span>
-            </div>
-          </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #4CAF50">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(1, contentListAnimesByStatus, $event)">
-                    Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(2, contentListAnimesByStatus, $event)">
-                    Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(3, contentListAnimesByStatus, $event)">
-                    Watched:&nbsp;&nbsp;{{ animesWatched }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(4, contentListAnimesByStatus, $event)">
-                    Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(5, contentListAnimesByStatus, $event)">
-                    To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}
-                  </span>
-                </mat-grid-tile>
-              </mat-grid-list>
             </div>
           </div>
         </div>
 
-
-  
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" [routerLink]="isMobile ? '/series-for-grid' : '/series'">
+        <!--Series-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series-for-grid">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Series</div>
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
               <img
                 class="pl-5"
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                style="margin-left: 7rem;"
                 src="/assets/pictures/series-logo.png"
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #ec4b53">
+          <div class="content pl-3" style="border: 1px solid #ec4b53">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(1, contentListSeriesByStatus, $event)">
-                Wait to sort:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWaitToSort }}
+                Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(2, contentListSeriesByStatus, $event)">
-                Not downloaded yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
+                Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(3, contentListSeriesByStatus, $event)">
-                Watched:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesWatched }}
+                Watched:&nbsp;&nbsp;{{ seriesWatched }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(4, contentListSeriesByStatus, $event)">
-                Not watched yet:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
+                Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(5, contentListSeriesByStatus, $event)">
-                To search about it:&nbsp;&nbsp;&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
+                To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
               </span>
-            </div>
-          </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #ec4b53">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(1, contentListSeriesByStatus, $event)">
-                    Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(2, contentListSeriesByStatus, $event)">
-                    Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(3, contentListSeriesByStatus, $event)">
-                    Watched:&nbsp;&nbsp;{{ seriesWatched }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(4, contentListSeriesByStatus, $event)">
-                    Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(5, contentListSeriesByStatus, $event)">
-                    To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
-                  </span>
-                </mat-grid-tile>
-              </mat-grid-list>
             </div>
           </div>
         </div>
 
-
-  
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleFiles">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" 
-              [ngClass]="isMobile ? 'overview-cart-links-mobile' : 'overview-cart-links'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Files</div>
-              <img
-                class="pl-5"
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
-                src="/assets/pictures/files-logo.png"
-                width="150px"/>
-            </div>
-          </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #24a8f2">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
-                Pictures:&nbsp;&nbsp;&nbsp;&nbsp;{{ pictureFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
-                PDF:&nbsp;&nbsp;&nbsp;&nbsp;{{ pdfFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
-                Excel:&nbsp;&nbsp;&nbsp;&nbsp;{{ excelFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
-                Txt:&nbsp;&nbsp;&nbsp;&nbsp;{{ txtFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
-                Zip:&nbsp;&nbsp;&nbsp;&nbsp;{{ zipFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
-                Word:&nbsp;&nbsp;&nbsp;&nbsp;{{ wordFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showLinksList(contentLinks, $event)">
-                Links
-              </span>
-            </div>
-          </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #24a8f2">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="7" rowHeight="5:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
-                    Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
-                    PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
-                    Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
-                    Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
-                    Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
-                    Word:&nbsp;&nbsp;{{ wordFilesNbr }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showLinksList(contentLinks, $event)">
-                    Links
-                  </span>
-                </mat-grid-tile>
-              </mat-grid-list>
-            </div>
-          </div>
-        </div>
-
-
-    
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" [routerLink]="isMobile ? '/debts-for-grid' : '/debts'">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Debts</div>
-              <img
-                class="pl-5"
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
-                src="/assets/pictures/debts-logo.png"
-                width="150px"/>
-            </div>
-          </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #ff4081">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalInDebts }}
-              </span>
-              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalOutDebts }}
-              </span>
-              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
-              </span>            
-            </div>
-          </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #ff4081">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="3" rowHeight="8:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                    Total in debt:&nbsp;&nbsp;{{ totalInDebts }}
-                  </span>
-                  <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                    Total in debt:&nbsp;&nbsp;0DT
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                    Total out debt:&nbsp;&nbsp;{{ totalOutDebts }}
-                  </span>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                    Total out debt:&nbsp;&nbsp;0DT
-                  </span>
-                </mat-grid-tile>              
-              </mat-grid-list>
-            </div>
-          </div>
-        </div>
-
-
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" [routerLink]="isMobile ? '/clocking-mobile' : '/clocking'">
+        <!--Clocking-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clocking-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Clocking</div>
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Clocking</div>
               <img
                 class="pl-5"
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                style="margin-left: 7rem;"
                 src="/assets/pictures/clocking-logo.png"
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #868d25">
+          <div class="content pl-3" style="border: 1px solid #868d25">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+              <span style="font-weight: 500;font-size: revert;">
                 Clocking late in {{ currentMonthAndYear }}:<br>
-                <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                <span *ngIf="sumClockingLate < 60 || !sumClockingLate" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLate }}&nbsp;Min</span>
+                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLateByHoursMinute }}</span>
               </span>
             </div>
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+              <span style="font-weight: 500;font-size: revert;">
                 Vacation limit days in {{ currentMonthAndYear }}:<br>
                 <span *ngIf="vacationLimitDays">{{ vacationLimitDays }}&nbsp;Day(s)</span>
                 <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
               </span>         
             </div>
           </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #868d25">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="2" rowHeight="10:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                    Clocking late in {{ currentMonthAndYear }}:&nbsp;&nbsp;
-                    <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-                    <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                    Vacation limit days in {{ currentMonthAndYear }}:&nbsp;&nbsp;
-                    <span *ngIf="vacationLimitDays">{{ vacationLimitDays }}&nbsp;Day(s)</span>
-                    <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
-                  </span>
-                </mat-grid-tile>              
-              </mat-grid-list>
-            </div>
-          </div>
         </div>
 
-
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+        <!--To Do List-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'" 
-              [routerLink]="isMobile ? '/to-do-list-mobile' : '/to-do-list'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">To Do List</div>
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
               <img
                 class="pl-5"
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                style="margin-left: 7rem;"
                 src="/assets/pictures/to-do-list-logo.png"
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #9C27B0">
+          <div class="content pl-3" style="border: 1px solid #9C27B0">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(1, contentTaskList, $event)">
                 Today:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTodayTask }}
@@ -481,56 +208,134 @@
               </span>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #9C27B0">
+        </div>
+
+        <!--Expiration-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expiration-mobile">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" 
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Expiration</div>
+              <img
+                class="pl-5"
+                style="margin-left: 7rem;"
+                src="/assets/pictures/expired-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" style="border: 1px solid rgb(21 143 185)">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="5" rowHeight="5:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(1, contentTaskList, $event)">
-                    Today:&nbsp;&nbsp;{{ nbrTodayTask }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(2, contentTaskList, $event)">
-                    Tomorrow:&nbsp;&nbsp;{{ nbrTomorrowTask }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(3, contentTaskList, $event)">
-                    This week:&nbsp;&nbsp;{{ nbrThisWeekTask }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(4, contentTaskList, $event)">
-                    Next week:&nbsp;&nbsp;{{ nbrNextWeekTaskList }}
-                  </span>
-              </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(5, contentTaskList, $event)">
-                    Later:&nbsp;&nbsp;{{ nbrLaterTaskList }}
-                  </span>
-                </mat-grid-tile>
-              </mat-grid-list>
+              <span style="font-weight: 500;font-size: revert;" (click)="showExpirationContent(contentExpirationsList, $event)">View</span>
             </div>
           </div>
         </div>
 
+        <!--Debts-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts-for-grid">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" 
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
+              <img
+                class="pl-5"
+                style="margin-left: 7rem;"
+                src="/assets/pictures/debts-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" style="border: 1px solid #ff4081">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalInDebts }}
+              </span>
+              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalOutDebts }}
+              </span>
+              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
+              </span>            
+            </div>
+          </div>
+        </div>
 
-      
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.isAdmin">
+        <!--Files-->
+         <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleFiles">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" 
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
+              <img
+                class="pl-5"
+                style="margin-left: 7rem;"
+                src="/assets/pictures/files-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" style="border: 1px solid #24a8f2">
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
+                Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
+                PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
+                Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
+                Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
+                Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
+                Word:&nbsp;&nbsp;{{ wordFilesNbr }}
+              </span>
+            </div>
+            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+              <span style="font-weight: 500;font-size: revert;" (click)="showLinksList(contentLinks, $event)">
+                Links
+              </span>
+            </div>
+          </div>
+        </div> 
+
+        <!--Users-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.isAdmin" routerLink="/users-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" 
-              [ngClass]="isMobile ? 'overview-cart-mobile' : 'overview-cart'" 
-              [routerLink]="isMobile ? '/users-mobile' : '/users'">
-              <div class="mt-4 heading-text" [ngStyle]="{'margin-left': isMobile ? '5px' : '125px'}">Users</div>
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
               <img
                 class="pl-5"
-                [ngStyle]="{'margin-left': isMobile ? '7rem' : '35rem'}"
+                style="margin-left: 7rem;"
                 src="/assets/pictures/users-logo.png"
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="isMobile" style="border: 1px solid #B96068">
+          <div class="content pl-3" style="border: 1px solid #B96068">
             <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
               <span style="font-weight: 500;font-size: revert;" (click)="showUsersList(1, contentUsersList, $event)">
                 Total users:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalNbrUsers }}
@@ -547,27 +352,6 @@
               </span>
             </div>
           </div>
-          <div class="content pl-3" *ngIf="!isMobile" style="border: 1px solid #B96068">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <mat-grid-list cols="3" rowHeight="8:1">
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(1, contentUsersList, $event)">
-                    Total users:&nbsp;&nbsp;{{ totalNbrUsers }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(2, contentUsersList, $event)">
-                    Connected:&nbsp;&nbsp;{{ nbrUsersConnected }}
-                  </span>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                  <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(3, contentUsersList, $event)">
-                    Not connected:&nbsp;&nbsp;{{ nbrUsersNotConnected }}
-                  </span>
-                </mat-grid-tile>
-              </mat-grid-list>
-            </div>
-          </div>
         </div>
      
       </ng-container>
@@ -576,6 +360,426 @@
 </div>
 
 
+<div *ngIf="!isMobile">
+  <div class="container justify-content-center">
+
+    <div class="row ">
+
+      <!--Movies-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/movies-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #3f51b5">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(1, contentListMoviesByStatus, $event)">
+                      Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(2, contentListMoviesByStatus, $event)">
+                      Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(3, contentListMoviesByStatus, $event)">
+                      Watched:&nbsp;&nbsp;{{ moviesWatched }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(4, contentListMoviesByStatus, $event)">
+                      Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(5, contentListMoviesByStatus, $event)">
+                      To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+
+      <!--Animes-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/animes-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #4CAF50">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(1, contentListAnimesByStatus, $event)">
+                      Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(2, contentListAnimesByStatus, $event)">
+                      Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(3, contentListAnimesByStatus, $event)">
+                      Watched:&nbsp;&nbsp;{{ animesWatched }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(4, contentListAnimesByStatus, $event)">
+                      Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(5, contentListAnimesByStatus, $event)">
+                      To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+
+      <!--Series-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/series-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #ec4b53">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(1, contentListSeriesByStatus, $event)">
+                      Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(2, contentListSeriesByStatus, $event)">
+                      Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(3, contentListSeriesByStatus, $event)">
+                      Watched:&nbsp;&nbsp;{{ seriesWatched }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(4, contentListSeriesByStatus, $event)">
+                      Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(5, contentListSeriesByStatus, $event)">
+                      To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+    
+    </div>
+  
+    <br>
+
+    <div class="row ">
+
+      <!--Clocking-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clocking">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Clocking</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/clocking-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #868d25;height: 168px;">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;">
+                      Clocking late in {{ currentMonthAndYear }}:<br>
+                      <span *ngIf="sumClockingLate < 60 || !sumClockingLate" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLate }}&nbsp;Min</span>
+                      <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLateByHoursMinute }}</span>
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;">
+                      Vacation limit days in {{ currentMonthAndYear }}:<br>
+                      <span *ngIf="vacationLimitDays">{{ vacationLimitDays }}&nbsp;Day(s)</span>
+                      <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+
+      <!--To Do List-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;height: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/to-do-list-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #9C27B0;">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(1, contentTaskList, $event)">
+                      Today:&nbsp;&nbsp;{{ nbrTodayTask }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(2, contentTaskList, $event)">
+                      Tomorrow:&nbsp;&nbsp;{{ nbrTomorrowTask }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(3, contentTaskList, $event)">
+                      This week:&nbsp;&nbsp;{{ nbrThisWeekTask }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(4, contentTaskList, $event)">
+                      Next week:&nbsp;&nbsp;{{ nbrNextWeekTaskList }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(5, contentTaskList, $event)">
+                      Later:&nbsp;&nbsp;{{ nbrLaterTaskList }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+
+       <!--Expiration-->
+       <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expiration">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Expiration</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/expired-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid rgb(21 143 185); height: 168px;">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showExpirationContent(contentExpirationsList, $event)">View</span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+    
+    </div>
+  
+    <br>
+
+    <div class="row ">
+
+      <!--Debts-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/debts-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #ff4081; height: 168px;">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                      Total in debt:&nbsp;&nbsp;{{ totalInDebts }}
+                    </span>
+                    <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
+                      Total in debt:&nbsp;&nbsp;0DT
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                      Total out debt:&nbsp;&nbsp;{{ totalOutDebts }}
+                    </span>
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
+                      Total out debt:&nbsp;&nbsp;0DT
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+
+      <!--Files-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;height: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleFiles">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/files-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #24a8f2;height: 168px;">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
+                      Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
+                    </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
+                      PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
+                      Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
+                    </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;margin-left: 16px;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
+                      Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
+                      Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
+                      Word:&nbsp;&nbsp;{{ wordFilesNbr }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showLinksList(contentLinks, $event)">
+                      Links
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>
+
+      <!--Users-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/users">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/users-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid #B96068; height: 168px;">
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(1, contentUsersList, $event)">
+                      Total users:&nbsp;&nbsp;{{ totalNbrUsers }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(2, contentUsersList, $event)">
+                      Connected:&nbsp;&nbsp;{{ nbrUsersConnected }}
+                    </span>
+                  </div>
+                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
+                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(3, contentUsersList, $event)">
+                      Not connected:&nbsp;&nbsp;{{ nbrUsersNotConnected }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>  
+
+    </div>
+  </div>
+</div>
 
 <ng-template #contentRestMoneyForeachPlace>
 
@@ -671,7 +875,6 @@
   </mat-grid-list>
 
 </ng-template>
-
 
 <ng-template #contentTotalOutDebtsDet>
 
@@ -1008,4 +1211,32 @@
 
 </ng-template>
 
+<ng-template #contentClockingList>
 
+  <clockings-list-desktop 
+    *ngIf="!isMobile" 
+    [clockingsList]="clockingsList">
+  </clockings-list-desktop>
+
+  <clockings-list-mobile 
+    *ngIf="isMobile" 
+    [clockingsList]="clockingsList">
+  </clockings-list-mobile>
+
+</ng-template>
+
+<ng-template #contentExpirationsList>
+
+  <expirations-list-desktop 
+    *ngIf="!isMobile" 
+    [expirationsList]="expirationsList"
+    [allExpirationsList]="allExpirationsList">
+  </expirations-list-desktop>
+
+  <expirations-list-mobile 
+    *ngIf="isMobile" 
+    [expirationsList]="expirationsList"
+    [allExpirationsList]="allExpirationsList">
+  </expirations-list-mobile>
+
+</ng-template>
