@@ -6,9 +6,18 @@ export class Clocking {
   note: string;
   numRefClocking: number;
   day: string; 
+  workOnSunday: boolean;
+  takeVacation: boolean;
+  takeOneHour: boolean;
+  workHalfDay: boolean;
 }
 
 export interface MonthsList {
   monthNbr: string;
   monthName: string;
+}
+
+export interface SubjectList {
+  id: number;
+  subjectName: string;
 }

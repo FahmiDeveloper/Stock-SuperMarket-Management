@@ -27,6 +27,16 @@
             </mat-form-field>
           </div>
         </div>
+
+        <div class="form-group">
+            <mat-form-field color="accent" class="text-application" style="width: 150px;">
+                <mat-select placeholder="Subject" [(ngModel)]="selectedSubjectId" name="selectedSubjectId" class="text-application">
+                    <mat-option *ngFor="let subject of subjectList" [value]="subject.id">
+                        <span class="text-application">{{subject.subjectName}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
   
         <div class="form-group">
           <mat-form-field color="accent" style="width: 415px;">

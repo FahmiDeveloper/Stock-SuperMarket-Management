@@ -14,18 +14,29 @@
             <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
         </span>
     </div>
-    <div class="col-md-3">
-        <mat-form-field class="text-application" style="width: 285px;">
+    <div class="col-md-2">
+        <mat-form-field class="text-application" style="width: 200px;">
             <mat-label>Month</mat-label>
             <mat-select name="monthSelected" class="text-application" [(ngModel)]="monthSelected" (selectionChange)="getAllClockings()">
-                <mat-option value=""></mat-option>
                 <mat-option *ngFor="let month of monthsList" [value]="month.monthNbr">
                     <span class="text-application">{{month.monthName}}</span>
                 </mat-option>
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-1"></div>
+    <div class="col-md-2">
+        <mat-form-field class="text-application" style="width: 200px;">
+            <mat-label>Subject</mat-label>
+            <mat-select name="subjectSelectedId" class="text-application" [(ngModel)]="subjectSelectedId" (selectionChange)="getAllClockings()">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let subject of subjectList" [value]="subject.id">
+                    <span class="text-application">{{subject.subjectName}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col-md-2">
         <button 
             type="button" 
             (click)="newClocking()" 
@@ -130,7 +141,7 @@
     <div mat-dialog-content>
         <div class="gridForDelete text-application">
             <div><span>Date:</span></div>
-            <div>{{ clockingToDelete.dateClocking }}</div>
+            <div>{{ clockingToDelete.dateClocking | date:'dd/MM/yyyy' }}</div>
         </div>
         <br>
         <div class="gridForDelete text-application">

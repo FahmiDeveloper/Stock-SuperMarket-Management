@@ -10,7 +10,7 @@ import { ClockingFormMobileComponent } from './clocking-form-mobile/clocking-for
 
 import { ClockingService } from 'src/app/shared/services/clocking.service';
 
-import { Clocking, MonthsList } from 'src/app/shared/models/clocking.model';
+import { Clocking, MonthsList, SubjectList } from 'src/app/shared/models/clocking.model';
 
 @Component({
   selector: 'clocking-for-mobile',
@@ -21,7 +21,8 @@ import { Clocking, MonthsList } from 'src/app/shared/models/clocking.model';
 export class ClockingForMobileComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Clocking>();
-  dataSourceCopie = new MatTableDataSource<Clocking>();
+  dataSourceCopieForNewClocking = new MatTableDataSource<Clocking>();
+  dataSourceCopieForCalculTotalClockingLate = new MatTableDataSource<Clocking>();
   displayedColumns: string[] = ['date', 'day', 'time', 'clockingNbr', 'note', 'star'];
 
   clockingToDelete: Clocking = new Clocking();
@@ -37,6 +38,7 @@ export class ClockingForMobileComponent implements OnInit, OnDestroy {
   currentMonth: string = '';
   currentYear: number;
   currentMonthAndYearForVacation: string = '';
+  subjectSelectedId: number;
 
   subscriptionForGetAllClockings: Subscription;
 
@@ -62,6 +64,13 @@ export class ClockingForMobileComponent implements OnInit, OnDestroy {
     { monthNbr: '05', monthName: 'May'}
   ];
 
+  subjectList: SubjectList[] = [
+    {id: 1, subjectName: 'Work on sunday'},
+    {id: 2, subjectName: 'Take vacation'},
+    {id: 3, subjectName: 'Take one hour'},
+    {id: 4, subjectName: 'Work half day'}   
+  ];
+
   constructor(
     public clockingService: ClockingService,
     public dialogService: MatDialog
@@ -85,22 +94,44 @@ export class ClockingForMobileComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe((clockings: Clocking[]) => {
 
-      this.dataSourceCopie.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+
+      this.dataSourceCopieForCalculTotalClockingLate.data = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
       this.currentMonth = this.monthsList.find(month => month.monthNbr == this.monthSelected).monthName;
 
-      this.dataSource.data = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
-        
+      if (this.subjectSelectedId == 1) {
+        this.dataSource.data = clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true)).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      } 
+      else if (this.subjectSelectedId == 2) {
+        this.dataSource.data = clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true)).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      }
+      else if (this.subjectSelectedId == 3) {
+        this.dataSource.data = clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true)).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      }
+      else if (this.subjectSelectedId == 4) {
+        this.dataSource.data = clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true)).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      }
+      else {
+        this.dataSource.data = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      }
+   
       this.minutePartList = [];
-      if (this.dataSource.data.length > 0) {
-        this.dataSource.data.forEach(clocking => {
+      if (this.dataSourceCopieForCalculTotalClockingLate.data.length > 0) {
+        this.dataSourceCopieForCalculTotalClockingLate.data.forEach(clocking => {
           if (clocking.timeClocking && clocking.timeClocking > '08:00') this.calculTotalClockingLate(clocking.timeClocking);
-          this.getDayFromDateClocking(clocking);
         })
       } else {
         this.totalClockingLate = 0;
         this.totalClockingLateByHoursMinute = '0 Min';
-      }   
+      }
+      
+      if (this.dataSource.data.length > 0) {
+        this.dataSource.data.forEach(clocking => {
+          this.getDayFromDateClocking(clocking);
+        })
+      }
+
     });
   }
 
@@ -129,7 +160,7 @@ export class ClockingForMobileComponent implements OnInit, OnDestroy {
       height:'55vh',
       maxWidth: '100vw'
     });
-    dialogRef.componentInstance.arrayClockings = this.dataSourceCopie.data;
+    dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
   }
 
   editClocking(clocking?: Clocking) {

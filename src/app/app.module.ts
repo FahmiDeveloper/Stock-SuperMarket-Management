@@ -85,7 +85,14 @@ import {
   ClockingFormDesktopComponent,
   ClockingForMobileComponent,
   ClockingFormMobileComponent,
- } from './clocking/index';
+} from './clocking/index';
+
+import { 
+  ExpirationForDesktopComponent,
+  ExpirationFormDesktopComponent,
+  ExpirationForMobileComponent,
+  ExpirationFormMobileComponent,
+} from './expiration/index';
 
 import { 
   DebtsComponent,
@@ -117,7 +124,11 @@ import {
   ListTasksForMobileComponent,
   TaskDataComponent,
   ListUsersByStatusForDesktopComponent,
-  ListUsersByStatusForMobileComponent
+  ListUsersByStatusForMobileComponent,
+  ListClockingsForDesktopComponent,
+  ListClockingsForMobileComponent,
+  ListExpirationsForDesktopComponent,
+  ListExpirationsForMobileComponent
 } from './core/components/index';
 
 import { 
@@ -230,7 +241,15 @@ import { UserComponent } from './user/index';
     ClockingForDesktopComponent,
     ClockingFormDesktopComponent,
     ClockingForMobileComponent,
-    ClockingFormMobileComponent
+    ClockingFormMobileComponent,
+    ExpirationForDesktopComponent,
+    ExpirationFormDesktopComponent,
+    ExpirationForMobileComponent,
+    ExpirationFormMobileComponent,
+    ListClockingsForDesktopComponent,
+    ListClockingsForMobileComponent,
+    ListExpirationsForDesktopComponent,
+    ListExpirationsForMobileComponent
   ],
   entryComponents: [
     NewOrEditMovieComponent,

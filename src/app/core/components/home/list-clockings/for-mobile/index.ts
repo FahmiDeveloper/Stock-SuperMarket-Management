@@ -1,0 +1,1 @@
+export * from './list-clockings-mobile.component';
