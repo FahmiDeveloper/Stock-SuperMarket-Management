@@ -5,7 +5,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { AnimeFormComponent } from 'src/app/animes';
+import { AnimeFormDesktopComponent } from 'src/app/animes';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
@@ -35,8 +35,7 @@ export class ListAnimesByStatusForDesktopComponent implements OnChanges {
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-    @ViewChild(MatMenuTrigger)
-    contextMenu: MatMenuTrigger;
+    @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
     contextMenuPosition = { x: '0px', y: '0px' };
 
@@ -136,7 +135,7 @@ export class ListAnimesByStatusForDesktopComponent implements OnChanges {
     }
 
     editAnime(anime: Anime) {
-        const dialogRef = this.dialogService.open(AnimeFormComponent, {width: '800px'});
+        const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, {width: '800px'});
         dialogRef.componentInstance.anime = anime;
     }
 

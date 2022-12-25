@@ -43,72 +43,6 @@ import { SortPipe } from './shared/pipes/sort.pipe';
 import { AppComponent } from './app.component';
 
 import { 
-  MoviesComponent,
-  MovieFormComponent,
-  ShowMoviePictureComponent,
-  VersionGridMoviesComponent,
-  NewOrEditMovieComponent,
-  ListPartsForDesktopComponent,
-  ListPartsForMobileComponent
-} from './movies/index';
-
-import { 
-  AnimesComponent,
-  AnimeFormComponent,
-  ShowAnimePictureComponent,
-  VersionGridAnimesComponent,
-  NewOrEditAnimeComponent,
-  ListSeasonsMoviesForDesktopComponent,
-  ListSeasonsMoviesForMobileComponent
-} from './animes/index';
-
-import { 
-  SeriesComponent,
-  SerieFormComponent,
-  ShowSeriePictureComponent,
-  VersionGridSeriesComponent,
-  NewOrEditSerieComponent,
-  ListSeasonsForDesktopComponent,
-  ListSeasonsForMobileComponent
-} from './series/index';
-
-import { 
-  FilesComponent,
-  UploadFormComponent,
-  UploadListComponent,
-  UploadDetailsComponent,
-  NewOrEditLinkComponent
-} from './files/index';
-
-import { 
-  ClockingForDesktopComponent,
-  ClockingFormDesktopComponent,
-  ClockingForMobileComponent,
-  ClockingFormMobileComponent,
-} from './clocking/index';
-
-import { 
-  ExpirationForDesktopComponent,
-  ExpirationFormDesktopComponent,
-  ExpirationForMobileComponent,
-  ExpirationFormMobileComponent,
-} from './expiration/index';
-
-import { 
-  DebtsComponent,
-  DebtFormComponent,
-  DebtsForGridComponent,
-  NewOrEditDebtComponent
-} from './debts/index';
-
-import { 
-  ListUsersComponent,
-  ListUsersMobileComponent,
-  ModalPrivilegeComponent,
-  ModalPrivilegeMobileComponent
-} from './list-users/index';
-
-import { 
   HeaderComponent,
   HomeComponent,
   LoginComponent,
@@ -131,16 +65,89 @@ import {
   ListExpirationsForMobileComponent
 } from './core/components/index';
 
+import { UserComponent } from './user/index';
+
 import { 
-  ToDoListComponent,
-  TaskComponent,
-  TaskFormComponent,
-  ToDoListMobileComponent,
+  AnimesForDesktopComponent,
+  AnimeFormDesktopComponent,
+  ListSeasonsMoviesForDesktopComponent,
+  AnimesForMobileComponent,
+  AnimeFormMobileComponent,
+  ListSeasonsMoviesForMobileComponent,
+  ShowAnimePictureComponent
+} from './animes/index';
+
+import { 
+  ClockingsForDesktopComponent,
+  ClockingFormDesktopComponent,
+  ClockingsForMobileComponent,
+  ClockingFormMobileComponent,
+} from './clockings/index';
+
+import { 
+  DebtsForDesktopComponent,
+  DebtFormDesktopComponent,
+  DebtsForMobileComponent,
+  DebtFormMobileComponent
+} from './debts/index';
+
+import { 
+  ExpirationsForDesktopComponent,
+  ExpirationFormDesktopComponent,
+  ExpirationsForMobileComponent,
+  ExpirationFormMobileComponent,
+} from './expirations/index';
+
+import { 
+  FilesComponent,
+  UploadFormComponent,
+  UploadListComponent,
+  UploadDetailsComponent,
+  NewOrEditLinkComponent
+} from './files/index';
+
+import { 
+  ListUsersForDesktopComponent,
+  ModalPrivilegeDesktopComponent,
+  ListUsersForMobileComponent,
+  ModalPrivilegeMobileComponent
+} from './list-users/index';
+
+import { 
+  MoviesForDesktopComponent,
+  MovieFormDesktopComponent,
+  ListPartsForDesktopComponent,
+  MoviesForMobileComponent,
+  MovieFormMobileComponent,
+  ListPartsForMobileComponent,
+  ShowMoviePictureComponent 
+} from './movies/index';
+
+import { 
+  PasswordsForDesktopComponent,
+  PasswordFormDesktopComponent,
+  PasswordsForMobileComponent,
+  PasswordFormMobileComponent,
+} from './passwords/index';
+
+import { 
+  SeriesForDesktopComponent,
+  SerieFormDesktopComponent,
+  ListSeasonsForDesktopComponent,
+  SeriesForMobileComponent,
+  SerieFormMobileComponent,
+  ListSeasonsForMobileComponent,
+  ShowSeriePictureComponent
+} from './series/index';
+
+import { 
+  ToDoListForDesktopComponent,
+  TaskDesktopComponent,
+  TaskFormDesktopComponent,
+  ToDoListForMobileComponent,
   TaskMobileComponent,
   TaskFormMobileComponent
 } from './to-do-list/index';
-
-import { UserComponent } from './user/index';
 
 @NgModule({
   imports: [
@@ -186,42 +193,7 @@ import { UserComponent } from './user/index';
     HomeComponent,
     HeaderComponent,
     SortPipe,
-    MoviesComponent,
-    MovieFormComponent,
-    ShowMoviePictureComponent,
-    VersionGridMoviesComponent,
-    AnimesComponent,
-    AnimeFormComponent,
-    ShowAnimePictureComponent,
-    VersionGridAnimesComponent,
-    NewOrEditMovieComponent,
-    NewOrEditAnimeComponent,  
-    ListSeasonsMoviesForDesktopComponent,
-    ListSeasonsMoviesForMobileComponent,
-    SeriesComponent,
-    SerieFormComponent,
-    ShowSeriePictureComponent,
-    VersionGridSeriesComponent,
-    NewOrEditSerieComponent,
-    FilesComponent,
-    UploadFormComponent,
-    UploadListComponent,
-    UploadDetailsComponent,
-    DebtsComponent,
-    DebtFormComponent,
-    DebtsForGridComponent,
-    NewOrEditDebtComponent,
-    NewOrEditLinkComponent,
-    ListUsersComponent,
-    ListUsersMobileComponent,
-    ModalPrivilegeComponent,
-    ModalPrivilegeMobileComponent,
-    ToDoListComponent,
-    TaskComponent,
-    TaskFormComponent,
-    ToDoListMobileComponent,
-    TaskMobileComponent,
-    TaskFormMobileComponent,
+
     ListMoviesByStatusForDesktopComponent,
     ListMoviesByStatusForMobileComponent,
     ListAnimesByStatusForDesktopComponent,
@@ -234,41 +206,94 @@ import { UserComponent } from './user/index';
     TaskDataComponent,
     ListUsersByStatusForDesktopComponent,
     ListUsersByStatusForMobileComponent,
-    ListPartsForDesktopComponent,
-    ListPartsForMobileComponent,
-    ListSeasonsForDesktopComponent,
-    ListSeasonsForMobileComponent,
-    ClockingForDesktopComponent,
+
+    AnimesForDesktopComponent,
+    AnimeFormDesktopComponent,
+    ListSeasonsMoviesForDesktopComponent,
+    AnimesForMobileComponent,
+    AnimeFormMobileComponent,
+    ListSeasonsMoviesForMobileComponent,
+    ShowAnimePictureComponent,
+
+    ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,
-    ClockingForMobileComponent,
-    ClockingFormMobileComponent,
-    ExpirationForDesktopComponent,
-    ExpirationFormDesktopComponent,
-    ExpirationForMobileComponent,
-    ExpirationFormMobileComponent,
     ListClockingsForDesktopComponent,
+    ClockingsForMobileComponent,
+    ClockingFormMobileComponent,
     ListClockingsForMobileComponent,
+
+    DebtsForDesktopComponent,
+    DebtFormDesktopComponent,
+    DebtsForMobileComponent,
+    DebtFormMobileComponent,
+
+    ExpirationsForDesktopComponent,
+    ExpirationFormDesktopComponent,
     ListExpirationsForDesktopComponent,
-    ListExpirationsForMobileComponent
+    ExpirationsForMobileComponent,
+    ExpirationFormMobileComponent,
+    ListExpirationsForMobileComponent,
+
+    FilesComponent,
+    UploadFormComponent,
+    UploadListComponent,
+    UploadDetailsComponent,
+    NewOrEditLinkComponent,
+
+    ListUsersForDesktopComponent,
+    ModalPrivilegeDesktopComponent,
+    ListUsersForMobileComponent,
+    ModalPrivilegeMobileComponent,
+
+    MoviesForDesktopComponent,
+    MovieFormDesktopComponent,
+    ListPartsForDesktopComponent,
+    MoviesForMobileComponent,
+    MovieFormMobileComponent,
+    ListPartsForMobileComponent,
+    ShowMoviePictureComponent,
+
+    PasswordsForDesktopComponent,
+    PasswordFormDesktopComponent,
+    PasswordsForMobileComponent,
+    PasswordFormMobileComponent,
+
+    SeriesForDesktopComponent,
+    SerieFormDesktopComponent,
+    ListSeasonsForDesktopComponent,
+    SeriesForMobileComponent,
+    SerieFormMobileComponent,
+    ListSeasonsForMobileComponent,
+    ShowSeriePictureComponent,
+
+    ToDoListForDesktopComponent,
+    TaskDesktopComponent,
+    TaskFormDesktopComponent,
+    ToDoListForMobileComponent,
+    TaskMobileComponent,
+    TaskFormMobileComponent
   ],
   entryComponents: [
-    NewOrEditMovieComponent,
-    NewOrEditAnimeComponent,  
     ListSeasonsMoviesForDesktopComponent,
     ListSeasonsMoviesForMobileComponent,
-    NewOrEditSerieComponent,
-    NewOrEditDebtComponent,
+
     NewOrEditLinkComponent,
+
     ListMoviesByStatusForDesktopComponent,
     ListMoviesByStatusForMobileComponent,
+
     ListAnimesByStatusForDesktopComponent,
     ListAnimesByStatusForMobileComponent,
+
     ListSeriesByStatusForDesktopComponent,
     ListSeriesByStatusForMobileComponent,
+
     ListFilesByTypeComponent,
+
     ListTasksForDesktopComponent,
     ListTasksForMobileComponent,
     TaskDataComponent,
+    
     ListUsersByStatusForDesktopComponent,
     ListUsersByStatusForMobileComponent
   ],

@@ -10,6 +10,7 @@ export class Clocking {
   takeVacation: boolean;
   takeOneHour: boolean;
   workHalfDay: boolean;
+  restVacationDays: number;
 }
 
 export interface MonthsList {

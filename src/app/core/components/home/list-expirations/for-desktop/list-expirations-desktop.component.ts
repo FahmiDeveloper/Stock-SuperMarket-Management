@@ -55,10 +55,6 @@ export class ListExpirationsForDesktopComponent {
     }
     
     calculateRestDays(expiration: Expiration) { 
-        // var Time = new Date(expiration.dateExpiration).getTime() - new Date().getTime(); 
-        // var Days = Time / (1000 * 3600 * 24); //
-        // expiration.rtrt = Number(Days);
-    
         const now = new Date();
         const dateExpiration = (new Date(expiration.dateExpiration)).getTime();
         const nowTime = now.getTime();
@@ -77,6 +73,9 @@ export class ListExpirationsForDesktopComponent {
     filterByContent() {
         if (this.content) {
             this.dataSource.data = this.allExpirationsList.filter(expiration => expiration.contentName.toLowerCase().includes(this.content.toLowerCase()));
+        }
+        else {
+            this.dataSource.data = this.allExpirationsList; 
         }
     }
 

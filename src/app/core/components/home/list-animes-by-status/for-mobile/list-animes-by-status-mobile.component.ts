@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { ShowAnimePictureComponent } from 'src/app/animes/show-anime-picture/show-anime-picture.component';
-import { NewOrEditAnimeComponent } from 'src/app/animes/version-grid-animes/new-or-edit-anime/new-or-edit-anime.component';
+import { AnimeFormMobileComponent } from 'src/app/animes/for-mobile/anime-form-mobile/anime-form-mobile.component';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
@@ -132,7 +132,7 @@ export class ListAnimesByStatusForMobileComponent implements OnChanges {
     }
 
     editAnime(anime: Anime) {
-        const dialogRef = this.dialogService.open(NewOrEditAnimeComponent, {
+        const dialogRef = this.dialogService.open(AnimeFormMobileComponent, {
             width: '98vw',
             height:'73vh',
             maxWidth: '100vw'

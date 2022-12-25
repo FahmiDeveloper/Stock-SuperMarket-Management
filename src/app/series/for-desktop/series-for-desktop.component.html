@@ -1,0 +1,245 @@
+<h1 class="titleTextInterface text-application">Series</h1>
+
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <button
+            *ngIf="dataUserConnected.roleAddSerie"
+            type="button" 
+            (click)="newSerie()" 
+            mat-mini-fab 
+            color="primary" 
+            style="background: #2196F3;float: right;">
+            <mat-icon style="color: white;">add</mat-icon>
+        </button>
+
+        <button 
+            *ngIf="!sortByDesc"
+            type="button"  
+            mat-mini-fab 
+            color="primary" 
+            (click)="sortByRefSerieDesc()"
+            style="background: #2196F3;float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+        <button 
+            *ngIf="sortByDesc"
+            type="button"
+            mat-mini-fab
+            color="primary" 
+            (click)="sortByRefSerieAsc()" 
+            style="background: #2196F3;float: right;margin-right: 10px;">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+    </div> 
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-md-4">
+        <mat-form-field class="widhtInput">
+            <mat-label class="text-application">Name</mat-label>
+            <input matInput type="text" name="queryName" (keyup)="getAllSeries()" [(ngModel)]="queryName"/>
+        </mat-form-field>
+    </div>
+    <div class="col-md-4">
+        <mat-form-field style="width: 285px;">
+            <mat-label class="text-application">Status</mat-label>
+			<mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllSeries()">
+                <mat-option value=""></mat-option>
+				<mat-option *ngFor="let statusSerie of statusSeries" [value]="statusSerie.id">
+                    <span class="text-application">{{statusSerie.status}}</span>
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+    </div>
+</div>
+
+<br>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="picture">
+            <th mat-header-cell *matHeaderCellDef class="text-application">Picture</th>
+            <td mat-cell *matCellDef="let element"><show-serie-picture [serie]="element"></show-serie-picture></td>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef class="text-application">Details</th>
+            <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element)">
+                <div class="gridForLegend text-application">
+                    <div><span>Name:</span></div>
+                    <div>
+                        <span style="cursor: pointer;" (click)="copyNameSerie(element.nameSerie)">{{ element.nameSerie }}</span>&nbsp;
+                        <span *ngIf="!element.priority && element.statusId !== 3">
+                            <span *ngIf="element.year">({{ element.year }})</span>
+                            <span *ngIf="!element.year">(Year: ?)</span>
+                        </span>
+                    </div>
+                </div>
+                <br *ngIf="!element.priority && element.statusId !== 3">
+                <div class="gridForLegend text-application" *ngIf="!element.priority && element.statusId !== 3">
+                    <div><span>Season:</span></div>
+                    <div>
+                        <span *ngIf="element.season">{{ element.season }}</span>
+                        <span *ngIf="!element.season">?</span>
+                    </div>
+                </div>
+                <br *ngIf="!element.priority">
+                <div class="gridForLegend text-application" *ngIf="!element.priority">
+                    <div><span>Status:</span></div>
+                    <div>{{ element.status }}</div>
+                </div>
+                <br *ngIf="!element.priority && element.statusId !== 3">
+                <div class="gridForLegend text-application" *ngIf="!element.priority && element.statusId !== 3">
+                    <div><span>Eps:</span></div>
+                    <div>
+                        <span *ngIf="element.currentEpisode && element.totalEpisodes">{{ element.currentEpisode }} / {{ element.totalEpisodes }} ep</span>
+                        <span *ngIf="element.currentEpisode && !element.totalEpisodes">{{ element.currentEpisode }} / ? ep</span>
+                        <span *ngIf="!element.currentEpisode && element.totalEpisodes">? / {{ element.totalEpisodes }} ep</span>
+                        <span *ngIf="!element.currentEpisode && !element.totalEpisodes">? / ? ep</span>
+                    </div>
+                </div>
+                <br *ngIf="!element.priority">
+                <div class="gridForLegend text-application" *ngIf="!element.priority">
+                    <div><span>Note:</span></div>
+                    <div>{{ element.note }}</div>
+                </div> 
+            </td>
+        </ng-container>
+    
+        <tr mat-header-row style="background: #ec4b53;" *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+        No results
+    </div>
+    
+    <mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>
+
+<div style="visibility: hidden; position: fixed"
+  [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y"
+  [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu="matMenu">
+	<ng-template matMenuContent let-serie="serie">
+
+        <button 
+            *ngIf="dataUserConnected.roleUpdateSerie && !serie.priority"  
+            type="button" 
+            mat-menu-item 
+            (click)="editSerie(serie)">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
+        </button>
+
+        <button 
+            *ngIf="serie.priority"  
+            type="button" 
+            mat-menu-item 
+            (click)="viewOtherSeasons(serie, contentSeasonsList)">
+            <mat-icon style="color: #0935c5">list</mat-icon>
+            <span>Seasons</span>
+        </button>
+
+        <button mat-menu-item *ngIf="serie.statusId !== 3 && !serie.priority" [hidden]="serie.statusId == 4"> 
+            <mat-icon *ngIf="serie.statusId == 1" style="color: #EF6C00;">remove_red_eye</mat-icon>
+            <mat-icon *ngIf="serie.statusId == 2" style="color: #2E7D32;">cloud_download</mat-icon>
+            <mat-icon *ngIf="serie.statusId == 5" style="color: #EF6C00;">search</mat-icon>
+            <a href="{{ serie.path }}" target="_blank" style="text-decoration: none;">
+              <span *ngIf="serie.statusId == 1" style="color: black !important;">Check</span>
+              <span *ngIf="serie.statusId == 2" style="color: black !important;">Download</span>
+              <span *ngIf="serie.statusId == 5" style="color: black !important;">Search</span>
+            </a>  
+        </button>
+
+        <button
+            *ngIf="dataUserConnected.roleDeleteSerie && !serie.priority" 
+            type="button"
+            mat-menu-item 
+            (click)="openDeleteSerieModal(serie, contentDeleteSerie)" 
+            class="text-application">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>
+
+	</ng-template>
+</mat-menu>
+
+<ng-template #contentDeleteSerie>
+
+    <div mat-dialog-title class="dialog-title">
+      <h2 class="text-application">Are you sure ?</h2>
+    </div>
+  
+    <div mat-dialog-content>
+        <div class="gridForDelete text-application">
+            <div><span>Name:</span></div>
+            <div>{{ serieToDelete.nameSerie }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Date:</span></div>
+            <div>{{ serieToDelete.date | date:'dd/MM/yyyy' }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Status:</span></div>
+            <div>{{ serieToDelete.status }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Note:</span></div>
+            <div>{{ serieToDelete.note }}</div>
+        </div> 
+    </div>
+
+    <br>
+
+    <div class="row justify-content-center" mat-dialog-actions>
+        <button 
+            mat-button 
+            type="button" 
+            [mat-dialog-close]="1" 
+            (click)="confirmDelete()" 
+            style="background:rgb(221, 51, 51);color: white;" 
+            class="text-application">
+            Delete
+        </button>
+
+        <button 
+            mat-button 
+            type="button" 
+            (click)="close()" 
+            tabindex="-1" 
+            style="background:#607D8B;color: white;" 
+            class="text-application">
+            Cancel
+        </button>
+    </div>
+  
+</ng-template>
+
+<ng-template #contentSeasonsList>
+
+    <list-seasons-desktop 
+        [listSeriesByCurrentName]="listSeriesByCurrentName" 
+        [currentName]="currentName" 
+        [dataUserConnected]="dataUserConnected"
+        [allSeries]="allSeries">
+    </list-seasons-desktop>
+    
+</ng-template>

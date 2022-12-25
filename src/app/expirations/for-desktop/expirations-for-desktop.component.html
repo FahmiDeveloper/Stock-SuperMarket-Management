@@ -1,0 +1,189 @@
+<h1 class="titleTextInterface text-application">Expirations</h1>
+
+<br>
+
+<div class="row">
+        <div class="col-md-4">
+            <mat-form-field class="widhtInput text-application">
+                <mat-label>Content</mat-label>
+                <input matInput type="text" name="content" (keyup)="getAllExpirations()" [(ngModel)]="content"/>
+            </mat-form-field>
+        </div>
+        <div class="col-md-8">
+            <button 
+                type="button" 
+                (click)="newExpiration()" 
+                mat-mini-fab 
+                style="background: #2196F3;float: right;">
+                <mat-icon style="color: white;">add</mat-icon>
+            </button>
+        </div>   
+</div>
+
+<br>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 200px;">Content</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;width: 200px;">{{ element.contentName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;  width: 150px;">Cost</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;  width: 150px;">
+                <span *ngIf="element.cost">{{ element.cost }}</span>
+                <span *ngIf="!element.cost">-</span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 150px;">Date</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;width: 150px;">
+                <div style="margin-top: 10px;margin-bottom: 10px;">
+                    Start:&nbsp;{{ element.dateStart | date:'dd/MM/yyyy' }}<br><br>
+                    Exp:&nbsp;{{ element.dateExpiration | date:'dd/MM/yyyy' }}
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="diffdays">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 300px;">Difference</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center; width: 300px;" (contextmenu)="onContextMenu($event, element)">
+                <div style="margin-top: 10px;margin-bottom: 10px;">
+                    Duration:&nbsp;{{ element.duration }}<br><br>
+                    <span *ngIf="element.isExpired">Passed:&nbsp;{{ element.restdays }}</span>
+                    <span *ngIf="!element.isExpired">Rest:&nbsp;{{ element.restdays }}</span><br><br>
+                    Status:&nbsp;
+                    <span *ngIf="element.isExpired" style="color: red;">Expired</span>
+                    <span *ngIf="!element.isExpired" style="color: green;">Unexpired</span>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="note">
+            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Note</th>
+            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                <span *ngIf="element.note">{{ element.note }}</span>
+                <span *ngIf="!element.note">-</span>
+            </td>
+        </ng-container>
+    
+        <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+        No results
+    </div>
+    
+    <mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>
+
+<div style="visibility: hidden; position: fixed"
+  [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y"
+  [matMenuTriggerFor]="contextMenu">
+</div>
+
+<mat-menu #contextMenu="matMenu">
+	<ng-template matMenuContent let-expiration="expiration">
+
+        <button
+            type="button"
+            mat-menu-item 
+            (click)="editExpiration(expiration)"
+            class="text-application">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
+        </button>
+
+        <button
+            type="button"
+            mat-menu-item 
+            (click)="openDeleteExpirationModal(expiration, contentDeleteExpiration)"
+            class="text-application">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>  
+
+	</ng-template>
+</mat-menu>
+
+<ng-template #contentDeleteExpiration>
+
+    <div mat-dialog-title class="dialog-title">
+      <h2 class="text-application">Are you sure ?</h2>
+    </div>
+  
+    <div mat-dialog-content>
+        <div class="gridForDelete text-application">
+            <div><span>Content:</span></div>
+            <div>{{ expirationToDelete.contentName }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Start:</span></div>
+            <div>{{ expirationToDelete.dateStart | date:'dd/MM/yyyy' }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Expiration:</span></div>
+            <div>{{ expirationToDelete.dateExpiration | date:'dd/MM/yyyy' }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Duration:</span></div>
+            <div>{{ expirationToDelete.duration }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Cost:</span></div>
+            <div>{{ expirationToDelete.cost }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Status:</span></div>
+            <div>{{ expirationToDelete.status }}</div>
+        </div>
+        <br>
+        <div class="gridForDelete text-application">
+            <div><span>Note:</span></div>
+            <div>
+                <span *ngIf="expirationToDelete.note">{{ expirationToDelete.note }}</span>
+                <span *ngIf="!expirationToDelete.note">-</span>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row justify-content-center" mat-dialog-actions>
+        <button 
+            mat-button 
+            type="button" 
+            [mat-dialog-close]="1" 
+            (click)="confirmDelete()" 
+            style="background:rgb(221, 51, 51);color: white;" 
+            class="text-application">
+            Delete
+        </button>
+
+        <button 
+            mat-button 
+            type="button" 
+            (click)="close()" 
+            tabindex="-1" 
+            style="background:#607D8B;color: white;" 
+            class="text-application">
+            Cancel
+        </button>
+    </div>
+  
+</ng-template>

@@ -5,7 +5,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { MovieFormComponent } from 'src/app/movies/movie-form/movie-form.component';
+import { MovieFormDesktopComponent } from 'src/app/movies/for-desktop/movie-form-desktop/movie-form-desktop.component';
 
 import { MovieService } from 'src/app/shared/services/movie.service';
 
@@ -35,8 +35,7 @@ export class ListMoviesByStatusForDesktopComponent implements OnChanges {
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-    @ViewChild(MatMenuTrigger)
-    contextMenu: MatMenuTrigger;
+    @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
     contextMenuPosition = { x: '0px', y: '0px' };
 
@@ -136,7 +135,7 @@ export class ListMoviesByStatusForDesktopComponent implements OnChanges {
     }
 
     editMovie(movie: Movie) {
-        const dialogRef = this.dialogService.open(MovieFormComponent, {width: '800px'});
+        const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '800px'});
         dialogRef.componentInstance.movie = movie;
     }
 
