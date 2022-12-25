@@ -7,7 +7,7 @@
       <ng-container>
 
         <!--Movies-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies-for-grid">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }"
@@ -50,7 +50,7 @@
         </div>
 
         <!--Animes-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes-for-grid">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" 
@@ -93,7 +93,7 @@
         </div>
 
         <!--Series-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series-for-grid">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" 
@@ -135,13 +135,13 @@
           </div>
         </div>
 
-        <!--Clocking-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clocking-mobile">
+        <!--Clockings-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clockings-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" 
               class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Clocking</div>
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
               <img
                 class="pl-5"
                 style="margin-left: 7rem;"
@@ -210,13 +210,13 @@
           </div>
         </div>
 
-        <!--Expiration-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expiration-mobile">
+        <!--Expirations-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expirations-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" 
               class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Expiration</div>
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
               <img
                 class="pl-5"
                 style="margin-left: 7rem;"
@@ -232,7 +232,7 @@
         </div>
 
         <!--Debts-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts-for-grid">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" 
@@ -319,7 +319,24 @@
               </span>
             </div>
           </div>
-        </div> 
+        </div>
+
+        <!--Passwords-->
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/passwords-mobile">
+          <div fxLayout class="overview-style">
+            <div
+              [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" 
+              class="overview-cart-mobile">
+              <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
+              <img
+                class="pl-5"
+                style="margin-left: 7rem;"
+                src="/assets/pictures/password-logo.png"
+                width="150px"/>
+            </div>
+          </div>
+          <div class="content pl-3" style="border: 1px solid rgb(46 161 165)"></div>
+        </div>
 
         <!--Users-->
         <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.isAdmin" routerLink="/users-mobile">
@@ -370,7 +387,7 @@
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
                     <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
@@ -419,7 +436,7 @@
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
                     <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
@@ -468,7 +485,7 @@
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
                     <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
@@ -518,15 +535,15 @@
 
     <div class="row ">
 
-      <!--Clocking-->
+      <!--Clockings-->
       <div class="col">
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clocking">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clockings-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Clocking</div>
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
                     <img
                       style="margin-left: 7rem;"
                       class="pl-5"
@@ -561,7 +578,7 @@
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;height: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
                     <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
@@ -605,15 +622,15 @@
         </mat-card>
       </div>
 
-       <!--Expiration-->
+       <!--Expirations-->
        <div class="col">
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expiration">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expirations-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Expiration</div>
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
                     <img
                       style="margin-left: 7rem;"
                       class="pl-5"
@@ -643,7 +660,7 @@
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" class="overview-cart-mobile">
                     <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
@@ -738,12 +755,43 @@
         </mat-card>
       </div>
 
+      <!--Passwords-->
+      <div class="col">
+        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
+          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+            <ng-container>
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/passwords-desktop">
+                <div fxLayout class="overview-style">
+                  <div [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" class="overview-cart-mobile">
+                    <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
+                    <img
+                      style="margin-left: 7rem;"
+                      class="pl-5"
+                      src="/assets/pictures/password-logo.png"
+                      width="150px"/>
+                  </div>
+                </div>
+                <div class="content pl-3" style="border: 1px solid rgb(46 161 165); height: 168px;"></div>
+              </div>
+            </ng-container>
+          </div>
+        </mat-card>
+      </div>  
+
+    </div>
+
+    <br>
+
+    <div class="row ">
+
+      <div class="col"></div>
+
       <!--Users-->
       <div class="col">
         <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/users">
+              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/users-desktop">
                 <div fxLayout class="overview-style">
                   <div [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" class="overview-cart-mobile">
                     <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
@@ -775,8 +823,10 @@
             </ng-container>
           </div>
         </mat-card>
-      </div>  
+      </div> 
 
+       <div class="col"></div>
+    
     </div>
   </div>
 </div>

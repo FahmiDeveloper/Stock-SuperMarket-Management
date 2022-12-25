@@ -4,7 +4,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { SerieFormComponent } from 'src/app/series/serie-form/serie-form.component';
+import { SerieFormDesktopComponent } from 'src/app/series/for-desktop/serie-form-desktop/serie-form-desktop.component';
 
 import { SerieService } from 'src/app/shared/services/serie.service';
 
@@ -34,8 +34,7 @@ export class ListSeriesByStatusForDesktopComponent implements OnChanges {
 
     @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-    @ViewChild(MatMenuTrigger)
-    contextMenu: MatMenuTrigger;
+    @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
     constructor(public dialogService: MatDialog, private serieService:SerieService) {}
   
@@ -135,7 +134,7 @@ export class ListSeriesByStatusForDesktopComponent implements OnChanges {
     }
 
     editSerie(serie: Serie) {
-        const dialogRef = this.dialogService.open(SerieFormComponent, {width: '800px'});
+        const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '800px'});
         dialogRef.componentInstance.serie = serie;
     }
 

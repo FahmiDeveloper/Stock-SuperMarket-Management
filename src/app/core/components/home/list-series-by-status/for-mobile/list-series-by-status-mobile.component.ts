@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { ShowSeriePictureComponent } from 'src/app/series/show-serie-picture/show-serie-picture.component';
-import { NewOrEditSerieComponent } from 'src/app/series/version-grid-series/new-or-edit-serie/new-or-edit-serie.component';
+import { SerieFormMobileComponent } from 'src/app/series/for-mobile/serie-form-mobile/serie-form-mobile.component';
 
 import { SerieService } from 'src/app/shared/services/serie.service';
 
@@ -132,7 +132,7 @@ export class ListSeriesByStatusForMobileComponent implements OnChanges {
     }
 
     editSerie(serie: Serie) {
-        const dialogRef = this.dialogService.open(NewOrEditSerieComponent, {
+        const dialogRef = this.dialogService.open(SerieFormMobileComponent, {
             width: '98vw',
             height:'73vh',
             maxWidth: '100vw'
@@ -143,8 +143,8 @@ export class ListSeriesByStatusForMobileComponent implements OnChanges {
     openDeleteSerieModal(serie: Serie, contentDeleteSerie) {
         this.serieToDelete = serie;
         this.modalRefDeleteSerie =  this.dialogService.open(contentDeleteSerie, {
-            width: '30vw',
-            height:'35vh',
+            width: '98vw',
+            height:'50vh',
             maxWidth: '100vw'
         }); 
     }

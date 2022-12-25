@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { ShowMoviePictureComponent } from 'src/app/movies/show-movie-picture/show-movie-picture.component';
-import { NewOrEditMovieComponent } from 'src/app/movies/version-grid-movies/new-or-edit-movie/new-or-edit-movie.component';
+import { MovieFormMobileComponent } from 'src/app/movies/for-mobile/movie-form-mobile/movie-form-mobile.component';
 
 import { MovieService } from 'src/app/shared/services/movie.service';
 
@@ -132,7 +132,7 @@ export class ListMoviesByStatusForMobileComponent implements OnChanges {
     }
 
     editMovie(movie: Movie) {
-        const dialogRef = this.dialogService.open(NewOrEditMovieComponent, {
+        const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
             width: '98vw',
             height:'73vh',
             maxWidth: '100vw'

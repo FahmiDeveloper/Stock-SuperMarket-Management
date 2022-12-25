@@ -1,33 +1,42 @@
 import { Routes } from '@angular/router';
 
-import { AnimeFormComponent } from './animes/anime-form/anime-form.component';
-import { AnimesComponent } from './animes/animes.component';
-import { VersionGridAnimesComponent } from './animes/version-grid-animes/version-grid-animes.component';
-import { HomeComponent } from './core/components/home/home.component';
 import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
-import { DebtsForGridComponent } from './debts/debts-for-grid/debts-for-grid.component';
-import { NewOrEditDebtComponent } from './debts/debts-for-grid/new-or-edit-debt/new-or-edit-debt.component';
-import { DebtsComponent } from './debts/debts.component';
-import { FilesComponent } from './files/files.component';
-import { ListUsersMobileComponent } from './list-users/list-users-mobile/list-users-mobile.component';
-import { ListUsersComponent } from './list-users/list-users.component';
-import { MovieFormComponent } from './movies/movie-form/movie-form.component';
-import { MoviesComponent } from './movies/movies.component';
-import { VersionGridMoviesComponent } from './movies/version-grid-movies/version-grid-movies.component';
-import { SerieFormComponent } from './series/serie-form/serie-form.component';
-import { SeriesComponent } from './series/series.component';
-import { VersionGridSeriesComponent } from './series/version-grid-series/version-grid-series.component';
 import { UserComponent } from './user/user.component';
-import { ToDoListComponent } from './to-do-list/to-do-list.component';
-import { ToDoListMobileComponent } from './to-do-list/to-do-list-mobile/to-do-list-mobile.component';
-import { ClockingForDesktopComponent } from './clocking/clocking-for-desktop/clocking-for-desktop.component';
-import { ClockingForMobileComponent } from './clocking/clocking-for-mobile/clocking-for-mobile.component';
-import { ExpirationForDesktopComponent } from './expiration/expiration-for-desktop/expiration-for-desktop.component';
-import { ExpirationForMobileComponent } from './expiration/expiration-for-mobile/expiration-for-mobile.component';
+import { HomeComponent } from './core/components/home/home.component';
+
+import { AnimesForDesktopComponent } from './animes/for-desktop/animes-for-desktop.component';
+import { AnimesForMobileComponent } from './animes/for-mobile/animes-for-mobile.component';
+
+import { ClockingsForMobileComponent } from './clockings/for-mobile/clockings-for-mobile.component';
+import { ClockingsForDesktopComponent } from './clockings/for-desktop/clockings-for-desktop.component';
+
+import { DebtsForDesktopComponent } from './debts/for-desktop/debts-for-desktop.component';
+import { DebtsForMobileComponent } from './debts/for-mobile/debts-for-mobile.component';
+
+import { ExpirationsForMobileComponent } from './expirations/for-mobile/expirations-for-mobile.component';
+import { ExpirationsForDesktopComponent } from './expirations/for-desktop/expirations-for-desktop.component';
+
+import { FilesComponent } from './files/files.component';
+
+import { ListUsersForDesktopComponent } from './list-users/for-desktop/list-users-for-desktop.component';
+import { ListUsersForMobileComponent } from './list-users/for-mobile/list-users-for-mobile.component';
+
+import { MoviesForDesktopComponent } from './movies/for-desktop/movies-for-desktop.component';
+import { MoviesForMobileComponent } from './movies/for-mobile/movies-for-mobile.component';
+
+import { PasswordsForMobileComponent } from './passwords/for-mobile/passwords-for-mobile.component';
+import { PasswordsForDesktopComponent } from './passwords/for-desktop/passwords-for-desktop.component';
+
+import { SeriesForDesktopComponent } from './series/for-desktop/series-for-desktop.component';
+import { SeriesForMobileComponent } from './series/for-mobile/series-for-mobile.component';
+
+import { ToDoListForDesktopComponent } from './to-do-list/for-desktop/to-do-list-desktop.component';
+import { ToDoListForMobileComponent } from './to-do-list/for-mobile/to-do-list-mobile.component';
 
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
+
 
 export const rootRouterConfig: Routes = [
   
@@ -39,38 +48,33 @@ export const rootRouterConfig: Routes = [
   { path: 'user', component: UserComponent,  resolve: { data: SharedResolver}},
   { path: 'home', component: HomeComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'movies/new', component: MovieFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'movies/:id', component: MovieFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'movies', component: MoviesComponent,  resolve: { data: SharedResolver}},
-  { path: 'movies-for-grid', component: VersionGridMoviesComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes-desktop', component: AnimesForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes-mobile', component: AnimesForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'animes/new', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'animes/:id', component: AnimeFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'animes', component: AnimesComponent,  resolve: { data: SharedResolver}},
-  { path: 'animes-for-grid', component: VersionGridAnimesComponent,  resolve: { data: SharedResolver}},
+  { path: 'clockings-desktop', component: ClockingsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'clockings-mobile', component: ClockingsForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'series/new', component: SerieFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'series/:id', component: SerieFormComponent,  resolve: { data: SharedResolver}},
-  { path: 'series', component: SeriesComponent,  resolve: { data: SharedResolver}},
-  { path: 'series-for-grid', component: VersionGridSeriesComponent,  resolve: { data: SharedResolver}},
+  { path: 'debts-desktop', component: DebtsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'debts-mobile', component: DebtsForMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'expirations-desktop', component: ExpirationsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'expirations-mobile', component: ExpirationsForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'files', component: FilesComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'debts', component: DebtsComponent,  resolve: { data: SharedResolver}},
-  { path: 'debts-for-grid', component: DebtsForGridComponent,  resolve: { data: SharedResolver}},
-  { path: 'debts/new', component: NewOrEditDebtComponent,  resolve: { data: SharedResolver}},
-  { path: 'debts/:id', component: NewOrEditDebtComponent,  resolve: { data: SharedResolver}},
+  { path: 'users-desktop', component: ListUsersForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'users-mobile', component: ListUsersForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'users', component: ListUsersComponent,  resolve: { data: SharedResolver}},
-  { path: 'users-mobile', component: ListUsersMobileComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies-desktop', component: MoviesForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies-mobile', component: MoviesForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'to-do-list', component: ToDoListComponent,  resolve: { data: SharedResolver}},
-  { path: 'to-do-list-mobile', component: ToDoListMobileComponent,  resolve: { data: SharedResolver}},
+  { path: 'passwords-desktop', component: PasswordsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'passwords-mobile', component: PasswordsForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'clocking', component: ClockingForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'clocking-mobile', component: ClockingForMobileComponent,  resolve: { data: SharedResolver}},
+  { path: 'series-desktop', component: SeriesForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'series-mobile', component: SeriesForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'expiration', component: ExpirationForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'expiration-mobile', component: ExpirationForMobileComponent,  resolve: { data: SharedResolver}}
+  { path: 'to-do-list-desktop', component: ToDoListForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'to-do-list-mobile', component: ToDoListForMobileComponent,  resolve: { data: SharedResolver}},
 
 ]; 

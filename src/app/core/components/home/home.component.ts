@@ -827,9 +827,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe((expirations: Expiration[]) => {
 
-      this.expirationsList = expirations.sort((n1, n2) => n2.numRefExpiration - n1.numRefExpiration);
+      this.expirationsList = expirations.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());
 
-      this.allExpirationsList = expirations.sort((n1, n2) => n2.numRefExpiration - n1.numRefExpiration);
+      this.allExpirationsList = expirations.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());
     
     });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
   }
