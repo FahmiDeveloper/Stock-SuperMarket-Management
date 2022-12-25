@@ -15,6 +15,7 @@ import { UsersListService } from '../../shared/services/list-users.service';
 
 import { FirebaseUserModel } from '../../shared/models/user.model';
 import { Movie, StatusMovies } from '../../shared/models/movie.model';
+import { TypesFiles } from 'src/app/shared/models/file-upload.model';
 
 @Component({
   selector: 'movies-for-desktop',
@@ -59,6 +60,16 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     {id: 4, status: 'Downloaded but not watched yet'},
     {id: 5, status: 'To search about it'},
     {id: 6, status: 'Parts'}
+  ];
+
+  typesFiles: TypesFiles[] = [
+    {id: 1, title: 'Pictures', type: 'Picture', icon: '/assets/pictures/picture-file.jpg'},
+    {id: 2, title: 'Pdf', type: 'Pdf', icon: '/assets/pictures/pdf-file.jpg'},
+    {id: 3, title: 'Excel', type: 'Excel', icon: '/assets/pictures/excel-file.png'}, 
+    {id: 4, title: 'Text doc', type: 'Text document', icon: '/assets/pictures/txt-file.PNG'},
+    {id: 5, title: 'Zip', type: 'Zip', icon: '/assets/pictures/zip-file.PNG'},
+    {id: 6, title: 'Links', type: 'Links', icon: '/assets/pictures/links.png'},
+    {id: 7, title: 'Word', type: 'Word', icon: '/assets/pictures/word-file.jpg'}
   ];
 
   constructor(
@@ -112,7 +123,6 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe(movies => {
       this.dataSourceCopie.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      this.allMovies = movies;
 
       if (this.queryName) {
         this.dataSource.data = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()) && (movie.isFirst == true)));
@@ -127,7 +137,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
       }
       
-      else this.dataSource.data = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      else this.allMovies = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
 
       this.getStatusMovie();
     });
