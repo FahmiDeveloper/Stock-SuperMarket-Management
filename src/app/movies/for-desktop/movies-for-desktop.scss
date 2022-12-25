@@ -35,3 +35,25 @@
     width: 250px;
     font-size: 18px;
 }
+
+.imageTypeFile {
+    height: 90%;
+    width: 100%;
+    background-size: cover;
+    border-radius: 10px;
+  }
+  
+  .imageTypeFileMobile {
+    height: 75%;
+    width: 100%;
+    background-size: cover;
+  }
+
+  .settings-card {
+    height: 350px;
+    width: 360px;
+  }
+  
+  .settings-card-mobile {
+    height: 270px;
+  }

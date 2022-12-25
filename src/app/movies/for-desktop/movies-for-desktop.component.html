@@ -59,7 +59,23 @@
 
 <br>
 
-<div class="mat-elevation-z8">
+<mat-grid-list cols=4 #grid rowHeight="350px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let movie of allMovies">
+      <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
+        <mat-card-title class="text-application">{{ movie.nameMovie }}</mat-card-title>
+        <img *ngIf="movie.imageUrl"  [src]="movie.imageUrl" [ngClass]="isMobile ? 'imageTypeFileMobile' : 'imageTypeFile'">
+        <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" [ngClass]="isMobile ? 'imageTypeFileMobile' : 'imageTypeFile'">
+      </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<mat-paginator 
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons 
+        aria-label="Select page of periodic elements">
+</mat-paginator>
+
+<!-- <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
 
         <ng-container matColumnDef="picture">
@@ -225,4 +241,4 @@
         [allMovies]="allMovies">
     </list-parts-desktop>
     
-</ng-template>
+</ng-template> -->
