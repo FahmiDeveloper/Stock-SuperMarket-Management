@@ -1,12 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
-import { Subscription } from 'rxjs';
-
-import { ShowMoviePictureComponent } from '../show-movie-picture/show-movie-picture.component';
-import { MovieFormMobileComponent } from './movie-form-mobile/movie-form-mobile.component';
+import { Observable, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -24,19 +22,30 @@ import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 export class MoviesForMobileComponent implements OnInit, OnDestroy {
 
-  dataSource = new MatTableDataSource<Movie>();
-  dataSourceCopie = new MatTableDataSource<Movie>();
-  displayedColumns: string[] = ['picture', 'name', 'status', 'note', 'star'];
+  moviesList: Movie[] = [];
+  pagedList: Movie[]= [];
+  moviesListCopie: Movie[] = [];
   allMovies: Movie[] = [];
   listPartsByCurrentName: Movie[] = [];
 
-  movieToDelete: Movie = new Movie();
+  newMovie: Movie = new Movie();
+  selectedMovie: Movie = new Movie();
 
-  queryName: string = '';
+  movieName: string = '';
   statusId: number;
   sortByDesc: boolean = true;
   currentName: string = '';
-  modalRefDeleteMovie: any;
+  getDetailsMovie: boolean = false;
+  editButtonClick: boolean = false;
+  clickNewMovie: boolean = false;
+
+  basePath = '/PicturesMovies';
+  task: AngularFireUploadTask;
+  progressValue: Observable<number>;
+
+  length: number = 0;
+  pageSize: number = 6;
+  pageSizeOptions: number[] = [6];
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForUser: Subscription;
@@ -44,15 +53,18 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   statusMovies: StatusMovies[] = [
+    {id: 1, status: 'Wait to sort'}, 
+    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 5, status: 'To search about it'}
+  ];
+
+  allStatusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'},
-    {id: 6, status: 'Parts'}
+    {id: 5, status: 'To search about it'}
   ];
 
   constructor(
@@ -60,16 +72,12 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    public dialogService: MatDialog
+    private fireStorage: AngularFireStorage
   ) {}
 
   ngOnInit() {
     this.getRolesUser();
     this.getAllMovies();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   getRolesUser() {
@@ -101,96 +109,217 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     })
   }
 
-  getAllMovies() {
+   getAllMovies() {
+    this.getDetailsMovie = false;
+    this.clickNewMovie = false;
+
     this.subscriptionForGetAllMovies = this.movieService
     .getAll()
     .subscribe(movies => {
-      this.dataSourceCopie.data = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      this.moviesListCopie = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
       this.allMovies = movies;
 
-      if (this.queryName) {
-        this.dataSource.data = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.queryName.toLowerCase()) && (movie.isFirst == true)));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      if (this.movieName) {
+        this.moviesList = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.movieName.toLowerCase()) && (movie.isFirst == true)));
+        this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
       }
       
       else if (this.statusId) {
-        if (this.statusId == 6) this.dataSource.data = movies.filter(movie => (movie.part) && (movie.isFirst == true));
-
-        else this.dataSource.data = movies.filter(movie => (movie.statusId == this.statusId) && (movie.isFirst == true) && (!movie.part));
-           
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+        this.moviesList = movies.filter(movie => movie.statusId == this.statusId);       
+        this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
       }
       
-      else this.dataSource.data = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+
+      this.pagedList = this.moviesList.slice(0, 6);
+      this.length = this.moviesList.length;
 
       this.getStatusMovie();
     });
   }
 
   getStatusMovie() {
-    this.dataSource.data.forEach(element=>{
+    this.moviesList.forEach(element=>{
       this.statusMovies.forEach(statusMovie => {
         if (statusMovie.id == element.statusId) {
           element.status = statusMovie.status;
-          element.note = element.note ? element.note : '-';
         }
       })
     })
   }
 
-  newMovie() {
-    const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
-      width: '98vw',
-      height:'73vh',
-      maxWidth: '100vw'
-    });
-    dialogRef.componentInstance.arrayMovies = this.dataSourceCopie.data;
-    dialogRef.componentInstance.allMovies = this.allMovies;
+  OnPageChange(event: PageEvent){
+    let startIndex = event.pageIndex * event.pageSize;
+    let endIndex = startIndex + event.pageSize;
+    if(endIndex > this.length){
+      endIndex = this.length;
+    }
+    this.pagedList = this.moviesList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
-  editMovie(movie?: Movie) {
-    const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
-      width: '98vw',
-      height:'73vh',
-      maxWidth: '100vw'
-    });
-    dialogRef.componentInstance.movie = movie;
+  showDetailsMovie(movie: Movie) {
+    this.getDetailsMovie = true;
+    this.editButtonClick = false;
+    this.selectedMovie = movie;
+    this.allStatusMovies.forEach(statusMovie => {
+      if (statusMovie.id == this.selectedMovie.statusId) {
+        this.selectedMovie.status = statusMovie.status;
+      }
+    })
+    this.listPartsByCurrentName = this.allMovies.filter(movie => (movie.nameMovie.toLowerCase() == (this.selectedMovie.nameMovie.toLowerCase()))).sort((n1, n2) => n1.priority - n2.priority);;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
-  openDeleteMovieModal(movie: Movie, contentDeleteMovie) {
-    this.movieToDelete = movie;
-    this.modalRefDeleteMovie =  this.dialogService.open(contentDeleteMovie, {
-      width: '98vw',
-      height:'50vh',
-      maxWidth: '100vw'
-    }); 
+  getPartMovieSelected(moviePartSelected: Movie) {
+    this.selectedMovie = moviePartSelected;
+    this.allStatusMovies.forEach(statusMovie => {
+      if (statusMovie.id == this.selectedMovie.statusId) {
+        this.selectedMovie.status = statusMovie.status;
+      }
+    })
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
-  confirmDelete() {
-    this.movieService.delete(this.movieToDelete.key);
+  addNewMovie() {
+    this.clickNewMovie = true;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
-  close() {
-    this.modalRefDeleteMovie.close();
+  saveNewMovie() {
+    this.newMovie.date = moment().format('YYYY-MM-DD');
+    if (this.allMovies[0].numRefMovie) this.newMovie.numRefMovie = this.allMovies[0].numRefMovie + 1;
+    this.movieService.create(this.newMovie);
+    this.clickNewMovie = false;
+    this.getDetailsMovie = false;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    Swal.fire(
+    'New Movie added successfully',
+    '',
+    'success'
+    ).then((result) => {
+      if (result.value) {
+        this.newMovie.nameMovie = '';
+        if (this.newMovie.fullNameMovie) this.newMovie.fullNameMovie = '';
+        if (this.newMovie.isFirst) this.newMovie.isFirst = false;
+        this.newMovie.year = null;
+        this.newMovie.statusId = null;
+        if (this.newMovie.part) this.newMovie.part = null;
+        if (this.newMovie.priority) this.newMovie.priority = null;
+        if (this.newMovie.path) this.newMovie.path = '';
+        if (this.newMovie.note) this.newMovie.note = '';
+        if (this.newMovie.imageUrl) this.newMovie.imageUrl = '';
+      }
+    })
   }
 
-  zoomPicture(movie: Movie) {
-    const dialogRef = this.dialogService.open(ShowMoviePictureComponent, {
-      width: '98vw',
-      height:'77vh',
-      maxWidth: '100vw'
-    });
-    dialogRef.componentInstance.movieForModal = movie;
-    dialogRef.componentInstance.dialogRef = dialogRef;
+  cancelFromNewMovie() {
+    this.clickNewMovie = false;
+    this.getDetailsMovie = false;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
-  copyNameMovie(nameMovie: string){
+  async uploadPictureForCreateMovie(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {
+        this.newMovie.imageUrl = url; 
+        Swal.fire(
+          'Picture has been uploaded successfully',
+          '',
+          'success'
+        )
+      });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.newMovie.imageUrl = '';
+    }
+  }
+
+  editMovie() {
+    this.editButtonClick = true;
+  }
+
+  save() {
+    this.movieService.update(this.selectedMovie.key, this.selectedMovie);
+    this.allStatusMovies.forEach(statusMovie => {
+      if (statusMovie.id == this.selectedMovie.statusId) {
+        this.selectedMovie.status = statusMovie.status;
+      }
+    })
+    this.editButtonClick = false;
+    Swal.fire(
+      'Movie data has been Updated successfully',
+      '',
+      'success'
+    )
+  }
+
+  cancel() {
+    this.editButtonClick = false;
+  }
+
+  async uploadPictureForEditMovie(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {
+        this.selectedMovie.imageUrl = url; 
+        this.movieService.update(this.selectedMovie.key, this.selectedMovie);
+        Swal.fire(
+          'Picture has been uploaded successfully',
+          '',
+          'success'
+        )
+      });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.selectedMovie.imageUrl = '';
+    }
+  }
+
+  deleteMovie(movieId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this movie!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.movieService.delete(movieId);
+        this.getDetailsMovie = false;
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        Swal.fire(
+          'Movie has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
+  }
+
+  copyText(text: string){
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = nameMovie;
+    selBox.value = text;
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();
@@ -199,24 +328,27 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
   }
 
   sortByRefMovieDesc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+    this.pagedList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
     this.sortByDesc = true;
+
+    this.pagedList = this.moviesList.slice(0, 6);
+    this.length = this.moviesList.length;
   }
 
   sortByRefMovieAsc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
+    this.pagedList = this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
     this.sortByDesc = false;
+
+    this.pagedList = this.moviesList.slice(0, 6);
+    this.length = this.moviesList.length;
   }
 
-  viewParts(currentMovie: Movie, contentPartsList) {
-    this.currentName = currentMovie.nameMovie
-    this.listPartsByCurrentName = this.allMovies.filter(movie => (movie.nameMovie.toLowerCase() == (currentMovie.nameMovie.toLowerCase())));
-
-    this.dialogService.open(contentPartsList, {
-      width: '98vw',
-      height:'70vh',
-      maxWidth: '100vw'
-    }); 
+  viewNote(movieNote: string) {
+    Swal.fire({
+      text: movieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   ngOnDestroy() {

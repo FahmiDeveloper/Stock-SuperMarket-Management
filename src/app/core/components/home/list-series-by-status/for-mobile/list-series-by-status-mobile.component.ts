@@ -4,9 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ShowSeriePictureComponent } from 'src/app/series/show-serie-picture/show-serie-picture.component';
-import { SerieFormMobileComponent } from 'src/app/series/for-mobile/serie-form-mobile/serie-form-mobile.component';
-
 import { SerieService } from 'src/app/shared/services/serie.service';
 
 import { Serie } from 'src/app/shared/models/serie.model';
@@ -52,16 +49,6 @@ export class ListSeriesByStatusForMobileComponent implements OnChanges {
         }
         this.dataSource.paginator = this.paginator;
 
-    }
-
-    zoomPicture(serie: Serie) {
-        const dialogRef = this.dialogService.open(ShowSeriePictureComponent, {
-          width: '98vw',
-          height:'77vh',
-          maxWidth: '100vw'
-        });
-        dialogRef.componentInstance.serieForModal = serie;
-        dialogRef.componentInstance.dialogRef = dialogRef;
     }
 
     copyNameSerie(nameSerie: string){
@@ -129,15 +116,6 @@ export class ListSeriesByStatusForMobileComponent implements OnChanges {
             this.dataSource.data = this.listSeries.filter(serie => serie.statusId == statusSerie);
         }
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.priority - n2.priority);
-    }
-
-    editSerie(serie: Serie) {
-        const dialogRef = this.dialogService.open(SerieFormMobileComponent, {
-            width: '98vw',
-            height:'73vh',
-            maxWidth: '100vw'
-        });
-        dialogRef.componentInstance.serie = serie;
     }
 
     openDeleteSerieModal(serie: Serie, contentDeleteSerie) {
