@@ -1,20 +1,18 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
-import { Subscription } from 'rxjs';
-
-import { SerieFormDesktopComponent } from './serie-form-desktop/serie-form-desktop.component';
+import { Observable, Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
-import { SerieService } from '../../shared/services/serie.service';
+import { SerieService } from 'src/app/shared/services/serie.service';
 import { UsersListService } from '../../shared/services/list-users.service';
 
 import { FirebaseUserModel } from '../../shared/models/user.model';
-import { Serie, StatusSeries } from '../../shared/models/serie.model';
+import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 @Component({
     selector: 'series-for-desktop',
@@ -24,34 +22,44 @@ import { Serie, StatusSeries } from '../../shared/models/serie.model';
 
 export class SeriesForDesktopComponent implements OnInit, OnDestroy {
 
-  dataSource = new MatTableDataSource<Serie>();
-  dataSourceCopie = new MatTableDataSource<Serie>();
-  displayedColumns: string[] = ['picture', 'details'];
+  seriesList: Serie[] = [];
+  pagedList: Serie[]= [];
+  seriesListCopie: Serie[] = [];
   allSeries: Serie[] = [];
   listSeriesByCurrentName: Serie[] = [];
 
-  serieToDelete: Serie = new Serie();
+  newSerie: Serie = new Serie();
+  selectedSerie: Serie = new Serie();
 
-  queryName: string = '';
+  serieName: string = '';
   statusId: number;
   sortByDesc: boolean = true;
   currentName: string = '';
+  getDetailsSerie: boolean = false;
+  editButtonClick: boolean = false;
+  clickNewSerie: boolean = false;
+
+  length: number = 0;
+  pageSize: number = 6;
+  pageSizeOptions: number[] = [6];
+
+  basePath = '/PicturesSeries';
+  task: AngularFireUploadTask;
+  progressValue: Observable<number>;
 
   subscriptionForGetAllSeries: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
 
-  modalRefDeleteSerie: any;
-
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
-
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   statusSeries: StatusSeries[] = [
+    {id: 1, status: 'Wait to sort'}, 
+    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 5, status: 'To search about it'}
+  ];
+
+  allStatusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
     {id: 3, status: 'Watched'}, 
@@ -65,16 +73,12 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    public dialogService: MatDialog
+    private fireStorage: AngularFireStorage
   ) {}
 
   ngOnInit() {
     this.getRolesUser();
     this.getAllSeries();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   getRolesUser() {
@@ -107,33 +111,36 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
   }
 
   getAllSeries() {
+    this.getDetailsSerie = false;
+    this.clickNewSerie = false;
+
     this.subscriptionForGetAllSeries = this.serieService
     .getAll()
     .subscribe(series => {
-      this.dataSourceCopie.data = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      this.seriesListCopie = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
       this.allSeries = series;
 
-      if (this.queryName) {
-        this.dataSource.data = series.filter(serie => (serie.nameSerie.toLowerCase().includes(this.queryName.toLowerCase())) && (serie.isFirst == true));
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      if (this.serieName) {
+        this.seriesList = series.filter(serie => (serie.nameSerie.toLowerCase().includes(this.serieName.toLowerCase())) && (serie.isFirst == true));
+        this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
       }
       
       else if (this.statusId) {
-        if (this.statusId == 6) this.dataSource.data = series.filter(serie => (serie.priority) && (serie.isFirst == true));
-
-        else this.dataSource.data = series.filter(serie => (serie.statusId == this.statusId) && (serie.isFirst == true) && (!serie.priority));
-           
-        this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+        this.seriesList = series.filter(serie => serie.statusId == this.statusId);       
+        this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
       }
       
-      else this.dataSource.data = series.filter(serie => serie.isFirst == true).sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      else this.seriesList = series.filter(serie => serie.isFirst == true).sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+
+      this.pagedList = this.seriesList.slice(0, 6);
+      this.length = this.seriesList.length;
 
       this.getStatusSerie();
     });
   }
 
   getStatusSerie() {
-    this.dataSource.data.forEach(element=>{
+    this.seriesList.forEach(element=>{
       this.statusSeries.forEach(statusSerie => {
         if (statusSerie.id == element.statusId) {
           element.status = statusSerie.status;
@@ -143,41 +150,180 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     })
   }
 
-  newSerie() {
-    const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '800px', data: {movie: {}}});
-    dialogRef.componentInstance.arraySeries = this.dataSourceCopie.data; 
-    dialogRef.componentInstance.allSeries = this.allSeries; 
+  OnPageChange(event: PageEvent){
+    let startIndex = event.pageIndex * event.pageSize;
+    let endIndex = startIndex + event.pageSize;
+    if(endIndex > this.length){
+      endIndex = this.length;
+    }
+    this.pagedList = this.seriesList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
-  editSerie(serie?: Serie) {
-    const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '800px'});
-    dialogRef.componentInstance.serie = serie;
+  showDetailsSerie(serie: Serie) {
+    this.getDetailsSerie = true;
+    this.editButtonClick = false;
+    this.selectedSerie = serie;
+    this.allStatusSeries.forEach(statusSerie => {
+      if (statusSerie.id == this.selectedSerie.statusId) {
+        this.selectedSerie.status = statusSerie.status;
+      }
+    })
+    this.listSeriesByCurrentName = this.allSeries.filter(serie => (serie.nameSerie.toLowerCase() == (this.selectedSerie.nameSerie.toLowerCase()))).sort((n1, n2) => n1.priority - n2.priority);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
+  getSeasonSerieSelected(seasonSerieSelected: Serie) {
+    this.selectedSerie = seasonSerieSelected;
+    this.allStatusSeries.forEach(statusSerie => {
+      if (statusSerie.id == this.selectedSerie.statusId) {
+        this.selectedSerie.status = statusSerie.status;
+      }
+    })
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
+  addNewSerie() {
+    this.clickNewSerie = true;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
+  saveNewSerie() {
+    this.newSerie.date = moment().format('YYYY-MM-DD');
+    if (this.allSeries[0].numRefSerie) this.newSerie.numRefSerie = this.allSeries[0].numRefSerie + 1;
+    if (!this.newSerie.path) this.newSerie.path = "";
+    this.serieService.create(this.newSerie);
+    this.clickNewSerie = false;
+    this.getDetailsSerie = false;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    Swal.fire(
+    'New serie added successfully',
+    '',
+    'success'
+    ).then((result) => {
+      if (result.value) {
+        this.newSerie.nameSerie = '';
+        if (this.newSerie.isFirst) this.newSerie.isFirst = false;
+        this.newSerie.year = null;
+        this.newSerie.statusId = null;
+        if (this.newSerie.season) this.newSerie.season = null;
+        if (this.newSerie.priority) this.newSerie.priority = null;
+        if (this.newSerie.currentEpisode) this.newSerie.currentEpisode = null;
+        if (this.newSerie.totalEpisodes) this.newSerie.totalEpisodes = null;
+        if (this.newSerie.path) this.newSerie.path = '';
+        if (this.newSerie.note) this.newSerie.note = '';
+        if (this.newSerie.imageUrl) this.newSerie.imageUrl = '';
+      }
+    })
+  }
+
+  cancelFromNewSerie() {
+    this.clickNewSerie = false;
+    this.getDetailsSerie = false;
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
+  async uploadPictureForCreateSerie(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {
+        this.newSerie.imageUrl = url; 
+        Swal.fire(
+          'Picture has been uploaded successfully',
+          '',
+          'success'
+        )
+      });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.newSerie.imageUrl = '';
+    }
+  }
+
+  editSerie() {
+    this.editButtonClick = true;
+  }
+
+  save() {
+    this.serieService.update(this.selectedSerie.key, this.selectedSerie);
+    this.allStatusSeries.forEach(statusSerie => {
+      if (statusSerie.id == this.selectedSerie.statusId) {
+        this.selectedSerie.status = statusSerie.status;
+      }
+    })
+    this.editButtonClick = false;
+    Swal.fire(
+      'Serie data has been Updated successfully',
+      '',
+      'success'
+    )
+  }
+
+  cancel() {
+    this.editButtonClick = false;
+  }
+
+  async uploadPictureForEditSerie(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {
+        this.selectedSerie.imageUrl = url; 
+        this.serieService.update(this.selectedSerie.key, this.selectedSerie);
+        Swal.fire(
+          'Picture has been uploaded successfully',
+          '',
+          'success'
+        )
+      });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.selectedSerie.imageUrl = '';
+    }
+  }
+
+  deleteSerie(serieId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'delete this serie!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.serieService.delete(serieId);
+        this.getDetailsSerie = false;
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        Swal.fire(
+          'Serie has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   } 
 
-  openDeleteSerieModal(serie: Serie, contentDeleteSerie) {
-    this.serieToDelete = serie;
-    this.modalRefDeleteSerie =  this.dialogService.open(contentDeleteSerie, {
-      width: '30vw',
-      height:'35vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.serieService.delete(this.serieToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteSerie.close();
-  }
-
-  copyNameSerie(nameSerie: string){
+  copyText(text: string){
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = nameSerie;
+    selBox.value = text;
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();
@@ -186,33 +332,19 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
   }
 
   sortByRefSerieDesc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+    this.pagedList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
     this.sortByDesc = true;
+
+    this.pagedList = this.seriesList.slice(0, 6);
+    this.length = this.seriesList.length;
   }
 
   sortByRefSerieAsc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
+    this.pagedList = this.seriesList.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
     this.sortByDesc = false;
-  }
 
-  onContextMenu(event: MouseEvent, serie: Serie) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'serie': serie };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-  }
-
-  viewOtherSeasons(currentSerie: Serie, contentSeasonsList) {
-    this.currentName = currentSerie.nameSerie;
-    this.listSeriesByCurrentName = this.allSeries.filter(serie => (serie.nameSerie.toLowerCase().includes(currentSerie.nameSerie.toLowerCase())));
-
-    this.dialogService.open(contentSeasonsList, {
-      width: '40vw',
-      height:'70vh',
-      maxWidth: '100vw'
-    }); 
+    this.pagedList = this.seriesList.slice(0, 6);
+    this.length = this.seriesList.length;
   }
 
   ngOnDestroy() {

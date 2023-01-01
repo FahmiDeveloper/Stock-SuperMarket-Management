@@ -1,163 +1,20 @@
-<div mat-dialog-title class="dialog-title">
-    <h2 class="text-application">Parts for {{ currentName }}</h2>
-    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
-        <mat-icon>close</mat-icon>
-    </button>
-</div>
+<h2  *ngIf="listPartsByCurrentName.length == 1" class="text-application">No parts yet</h2>
+<h2 *ngIf="listPartsByCurrentName.length == 2 || listPartsByCurrentName.length > 2" class="text-application">All parts</h2>
 
-<div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+<mat-grid-list *ngIf="listPartsByCurrentName.length == 2" cols=2 #grid rowHeight="350px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let movie of listPartsByCurrentName">
+        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsMovie(movie)">      
+            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
+            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">              
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
 
-        <ng-container matColumnDef="picture">
-            <th mat-header-cell *matHeaderCellDef>Picture</th>
-            <td mat-cell *matCellDef="let element"> 
-                <img *ngIf="element.imageUrl" mat-card-md-image [src]="element.imageUrl">
-                <img *ngIf="!element.imageUrl" mat-card-md-image src="/assets/pictures/NoImageAvailable.png">
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="details">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="width: 500px;">Details</th>
-            <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element)">
-                <div class="gridForLegend text-application">
-                    <div><span>Name:</span></div>
-                    <div>
-                        <span style="cursor: pointer;" (click)="copyNameMovie(element.fullNameMovie)">
-                            {{ element.fullNameMovie }} 
-                            <span *ngIf="element.year">({{ element.year }})</span>
-                            <span *ngIf="!element.year">(?)</span>
-                        </span>
-                    </div>
-                </div>
-                <br>
-                <div class="gridForLegend text-application">
-                    <div><span>Status:</span></div>
-                    <div>{{ element.status }}</div>
-                </div>
-                <br>
-                <div class="gridForLegend text-application">
-                    <div><span>Part:</span></div>
-                    <div>{{ element.part }}</div>
-                </div>
-                <br>
-                <div class="gridForLegend text-application">
-                    <div><span>Note:</span></div>
-                    <div>
-                        <span *ngIf="element.note">{{ element.note }}</span>
-                        <span *ngIf="!element.note">-</span>
-                    </div>
-                </div> 
-            </td>
-        </ng-container>
-    
-        <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    </table>
-
-    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
-        No results
-    </div>
-    
-    <mat-paginator 
-        [pageSizeOptions]="[8]"
-        showFirstLastButtons 
-        aria-label="Select page of periodic elements">
-    </mat-paginator>
-</div>
-
-<div style="visibility: hidden; position: fixed"
-  [style.left]="contextMenuPosition.x"
-  [style.top]="contextMenuPosition.y"
-  [matMenuTriggerFor]="contextMenu">
-</div>
-
-<mat-menu #contextMenu="matMenu">
-	<ng-template matMenuContent let-movie="movie">
-
-        <button 
-            *ngIf="dataUserConnected.roleUpdateMovie"  
-            type="button" 
-            mat-menu-item 
-            (click)="editMovie(movie)">
-            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-            <span>Edit</span>
-        </button>
-
-        <button mat-menu-item *ngIf="movie.statusId !== 3" [hidden]="movie.statusId == 4"> 
-            <mat-icon *ngIf="movie.statusId == 1" style="color: #EF6C00;">remove_red_eye</mat-icon>
-            <mat-icon *ngIf="movie.statusId == 2" style="color: #2E7D32;">cloud_download</mat-icon>
-            <mat-icon *ngIf="movie.statusId == 5" style="color: #EF6C00;">search</mat-icon>
-            <a href="{{ movie.path }}" target="_blank" style="text-decoration: none;">
-              <span *ngIf="movie.statusId == 1" style="color: black !important;">Check</span>
-              <span *ngIf="movie.statusId == 2" style="color: black !important;">Download</span>
-              <span *ngIf="movie.statusId == 5" style="color: black !important;">Search</span>
-            </a>  
-        </button>
-
-        <button
-            *ngIf="dataUserConnected.roleDeleteMovie" 
-            type="button"
-            mat-menu-item 
-            (click)="openDeleteMovieModal(movie, contentDeleteMovie)" 
-            class="text-application">
-            <mat-icon style="color: #f44336;">delete</mat-icon>
-            <span>Delete</span>
-        </button>
-
-	</ng-template>
-</mat-menu>
-
-<ng-template #contentDeleteMovie>
-
-    <div mat-dialog-title class="dialog-title">
-      <h2 class="text-application">Are you sure ?</h2>
-    </div>
-  
-    <div mat-dialog-content>
-        <div class="gridForDelete text-application">
-            <div><span>Name:</span></div>
-            <div>{{ movieToDelete.fullNameMovie }}</div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Date:</span></div>
-            <div>{{ movieToDelete.date | date:'dd/MM/yyyy' }}</div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Status:</span></div>
-            <div>{{ movieToDelete.status }}</div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Note:</span></div>
-            <div>{{ movieToDelete.note }}</div>
-        </div> 
-    </div>
-
-    <br>
-
-    <div class="row justify-content-center" mat-dialog-actions>
-        <button 
-            mat-button 
-            type="button" 
-            [mat-dialog-close]="1" 
-            (click)="confirmDelete()" 
-            style="background:rgb(221, 51, 51);color: white;" 
-            class="text-application">
-            Delete
-        </button>
-
-        <button 
-            mat-button 
-            type="button" 
-            (click)="close()" 
-            tabindex="-1" 
-            style="background:#607D8B;color: white;" 
-            class="text-application">
-            Cancel
-        </button>
-    </div>
-  
-</ng-template>
+<mat-grid-list *ngIf="listPartsByCurrentName.length > 2" cols=3 #grid rowHeight="350px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let movie of listPartsByCurrentName">
+        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsMovie(movie)">       
+            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
+            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">              
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>

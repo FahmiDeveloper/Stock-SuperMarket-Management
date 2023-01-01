@@ -1,37 +1,33 @@
 .widhtInput {
     width: 90%;
 }
-
+  
 .no-results {
     display: flex;
     justify-content: center;
     padding: 14px;
     font-size: 20px;
 }
-
-.mat-header-cell {
-    color:white;
-    font-size: 20px;
-    min-height: 48px;
-    text-align: center;
+  
+.anime-image {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    border-radius: 5px;
 }
-
-.mat-cell {
-    font-size: 20px;
-    min-height: 48px;
-    border-bottom-style: none;
+    
+.settings-card {
+    height: 350px;
+    width: 350px;
 }
-
-.gridForLegend {
-    display: grid;
-    grid-template-columns: 80px 250px;
-    width: 250px;
+  
+.settings-card-new-update-anime {
+    height: 600px;
+    width: 350px;
+}
+  
+.grid-list-new-edit {
+    width: 90%;
     margin: auto;
-}
-
-.gridForDelete {
-    display: grid;
-    grid-template-columns: 80px 400px;
-    width: 250px;
-    font-size: 18px;
+    top: 0; left: 0; bottom: 0; right: 0;
 }

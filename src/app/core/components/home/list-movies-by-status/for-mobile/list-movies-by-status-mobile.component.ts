@@ -4,9 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ShowMoviePictureComponent } from 'src/app/movies/show-movie-picture/show-movie-picture.component';
-import { MovieFormMobileComponent } from 'src/app/movies/for-mobile/movie-form-mobile/movie-form-mobile.component';
-
 import { MovieService } from 'src/app/shared/services/movie.service';
 
 import { Movie } from 'src/app/shared/models/movie.model';
@@ -52,16 +49,6 @@ export class ListMoviesByStatusForMobileComponent implements OnChanges {
         }
         this.dataSource.paginator = this.paginator;
 
-    }
-
-    zoomPicture(movie: Movie) {
-        const dialogRef = this.dialogService.open(ShowMoviePictureComponent, {
-          width: '98vw',
-          height:'77vh',
-          maxWidth: '100vw'
-        });
-        dialogRef.componentInstance.movieForModal = movie;
-        dialogRef.componentInstance.dialogRef = dialogRef;
     }
     
     copyNameMovie(nameMovie: string){
@@ -129,15 +116,6 @@ export class ListMoviesByStatusForMobileComponent implements OnChanges {
             this.dataSource.data = this.listMovies.filter(movie => movie.statusId == statusMovie);
         }
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.priority - n2.priority);
-    }
-
-    editMovie(movie: Movie) {
-        const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
-            width: '98vw',
-            height:'73vh',
-            maxWidth: '100vw'
-          });
-        dialogRef.componentInstance.movie = movie;
     }
 
     openDeleteMovieModal(movie: Movie, contentDeleteMovie) {

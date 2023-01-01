@@ -50,8 +50,8 @@
         <ng-container matColumnDef="picture">
             <th mat-header-cell *matHeaderCellDef>Picture</th>
             <td mat-cell *matCellDef="let element"> 
-                <img *ngIf="element.imageUrl" mat-card-md-image [src]="element.imageUrl" (click)="zoomPicture(element)">
-                <img *ngIf="!element.imageUrl" mat-card-md-image src="/assets/pictures/NoImageAvailable.png" (click)="zoomPicture(element)">
+                <img *ngIf="element.imageUrl" mat-card-md-image [src]="element.imageUrl">
+                <img *ngIf="!element.imageUrl" mat-card-md-image src="/assets/pictures/NoImageAvailable.png">
                 
                 <span [ngStyle]="{'margin-left': element.year ? '24px' : '40px'}">
                     <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;&nbsp;
@@ -141,8 +141,7 @@
         <button 
             *ngIf="dataUserConnected.roleUpdateMovie"  
             type="button" 
-            mat-menu-item 
-            (click)="editMovie(movie)">
+            mat-menu-item>
             <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
             <span>Edit</span>
         </button>

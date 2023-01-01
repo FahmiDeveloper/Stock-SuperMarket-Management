@@ -1,47 +1,11 @@
-.no-results {
-    display: flex;
-    justify-content: center;
-    padding: 14px;
-    font-size: 20px;
+.serie-image {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    border-radius: 5px;
 }
-
-.mat-header-cell {
-    color:white;
-    font-size: 20px;
-    min-height: 48px;
-    text-align: center;
-}
-
-.mat-cell {
-    font-size: 20px;
-    min-height: 48px;
-    border-bottom-style: none;
-}
-
-.gridForLegend {
-    display: grid;
-    grid-template-columns: 80px 300px;
-    width: 250px;
-    margin: auto;
-}
-
-.mat-card-md-image {
-    width: 145px;
-    height: 200px;
-    border-radius: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.gridForDelete {
-    display: grid;
-    grid-template-columns: 80px 400px;
-    width: 250px;
-    font-size: 18px;
+    
+.settings-card {
+    height: 350px;
+    width: 350px;
 }

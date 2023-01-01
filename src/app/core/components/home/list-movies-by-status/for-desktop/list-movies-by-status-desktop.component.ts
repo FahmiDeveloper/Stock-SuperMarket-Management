@@ -4,9 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { MovieFormDesktopComponent } from 'src/app/movies/for-desktop/movie-form-desktop/movie-form-desktop.component';
-
 import { MovieService } from 'src/app/shared/services/movie.service';
 
 import { Movie } from 'src/app/shared/models/movie.model';
@@ -132,11 +129,6 @@ export class ListMoviesByStatusForDesktopComponent implements OnChanges {
             this.dataSource.data = this.listMovies.filter(movie => movie.statusId == statusMovie);
         }
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.priority - n2.priority);
-    }
-
-    editMovie(movie: Movie) {
-        const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '800px'});
-        dialogRef.componentInstance.movie = movie;
     }
 
     openDeleteMovieModal(movie: Movie, contentDeleteMovie) {

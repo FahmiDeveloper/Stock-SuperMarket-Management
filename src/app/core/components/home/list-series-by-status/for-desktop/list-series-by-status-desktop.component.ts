@@ -4,8 +4,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { SerieFormDesktopComponent } from 'src/app/series/for-desktop/serie-form-desktop/serie-form-desktop.component';
-
 import { SerieService } from 'src/app/shared/services/serie.service';
 
 import { Serie } from 'src/app/shared/models/serie.model';
@@ -131,11 +129,6 @@ export class ListSeriesByStatusForDesktopComponent implements OnChanges {
             this.dataSource.data = this.listSeries.filter(serie => serie.statusId == statusSerie);
         }
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.priority - n2.priority);
-    }
-
-    editSerie(serie: Serie) {
-        const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '800px'});
-        dialogRef.componentInstance.serie = serie;
     }
 
     openDeleteSerieModal(serie: Serie, contentDeleteSerie) {

@@ -4,9 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ShowAnimePictureComponent } from 'src/app/animes/show-anime-picture/show-anime-picture.component';
-import { AnimeFormMobileComponent } from 'src/app/animes/for-mobile/anime-form-mobile/anime-form-mobile.component';
-
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
 import { Anime } from 'src/app/shared/models/anime.model';
@@ -52,16 +49,6 @@ export class ListAnimesByStatusForMobileComponent implements OnChanges {
         }
         this.dataSource.paginator = this.paginator;
 
-    }
-
-    zoomPicture(anime: Anime) {
-        const dialogRef = this.dialogService.open(ShowAnimePictureComponent, {
-          width: '98vw',
-          height:'77vh',
-          maxWidth: '100vw'
-        });
-        dialogRef.componentInstance.animeForModal = anime;
-        dialogRef.componentInstance.dialogRef = dialogRef;
     }
 
     copyNameAnime(nameAnime: string){
@@ -129,15 +116,6 @@ export class ListAnimesByStatusForMobileComponent implements OnChanges {
             this.dataSource.data = this.listAnimes.filter(anime => anime.statusId == statusAnime);
         }
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.priority - n2.priority);
-    }
-
-    editAnime(anime: Anime) {
-        const dialogRef = this.dialogService.open(AnimeFormMobileComponent, {
-            width: '98vw',
-            height:'73vh',
-            maxWidth: '100vw'
-        });
-        dialogRef.componentInstance.anime = anime;
     }
 
     openDeleteAnimeModal(anime: Anime, contentDeleteAnime) {

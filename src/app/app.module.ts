@@ -69,12 +69,9 @@ import { UserComponent } from './user/index';
 
 import { 
   AnimesForDesktopComponent,
-  AnimeFormDesktopComponent,
   ListSeasonsMoviesForDesktopComponent,
   AnimesForMobileComponent,
-  AnimeFormMobileComponent,
-  ListSeasonsMoviesForMobileComponent,
-  ShowAnimePictureComponent
+  ListSeasonsMoviesForMobileComponent
 } from './animes/index';
 
 import { 
@@ -115,12 +112,9 @@ import {
 
 import { 
   MoviesForDesktopComponent,
-  MovieFormDesktopComponent,
   ListPartsForDesktopComponent,
   MoviesForMobileComponent,
-  MovieFormMobileComponent,
-  ListPartsForMobileComponent,
-  ShowMoviePictureComponent 
+  ListPartsForMobileComponent
 } from './movies/index';
 
 import { 
@@ -132,12 +126,9 @@ import {
 
 import { 
   SeriesForDesktopComponent,
-  SerieFormDesktopComponent,
   ListSeasonsForDesktopComponent,
   SeriesForMobileComponent,
-  SerieFormMobileComponent,
-  ListSeasonsForMobileComponent,
-  ShowSeriePictureComponent
+  ListSeasonsForMobileComponent
 } from './series/index';
 
 import { 
@@ -183,7 +174,8 @@ import {
     AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
-    NgxDocViewerModule, BrowserAnimationsModule
+    NgxDocViewerModule, 
+    BrowserAnimationsModule
   ],
   declarations: [
     AppComponent,
@@ -208,12 +200,9 @@ import {
     ListUsersByStatusForMobileComponent,
 
     AnimesForDesktopComponent,
-    AnimeFormDesktopComponent,
     ListSeasonsMoviesForDesktopComponent,
     AnimesForMobileComponent,
-    AnimeFormMobileComponent,
     ListSeasonsMoviesForMobileComponent,
-    ShowAnimePictureComponent,
 
     ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,
@@ -246,12 +235,9 @@ import {
     ModalPrivilegeMobileComponent,
 
     MoviesForDesktopComponent,
-    MovieFormDesktopComponent,
     ListPartsForDesktopComponent,
     MoviesForMobileComponent,
-    MovieFormMobileComponent,
     ListPartsForMobileComponent,
-    ShowMoviePictureComponent,
 
     PasswordsForDesktopComponent,
     PasswordFormDesktopComponent,
@@ -259,12 +245,9 @@ import {
     PasswordFormMobileComponent,
 
     SeriesForDesktopComponent,
-    SerieFormDesktopComponent,
     ListSeasonsForDesktopComponent,
     SeriesForMobileComponent,
-    SerieFormMobileComponent,
     ListSeasonsForMobileComponent,
-    ShowSeriePictureComponent,
 
     ToDoListForDesktopComponent,
     TaskDesktopComponent,

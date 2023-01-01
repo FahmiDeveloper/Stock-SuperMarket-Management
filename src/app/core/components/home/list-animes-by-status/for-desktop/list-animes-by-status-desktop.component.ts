@@ -5,8 +5,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { AnimeFormDesktopComponent } from 'src/app/animes';
-
 import { AnimeService } from 'src/app/shared/services/anime.service';
 
 import { Anime } from 'src/app/shared/models/anime.model';
@@ -132,11 +130,6 @@ export class ListAnimesByStatusForDesktopComponent implements OnChanges {
             this.dataSource.data = this.listAnimes.filter(anime => anime.statusId == statusAnime);
         }
         this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.priority - n2.priority);
-    }
-
-    editAnime(anime: Anime) {
-        const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, {width: '800px'});
-        dialogRef.componentInstance.anime = anime;
     }
 
     openDeleteAnimeModal(anime: Anime, contentDeleteAnime) {
