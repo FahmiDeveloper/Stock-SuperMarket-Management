@@ -1,9 +1,9 @@
 <h1 *ngIf="!getDetailsAnime && !clickNewAnime" class="titleTextInterface text-application">Animes</h1>
 
 <h1 *ngIf="getDetailsAnime && !clickNewAnime" class="titleTextInterface text-application">
+    <mat-icon *ngIf="getDetailsAnime && !clickNewAnime" (click)="getAllAnimes()" class="aligned-with-text">home</mat-icon>
+    &nbsp;&nbsp;&nbsp;
     {{ selectedAnime.nameAnime }}
-    &nbsp;
-    <mat-icon *ngIf="getDetailsAnime && !clickNewAnime" (click)="getAllAnimes()" style="vertical-align: text-bottom;cursor: pointer;">home</mat-icon>
 </h1>
 
 <h1 *ngIf="!getDetailsAnime && clickNewAnime" class="titleTextInterface text-application">New anime</h1>
@@ -216,7 +216,7 @@
                 <mat-grid-tile colspan="9">
                     <span *ngIf="!editButtonClick">                      
                         <span *ngIf="selectedAnime.path">
-                            <i class="fa fa-lg fa-copy" (click)="copyText(selectedAnime.path)" style="cursor: pointer;"></i>                            
+                            <mat-icon style="cursor: pointer;" (click)="followLink(selectedAnime.path)" target="_blank">link</mat-icon>                            
                         </span>
                         <span *ngIf="!selectedAnime.path">-</span>
                     </span>

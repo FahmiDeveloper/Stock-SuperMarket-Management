@@ -330,6 +330,10 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     document.body.removeChild(selBox);
   }
 
+  followLink(path: string) {
+    window.open(path);
+  }
+
   sortByRefAnimeDesc() {
     this.pagedList = this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
     this.sortByDesc = true;

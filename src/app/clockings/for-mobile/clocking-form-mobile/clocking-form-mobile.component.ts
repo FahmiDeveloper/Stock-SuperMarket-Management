@@ -54,7 +54,7 @@ export class ClockingFormMobileComponent implements OnInit {
       else if (this.clocking.workHalfDay == true) this.selectedSubjectId = 4;
       else this.selectedSubjectId = null;
     }
-    if (this.monthSelected == String(new Date().getMonth()+ 1)) {this.showVacationLimitDays = true;} 
+    if (this.monthSelected == String(new Date().getMonth()+ 1)  || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {this.showVacationLimitDays = true;} 
     else {this.showVacationLimitDays = false;}
   }
 

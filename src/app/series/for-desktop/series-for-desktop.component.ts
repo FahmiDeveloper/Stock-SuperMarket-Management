@@ -331,6 +331,10 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     document.body.removeChild(selBox);
   }
 
+  followLink(path: string) {
+    window.open(path);
+  }
+
   sortByRefSerieDesc() {
     this.pagedList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
     this.sortByDesc = true;

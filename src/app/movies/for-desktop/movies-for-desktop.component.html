@@ -1,8 +1,8 @@
 <h1 *ngIf="!getDetailsMovie && !clickNewMovie" class="titleTextInterface text-application">Movies</h1>
 
 <h1 *ngIf="getDetailsMovie && !clickNewMovie" class="titleTextInterface text-application">
-    <mat-icon *ngIf="getDetailsMovie && !clickNewMovie" (click)="getAllMovies()" style="vertical-align: text-bottom;cursor: pointer;">home</mat-icon>
-    &nbsp;
+    <mat-icon *ngIf="getDetailsMovie && !clickNewMovie" (click)="getAllMovies()" class="aligned-with-text">home</mat-icon>
+    &nbsp;&nbsp;&nbsp;
     <span *ngIf="selectedMovie.fullNameMovie" (click)="copyText(selectedMovie.fullNameMovie)" style="cursor: pointer;">{{ selectedMovie.fullNameMovie }}</span>
     <span *ngIf="!selectedMovie.fullNameMovie" (click)="copyText(selectedMovie.nameMovie)" style="cursor: pointer;">{{ selectedMovie.nameMovie }}</span>
 </h1>
@@ -185,7 +185,7 @@
                 <mat-grid-tile colspan="9">
                     <span *ngIf="!editButtonClick">                      
                         <span *ngIf="selectedMovie.path">
-                            <i class="fa fa-lg fa-copy" (click)="copyText(selectedMovie.path)" style="cursor: pointer;"></i>                            
+                            <mat-icon style="cursor: pointer;" (click)="followLink(selectedMovie.path)" target="_blank">link</mat-icon>                            
                         </span>
                         <span *ngIf="!selectedMovie.path"><mat-icon style="color: red;">cancel</mat-icon></span>
                     </span>

@@ -1,1 +1,0 @@
-export * from './serie-form-desktop.component';
