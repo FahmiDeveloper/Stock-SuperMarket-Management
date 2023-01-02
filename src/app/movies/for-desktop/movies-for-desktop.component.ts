@@ -329,6 +329,10 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     document.body.removeChild(selBox);
   }
 
+  followLink(path: string) {
+    window.open(path);
+  }
+
   sortByRefMovieDesc() {
     this.pagedList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
     this.sortByDesc = true;

@@ -78,10 +78,10 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const d = new Date();
-    this.currentYear = d.getFullYear();
-    this.monthSelected = String(d.getMonth()+ 1);
-    const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     this.currentMonthAndYearForVacation = months[d.getMonth()] + ' ' + d.getFullYear();
+    if ((months[d.getMonth()] == 'October') || (months[d.getMonth()] == 'November') || (months[d.getMonth()] == 'December')) {this.monthSelected = String(d.getMonth()+ 1);}
+    else {this.monthSelected = '0' + String(d.getMonth()+ 1);}
     this.getAllClockings();
   }
 
@@ -97,8 +97,8 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
       this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
       this.dataSourceCopieForCalculTotalClockingLate.data = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
-
       this.currentMonth = this.monthsList.find(month => month.monthNbr == this.monthSelected).monthName;
+
 
       if (this.subjectSelectedId == 1) {
         this.dataSource.data = 
@@ -126,16 +126,17 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
         .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
       }
 
-      if (this.monthSelected == String(new Date().getMonth()+ 1)) {
+      if ((this.monthSelected == String(new Date().getMonth()+ 1)) || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {
         this.showVacationLimitDays = true;
-        this.vacationLimitDays = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0].restVacationDays;
+        let lastClockingByCurrentMonth = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
+        if (lastClockingByCurrentMonth) this.vacationLimitDays = lastClockingByCurrentMonth.restVacationDays;
       } 
       else {this.showVacationLimitDays = false;}
    
       this.minutePartList = [];
       if (this.dataSourceCopieForCalculTotalClockingLate.data.length > 0) {
         this.dataSourceCopieForCalculTotalClockingLate.data.forEach(clocking => {
-          if (clocking.timeClocking && clocking.timeClocking > '08:00') this.calculTotalClockingLate(clocking.timeClocking);
+            this.calculTotalClockingLate(clocking.timeClocking);
         })
       } else {
         this.totalClockingLate = 0;
@@ -152,7 +153,12 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   calculTotalClockingLate(timeClocking: string) {
-    const composedFinancialDebt = timeClocking.split(':');
+    let composedFinancialDebt: string[] = [];
+    if (timeClocking && timeClocking > '08:00') {
+      composedFinancialDebt = timeClocking.split(':');
+    } else {
+      composedFinancialDebt[1] = '0';
+    }  
     this.minutePartList.push(Number(composedFinancialDebt[1]))
     this.sumClockingLate = this.minutePartList.reduce((accumulator, current) => {return accumulator + current;}, 0);
     if (this.sumClockingLate < 60) {this.totalClockingLate = this.sumClockingLate;}
@@ -168,6 +174,7 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
     const d = new Date(clocking.dateClocking);
     clocking.day = weekday[d.getDay()];
+    this.currentYear = d.getFullYear();
   }
 
   onContextMenu(event: MouseEvent, clocking: Clocking) {

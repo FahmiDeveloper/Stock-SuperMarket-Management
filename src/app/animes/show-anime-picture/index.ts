@@ -1,1 +1,0 @@
-export * from './show-anime-picture.component';

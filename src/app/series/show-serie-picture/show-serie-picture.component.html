@@ -1,9 +1,0 @@
-<mat-card *ngIf="!isMobile" class="example-card">
-    <img *ngIf="serie.imageUrl" mat-card-image [src]="serie.imageUrl" class="style-picture">
-    <img *ngIf="!serie.imageUrl" mat-card-image src="/assets/pictures/NoImageAvailable.png" class="style-picture">
-</mat-card>
-
-<mat-card *ngIf="isMobile" class="example-card-mobile">
-    <img *ngIf="serieForModal.imageUrl" mat-card-image [src]="serieForModal.imageUrl" class="style-picture-mobile" (click)="closeDialog()">
-    <img *ngIf="!serieForModal.imageUrl" mat-card-image src="/assets/pictures/NoImageAvailable.png" class="style-picture-mobile" (click)="closeDialog()">
-</mat-card>

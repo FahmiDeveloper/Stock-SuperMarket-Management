@@ -1,9 +1,0 @@
-<mat-card *ngIf="!isMobile" class="example-card">
-    <img *ngIf="anime.imageUrl" mat-card-image [src]="anime.imageUrl" class="style-picture">
-    <img *ngIf="!anime.imageUrl" mat-card-image src="/assets/pictures/NoImageAvailable.png" class="style-picture">
-</mat-card>
-
-<mat-card *ngIf="isMobile" class="example-card-mobile">
-    <img *ngIf="animeForModal.imageUrl" mat-card-image [src]="animeForModal.imageUrl" class="style-picture-mobile" (click)="closeDialog()">
-    <img *ngIf="!animeForModal.imageUrl" mat-card-image src="/assets/pictures/NoImageAvailable.png" class="style-picture-mobile" (click)="closeDialog()">
-</mat-card>

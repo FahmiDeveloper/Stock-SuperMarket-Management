@@ -1,9 +1,9 @@
 <h1 *ngIf="!getDetailsSerie && !clickNewSerie" class="titleTextInterface text-application">Series</h1>
 
 <h1 *ngIf="getDetailsSerie && !clickNewSerie" class="titleTextInterface text-application">
+    <mat-icon *ngIf="getDetailsSerie && !clickNewSerie" (click)="getAllSeries()" class="aligned-with-text">home</mat-icon>
+    &nbsp;&nbsp;&nbsp;
     {{ selectedSerie.nameSerie }}
-    &nbsp;
-    <mat-icon *ngIf="getDetailsSerie && !clickNewSerie" (click)="getAllSeries()" style="vertical-align: text-bottom;cursor: pointer;">home</mat-icon>
 </h1>
 
 <h1 *ngIf="!getDetailsSerie && clickNewSerie" class="titleTextInterface text-application">New serie</h1>
@@ -214,7 +214,7 @@
                 <mat-grid-tile colspan="9">
                     <span *ngIf="!editButtonClick">                      
                         <span *ngIf="selectedSerie.path">
-                            <i class="fa fa-lg fa-copy" (click)="copyText(selectedSerie.path)" style="cursor: pointer;"></i>                            
+                            <mat-icon style="cursor: pointer;" (click)="followLink(selectedSerie.path)" target="_blank">link</mat-icon>                            
                         </span>
                         <span *ngIf="!selectedSerie.path">-</span>
                     </span>
