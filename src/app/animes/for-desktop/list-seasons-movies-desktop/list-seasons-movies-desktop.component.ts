@@ -49,9 +49,9 @@ export class ListSeasonsMoviesForDesktopComponent implements OnChanges {
             } else {
               this.listAnimesByCurrentName.forEach(season => {
                 if (season.fullNameAnime) {
-                  season.nameAnimeToShow = (season.fullNameAnime.length > 35) ? season.fullNameAnime.substring(0, 35) + '...' : season.fullNameAnime;
+                  season.nameAnimeToShow = (season.fullNameAnime.length > 40) ? season.fullNameAnime.substring(0, 40) + '...' : season.fullNameAnime;
                 } else {
-                  season.nameAnimeToShow = (season.nameAnime.length > 35) ? season.nameAnime.substring(0, 35) + '...' : season.nameAnime;
+                  season.nameAnimeToShow = (season.nameAnime.length > 40) ? season.nameAnime.substring(0, 40) + '...' : season.nameAnime;
                 }
               })
             }
