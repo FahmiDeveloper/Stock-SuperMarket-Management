@@ -1,7 +1,7 @@
 <h1 class="text-center text-primary text-application" style="padding-top: 20px;font-weight: bold;">Welcome</h1>
 <hr class="bg-dark" />
 
-<div *ngIf="isMobile && && isPortrait">
+<div *ngIf="isMobile && isPortrait">
     <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
       <ng-container>
         <!--Movies-->
@@ -169,7 +169,7 @@
     </div>
 </div>
 
-<div *ngIf="isMobile && && !isPortrait">
+<div *ngIf="isMobile && !isPortrait">
   <mat-grid-list cols=2 #grid rowHeight="3:1" gutterSize="15px">
 
     <mat-grid-tile>
