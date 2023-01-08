@@ -2,12 +2,10 @@
 <hr class="bg-dark" />
 
 <div *ngIf="isMobile" class="row justify-content-center">
-  <mat-card class="mat" fxLayout="column" fxFlex style="width: 91%;">
     <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
       <ng-container>
-
         <!--Movies-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies-mobile">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/movies-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }"
@@ -20,37 +18,10 @@
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" style="border: 1px solid #3f51b5">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(1, contentListMoviesByStatus, $event)">
-                Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(2, contentListMoviesByStatus, $event)">
-                Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(3, contentListMoviesByStatus, $event)">
-                Watched:&nbsp;&nbsp;{{ moviesWatched }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(4, contentListMoviesByStatus, $event)">
-                Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListMoviesByStatus(5, contentListMoviesByStatus, $event)">
-                To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
-              </span>
-            </div>
-          </div>
         </div>
 
         <!--Animes-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes-mobile">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/animes-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" 
@@ -63,37 +34,10 @@
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" style="border: 1px solid #4CAF50">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(1, contentListAnimesByStatus, $event)">
-                Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(2, contentListAnimesByStatus, $event)">
-                Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(3, contentListAnimesByStatus, $event)">
-                Watched:&nbsp;&nbsp;{{ animesWatched }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(4, contentListAnimesByStatus, $event)">
-                Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListAnimesByStatus(5, contentListAnimesByStatus, $event)">
-                To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}
-              </span>
-            </div>
-          </div>
         </div>
 
         <!--Series-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series-mobile">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application"  routerLink="/series-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" 
@@ -104,33 +48,6 @@
                 style="margin-left: 7rem;"
                 src="/assets/pictures/series-logo.png"
                 width="150px"/>
-            </div>
-          </div>
-          <div class="content pl-3" style="border: 1px solid #ec4b53">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(1, contentListSeriesByStatus, $event)">
-                Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(2, contentListSeriesByStatus, $event)">
-                Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(3, contentListSeriesByStatus, $event)">
-                Watched:&nbsp;&nbsp;{{ seriesWatched }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(4, contentListSeriesByStatus, $event)">
-                Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListSeriesByStatus(5, contentListSeriesByStatus, $event)">
-                To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
-              </span>
             </div>
           </div>
         </div>
@@ -149,22 +66,6 @@
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" style="border: 1px solid #868d25">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">
-                Clocking late in {{ currentMonthAndYear }}:<br>
-                <span *ngIf="sumClockingLate < 60 || !sumClockingLate" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLate }}&nbsp;Min</span>
-                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLateByHoursMinute }}</span>
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;">
-                Vacation limit days in {{ currentMonthAndYear }}:<br>
-                <span *ngIf="vacationLimitDays">{{ vacationLimitDays }}&nbsp;Day(s)</span>
-                <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
-              </span>         
-            </div>
-          </div>
         </div>
 
         <!--To Do List-->
@@ -179,33 +80,6 @@
                 style="margin-left: 7rem;"
                 src="/assets/pictures/to-do-list-logo.png"
                 width="150px"/>
-            </div>
-          </div>
-          <div class="content pl-3" style="border: 1px solid #9C27B0">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(1, contentTaskList, $event)">
-                Today:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTodayTask }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(2, contentTaskList, $event)">
-                Tomorrow:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrTomorrowTask }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(3, contentTaskList, $event)">
-                This week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrThisWeekTask }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(4, contentTaskList, $event)">
-                Next week:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrNextWeekTaskList }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showTaskList(5, contentTaskList, $event)">
-                Later:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrLaterTaskList }}
-              </span>
             </div>
           </div>
         </div>
@@ -224,15 +98,10 @@
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" style="border: 1px solid rgb(21 143 185)">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showExpirationContent(contentExpirationsList, $event)">View</span>
-            </div>
-          </div>
         </div>
 
         <!--Debts-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts-mobile">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/debts-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" 
@@ -245,31 +114,10 @@
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" style="border: 1px solid #ff4081">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalInDebts }}
-              </span>
-              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                Total in debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalOutDebts }}
-              </span>
-              <span style="font-weight: 500;font-size: revert;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                Total out debt:&nbsp;&nbsp;&nbsp;&nbsp;0DT
-              </span>            
-            </div>
-          </div>
         </div>
 
         <!--Files-->
-         <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleFiles">
+         <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/files">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" 
@@ -280,43 +128,6 @@
                 style="margin-left: 7rem;"
                 src="/assets/pictures/files-logo.png"
                 width="150px"/>
-            </div>
-          </div>
-          <div class="content pl-3" style="border: 1px solid #24a8f2">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
-                Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
-                PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
-                Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
-                Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
-                Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
-                Word:&nbsp;&nbsp;{{ wordFilesNbr }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showLinksList(contentLinks, $event)">
-                Links
-              </span>
             </div>
           </div>
         </div>
@@ -339,7 +150,7 @@
         </div>
 
         <!--Users-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.isAdmin" routerLink="/users-mobile">
+        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/users-mobile">
           <div fxLayout class="overview-style">
             <div
               [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" 
@@ -352,483 +163,629 @@
                 width="150px"/>
             </div>
           </div>
-          <div class="content pl-3" style="border: 1px solid #B96068">
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showUsersList(1, contentUsersList, $event)">
-                Total users:&nbsp;&nbsp;&nbsp;&nbsp;{{ totalNbrUsers }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showUsersList(2, contentUsersList, $event)">
-                Connected:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrUsersConnected }}
-              </span>
-            </div>
-            <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-              <span style="font-weight: 500;font-size: revert;" (click)="showUsersList(3, contentUsersList, $event)">
-                Not connected:&nbsp;&nbsp;&nbsp;&nbsp;{{ nbrUsersNotConnected }}
-              </span>
-            </div>
-          </div>
         </div>
      
       </ng-container>
     </div>
-  </mat-card>
 </div>
 
+<div *ngIf="isTablet && isPortrait">
+  <mat-grid-list cols=2 #grid rowHeight="2:1" gutterSize="15px">
+    
+    <!--Movies-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/movies-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
 
-<div *ngIf="!isMobile">
-  <div class="container justify-content-center">
+    <!--Animes-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/animes-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
 
-    <div class="row ">
+    <!--Series-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/series-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
 
+    <!--Clockings-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/clockings-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/clocking-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <!--To Do List-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/to-do-list-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+     <!--Expirations-->
+     <mat-grid-tile>
+        <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-desktop">
+          <ng-container>
+            <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+              <div fxLayout class="overview-style">
+                <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
+                  <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+                  <img
+                    style="margin-left: 10rem;"
+                    class="pl-5"
+                    src="/assets/pictures/expired-logo.png"
+                    width="150px"/>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+    </mat-grid-tile>
+
+     <!--Debts-->
+     <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/debts-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" >
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/debts-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+     </mat-grid-tile>
+
+    <!--Files-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/files">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/files-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <!--Passwords-->
+    <mat-grid-tile>        
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/passwords-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/password-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+    
+     <!--Users-->
+    <mat-grid-tile>        
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/users-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/users-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+</div>
+
+<div *ngIf="isTablet && !isPortrait">
+  <mat-grid-list cols=3 #grid rowHeight="2:1" gutterSize="15px">
+
+    <mat-grid-tile>
       <!--Movies-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleMovies" routerLink="/movies-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/movies-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #3f51b5">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(1, contentListMoviesByStatus, $event)">
-                      Wait to sort:&nbsp;&nbsp;{{ moviesWaitToSort }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(2, contentListMoviesByStatus, $event)">
-                      Not downloaded yet:&nbsp;&nbsp;{{ moviesNotDownloadedYet }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(3, contentListMoviesByStatus, $event)">
-                      Watched:&nbsp;&nbsp;{{ moviesWatched }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(4, contentListMoviesByStatus, $event)">
-                      Not watched yet:&nbsp;&nbsp;{{ moviesDownloadedButNotWatchedYet }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListMoviesByStatus(5, contentListMoviesByStatus, $event)">
-                      To search about it:&nbsp;&nbsp;{{ moviesToSearchAboutIt }}
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/movies-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
+    </mat-grid-tile>
 
+    <mat-grid-tile>
       <!--Animes-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleAnimes" routerLink="/animes-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/animes-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #4CAF50">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(1, contentListAnimesByStatus, $event)">
-                      Wait to sort:&nbsp;&nbsp;{{ animesWaitToSort }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(2, contentListAnimesByStatus, $event)">
-                      Not downloaded yet:&nbsp;&nbsp;{{ animesNotDownloadedYet }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(3, contentListAnimesByStatus, $event)">
-                      Watched:&nbsp;&nbsp;{{ animesWatched }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(4, contentListAnimesByStatus, $event)">
-                      Not watched yet:&nbsp;&nbsp;{{ animesDownloadedButNotWatchedYet }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListAnimesByStatus(5, contentListAnimesByStatus, $event)">
-                      To search about it:&nbsp;&nbsp;{{ animesToSearchAboutIt }}
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/animes-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
+    </mat-grid-tile>
 
+    <mat-grid-tile>
       <!--Series-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleSeries" routerLink="/series-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/series-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #ec4b53">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(1, contentListSeriesByStatus, $event)">
-                      Wait to sort:&nbsp;&nbsp;{{ seriesWaitToSort }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(2, contentListSeriesByStatus, $event)">
-                      Not downloaded yet:&nbsp;&nbsp;{{ seriesNotDownloadedYet }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(3, contentListSeriesByStatus, $event)">
-                      Watched:&nbsp;&nbsp;{{ seriesWatched }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(4, contentListSeriesByStatus, $event)">
-                      Not watched yet:&nbsp;&nbsp;{{ seriesDownloadedButNotWatchedYet }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListSeriesByStatus(5, contentListSeriesByStatus, $event)">
-                      To search about it:&nbsp;&nbsp;{{ seriesToSearchAboutIt }}
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/series-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
-    
-    </div>
+    </mat-grid-tile>
   
-    <br>
-
-    <div class="row ">
-
+    <mat-grid-tile>
       <!--Clockings-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clockings-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/clocking-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #868d25;height: 168px;">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;">
-                      Clocking late in {{ currentMonthAndYear }}:<br>
-                      <span *ngIf="sumClockingLate < 60 || !sumClockingLate" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLate }}&nbsp;Min</span>
-                      <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60" style="cursor: pointer;" (click)="showClockingList(contentClockingList, $event)">{{ totalClockingLateByHoursMinute }}</span>
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;">
-                      Vacation limit days in {{ currentMonthAndYear }}:<br>
-                      <span *ngIf="vacationLimitDays">{{ vacationLimitDays }}&nbsp;Day(s)</span>
-                      <span *ngIf="!vacationLimitDays">&nbsp;0 Day(s)</span>
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/clockings-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/clocking-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
+    </mat-grid-tile>
 
+    <mat-grid-tile>
       <!--To Do List-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;height: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/to-do-list-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #9C27B0;">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(1, contentTaskList, $event)">
-                      Today:&nbsp;&nbsp;{{ nbrTodayTask }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(2, contentTaskList, $event)">
-                      Tomorrow:&nbsp;&nbsp;{{ nbrTomorrowTask }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(3, contentTaskList, $event)">
-                      This week:&nbsp;&nbsp;{{ nbrThisWeekTask }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(4, contentTaskList, $event)">
-                      Next week:&nbsp;&nbsp;{{ nbrNextWeekTaskList }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showTaskList(5, contentTaskList, $event)">
-                      Later:&nbsp;&nbsp;{{ nbrLaterTaskList }}
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/to-do-list-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
+    </mat-grid-tile>
 
-       <!--Expirations-->
-       <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expirations-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/expired-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid rgb(21 143 185); height: 168px;">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showExpirationContent(contentExpirationsList, $event)">View</span>
-                  </div>
-                </div>
+    <mat-grid-tile>
+      <!--Expirations-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/expired-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
-    
-    </div>
-  
-    <br>
+    </mat-grid-tile>
 
-    <div class="row ">
-
+    <mat-grid-tile>
       <!--Debts-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleDebts" routerLink="/debts-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/debts-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #ff4081; height: 168px;">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showRest(contentRestMoneyForeachPlace, $event)">Rest</span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                      Total in debt:&nbsp;&nbsp;{{ totalInDebts }}
-                    </span>
-                    <span style="font-weight: 500;font-size: revert;" *ngIf="!totalInDebts" (click)="showTotalInDebtsDet(contentTotalInDebtsDet, $event)">
-                      Total in debt:&nbsp;&nbsp;0DT
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                      Total out debt:&nbsp;&nbsp;{{ totalOutDebts }}
-                    </span>
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" *ngIf="!totalOutDebts" (click)="showTotalOutDebtsDet(contentTotalOutDebtsDet, $event)">
-                      Total out debt:&nbsp;&nbsp;0DT
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/debts-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/debts-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
+    </mat-grid-tile>
 
+    <mat-grid-tile>
       <!--Files-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;height: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" *ngIf="dataUserConnected.roleFiles">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/files-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #24a8f2;height: 168px;">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(1, contentListFilesByType, $event)">
-                      Pictures:&nbsp;&nbsp;{{ pictureFilesNbr }}
-                    </span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(2, contentListFilesByType, $event)">
-                      PDF:&nbsp;&nbsp;{{ pdfFilesNbr }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(3, contentListFilesByType, $event)">
-                      Excel:&nbsp;&nbsp;{{ excelFilesNbr }}
-                    </span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;margin-left: 16px;" (click)="showListFilesByType(4, contentListFilesByType, $event)">
-                      Txt:&nbsp;&nbsp;{{ txtFilesNbr }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(5, contentListFilesByType, $event)">
-                      Zip:&nbsp;&nbsp;{{ zipFilesNbr }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showListFilesByType(7, contentListFilesByType, $event)">
-                      Word:&nbsp;&nbsp;{{ wordFilesNbr }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showLinksList(contentLinks, $event)">
-                      Links
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/files">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/files-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
+        </ng-container>
       </div>
+    </mat-grid-tile>
 
+    <mat-grid-tile>
       <!--Passwords-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/passwords-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/password-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid rgb(46 161 165); height: 168px;"></div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/passwords-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/password-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
-      </div>  
+        </ng-container>
+      </div>
+    </mat-grid-tile>
 
-    </div>
-
-    <br>
-
-    <div class="row ">
-
-      <div class="col"></div>
-
+    <mat-grid-tile>
       <!--Users-->
-      <div class="col">
-        <mat-card class="mat" fxLayout="column" fxFlex style="width: 100%;">
-          <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-            <ng-container>
-              <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/users-desktop">
-                <div fxLayout class="overview-style">
-                  <div [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" class="overview-cart-mobile">
-                    <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
-                    <img
-                      style="margin-left: 7rem;"
-                      class="pl-5"
-                      src="/assets/pictures/users-logo.png"
-                      width="150px"/>
-                  </div>
-                </div>
-                <div class="content pl-3" style="border: 1px solid #B96068; height: 168px;">
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(1, contentUsersList, $event)">
-                      Total users:&nbsp;&nbsp;{{ totalNbrUsers }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(2, contentUsersList, $event)">
-                      Connected:&nbsp;&nbsp;{{ nbrUsersConnected }}
-                    </span>
-                  </div>
-                  <div fxLayoutAlign="space-between center" class="pb-1 main-line border-bottom pt-2">
-                    <span style="font-weight: 500;font-size: revert;cursor: pointer;" (click)="showUsersList(3, contentUsersList, $event)">
-                      Not connected:&nbsp;&nbsp;{{ nbrUsersNotConnected }}
-                    </span>
-                  </div>
-                </div>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/users-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/users-logo.png"
+                  width="150px"/>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </mat-card>
-      </div> 
+        </ng-container>
+      </div>
+    </mat-grid-tile>
 
-       <div class="col"></div>
-    
-    </div>
-  </div>
+  </mat-grid-list>
+</div>
+
+<div *ngIf="isDesktop">
+  <mat-grid-list cols=3 #grid rowHeight="3:1" gutterSize="15px">
+
+    <mat-grid-tile>
+      <!--Movies-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/movies-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--Animes-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/animes-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--Series-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/series-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+  
+    <mat-grid-tile>
+      <!--Clockings-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/clockings-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/clocking-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--To Do List-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/to-do-list-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--Expirations-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/expired-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--Debts-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/debts-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/debts-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--Files-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/files">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/files-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--Passwords-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/passwords-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/password-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!--Users-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/users-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/users-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+  </mat-grid-list>
 </div>
 
 <ng-template #contentRestMoneyForeachPlace>

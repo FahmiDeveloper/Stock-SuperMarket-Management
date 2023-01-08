@@ -1,18 +1,20 @@
 <h2  *ngIf="listPartsByCurrentName.length == 1" class="text-application">No parts yet</h2>
 <h2 *ngIf="listPartsByCurrentName.length == 2 || listPartsByCurrentName.length > 2" class="text-application">All parts</h2>
 
-<mat-grid-list *ngIf="listPartsByCurrentName.length == 2" cols=2 #grid rowHeight="350px" gutterSize="15px">
+<mat-grid-list *ngIf="listPartsByCurrentName.length == 2" cols=2 #grid rowHeight="400px" gutterSize="15px">
     <mat-grid-tile *ngFor="let movie of listPartsByCurrentName">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsMovie(movie)">      
+        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsMovie(movie)">
+            <mat-card-title class="text-application" style="font-size: 16px !important;">{{ movie.nameMovieToShow }}</mat-card-title>                 
             <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
             <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">              
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="listPartsByCurrentName.length > 2" cols=3 #grid rowHeight="350px" gutterSize="15px">
+<mat-grid-list *ngIf="listPartsByCurrentName.length > 2" cols=3 #grid rowHeight="400px" gutterSize="15px">
     <mat-grid-tile *ngFor="let movie of listPartsByCurrentName">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsMovie(movie)">       
+        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsMovie(movie)">
+            <mat-card-title class="text-application" style="font-size: 16px !important;">{{ movie.nameMovieToShow }}</mat-card-title>                 
             <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
             <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">              
         </mat-card>

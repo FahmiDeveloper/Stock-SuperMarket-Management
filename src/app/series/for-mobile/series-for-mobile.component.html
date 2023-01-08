@@ -1,10 +1,11 @@
 <h1 *ngIf="!getDetailsSerie && !clickNewSerie" class="titleTextInterface text-application">Series</h1>
 
-<h1 *ngIf="getDetailsSerie && !clickNewSerie" class="titleTextInterface text-application">
+<h2 *ngIf="getDetailsSerie && !clickNewSerie" class="titleTextInterface text-application">
     <mat-icon *ngIf="getDetailsSerie && !clickNewSerie" (click)="getAllSeries()" class="aligned-with-text">home</mat-icon>
-    &nbsp;&nbsp;&nbsp;
-    {{ selectedSerie.nameSerie }}
-</h1>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span *ngIf="selectedSerie.fullNameSerie" (click)="copyText(selectedSerie.fullNameSerie)">{{ selectedSerie.fullNameSerie }}</span>
+    <span *ngIf="!selectedSerie.fullNameSerie" (click)="copyText(selectedSerie.nameSerie)">{{ selectedSerie.nameSerie }}</span>
+</h2>
 
 <h1 *ngIf="!getDetailsSerie && clickNewSerie" class="titleTextInterface text-application">New serie</h1>
 
@@ -44,13 +45,13 @@
  
 <div class="row" *ngIf="!getDetailsSerie && !clickNewSerie">
     <div class="col-md-4">
-        <mat-form-field>
+        <mat-form-field class="widthInput">
             <mat-label>Name</mat-label>
             <input matInput type="text" name="serieName" (keyup)="getAllSeries()" [(ngModel)]="serieName"/>
         </mat-form-field>
     </div>
     <div class="col-md-4">
-        <mat-form-field>
+        <mat-form-field class="widthInput">
             <mat-label>Status</mat-label>
             <mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllSeries()">
                 <mat-option value=""></mat-option>
@@ -64,18 +65,20 @@
 
 <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1 && !getDetailsSerie && !clickNewSerie" cols=1 #grid rowHeight="350px" gutterSize="15px">
     <mat-grid-tile *ngFor="let serie of pagedList">
-        <mat-card class="settings-card" style="border: 1px solid;" (click)="showDetailsSerie(serie)">       
-            <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image">
-            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image">              
+        <mat-card class="settings-card" style="border: 1px solid;" (click)="showDetailsSerie(serie)">
+            <mat-card-title class="text-application" style="font-size: 5vw;">{{ serie.nameSerieToShow }}</mat-card-title>                    
+            <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image" [ngStyle]="{'height': getDetailsSerie ? '100%' : '90%'}">
+            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image" [ngStyle]="{'height': getDetailsSerie ? '100%' : '90%'}">              
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 1 && !getDetailsSerie && !clickNewSerie" cols=2 #grid rowHeight="200px" gutterSize="15px">
+<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 1 && !getDetailsSerie && !clickNewSerie" cols=2 #grid rowHeight="250px" gutterSize="15px">
     <mat-grid-tile *ngFor="let serie of pagedList">
-        <mat-card class="settings-card" style="border: 1px solid;" (click)="showDetailsSerie(serie)">       
-            <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image">
-            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image">              
+        <mat-card class="settings-card" style="border: 1px solid;" (click)="showDetailsSerie(serie)">
+            <mat-card-title class="text-application" style="font-size: 5vw;">{{ serie.nameSerieToShow }}</mat-card-title>                           
+            <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image" [ngStyle]="{'height': getDetailsSerie ? '100%' : '90%'}">
+            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image" [ngStyle]="{'height': getDetailsSerie ? '100%' : '90%'}">             
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
@@ -97,8 +100,8 @@
 <mat-grid-list *ngIf="getDetailsSerie && !clickNewSerie" cols=1 #grid rowHeight="350px" gutterSize="15px">
     <mat-grid-tile>
         <mat-card class="settings-card" style="border: 1px solid;">       
-            <img *ngIf="selectedSerie.imageUrl" [src]="selectedSerie.imageUrl" class="serie-image" (click)="selectImage.click()">
-            <img *ngIf="!selectedSerie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image" (click)="selectImage.click()">
+            <img *ngIf="selectedSerie.imageUrl" [src]="selectedSerie.imageUrl" class="serie-image" [ngStyle]="{'height': getDetailsSerie ? '100%' : '85%'}" (click)="selectImage.click()">
+            <img *ngIf="!selectedSerie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image" [ngStyle]="{'height': getDetailsSerie ? '100%' : '85%'}" (click)="selectImage.click()">
             <input type="file" name="file" (change)="uploadPictureForEditSerie($event)" style="display: none" accept=".jpeg,.jpg,.png,.svg" #selectImage>                 
         </mat-card>
     </mat-grid-tile>
@@ -106,156 +109,126 @@
 
 <br *ngIf="getDetailsSerie && !clickNewSerie">
 
-<mat-grid-list *ngIf="getDetailsSerie && !clickNewSerie" cols=1 #grid rowHeight="600px" gutterSize="15px">
+<mat-grid-list *ngIf="getDetailsSerie && !clickNewSerie" cols=1 #grid rowHeight="450px" gutterSize="15px">
     <mat-grid-tile>
-        <mat-card class="settings-card-new-update-serie" style="border: 1px solid;">       
-            <mat-grid-list cols="12" rowHeight="50px" class="text-application">
+       <mat-card class="settings-card-new-update-serie" style="border: 1px solid;">      
+        <mat-grid-list *ngIf="!editButtonClick" cols="12" rowHeight="50px" class="text-application">
 
-                <mat-grid-tile colspan="3">Name</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick" style="cursor: pointer;text-align: center;" (click)="copyText(selectedSerie.nameSerie)">{{ selectedSerie.nameSerie }}</span>
+            <mat-grid-tile colspan="3">Year</mat-grid-tile>
+            <mat-grid-tile colspan="9">
+                <span *ngIf="selectedSerie.year">{{ selectedSerie.year }}</span>
+                <span *ngIf="!selectedSerie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+            </mat-grid-tile>
 
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedSerie.nameSerie" name="nameSerie" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
+            <mat-grid-tile colspan="3">Status</mat-grid-tile>
+            <mat-grid-tile colspan="9">{{ selectedSerie.status }}</mat-grid-tile>
 
-                <mat-grid-tile colspan="3">First</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">
-                        <span *ngIf="selectedSerie.isFirst">true</span>
-                        <span *ngIf="!selectedSerie.isFirst">false</span>
-                    </span>
+            <mat-grid-tile colspan="3">Season</mat-grid-tile>
+            <mat-grid-tile colspan="9">
+                <span *ngIf="selectedSerie.season">{{ selectedSerie.season }}</span>
+                <span *ngIf="!selectedSerie.season"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+            </mat-grid-tile>
 
-                    <mat-checkbox *ngIf="editButtonClick" name="isFirst" [(ngModel)]="selectedSerie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-                </mat-grid-tile>
+            <mat-grid-tile colspan="3">Curr ep</mat-grid-tile>
+            <mat-grid-tile colspan="9">
+                <span *ngIf="selectedSerie.currentEpisode">{{ selectedSerie.currentEpisode }}</span>
+                <span *ngIf="!selectedSerie.currentEpisode"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+            </mat-grid-tile>
 
-                <mat-grid-tile colspan="3">Year</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">
-                        <span *ngIf="selectedSerie.year">{{ selectedSerie.year }}</span>
-                        <span *ngIf="!selectedSerie.year">?</span>
-                    </span>
+            <mat-grid-tile colspan="3">Tot ep</mat-grid-tile>
+            <mat-grid-tile colspan="9">
+                <span *ngIf="selectedSerie.totalEpisodes">{{ selectedSerie.totalEpisodes }}</span>
+                <span *ngIf="!selectedSerie.totalEpisodes"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+            </mat-grid-tile>
 
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedSerie.year" name="year" class="text-application">
-                    </mat-form-field>              
-                </mat-grid-tile>
+            <mat-grid-tile colspan="3">Path</mat-grid-tile>
+            <mat-grid-tile colspan="9">
+                <span *ngIf="selectedSerie.path">
+                    <mat-icon style="cursor: pointer;" (click)="followLink(selectedSerie.path)" target="_blank">link</mat-icon>                            
+                </span>
+                <span *ngIf="!selectedSerie.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>            
+            </mat-grid-tile>
 
-                <mat-grid-tile colspan="3">Status</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">{{ selectedSerie.status }}</span>
+            <mat-grid-tile colspan="3">Note</mat-grid-tile>
+            <mat-grid-tile colspan="9">
+                <span *ngIf="selectedSerie.note">
+                    <mat-icon *ngIf="selectedSerie.note.length == 35 || selectedSerie.note.length > 35" style="color: green;" (click)="viewNote(selectedSerie.note)">remove_red_eye</mat-icon>
+                    <span *ngIf="selectedSerie.note.length < 35">{{ selectedSerie.note }}</span>
+                </span>
+                <span *ngIf="!selectedSerie.note"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+            </mat-grid-tile>
 
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <mat-select [(ngModel)]="selectedSerie.statusId" name="statusId" class="text-application">
-                          <mat-option value=""></mat-option>
-                          <mat-option *ngFor="let statusSerie of allStatusSeries" [value]="statusSerie.id">
+        </mat-grid-list>
+
+        <div *ngIf="!editButtonClick"  class="row justify-content-center">
+            <mat-card-actions style="margin-top: 15px">
+                <button
+                    *ngIf="dataUserConnected.roleUpdateSerie"
+                    type="button"
+                    mat-button 
+                    (click)="editSerie(selectedSerie)"
+                    class="text-application">
+                    <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                <button
+                    *ngIf="dataUserConnected.roleDeleteSerie"
+                    type="button"
+                    mat-button 
+                    (click)="deleteSerie(selectedSerie.key)" 
+                    class="text-application">
+                    <mat-icon style="color: #f44336;">delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+            </mat-card-actions>
+        </div>
+        
+        <mat-tab-group *ngIf="editButtonClick">
+            <mat-tab label="First data">
+                <br>
+                First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="selectedSerie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
+                <br><br>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Name" type="text" [(ngModel)]="selectedSerie.nameSerie" name="nameSerie" class="text-application">
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Title" type="text" [(ngModel)]="selectedSerie.fullNameSerie" name="fullNameSerie" class="text-application">
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Year" type="text" [(ngModel)]="selectedSerie.year" name="year" class="text-application">
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <mat-select placeholder="Status" [(ngModel)]="selectedSerie.statusId" name="statusId" class="text-application">
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let statusSerie of allStatusSeries" [value]="statusSerie.id">
                             <span class="text-application">{{statusSerie.status}}</span>
                         </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Season</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedSerie.season">{{ selectedSerie.season }}</span>
-                        <span *ngIf="!selectedSerie.season">-</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedSerie.season" name="season" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Priority</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedSerie.priority">{{ selectedSerie.priority }}</span>
-                        <span *ngIf="!selectedSerie.priority">-</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedSerie.priority" name="priority" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Curr ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedSerie.currentEpisode">{{ selectedSerie.currentEpisode }}</span>
-                        <span *ngIf="!selectedSerie.currentEpisode">?</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedSerie.currentEpisode" name="currentEpisode" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Tot ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedSerie.totalEpisodes">{{ selectedSerie.totalEpisodes }}</span>
-                        <span *ngIf="!selectedSerie.totalEpisodes">?</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedSerie.totalEpisodes" name="totalEpisodes" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Path</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedSerie.path">
-                            <mat-icon style="cursor: pointer;" (click)="followLink(selectedSerie.path)" target="_blank">link</mat-icon>                            
-                        </span>
-                        <span *ngIf="!selectedSerie.path">-</span>
-                    </span>
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedSerie.path" name="path" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Note</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedSerie.note" style="text-align: center;">{{ selectedSerie.note }}</span>
-                        <span *ngIf="!selectedSerie.note">-</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedSerie.note" name="note" class="text-application">
-                    </mat-form-field>
-
-                </mat-grid-tile>
-
-            </mat-grid-list>
-
-            <div class="row justify-content-center">
-                <mat-card-actions style="margin-top: 15px">
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Season" type="number" [(ngModel)]="selectedSerie.season" name="season" class="text-application">
+                </mat-form-field>
+            </mat-tab>
+            <mat-tab label="Second data">
+                <br>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Priority" type="number" [(ngModel)]="selectedSerie.priority" name="priority" class="text-application">
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Current episode" type="number" [(ngModel)]="selectedSerie.currentEpisode" name="currentEpisode" class="text-application">
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Total episodes" type="number" [(ngModel)]="selectedSerie.totalEpisodes" name="totalEpisodes" class="text-application">
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Path" type="text" [(ngModel)]="selectedSerie.path" name="path" class="text-application">
+                </mat-form-field>
+                <mat-form-field color="accent" style="width: 100%;">
+                    <input matInput placeholder="Note" type="text" [(ngModel)]="selectedSerie.note" name="note" class="text-application">
+                </mat-form-field>
+                <br>
+                <div>                  
                     <button
-                        *ngIf="dataUserConnected.roleUpdateSerie && !editButtonClick"
-                        type="button"
-                        mat-button 
-                        (click)="editSerie(selectedSerie)"
-                        class="text-application">
-                        <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                        <span>Edit</span>
-                    </button>
-                    <button
-                        *ngIf="dataUserConnected.roleDeleteSerie&& !editButtonClick"
-                        type="button"
-                        mat-button 
-                        (click)="deleteSerie(selectedSerie.key)" 
-                        class="text-application">
-                        <mat-icon style="color: #f44336;">delete</mat-icon>
-                        <span>Delete</span>
-                    </button>
-                    
-                    <button
-                        *ngIf="editButtonClick"
-                        type="button"
                         mat-button 
                         (click)="save(selectedSerie)"
                         class="text-application">
@@ -263,16 +236,15 @@
                         <span>Save</span>
                     </button>
                     <button
-                        *ngIf="editButtonClick"
-                        type="button"
                         mat-button 
                         (click)="cancel()" 
                         class="text-application">
                         <mat-icon style="color: #607D8B;">cancel</mat-icon>
                         <span>Cancel</span>
-                    </button>  
-                </mat-card-actions>
-            </div>        
+                    </button>                        
+                 </div>
+            </mat-tab>
+        </mat-tab-group>       
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
@@ -285,118 +257,83 @@
     (seasonSerieSelected)="getSeasonSerieSelected($event)">
 </list-seasons-mobile>
 
-<mat-grid-list *ngIf="clickNewSerie" cols=1 #grid rowHeight="600px" gutterSize="15px">
-    <mat-grid-tile>
-        <mat-card class="settings-card-new-update-serie" style="cursor: pointer;border: 1px solid;">       
-            <mat-grid-list cols="12" rowHeight="50px" class="text-application">
-
-                <mat-grid-tile colspan="3">Name</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newSerie.nameSerie" name="nameSerie" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">First</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-checkbox name="isFirst" [(ngModel)]="newSerie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Year</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newSerie.year" name="year" class="text-application">
-                    </mat-form-field>              
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Status</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <mat-select [(ngModel)]="newSerie.statusId" name="statusId" class="text-application">
-                          <mat-option value=""></mat-option>
-                          <mat-option *ngFor="let statusSerie of allStatusSeries" [value]="statusSerie.id">
-                            <span class="text-application">{{statusSerie.status}}</span>
-                        </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Season</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newSerie.season" name="season" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Priority</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newSerie.priority" name="priority" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Curr ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newSerie.currentEpisode" name="currentEpisode" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Tot ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newSerie.totalEpisodes" name="totalEpisodes" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Path</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newSerie.path" name="path" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Note</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newSerie.note" name="note" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-            </mat-grid-list>
-
-            <div class="row justify-content-center">
-                <mat-card-actions style="margin-top: 15px">  
-                    <button
-                        type="button"
-                        mat-button 
-                        (click)="saveNewSerie()"
-                        class="text-application">
-                        <mat-icon style="color: #FF5722">save</mat-icon>
-                        <span>Save</span>
-                    </button>
-                    <button
-                        type="button"
-                        mat-button 
-                        (click)="cancelFromNewSerie()" 
-                        class="text-application">
-                        <mat-icon style="color: #607D8B;">cancel</mat-icon>
-                        <span>Cancel</span>
-                    </button>  
-                </mat-card-actions>
-            </div>        
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
-
-<br *ngIf="clickNewSerie">
-
-<mat-grid-list *ngIf="clickNewSerie" cols=1 #grid rowHeight="350px" gutterSize="15px">
-    <mat-grid-tile>
-        <mat-card class="settings-card" style="border: 1px solid;">       
-            <img *ngIf="newSerie.imageUrl" [src]="newSerie.imageUrl" class="serie-image" (click)="selectImage.click()">
-            <img *ngIf="!newSerie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image" (click)="selectImage.click()"> 
-            <input type="file" name="file" (change)="uploadPictureForCreateSerie($event)" style="display: none" accept=".jpeg,.jpg,.png,.svg" #selectImage>   
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
+<mat-vertical-stepper *ngIf="clickNewSerie" [linear] = "isLinear" #stepper>
+    <mat-step>
+      <ng-template matStepLabel>First data</ng-template>
+        First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="newSerie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Name" type="text" [(ngModel)]="newSerie.nameSerie" name="nameSerie" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Title" type="text" [(ngModel)]="newSerie.fullNameSerie" name="fullNameSerie" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Year" type="number" [(ngModel)]="newSerie.year" name="year" class="text-application">
+        </mat-form-field> 
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <mat-select placeholder="Status" [(ngModel)]="newSerie.statusId" name="statusId" class="text-application">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let statusSerie of allStatusSeries" [value]="statusSerie.id">
+                    <span class="text-application">{{statusSerie.status}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Season" type="number" [(ngModel)]="newSerie.season" name="season" class="text-application">
+        </mat-form-field>
+        <br>
+        <div>
+            <button mat-button (click)="cancelFromNewSerie()">Cancel</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Second data</ng-template>
+      <mat-form-field color="accent" style="width: 100%;">
+        <input matInput placeholder="Priority" type="number" [(ngModel)]="newSerie.priority" name="priority" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Current Episode" type="number" [(ngModel)]="newSerie.currentEpisode" name="currentEpisode" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Total Episode" type="number" [(ngModel)]="newSerie.totalEpisodes" name="totalEpisodes" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Path" type="text" [(ngModel)]="newSerie.path" name="path" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Note" type="text" [(ngModel)]="newSerie.note" name="note" class="text-application">
+        </mat-form-field>
+        <br>
+        <button type="button" mat-button (click)="fileInput.click()">Choose picture</button>
+        <input hidden (change)="uploadPictureForCreateSerie($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
+        <br *ngIf="progressValue"><br *ngIf="progressValue">
+        <div *ngIf="progressValue | async as val" class="progress-background">
+            <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
+            <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
+        </div>     
+        <br>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+         Details taken
+         <br>
+        <div>
+           <button mat-button matStepperPrevious>Back</button>
+           <button mat-button (click)="saveNewSerie()">Save</button>
+        </div>
+    </mat-step>
+</mat-vertical-stepper>

@@ -2,6 +2,7 @@ export class Serie {
 
   key: string;
   nameSerie: string;
+  fullNameSerie: string;
   date: string;
   time: string;
   note: string;
@@ -16,6 +17,7 @@ export class Serie {
   priority: number;
   isFirst: boolean;
   year: number;
+  nameSerieToShow: string;
 
   constructor(){
     this.nameSerie = '';

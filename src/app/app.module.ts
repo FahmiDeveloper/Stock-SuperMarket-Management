@@ -26,6 +26,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs';
+import { LayoutModule } from '@angular/cdk/layout';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -144,6 +147,7 @@ import {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    LayoutModule,
     FormsModule,
     MatCardModule,
     DragDropModule,
@@ -162,6 +166,8 @@ import {
     MatListModule,
     MatDividerModule,
     MatProgressSpinnerModule,
+    MatStepperModule,
+    MatTabsModule,
     MatCheckboxModule,
     MatChipsModule,
     ReactiveFormsModule,

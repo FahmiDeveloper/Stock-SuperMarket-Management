@@ -1,10 +1,11 @@
 <h1 *ngIf="!getDetailsAnime && !clickNewAnime" class="titleTextInterface text-application">Animes</h1>
 
-<h1 *ngIf="getDetailsAnime && !clickNewAnime" class="titleTextInterface text-application">
+<h2 *ngIf="getDetailsAnime && !clickNewAnime" class="titleTextInterface text-application">
     <mat-icon *ngIf="getDetailsAnime && !clickNewAnime" (click)="getAllAnimes()" class="aligned-with-text">home</mat-icon>
-    &nbsp;&nbsp;&nbsp;
-    {{ selectedAnime.nameAnime }}
-</h1>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span *ngIf="selectedAnime.fullNameAnime" (click)="copyText(selectedAnime.fullNameAnime)">{{ selectedAnime.fullNameAnime }}</span>
+    <span *ngIf="!selectedAnime.fullNameAnime" (click)="copyText(selectedAnime.nameAnime)">{{ selectedAnime.nameAnime }}</span>
+</h2>
 
 <h1 *ngIf="!getDetailsAnime && clickNewAnime" class="titleTextInterface text-application">New anime</h1>
 
@@ -43,13 +44,13 @@
  
 <div class="row" *ngIf="!getDetailsAnime && !clickNewAnime">
     <div class="col-md-4">
-        <mat-form-field>
+        <mat-form-field class="widthInput">
             <mat-label>Name</mat-label>
             <input matInput type="text" name="animeName" (keyup)="getAllAnimes()" [(ngModel)]="animeName"/>
         </mat-form-field>
     </div>
     <div class="col-md-4">
-        <mat-form-field>
+        <mat-form-field class="widthInput">
             <mat-label>Status</mat-label>
             <mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllAnimes()">
                 <mat-option value=""></mat-option>
@@ -64,17 +65,19 @@
 <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1 && !getDetailsAnime && !clickNewAnime" cols=1 #grid rowHeight="350px" gutterSize="15px">
     <mat-grid-tile *ngFor="let anime of pagedList">
         <mat-card class="settings-card" style="border: 1px solid;" (click)="showDetailsAnime(anime)">
-            <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">
+            <mat-card-title class="text-application" style="font-size: 5vw;">{{ anime.nameAnimeToShow }}</mat-card-title>             
+            <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '90%'}">
+            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '85%'}">
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 1 && !getDetailsAnime && !clickNewAnime" cols=2 #grid rowHeight="200px" gutterSize="15px">
+<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 1 && !getDetailsAnime && !clickNewAnime" cols=2 #grid rowHeight="250px" gutterSize="15px">
     <mat-grid-tile *ngFor="let anime of pagedList">
         <mat-card class="settings-card" style="border: 1px solid;" (click)="showDetailsAnime(anime)">
-            <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">
+            <mat-card-title class="text-application" style="font-size: 5vw;">{{ anime.nameAnimeToShow }}</mat-card-title>             
+            <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '85%'}">
+            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '85%'}">
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
@@ -96,8 +99,8 @@
 <mat-grid-list *ngIf="getDetailsAnime && !clickNewAnime" cols=1 #grid rowHeight="350px" gutterSize="15px">
     <mat-grid-tile>
         <mat-card class="settings-card" style="border: 1px solid;">       
-            <img *ngIf="selectedAnime.imageUrl" [src]="selectedAnime.imageUrl" class="anime-image" (click)="selectImage.click()">
-            <img *ngIf="!selectedAnime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" (click)="selectImage.click()">
+            <img *ngIf="selectedAnime.imageUrl" [src]="selectedAnime.imageUrl" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '85%'}" (click)="selectImage.click()">
+            <img *ngIf="!selectedAnime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '85%'}" (click)="selectImage.click()">
             <input type="file" name="file" (change)="uploadPictureForEditAnime($event)" style="display: none" accept=".jpeg,.jpg,.png,.svg" #selectImage>                 
         </mat-card>
     </mat-grid-tile>
@@ -105,137 +108,57 @@
 
 <br *ngIf="getDetailsAnime && !clickNewAnime">
 
-<mat-grid-list *ngIf="getDetailsAnime && !clickNewAnime" cols=1 #grid rowHeight="600px" gutterSize="15px">
+<mat-grid-list *ngIf="getDetailsAnime && !clickNewAnime" cols=1 #grid rowHeight="450px" gutterSize="15px">
     <mat-grid-tile>
-       <mat-card class="settings-card-new-update-anime" style="border: 1px solid;">       
-            <mat-grid-list cols="12" rowHeight="50px" class="text-application">
-
-                <mat-grid-tile colspan="3">Name</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick" style="cursor: pointer;text-align: center;" (click)="copyText(selectedAnime.nameAnime)">{{ selectedAnime.nameAnime }}</span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedAnime.nameAnime" name="nameAnime" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">First</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">
-                        <span *ngIf="selectedAnime.isFirst">true</span>
-                        <span *ngIf="!selectedAnime.isFirst">false</span>
-                    </span>
-
-                    <mat-checkbox *ngIf="editButtonClick" name="isFirst" [(ngModel)]="selectedAnime.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-                </mat-grid-tile>
-
+        <mat-card class="settings-card-new-update-anime" style="border: 1px solid;">        
+            <mat-grid-list *ngIf="!editButtonClick" cols="12" rowHeight="50px" class="text-application">
                 <mat-grid-tile colspan="3">Status</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">{{ selectedAnime.status }}</span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <mat-select [(ngModel)]="selectedAnime.statusId" name="statusId" class="text-application">
-                        <mat-option value=""></mat-option>
-                        <mat-option *ngFor="let statusAnime of allStatusAnimes" [value]="statusAnime.id">
-                            <span class="text-application">{{statusAnime.status}}</span>
-                        </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
+                <mat-grid-tile colspan="9">{{ selectedAnime.status }}</mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Type</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">{{ selectedAnime.type }}</span>
-                    
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <mat-select [(ngModel)]="selectedAnime.type" name="type">
-                            <mat-option value="Manga">Manga</mat-option>
-                            <mat-option value="TV">TV</mat-option>
-                            <mat-option value="Movie">Movie</mat-option>
-                            <mat-option value="Special">Special</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
+                <mat-grid-tile colspan="9">{{ selectedAnime.type }}</mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Season</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedAnime.season">{{ selectedAnime.season }}</span>
-                        <span *ngIf="!selectedAnime.season">-</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedAnime.season" name="season" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Priority</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedAnime.priority">{{ selectedAnime.priority }}</span>
-                        <span *ngIf="!selectedAnime.priority">-</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedAnime.priority" name="priority" class="text-application">
-                    </mat-form-field>
+                    <span *ngIf="selectedAnime.season">{{ selectedAnime.season }}</span>
+                    <span *ngIf="!selectedAnime.season"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Curr ep</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedAnime.currentEpisode">{{ selectedAnime.currentEpisode }}</span>
-                        <span *ngIf="!selectedAnime.currentEpisode">?</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedAnime.currentEpisode" name="currentEpisode" class="text-application">
-                    </mat-form-field>
+                    <span *ngIf="selectedAnime.currentEpisode">{{ selectedAnime.currentEpisode }}</span>
+                    <span *ngIf="!selectedAnime.currentEpisode"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Tot ep</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedAnime.totalEpisodes">{{ selectedAnime.totalEpisodes }}</span>
-                        <span *ngIf="!selectedAnime.totalEpisodes">?</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedAnime.totalEpisodes" name="totalEpisodes" class="text-application">
-                    </mat-form-field>
+                    <span *ngIf="selectedAnime.totalEpisodes">{{ selectedAnime.totalEpisodes }}</span>
+                    <span *ngIf="!selectedAnime.totalEpisodes"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Path</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedAnime.path">
-                            <mat-icon style="cursor: pointer;" (click)="followLink(selectedAnime.path)" target="_blank">link</mat-icon>                                                      
-                        </span>
-                        <span *ngIf="!selectedAnime.path">-</span>
+                    <span *ngIf="selectedAnime.path">
+                        <mat-icon style="cursor: pointer;" (click)="followLink(selectedAnime.path)" target="_blank">link</mat-icon>                            
                     </span>
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedAnime.path" name="path" class="text-application">
-                    </mat-form-field>
+                    <span *ngIf="!selectedAnime.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>              
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Note</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedAnime.note" style="text-align: center;">{{ selectedAnime.note }}</span>
-                        <span *ngIf="!selectedAnime.note">-</span>
+                    <span *ngIf="selectedAnime.note">
+                        <mat-icon *ngIf="selectedAnime.note.length == 35 || selectedAnime.note.length > 35" style="color: green;" (click)="viewNote(selectedAnime.note)">remove_red_eye</mat-icon>
+                        <span *ngIf="selectedAnime.note.length < 35">{{ selectedAnime.note }}</span>
                     </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedAnime.note" name="note" class="text-application">
-                    </mat-form-field>
+                    <span *ngIf="!selectedAnime.note"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
                 </mat-grid-tile>
 
             </mat-grid-list>
 
-            <div class="row justify-content-center">
-                <mat-card-actions style="margin-top: 15px">
+            <div *ngIf="!editButtonClick" class="row justify-content-center">
+                <mat-card-actions>
                     <button
-                        *ngIf="dataUserConnected.roleUpdateAnime && !editButtonClick"
+                        *ngIf="dataUserConnected.roleUpdateAnime"
                         type="button"
                         mat-button 
                         (click)="editAnime(selectedAnime)"
@@ -244,7 +167,7 @@
                         <span>Edit</span>
                     </button>
                     <button
-                        *ngIf="dataUserConnected.roleDeleteAnime && !editButtonClick"
+                        *ngIf="dataUserConnected.roleDeleteAnime"
                         type="button"
                         mat-button 
                         (click)="deleteAnime(selectedAnime.key)" 
@@ -252,27 +175,76 @@
                         <mat-icon style="color: #f44336;">delete</mat-icon>
                         <span>Delete</span>
                     </button>
-                    
-                    <button
-                        *ngIf="editButtonClick"
-                        type="button"
-                        mat-button 
-                        (click)="save(selectedAnime)"
-                        class="text-application">
-                        <mat-icon style="color: #FF5722">save</mat-icon>
-                        <span>Save</span>
-                    </button>
-                    <button
-                        *ngIf="editButtonClick"
-                        type="button"
-                        mat-button 
-                        (click)="cancel()" 
-                        class="text-application">
-                        <mat-icon style="color: #607D8B;">cancel</mat-icon>
-                        <span>Cancel</span>
-                    </button>  
                 </mat-card-actions>
-            </div>      
+            </div>
+            
+            <mat-tab-group *ngIf="editButtonClick">
+                <mat-tab label="First data">
+                    <br>
+                    First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="selectedAnime.isFirst" class="mat-checkbox-layout"></mat-checkbox>
+                    <br><br>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Name" type="text" [(ngModel)]="selectedAnime.nameAnime" name="nameAnime" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Title" type="text" [(ngModel)]="selectedAnime.fullNameAnime" name="fullNameAnime" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <mat-select placeholder="Status" [(ngModel)]="selectedAnime.statusId" name="statusId" class="text-application">
+                            <mat-option value=""></mat-option>
+                            <mat-option *ngFor="let statusAnime of allStatusAnimes" [value]="statusAnime.id">
+                                <span class="text-application">{{statusAnime.status}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <mat-select [(ngModel)]="selectedAnime.type" name="type">
+                        <mat-option value="Manga">Manga</mat-option>
+                        <mat-option value="TV">TV</mat-option>
+                        <mat-option value="Movie">Movie</mat-option>
+                        <mat-option value="Special">Special</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Season" type="number" [(ngModel)]="selectedAnime.season" name="season" class="text-application">
+                    </mat-form-field>
+                </mat-tab>
+                <mat-tab label="Second data">
+                    <br>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Priority" type="number" [(ngModel)]="selectedAnime.priority" name="priority" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Current episode" type="number" [(ngModel)]="selectedAnime.currentEpisode" name="currentEpisode" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Total episodes" type="number" [(ngModel)]="selectedAnime.totalEpisodes" name="totalEpisodes" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Path" type="text" [(ngModel)]="selectedAnime.path" name="path" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Note" type="text" [(ngModel)]="selectedAnime.note" name="note" class="text-application">
+                    </mat-form-field>
+                    <br>
+                    <div>                  
+                        <button
+                            mat-button 
+                            (click)="save(selectedAnime)"
+                            class="text-application">
+                            <mat-icon style="color: #FF5722">save</mat-icon>
+                            <span>Save</span>
+                        </button>
+                        <button
+                            mat-button 
+                            (click)="cancel()" 
+                            class="text-application">
+                            <mat-icon style="color: #607D8B;">cancel</mat-icon>
+                            <span>Cancel</span>
+                        </button>                        
+                    </div>
+                </mat-tab>
+            </mat-tab-group>      
         </mat-card>
    </mat-grid-tile>
 </mat-grid-list>
@@ -285,124 +257,88 @@
     (seasonAnimeSelected)="getSeasonAnimeSelected($event)">
 </list-seasons-movies-mobile>
 
-<mat-grid-list *ngIf="clickNewAnime" cols=1 #grid rowHeight="600px" gutterSize="15px">
-    <mat-grid-tile>
-        <mat-card class="settings-card-new-update-anime" style="border: 1px solid;">       
-            <mat-grid-list cols="12" rowHeight="50px" class="text-application">
-
-                <mat-grid-tile colspan="3">Name</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newAnime.nameAnime" name="nameAnime" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">First</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-checkbox name="isFirst" [(ngModel)]="newAnime.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Status</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <mat-select [(ngModel)]="newAnime.statusId" name="statusId" class="text-application">
-                          <mat-option value=""></mat-option>
-                          <mat-option *ngFor="let statusAnime of allStatusAnimes" [value]="statusAnime.id">
-                            <span class="text-application">{{statusAnime.status}}</span>
-                        </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Type</mat-grid-tile>
-                <mat-grid-tile colspan="9">      
-                    <mat-form-field color="accent">
-                          <mat-select [(ngModel)]="newAnime.type" name="type">
-                            <mat-option value="Manga">Manga</mat-option>
-                            <mat-option value="TV">TV</mat-option>
-                            <mat-option value="Movie">Movie</mat-option>
-                            <mat-option value="Special">Special</mat-option>
-                          </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Season</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newAnime.season" name="season" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Priority</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newAnime.priority" name="priority" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Curr ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newAnime.currentEpisode" name="currentEpisode" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Tot ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newAnime.totalEpisodes" name="totalEpisodes" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-
-                <mat-grid-tile colspan="3">Path</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newAnime.path" name="path" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Note</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newAnime.note" name="note" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-                
-            </mat-grid-list>
-
-            <div class="row justify-content-center">
-                <mat-card-actions style="margin-top: 15px">  
-                    <button
-                        type="button"
-                        mat-button 
-                        (click)="saveNewAnime()"
-                        class="text-application">
-                        <mat-icon style="color: #FF5722">save</mat-icon>
-                        <span>Save</span>
-                    </button>
-                    <button
-                        type="button"
-                        mat-button 
-                        (click)="cancelFromNewAnime()" 
-                        class="text-application">
-                        <mat-icon style="color: #607D8B;">cancel</mat-icon>
-                        <span>Cancel</span>
-                    </button>  
-                </mat-card-actions>
-            </div>        
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
-
-<br *ngIf="clickNewAnime">
-
-<mat-grid-list *ngIf="clickNewAnime" cols=1 #grid rowHeight="350px" gutterSize="15px">
-    <mat-grid-tile>
-        <mat-card class="settings-card" style="border: 1px solid;">       
-            <img *ngIf="newAnime.imageUrl" [src]="newAnime.imageUrl" class="anime-image" (click)="selectImage.click()">
-            <img *ngIf="!newAnime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" (click)="selectImage.click()"> 
-            <input type="file" name="file" (change)="uploadPictureForCreateAnime($event)" style="display: none" accept=".jpeg,.jpg,.png,.svg" #selectImage>   
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
+<mat-vertical-stepper *ngIf="clickNewAnime" [linear] = "isLinear" #stepper>
+    <mat-step>
+        <ng-template matStepLabel>First data</ng-template>
+        First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="newAnime.isFirst" class="mat-checkbox-layout"></mat-checkbox>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Name" type="text" [(ngModel)]="newAnime.nameAnime" name="nameAnime" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Title" type="text" [(ngModel)]="newAnime.fullNameAnime" name="fullNameAnime" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <mat-select placeholder="Status" [(ngModel)]="newAnime.statusId" name="statusId" class="text-application">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let statusAnime of allStatusAnimes" [value]="statusAnime.id">
+                    <span class="text-application">{{statusAnime.status}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <mat-select placeholder="Type" [(ngModel)]="newAnime.type" name="type" class="text-application">
+              <mat-option value="Manga" class="text-application">Manga</mat-option>
+              <mat-option value="TV" class="text-application">TV</mat-option>
+              <mat-option value="Movie" class="text-application">Movie</mat-option>
+              <mat-option value="Special" class="text-application">Special</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Season" type="number" [(ngModel)]="newAnime.season" name="season" class="text-application">
+        </mat-form-field>
+        <br>
+        <div>
+            <button mat-button (click)="cancelFromNewAnime()">Cancel</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Second data</ng-template>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Priority" type="number" [(ngModel)]="newAnime.priority" name="priority" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Current Episode" type="number" [(ngModel)]="newAnime.currentEpisode" name="currentEpisode" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Total Episode" type="number" [(ngModel)]="newAnime.totalEpisodes" name="totalEpisodes" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Path" type="text" [(ngModel)]="newAnime.path" name="path" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 100%;">
+            <input matInput placeholder="Note" type="text" [(ngModel)]="newAnime.note" name="note" class="text-application">
+        </mat-form-field>
+        <br>
+        <button type="button" mat-button (click)="fileInput.click()">Choose picture</button>
+        <input hidden (change)="uploadPictureForCreateAnime($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
+        <br *ngIf="progressValue"><br *ngIf="progressValue">
+        <div *ngIf="progressValue | async as val" class="progress-background">
+            <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
+            <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
+        </div>     
+        <br>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+       <ng-template matStepLabel>Done</ng-template>
+        Details taken
+        <br>
+       <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="saveNewAnime()">Save</button>
+       </div>
+    </mat-step>
+</mat-vertical-stepper>

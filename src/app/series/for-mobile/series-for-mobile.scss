@@ -1,3 +1,8 @@
+.widthInput {
+  font-size: 14px;
+  width: 100%;
+}
+
 .no-results {
   display: flex;
   justify-content: center;
@@ -6,7 +11,6 @@
 }
 
 .serie-image {
-  height: 100%;
   width: 100%;
   background-size: cover;
   border-radius: 5px;
@@ -14,20 +18,32 @@
   
 .settings-card {
   height: 100%;
-  width: 100%;
-}
-
-.settings-card-new-update-serie {
-  height: 600px;
   width: 350px;
 }
 
-.mat-form-field {
-  font-size: 14px;
-  width: 100%;
+.settings-card-new-update-serie {
+  height: 450px;
+  width: 350px;
 }
 
 .aligned-with-text{
   position: absolute;
-  margin-top: 5px;
+  margin-top: 3px;
+}
+
+.progress-background {
+  width: 100%;
+  background: gray;
+  height: 5px;
+  border-radius: 5px;  
+}
+
+.progress-meter {
+  background: rgb(73, 4, 163);
+  height:5px;
+  border-radius: 5px;
+}
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+  min-width: 50% !important;
 }

@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -38,6 +40,9 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
   getDetailsMovie: boolean = false;
   editButtonClick: boolean = false;
   clickNewMovie: boolean = false;
+  isTablet: boolean;
+  isLinear = false;
+  isPortrait: boolean;
 
   length: number = 0;
   pageSize: number = 6;
@@ -74,12 +79,34 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    private deviceService: DeviceDetectorService,
+    private bpObserable: BreakpointObserver
   ) {}
 
   ngOnInit() {
+    this.isTablet = this.deviceService.isTablet();
     this.getRolesUser();
     this.getAllMovies();
+
+    this.bpObserable
+    .observe([
+      '(orientation: portrait)',
+    ])
+    .subscribe(result => {
+      if(result.matches){
+        this.isPortrait = true;
+      }
+    });
+    this.bpObserable
+    .observe([
+      '(orientation: landscape)',
+    ])
+    .subscribe(result => {
+      if(result.matches){
+        this.isPortrait = false;
+      }
+    }); 
   }
 
   getRolesUser() {
@@ -133,6 +160,72 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
       
       else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
 
+      if (this.moviesList.length) {
+        if (this.isTablet) {
+          if (this.isPortrait) {
+            if (this.moviesList.length == 1) {
+              this.moviesList.forEach(movie => {
+                if (movie.fullNameMovie) {
+                  movie.nameMovieToShow = (movie.fullNameMovie.length > 39) ? movie.fullNameMovie.substring(0, 39) + '...' : movie.fullNameMovie;
+                } else {
+                  movie.nameMovieToShow = (movie.nameMovie.length > 39) ? movie.nameMovie.substring(0, 39) + '...' : movie.nameMovie;
+                }
+              })
+            } else if (this.moviesList.length == 2) {
+              this.moviesList.forEach(movie => {
+                if (movie.fullNameMovie) {
+                  movie.nameMovieToShow = (movie.fullNameMovie.length > 38) ? movie.fullNameMovie.substring(0, 38) + '...' : movie.fullNameMovie;
+                } else {
+                  movie.nameMovieToShow = (movie.nameMovie.length > 38) ? movie.nameMovie.substring(0, 38) + '...' : movie.nameMovie;
+                }
+              })
+            } else {
+              this.moviesList.forEach(movie => {
+                if (movie.fullNameMovie) {
+                  movie.nameMovieToShow = (movie.fullNameMovie.length > 22) ? movie.fullNameMovie.substring(0, 22) + '...' : movie.fullNameMovie;
+                } else {
+                  movie.nameMovieToShow = (movie.nameMovie.length > 22) ? movie.nameMovie.substring(0, 22) + '...' : movie.nameMovie;
+                }
+              })
+            }
+          } else {
+            if (this.moviesList.length == 1) {
+              this.moviesList.forEach(movie => {
+                if (movie.fullNameMovie) {
+                  movie.nameMovieToShow = (movie.fullNameMovie.length > 39) ? movie.fullNameMovie.substring(0, 39) + '...' : movie.fullNameMovie;
+                } else {
+                  movie.nameMovieToShow = (movie.nameMovie.length > 39) ? movie.nameMovie.substring(0, 39) + '...' : movie.nameMovie;
+                }
+              })
+            } else if (this.moviesList.length == 2) {
+              this.moviesList.forEach(movie => {
+                if (movie.fullNameMovie) {
+                  movie.nameMovieToShow = (movie.fullNameMovie.length > 38) ? movie.fullNameMovie.substring(0, 38) + '...' : movie.fullNameMovie;
+                } else {
+                  movie.nameMovieToShow = (movie.nameMovie.length > 38) ? movie.nameMovie.substring(0, 38) + '...' : movie.nameMovie;
+                }
+              })
+            } else {
+              this.moviesList.forEach(movie => {
+                if (movie.fullNameMovie) {
+                  movie.nameMovieToShow = (movie.fullNameMovie.length > 32) ? movie.fullNameMovie.substring(0, 32) + '...' : movie.fullNameMovie;
+                } else {
+                  movie.nameMovieToShow = (movie.nameMovie.length > 32) ? movie.nameMovie.substring(0, 32) + '...' : movie.nameMovie;
+                }
+              })
+            }
+          }       
+        } else {
+          this.moviesList.forEach(movie => {
+            if (movie.fullNameMovie) {
+              movie.nameMovieToShow = (movie.fullNameMovie.length > 39) ? movie.fullNameMovie.substring(0, 39) + '...' : movie.fullNameMovie;
+            } else {
+              movie.nameMovieToShow = (movie.nameMovie.length > 39) ? movie.nameMovie.substring(0, 39) + '...' : movie.nameMovie;
+            }
+          })
+        }    
+      }
+
       this.pagedList = this.moviesList.slice(0, 6);
       this.length = this.moviesList.length;
 
@@ -180,6 +273,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
         this.selectedMovie.status = statusMovie.status;
       }
     })
+    this.editButtonClick = false;
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
