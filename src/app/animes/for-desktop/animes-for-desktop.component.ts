@@ -206,9 +206,9 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
             } else {
               this.animesList.forEach(anime => {
                 if (anime.fullNameAnime) {
-                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 32) ? anime.fullNameAnime.substring(0, 32) + '...' : anime.fullNameAnime;
+                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 38) ? anime.fullNameAnime.substring(0, 38) + '...' : anime.fullNameAnime;
                 } else {
-                  anime.nameAnimeToShow = (anime.nameAnime.length > 32) ? anime.nameAnime.substring(0, 32) + '...' : anime.nameAnime;
+                  anime.nameAnimeToShow = (anime.nameAnime.length > 38) ? anime.nameAnime.substring(0, 38) + '...' : anime.nameAnime;
                 }
               })
             }

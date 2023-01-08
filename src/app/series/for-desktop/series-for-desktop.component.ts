@@ -207,9 +207,9 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
             } else {
               this.seriesList.forEach(serie => {
                 if (serie.fullNameSerie) {
-                  serie.nameSerieToShow = (serie.fullNameSerie.length > 32) ? serie.fullNameSerie.substring(0, 32) + '...' : serie.fullNameSerie;
+                  serie.nameSerieToShow = (serie.fullNameSerie.length > 38) ? serie.fullNameSerie.substring(0, 38) + '...' : serie.fullNameSerie;
                 } else {
-                  serie.nameSerieToShow = (serie.nameSerie.length > 32) ? serie.nameSerie.substring(0, 32) + '...' : serie.nameSerie;
+                  serie.nameSerieToShow = (serie.nameSerie.length > 38) ? serie.nameSerie.substring(0, 38) + '...' : serie.nameSerie;
                 }
               })
             }

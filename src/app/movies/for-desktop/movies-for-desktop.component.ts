@@ -208,9 +208,9 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
             } else {
               this.moviesList.forEach(movie => {
                 if (movie.fullNameMovie) {
-                  movie.nameMovieToShow = (movie.fullNameMovie.length > 32) ? movie.fullNameMovie.substring(0, 32) + '...' : movie.fullNameMovie;
+                  movie.nameMovieToShow = (movie.fullNameMovie.length > 38) ? movie.fullNameMovie.substring(0, 38) + '...' : movie.fullNameMovie;
                 } else {
-                  movie.nameMovieToShow = (movie.nameMovie.length > 32) ? movie.nameMovie.substring(0, 32) + '...' : movie.nameMovie;
+                  movie.nameMovieToShow = (movie.nameMovie.length > 38) ? movie.nameMovie.substring(0, 38) + '...' : movie.nameMovie;
                 }
               })
             }
