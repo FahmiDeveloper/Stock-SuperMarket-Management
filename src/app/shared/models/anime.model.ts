@@ -2,6 +2,7 @@ export class Anime {
 
   key: string;
   nameAnime: string;
+  fullNameAnime: string;
   date: string;
   time: string;
   note: string;
@@ -16,6 +17,7 @@ export class Anime {
   priority: number;
   type: string;
   isFirst: boolean;
+  nameAnimeToShow: string;
 
   constructor(){
     this.nameAnime = '';

@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -38,6 +40,9 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   getDetailsAnime: boolean = false;
   editButtonClick: boolean = false;
   clickNewAnime: boolean = false;
+  isTablet: boolean;
+  isLinear = false;
+  isPortrait: boolean;
 
   length: number = 0;
   pageSize: number = 6;
@@ -72,12 +77,34 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    private fireStorage: AngularFireStorage
+    private fireStorage: AngularFireStorage,
+    private deviceService: DeviceDetectorService,
+    private bpObserable: BreakpointObserver
   ) {}
 
   ngOnInit() {
+    this.isTablet = this.deviceService.isTablet();
     this.getRolesUser();
     this.getAllAnimes();
+
+    this.bpObserable
+    .observe([
+      '(orientation: portrait)',
+    ])
+    .subscribe(result => {
+      if(result.matches){
+        this.isPortrait = true;
+      }
+    });
+    this.bpObserable
+    .observe([
+      '(orientation: landscape)',
+    ])
+    .subscribe(result => {
+      if(result.matches){
+        this.isPortrait = false;
+      }
+    }); 
   }
 
   getRolesUser() {
@@ -131,6 +158,72 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
       
       else this.animesList = animes.filter(anime => anime.isFirst == true).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
+      if (this.animesList.length) {
+        if (this.isTablet) {
+          if (this.isPortrait) {
+            if (this.animesList.length == 1) {
+              this.animesList.forEach(anime => {
+                if (anime.fullNameAnime) {
+                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 39) ? anime.fullNameAnime.substring(0, 39) + '...' : anime.fullNameAnime;
+                } else {
+                  anime.nameAnimeToShow = (anime.nameAnime.length > 39) ? anime.nameAnime.substring(0, 39) + '...' : anime.nameAnime;
+                }
+              })
+            } else if (this.animesList.length == 2) {
+              this.animesList.forEach(anime => {
+                if (anime.fullNameAnime) {
+                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 38) ? anime.fullNameAnime.substring(0, 38) + '...' : anime.fullNameAnime;
+                } else {
+                  anime.nameAnimeToShow = (anime.nameAnime.length > 38) ? anime.nameAnime.substring(0, 38) + '...' : anime.nameAnime;
+                }
+              })
+            } else {
+              this.animesList.forEach(anime => {
+                if (anime.fullNameAnime) {
+                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 20) ? anime.fullNameAnime.substring(0, 20) + '...' : anime.fullNameAnime;
+                } else {
+                  anime.nameAnimeToShow = (anime.nameAnime.length > 20) ? anime.nameAnime.substring(0, 20) + '...' : anime.nameAnime;
+                }
+              })
+            }
+          } else {
+            if (this.animesList.length == 1) {
+              this.animesList.forEach(anime => {
+                if (anime.fullNameAnime) {
+                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 39) ? anime.fullNameAnime.substring(0, 39) + '...' : anime.fullNameAnime;
+                } else {
+                  anime.nameAnimeToShow = (anime.nameAnime.length > 39) ? anime.nameAnime.substring(0, 39) + '...' : anime.nameAnime;
+                }
+              })
+            } else if (this.animesList.length == 2) {
+              this.animesList.forEach(anime => {
+                if (anime.fullNameAnime) {
+                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 38) ? anime.fullNameAnime.substring(0, 38) + '...' : anime.fullNameAnime;
+                } else {
+                  anime.nameAnimeToShow = (anime.nameAnime.length > 38) ? anime.nameAnime.substring(0, 38) + '...' : anime.nameAnime;
+                }
+              })
+            } else {
+              this.animesList.forEach(anime => {
+                if (anime.fullNameAnime) {
+                  anime.nameAnimeToShow = (anime.fullNameAnime.length > 32) ? anime.fullNameAnime.substring(0, 32) + '...' : anime.fullNameAnime;
+                } else {
+                  anime.nameAnimeToShow = (anime.nameAnime.length > 32) ? anime.nameAnime.substring(0, 32) + '...' : anime.nameAnime;
+                }
+              })
+            }
+          }     
+        } else {
+          this.animesList.forEach(anime => {
+            if (anime.fullNameAnime) {
+              anime.nameAnimeToShow = (anime.fullNameAnime.length > 39) ? anime.fullNameAnime.substring(0, 39) + '...' : anime.fullNameAnime;
+            } else {
+              anime.nameAnimeToShow = (anime.nameAnime.length > 39) ? anime.nameAnime.substring(0, 39) + '...' : anime.nameAnime;
+            }
+          })
+        }     
+      }
+
       this.pagedList = this.animesList.slice(0, 6);
       this.length = this.animesList.length;
 
@@ -143,7 +236,6 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
       this.statusAnimes.forEach(statusAnime => {
         if (statusAnime.id == element.statusId) {
           element.status = statusAnime.status;
-          element.note = element.note ? element.note : '-';
         }
       })
     })
@@ -179,6 +271,7 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
         this.selectedAnime.status = statusAnime.status;
       }
     })
+    this.editButtonClick = false;
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -190,7 +283,6 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   saveNewAnime() {
     this.newAnime.date = moment().format('YYYY-MM-DD');
     if (this.allAnimes[0].numRefAnime) this.newAnime.numRefAnime = this.allAnimes[0].numRefAnime + 1;
-    if (!this.newAnime.path) this.newAnime.path = "";
     this.animeService.create(this.newAnime);
     this.clickNewAnime = false;
     this.getDetailsAnime = false;
@@ -348,6 +440,14 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
 
     this.pagedList = this.animesList.slice(0, 6);
     this.length = this.animesList.length;
+  }
+
+  viewNote(animeNote: string) {
+    Swal.fire({
+      text: animeNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   ngOnDestroy() {

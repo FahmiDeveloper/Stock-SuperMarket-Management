@@ -38,6 +38,7 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
   getDetailsMovie: boolean = false;
   editButtonClick: boolean = false;
   clickNewMovie: boolean = false;
+  isLinear = false;
 
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
@@ -131,6 +132,26 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
       
       else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
 
+      if (this.moviesList.length) {
+        if (this.moviesList.length == 1) {
+          this.moviesList.forEach(movie => {
+            if (movie.fullNameMovie) {
+              movie.nameMovieToShow = (movie.fullNameMovie.length > 30) ? movie.fullNameMovie.substring(0, 30) + '...' : movie.fullNameMovie;
+            } else {
+              movie.nameMovieToShow = (movie.nameMovie.length > 30) ? movie.nameMovie.substring(0, 30) + '...' : movie.nameMovie;
+            }
+          })
+        } else {
+          this.moviesList.forEach(movie => {
+            if (movie.fullNameMovie) {
+              movie.nameMovieToShow = (movie.fullNameMovie.length > 10) ? movie.fullNameMovie.substring(0, 10) + '...' : movie.fullNameMovie;
+            } else {
+              movie.nameMovieToShow = (movie.nameMovie.length > 10) ? movie.nameMovie.substring(0, 10) + '...' : movie.nameMovie;
+            }
+          })
+        }
+      }   
+
       this.pagedList = this.moviesList.slice(0, 6);
       this.length = this.moviesList.length;
 
@@ -178,6 +199,7 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
         this.selectedMovie.status = statusMovie.status;
       }
     })
+    this.editButtonClick = false;
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 

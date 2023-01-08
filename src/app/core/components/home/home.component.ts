@@ -34,6 +34,7 @@ import { Link } from 'src/app/shared/models/link.model';
 import { Clocking } from 'src/app/shared/models/clocking.model';
 import { Expiration } from 'src/app/shared/models/expiration.model';
 import { ExpirationService } from 'src/app/shared/services/expiration.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 const getObservable = (collection: AngularFirestoreCollection<Task>) => {
   const subject = new BehaviorSubject<Task[]>([]);
@@ -199,6 +200,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscriptionForGetAllExpirations: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  isTablet: boolean;
+  isPortrait: boolean;
+  message: string;
+  isDesktop: boolean;
 
   constructor(
     public userService: UserService,
@@ -216,17 +221,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     private deviceService: DeviceDetectorService,
     protected ngNavigatorShareService: NgNavigatorShareService,
     public dialogService: MatDialog,
-    protected router: Router
+    protected router: Router,
+    private bpObserable: BreakpointObserver
   ) {}
 
   ngOnInit() {
+    this.isDesktop = this.deviceService.isDesktop();
+    this.isTablet = this.deviceService.isTablet();
+    this.isMobile = this.deviceService.isMobile();
+
     this.getRolesUser();
     this.loadDataStatistics();
-    this.isMobile = this.deviceService.isMobile();
 
     const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     const d = new Date();
     this.currentMonthAndYear = month[d.getMonth()] + ' ' + d.getFullYear();
+
+    this.bpObserable
+    .observe([
+      '(orientation: portrait)',
+    ])
+    .subscribe(result => {
+      if(result.matches){
+        this.isPortrait = true;
+      }
+    });
+    this.bpObserable
+    .observe([
+      '(orientation: landscape)',
+    ])
+    .subscribe(result => {
+      if(result.matches){
+        this.isPortrait = false;
+      }
+    });  
   }
 
   getRolesUser() {

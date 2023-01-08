@@ -50,10 +50,10 @@
 }
 
 .overview-cart-mobile {
-  position: relative;
   width: calc(100%);
   overflow: hidden;
   cursor: pointer;
+  border-radius: 15px;
 }
 
 .overview-cart-mobile ::after {

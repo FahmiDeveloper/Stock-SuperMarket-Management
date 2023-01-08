@@ -15,6 +15,7 @@ export class Movie {
   part: number;
   priority: number;
   isFirst: boolean;
+  nameMovieToShow: string;
 
   constructor(){
     this.nameMovie = '';

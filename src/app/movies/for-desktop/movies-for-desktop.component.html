@@ -13,14 +13,14 @@
 
 <div class="row" *ngIf="!getDetailsMovie && !clickNewMovie">
     <div class="col-md-4">
-        <mat-form-field class="widhtInput text-application">
-            <mat-label>Name</mat-label>
+        <mat-form-field class="widthInput">
+            <mat-label class="text-application">Name</mat-label>
             <input matInput type="text" name="movieName" (keyup)="getAllMovies()" [(ngModel)]="movieName"/>
         </mat-form-field>
     </div>
     <div class="col-md-4">
-        <mat-form-field class="text-application" style="width: 285px;">
-            <mat-label>Status</mat-label>
+        <mat-form-field class="widthInput">
+            <mat-label class="text-application">Status</mat-label>
             <mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllMovies()">
                 <mat-option value=""></mat-option>
                 <mat-option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
@@ -63,29 +63,32 @@
 
 <br *ngIf="!getDetailsMovie && !clickNewMovie">
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1 && !getDetailsMovie && !clickNewMovie" cols=1 #grid rowHeight="350px" gutterSize="15px">
+<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1 && !getDetailsMovie && !clickNewMovie" cols=1 #grid rowHeight="400px" gutterSize="15px">
     <mat-grid-tile *ngFor="let movie of pagedList">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsMovie(movie)">       
-            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
-            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">              
+        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsMovie(movie)">
+            <mat-card-title class="text-application" style="font-size: 16px !important;">{{ movie.nameMovieToShow }}</mat-card-title>             
+            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}">
+            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}">              
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 2 && !getDetailsMovie && !clickNewMovie" cols=2 #grid rowHeight="350px" gutterSize="15px">
+<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 2 && !getDetailsMovie && !clickNewMovie" cols=2 #grid rowHeight="400px" gutterSize="15px">
     <mat-grid-tile *ngFor="let movie of pagedList">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsMovie(movie)">       
-            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
-            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">              
+        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsMovie(movie)">
+            <mat-card-title class="text-application" style="font-size: 16px !important;">{{ movie.nameMovieToShow }}</mat-card-title>             
+            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}">
+            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}">              
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 2 && !getDetailsMovie && !clickNewMovie" cols=3 #grid rowHeight="350px" gutterSize="15px">
+<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 2 && !getDetailsMovie && !clickNewMovie" cols=3 #grid rowHeight="400px" gutterSize="15px">
     <mat-grid-tile *ngFor="let movie of pagedList">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsMovie(movie)">       
-            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
-            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">              
+        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsMovie(movie)">
+            <mat-card-title class="text-application" style="font-size: 16px !important;">{{ movie.nameMovieToShow }}</mat-card-title>      
+            <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}">
+            <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}">              
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
@@ -104,117 +107,55 @@
    </mat-paginator>
 </div>
 
-<mat-grid-list *ngIf="getDetailsMovie && !clickNewMovie" cols=2 #grid [rowHeight]="editButtonClick ? '550px' : '350px'" gutterSize="15px" class="grid-list-new-edit">
+<mat-grid-list *ngIf="getDetailsMovie && !clickNewMovie" cols=2 #grid rowHeight="380px" gutterSize="15px" class="grid-list-new-edit">
     <mat-grid-tile>
-        <mat-card class="settings-card-new-update-movie" style="cursor: pointer;border: 1px solid;" [ngStyle]="{'height': editButtonClick ? '550px' : '350px'}">       
-            <img *ngIf="selectedMovie.imageUrl" [src]="selectedMovie.imageUrl" class="movie-image" (click)="selectImage.click()">
-            <img *ngIf="!selectedMovie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image" (click)="selectImage.click()"> 
+        <mat-card class="settings-card-new-update-movie" style="cursor: pointer;border: 1px solid;">       
+            <img *ngIf="selectedMovie.imageUrl" [src]="selectedMovie.imageUrl" class="movie-image" (click)="selectImage.click()" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}">
+            <img *ngIf="!selectedMovie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image" (click)="selectImage.click()" [ngStyle]="{'height': getDetailsMovie ? '100%' : '92%'}"> 
             <input type="file" name="file" (change)="uploadPictureForEditMovie($event)" style="display: none" accept=".jpeg,.jpg,.png,.svg" #selectImage>   
         </mat-card>
     </mat-grid-tile>
     
     <mat-grid-tile>
-        <mat-card class="settings-card-new-update-movie" style="cursor: pointer;border: 1px solid;" [ngStyle]="{'height': editButtonClick ? '550px' : '350px'}">       
-            <mat-grid-list cols="12" rowHeight="50px" class="text-application">
-
-                <mat-grid-tile colspan="3" *ngIf="editButtonClick">Name</mat-grid-tile>
-                <mat-grid-tile colspan="9" *ngIf="editButtonClick">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedMovie.nameMovie" name="nameMovie" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3" *ngIf="editButtonClick">Title</mat-grid-tile>
-                <mat-grid-tile colspan="9" *ngIf="editButtonClick">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedMovie.fullNameMovie" name="fullNameMovie" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3" *ngIf="editButtonClick">First</mat-grid-tile>
-                <mat-grid-tile colspan="9" *ngIf="editButtonClick">
-                    <mat-checkbox name="isFirst" [(ngModel)]="selectedMovie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-                </mat-grid-tile>
-
+        <mat-card class="settings-card-new-update-movie" style="border: 1px solid;">
+            <mat-grid-list *ngIf="!editButtonClick" cols="12" rowHeight="50px" class="text-application">
                 <mat-grid-tile colspan="3">Year</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">
-                        <span *ngIf="selectedMovie.year">{{ selectedMovie.year }}</span>
-                        <span *ngIf="!selectedMovie.year">?</span>
-                    </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedMovie.year" name="year" class="text-application">
-                    </mat-form-field>              
+                    <span *ngIf="selectedMovie.year">{{ selectedMovie.year }}</span>
+                    <span *ngIf="!selectedMovie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                     
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Status</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">{{ selectedMovie.status }}</span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <mat-select [(ngModel)]="selectedMovie.statusId" name="statusId" class="text-application">
-                          <mat-option value=""></mat-option>
-                          <mat-option *ngFor="let statusMovie of allStatusMovies" [value]="statusMovie.id">
-                            <span class="text-application">{{statusMovie.status}}</span>
-                          </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
+                <mat-grid-tile colspan="9">{{ selectedMovie.status }}</mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Part</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">
                         <span *ngIf="selectedMovie.part">{{ selectedMovie.part }}</span>
-                        <span *ngIf="!selectedMovie.part"><mat-icon style="color: red;">cancel</mat-icon></span>
-                    </span>
-                    
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedMovie.part" name="part" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3" *ngIf="editButtonClick">Priority</mat-grid-tile>
-                <mat-grid-tile colspan="9" *ngIf="editButtonClick">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="selectedMovie.priority" name="priority" class="text-application">
-                    </mat-form-field>
+                        <span *ngIf="!selectedMovie.part"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Path</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedMovie.path">
-                            <mat-icon style="cursor: pointer;" (click)="followLink(selectedMovie.path)" target="_blank">link</mat-icon>                            
-                        </span>
-                        <span *ngIf="!selectedMovie.path"><mat-icon style="color: red;">cancel</mat-icon></span>
+                    <span *ngIf="selectedMovie.path">
+                        <mat-icon style="cursor: pointer;" (click)="followLink(selectedMovie.path)" target="_blank">link</mat-icon>                            
                     </span>
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedMovie.path" name="path" class="text-application">
-                    </mat-form-field>
+                    <span *ngIf="!selectedMovie.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="3">Note</mat-grid-tile>
                 <mat-grid-tile colspan="9">
-                    <span *ngIf="!editButtonClick">                      
-                        <span *ngIf="selectedMovie.note">
-                            <mat-icon *ngIf="selectedMovie.note.length == 35 || selectedMovie.note.length > 35" style="color: green;" (click)="viewNote(selectedMovie.note)">remove_red_eye</mat-icon>
-                            <span *ngIf="selectedMovie.note.length < 35">{{ selectedMovie.note }}</span>
-                        </span>
-                        <span *ngIf="!selectedMovie.note"><mat-icon style="color: red;">cancel</mat-icon></span>
+                    <span *ngIf="selectedMovie.note">
+                        <mat-icon *ngIf="selectedMovie.note.length == 35 || selectedMovie.note.length > 35" style="color: green;" (click)="viewNote(selectedMovie.note)">remove_red_eye</mat-icon>
+                        <span *ngIf="selectedMovie.note.length < 35">{{ selectedMovie.note }}</span>
                     </span>
-
-                    <mat-form-field *ngIf="editButtonClick" color="accent">
-                        <input matInput #input type="text" [(ngModel)]="selectedMovie.note" name="note" class="text-application">
-                    </mat-form-field>
+                    <span *ngIf="!selectedMovie.note"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
                 </mat-grid-tile>
-
             </mat-grid-list>
 
-            <div class="row justify-content-center">
-                <mat-card-actions style="margin-top: 15px">
+            <div *ngIf="!editButtonClick" class="row justify-content-center">
+                <mat-card-actions>
                     <button
-                        *ngIf="dataUserConnected.roleUpdateMovie && !editButtonClick"
+                        *ngIf="dataUserConnected.roleUpdateMovie"
                         type="button"
                         mat-button 
                         (click)="editMovie(selectedMovie)"
@@ -223,7 +164,7 @@
                         <span>Edit</span>
                     </button>
                     <button
-                        *ngIf="dataUserConnected.roleDeleteMovie && !editButtonClick"
+                        *ngIf="dataUserConnected.roleDeleteMovie"
                         type="button"
                         mat-button 
                         (click)="deleteMovie(selectedMovie.key)" 
@@ -231,27 +172,65 @@
                         <mat-icon style="color: #f44336;">delete</mat-icon>
                         <span>Delete</span>
                     </button>
-                    
-                    <button
-                        *ngIf="editButtonClick"
-                        type="button"
-                        mat-button 
-                        (click)="save(selectedMovie)"
-                        class="text-application">
-                        <mat-icon style="color: #FF5722">save</mat-icon>
-                        <span>Save</span>
-                    </button>
-                    <button
-                        *ngIf="editButtonClick"
-                        type="button"
-                        mat-button 
-                        (click)="cancel()" 
-                        class="text-application">
-                        <mat-icon style="color: #607D8B;">cancel</mat-icon>
-                        <span>Cancel</span>
-                    </button>  
                 </mat-card-actions>
             </div>        
+
+            <mat-tab-group *ngIf="editButtonClick">
+                <mat-tab label="First data">
+                    <br>
+                    First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="selectedMovie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
+                    <br><br>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Name" type="text" [(ngModel)]="selectedMovie.nameMovie" name="nameMovie" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Title" type="text" [(ngModel)]="selectedMovie.fullNameMovie" name="fullNameMovie" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Year" type="number" [(ngModel)]="selectedMovie.year" name="year" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <mat-select placeholder="Status" [(ngModel)]="selectedMovie.statusId" name="statusId" class="text-application">
+                            <mat-option value=""></mat-option>
+                            <mat-option *ngFor="let statusMovie of allStatusMovies" [value]="statusMovie.id">
+                                <span class="text-application">{{statusMovie.status}}</span>
+                              </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-tab>
+                <mat-tab label="Second data">
+                    <br>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Part" type="number" [(ngModel)]="selectedMovie.part" name="part" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Priority" type="number" [(ngModel)]="selectedMovie.priority" name="priority" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Path" type="text" [(ngModel)]="selectedMovie.path" name="path" class="text-application">
+                    </mat-form-field>
+                    <mat-form-field color="accent" style="width: 100%;">
+                        <input matInput placeholder="Note" type="text" [(ngModel)]="selectedMovie.note" name="note" class="text-application">
+                    </mat-form-field>
+                    <br>
+                    <div>                  
+                        <button
+                            mat-button 
+                            (click)="save(selectedMovie)"
+                            class="text-application">
+                            <mat-icon style="color: #FF5722">save</mat-icon>
+                            <span>Save</span>
+                        </button>
+                        <button
+                            mat-button 
+                            (click)="cancel()" 
+                            class="text-application">
+                            <mat-icon style="color: #607D8B;">cancel</mat-icon>
+                            <span>Cancel</span>
+                        </button>                        
+                     </div>
+                </mat-tab>
+            </mat-tab-group>
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
@@ -261,111 +240,80 @@
 <list-parts-desktop
     *ngIf="getDetailsMovie && selectedMovie.part && !clickNewMovie" 
     [listPartsByCurrentName]="listPartsByCurrentName"
+    [isTablet]="isTablet"
+    [isPortrait]="isPortrait"
     (partMovieSelected)="getPartMovieSelected($event)">
 </list-parts-desktop>
 
-<mat-grid-list *ngIf="clickNewMovie" cols=2 #grid rowHeight="550px" gutterSize="15px" class="grid-list-new-edit">
-    <mat-grid-tile>
-        <mat-card class="settings-card-new-update-movie" style="cursor: pointer;border: 1px solid;height: 550px;">       
-            <mat-grid-list cols="12" rowHeight="50px" class="text-application">
-
-                <mat-grid-tile colspan="3">Name</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newMovie.nameMovie" name="nameMovie" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Title</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newMovie.fullNameMovie" name="fullNameMovie" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">First</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-checkbox name="isFirst" [(ngModel)]="newMovie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Year</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newMovie.year" name="year" class="text-application">
-                    </mat-form-field>              
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Status</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <mat-select [(ngModel)]="newMovie.statusId" name="statusId" class="text-application">
-                          <mat-option value=""></mat-option>
-                          <mat-option *ngFor="let statusMovie of allStatusMovies" [value]="statusMovie.id">
-                            <span class="text-application">{{statusMovie.status}}</span>
-                          </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Part</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newMovie.part" name="part" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Priority</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="number" [(ngModel)]="newMovie.priority" name="priority" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Path</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newMovie.path" name="path" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Note</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <mat-form-field color="accent">
-                        <input matInput #input type="text" [(ngModel)]="newMovie.note" name="note" class="text-application">
-                    </mat-form-field>
-                </mat-grid-tile>
-                
-
-            </mat-grid-list>
-
-            <div class="row justify-content-center">
-                <mat-card-actions style="margin-top: 15px">  
-                    <button
-                        type="button"
-                        mat-button 
-                        (click)="saveNewMovie()"
-                        class="text-application">
-                        <mat-icon style="color: #FF5722">save</mat-icon>
-                        <span>Save</span>
-                    </button>
-                    <button
-                        type="button"
-                        mat-button 
-                        (click)="cancelFromNewMovie()" 
-                        class="text-application">
-                        <mat-icon style="color: #607D8B;">cancel</mat-icon>
-                        <span>Cancel</span>
-                    </button>  
-                </mat-card-actions>
-            </div>        
-        </mat-card>
-    </mat-grid-tile>
-    
-    <mat-grid-tile>
-        <mat-card class="settings-card-new-update-movie" style="cursor: pointer;border: 1px solid;height: 550px;">       
-            <img *ngIf="newMovie.imageUrl" [src]="newMovie.imageUrl" class="movie-image" (click)="selectImage.click()">
-            <img *ngIf="!newMovie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image" (click)="selectImage.click()"> 
-            <input type="file" name="file" (change)="uploadPictureForCreateMovie($event)" style="display: none" accept=".jpeg,.jpg,.png,.svg" #selectImage>   
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
+<mat-horizontal-stepper *ngIf="clickNewMovie" [linear] = "isLinear" #stepper>
+    <mat-step>
+        <ng-template matStepLabel>First data</ng-template>
+        First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="newMovie.isFirst" class="mat-checkbox-layout"></mat-checkbox>
+        <br>
+        <mat-form-field color="accent" style="width: 30%;">
+            <input matInput placeholder="Name" type="text" [(ngModel)]="newMovie.nameMovie" name="nameMovie" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 30%;">
+            <input matInput placeholder="Title" type="text" [(ngModel)]="newMovie.fullNameMovie" name="fullNameMovie" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 30%;">
+            <input matInput placeholder="Year" type="number" [(ngModel)]="newMovie.year" name="year" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 30%;">
+            <mat-select placeholder="Status" [(ngModel)]="newMovie.statusId" name="statusId" class="text-application">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let statusMovie of allStatusMovies" [value]="statusMovie.id">
+                    <span class="text-application">{{statusMovie.status}}</span>
+                  </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <div>
+            <button mat-button (click)="cancelFromNewMovie()">Cancel</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Second data</ng-template>
+        <mat-form-field color="accent" style="width: 30%;">
+            <input matInput placeholder="Part" type="number" [(ngModel)]="newMovie.part" name="part" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 30%;">
+            <input matInput placeholder="Priority" type="number" [(ngModel)]="newMovie.priority" name="priority" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 30%;">
+            <input matInput placeholder="Path" type="text" [(ngModel)]="newMovie.path" name="path" class="text-application">
+        </mat-form-field>
+        <br>
+        <mat-form-field color="accent" style="width: 30%;">
+            <input matInput placeholder="Note" type="text" [(ngModel)]="newMovie.note" name="note" class="text-application">
+        </mat-form-field>
+        <br>
+        <button type="button" mat-button (click)="fileInput.click()">Choose picture</button>
+        <input hidden (change)="uploadPictureForCreateMovie($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
+        <br *ngIf="progressValue"><br *ngIf="progressValue">
+        <div *ngIf="progressValue | async as val" class="progress-background">
+            <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
+            <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
+        </div>     
+        <br>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+       <ng-template matStepLabel>Done</ng-template>
+        Details taken
+        <br>
+       <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="saveNewMovie()">Save</button>
+       </div>
+    </mat-step>
+</mat-horizontal-stepper>

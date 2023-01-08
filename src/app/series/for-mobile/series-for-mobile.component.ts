@@ -38,6 +38,7 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
   getDetailsSerie: boolean = false;
   editButtonClick: boolean = false;
   clickNewSerie: boolean = false;
+  isLinear = false;
 
   length: number = 0;
   pageSize: number = 6;
@@ -132,6 +133,26 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
       
       else this.seriesList = series.filter(serie => serie.isFirst == true).sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
 
+      if (this.seriesList.length) {
+        if (this.seriesList.length == 1) {
+          this.seriesList.forEach(serie => {
+            if (serie.fullNameSerie) {
+              serie.nameSerieToShow = (serie.fullNameSerie.length > 30) ? serie.fullNameSerie.substring(0, 30) + '...' : serie.fullNameSerie;
+            } else {
+              serie.nameSerieToShow = (serie.nameSerie.length > 30) ? serie.nameSerie.substring(0, 30) + '...' : serie.nameSerie;
+            }
+          })
+        } else {
+          this.seriesList.forEach(serie => {
+            if (serie.fullNameSerie) {
+              serie.nameSerieToShow = (serie.fullNameSerie.length > 10) ? serie.fullNameSerie.substring(0, 10) + '...' : serie.fullNameSerie;
+            } else {
+              serie.nameSerieToShow = (serie.nameSerie.length > 10) ? serie.nameSerie.substring(0, 10) + '...' : serie.nameSerie;
+            }
+          })
+        }
+      }   
+
       this.pagedList = this.seriesList.slice(0, 6);
       this.length = this.seriesList.length;
 
@@ -144,7 +165,6 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
       this.statusSeries.forEach(statusSerie => {
         if (statusSerie.id == element.statusId) {
           element.status = statusSerie.status;
-          element.note = element.note ? element.note : '-';
         }
       })
     })
@@ -180,6 +200,7 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
         this.selectedSerie.status = statusSerie.status;
       }
     })
+    this.editButtonClick = false;
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -191,7 +212,6 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
   saveNewSerie() {
     this.newSerie.date = moment().format('YYYY-MM-DD');
     if (this.allSeries[0].numRefSerie) this.newSerie.numRefSerie = this.allSeries[0].numRefSerie + 1;
-    if (!this.newSerie.path) this.newSerie.path = "";
     this.serieService.create(this.newSerie);
     this.clickNewSerie = false;
     this.getDetailsSerie = false;
@@ -351,6 +371,14 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
     this.length = this.seriesList.length;
   }
 
+  viewNote(serieNote: string) {
+    Swal.fire({
+      text: serieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
+  }
+  
   ngOnDestroy() {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForUser.unsubscribe();
