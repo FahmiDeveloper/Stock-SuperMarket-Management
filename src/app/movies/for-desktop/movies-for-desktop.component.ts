@@ -183,7 +183,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     this.pagedList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
     this.sortByDesc = true;
 
-    this.pagedList = this.moviesList.slice(0, 6);
+    this.pagedList = this.isDesktop ? this.moviesList.slice(0, 8) : this.moviesList.slice(0, 6);
     this.length = this.moviesList.length;
   }
 
@@ -191,7 +191,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     this.pagedList = this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
     this.sortByDesc = false;
 
-    this.pagedList = this.moviesList.slice(0, 6);
+    this.pagedList = this.isDesktop ? this.moviesList.slice(0, 8) : this.moviesList.slice(0, 6);
     this.length = this.moviesList.length;
   }
 
