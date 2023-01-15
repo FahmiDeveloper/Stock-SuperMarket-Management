@@ -361,7 +361,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 2" cols=4 #grid rowHeight="320px" gutterSize="15px">
+    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 3" cols=4 #grid rowHeight="320px" gutterSize="15px">
         <mat-grid-tile *ngFor="let movie of pagedList">
             <div class="flip-container">
                 <div class="card">
