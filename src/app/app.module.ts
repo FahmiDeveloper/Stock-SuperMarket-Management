@@ -29,6 +29,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -116,6 +118,8 @@ import {
 import { 
   MoviesForDesktopComponent,
   ListPartsForDesktopComponent,
+  MovieFormDesktopComponent,
+  MovieDetailsWithPartsDesktopComponent,
   MoviesForMobileComponent,
   ListPartsForMobileComponent
 } from './movies/index';
@@ -162,6 +166,8 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatProgressBarModule,
+    MatAutocompleteModule,
+    MatButtonToggleModule,
     MatGridListModule,
     MatListModule,
     MatDividerModule,
@@ -242,6 +248,8 @@ import {
 
     MoviesForDesktopComponent,
     ListPartsForDesktopComponent,
+    MovieFormDesktopComponent,
+    MovieDetailsWithPartsDesktopComponent,
     MoviesForMobileComponent,
     ListPartsForMobileComponent,
 

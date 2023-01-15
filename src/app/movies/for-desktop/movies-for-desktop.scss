@@ -10,26 +10,10 @@
 }
 
 .movie-image {
-  height: 92%;
+  height: 100%;
   width: 100%;
   background-size: cover;
   border-radius: 5px;
-}
-  
-.settings-card {
-  height: 400px;
-  width: 350px;
-}
-
-.settings-card-new-update-movie {
-  height: 380px;
-  width: 350px;
-}
-
-.grid-list-new-edit {
-  width: 90%;
-  margin: auto;
-  top: 0; left: 0; bottom: 0; right: 0;
 }
 
 .aligned-with-text{
@@ -53,4 +37,103 @@
 
 ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
   min-width: 50% !important;
+}
+
+.wait-image {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq5VvXEWHDYBdvvFzp_b-YwJiZ-tyk089Utq8D8AKhvSQb5f69u9H4ndXkxq9ZMxNv2oU&usqp=CAU');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.not-download-image {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRskZIvjwG1IuGUNtOHXPx0RuaNBr3F5sejLtDxSOuKDD0nQp3MlUf12i6yLLgE0uJYVks&usqp=CAU');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.watched-image {
+  background-image: url('https://icones.pro/wp-content/uploads/2021/05/icone-oeil-beurre-vert.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.not-liked-image {
+  background-image: url('https://www.freeiconspng.com/thumbs/youtube-dislike-png/youtube-dislike-png-red-clipart-13.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.not-watched-image {
+  background-image: url('https://www.citypng.com/public/uploads/preview/eye-view-watching-red-icon-transparent-png-11640343976d3sbxmunu3.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.search-image {
+  background-image: url('https://toppng.com/uploads/preview/search-icon-customer-icon-11564158924ifw7wyjtfu.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.parts-image {
+  background-image: url('https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-list-icon-png-image_4271229.jpg');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.flip-container {
+  background-color: transparent;
+  perspective: 1000px;
+}
+
+.card {
+  height: 300px;
+  width: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.75, 0, 0.85, 1);
+  transform: rotateY(0deg);
+  margin: 0 auto;
+}
+
+.back,
+.front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius:0px;
+  display: grid;
+  align-items: end;
+  justify-content: center;
+}
+
+.back {
+  transform: rotateY(180deg);
+  border: 1px dashed;
+}
+
+.front {
+  transform: rotateY(0deg);
+}
+
+.flip-container:hover .card {
+  transform: rotateY(180deg);
+}
+
+.style-button{
+  width: 100%!important;
+  min-width: unset!important;
+  display: table; margin: 0 auto;
+}
+
+::ng-deep .my-menu {
+  width: 100%;
 }
