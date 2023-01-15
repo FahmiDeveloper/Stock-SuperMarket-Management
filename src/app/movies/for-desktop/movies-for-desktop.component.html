@@ -138,7 +138,7 @@
                         </button>
                     </mat-menu>                     
                     <button
-                        *ngIf="movie.part" 
+                        *ngIf="movie.part && movie.part == 1" 
                         type="button"
                         mat-button 
                         (click)="showDetailsMovie(movie)"
@@ -147,6 +147,9 @@
                         <mat-icon style="color: #a54403">view_list</mat-icon>
                         <span>Details</span>
                     </button>
+                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                        Part:&nbsp;{{ movie.part }}
+                    </h4>
                     <br><br>
                 </div>
             </div>
@@ -241,7 +244,7 @@
                         </button>
                     </mat-menu>                     
                     <button
-                        *ngIf="movie.part" 
+                        *ngIf="movie.part && movie.part == 1" 
                         type="button"
                         mat-button 
                         (click)="showDetailsMovie(movie)"
@@ -250,6 +253,9 @@
                         <mat-icon style="color: #a54403">view_list</mat-icon>
                         <span>Details</span>
                     </button>
+                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                        Part:&nbsp;{{ movie.part }}
+                    </h4>
                     <br><br>
                 </div>
             </div>
@@ -345,7 +351,7 @@
                             </button>
                         </mat-menu>                     
                         <button
-                            *ngIf="movie.part" 
+                            *ngIf="movie.part && movie.part == 1" 
                             type="button"
                             mat-button 
                             (click)="showDetailsMovie(movie)"
@@ -354,6 +360,9 @@
                             <mat-icon style="color: #a54403">view_list</mat-icon>
                             <span>Details</span>
                         </button>
+                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                            Part:&nbsp;{{ movie.part }}
+                        </h4>
                         <br><br>
                     </div>
                 </div>
@@ -448,7 +457,7 @@
                             </button>
                         </mat-menu>                     
                         <button
-                            *ngIf="movie.part" 
+                            *ngIf="movie.part && movie.part == 1" 
                             type="button"
                             mat-button 
                             (click)="showDetailsMovie(movie)"
@@ -457,6 +466,9 @@
                             <mat-icon style="color: #a54403">view_list</mat-icon>
                             <span>Details</span>
                         </button>
+                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                            Part:&nbsp;{{ movie.part }}
+                        </h4>
                         <br><br>
                     </div>
                 </div>
@@ -553,7 +565,7 @@
                             </button>
                         </mat-menu>                     
                         <button
-                            *ngIf="movie.part" 
+                            *ngIf="movie.part && movie.part == 1" 
                             type="button"
                             mat-button 
                             (click)="showDetailsMovie(movie)"
@@ -562,6 +574,9 @@
                             <mat-icon style="color: #a54403">view_list</mat-icon>
                             <span>Details</span>
                         </button>
+                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                            Part:&nbsp;{{ movie.part }}
+                        </h4>
                         <br><br>
                     </div>
                 </div>
