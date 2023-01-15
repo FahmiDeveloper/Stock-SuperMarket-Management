@@ -130,43 +130,12 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
         this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
       }
       
-      else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-
-      if (this.moviesList.length) {
-        if (this.moviesList.length == 1) {
-          this.moviesList.forEach(movie => {
-            if (movie.fullNameMovie) {
-              movie.nameMovieToShow = (movie.fullNameMovie.length > 30) ? movie.fullNameMovie.substring(0, 30) + '...' : movie.fullNameMovie;
-            } else {
-              movie.nameMovieToShow = (movie.nameMovie.length > 30) ? movie.nameMovie.substring(0, 30) + '...' : movie.nameMovie;
-            }
-          })
-        } else {
-          this.moviesList.forEach(movie => {
-            if (movie.fullNameMovie) {
-              movie.nameMovieToShow = (movie.fullNameMovie.length > 10) ? movie.fullNameMovie.substring(0, 10) + '...' : movie.fullNameMovie;
-            } else {
-              movie.nameMovieToShow = (movie.nameMovie.length > 10) ? movie.nameMovie.substring(0, 10) + '...' : movie.nameMovie;
-            }
-          })
-        }
-      }   
+      else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);  
 
       this.pagedList = this.moviesList.slice(0, 6);
       this.length = this.moviesList.length;
 
-      this.getStatusMovie();
     });
-  }
-
-  getStatusMovie() {
-    this.moviesList.forEach(element=>{
-      this.statusMovies.forEach(statusMovie => {
-        if (statusMovie.id == element.statusId) {
-          element.status = statusMovie.status;
-        }
-      })
-    })
   }
 
   OnPageChange(event: PageEvent){
@@ -183,22 +152,12 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     this.getDetailsMovie = true;
     this.editButtonClick = false;
     this.selectedMovie = movie;
-    this.allStatusMovies.forEach(statusMovie => {
-      if (statusMovie.id == this.selectedMovie.statusId) {
-        this.selectedMovie.status = statusMovie.status;
-      }
-    })
     this.listPartsByCurrentName = this.allMovies.filter(movie => (movie.nameMovie.toLowerCase() == (this.selectedMovie.nameMovie.toLowerCase()))).sort((n1, n2) => n1.priority - n2.priority);;
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   getPartMovieSelected(moviePartSelected: Movie) {
     this.selectedMovie = moviePartSelected;
-    this.allStatusMovies.forEach(statusMovie => {
-      if (statusMovie.id == this.selectedMovie.statusId) {
-        this.selectedMovie.status = statusMovie.status;
-      }
-    })
     this.editButtonClick = false;
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
@@ -222,7 +181,6 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     ).then((result) => {
       if (result.value) {
         this.newMovie.nameMovie = '';
-        if (this.newMovie.fullNameMovie) this.newMovie.fullNameMovie = '';
         if (this.newMovie.isFirst) this.newMovie.isFirst = false;
         this.newMovie.year = null;
         this.newMovie.statusId = null;
@@ -271,11 +229,6 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
 
   save() {
     this.movieService.update(this.selectedMovie.key, this.selectedMovie);
-    this.allStatusMovies.forEach(statusMovie => {
-      if (statusMovie.id == this.selectedMovie.statusId) {
-        this.selectedMovie.status = statusMovie.status;
-      }
-    })
     this.editButtonClick = false;
     Swal.fire(
       'Movie data has been Updated successfully',

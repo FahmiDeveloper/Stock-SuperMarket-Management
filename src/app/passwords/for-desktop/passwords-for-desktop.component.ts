@@ -3,6 +3,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { PasswordFormDesktopComponent } from './password-form-desktop/password-form-desktop.component';
 
@@ -26,6 +27,8 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
 
   modalRefDeletePassword: any;
   content: string = '';
+  isDesktop: boolean;
+
   length: number = 0;
   pageSize: number = 6;
   pageSizeOptions: number[] = [6];
@@ -36,10 +39,12 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   
   constructor(
     public passwordService: PasswordService,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
+    this.isDesktop = this.deviceService.isDesktop();
     this.getAllPasswords();
   }
 
@@ -112,6 +117,10 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  followLink(path: string) {
+    window.open(path);
   }
 
   ngOnDestroy() {

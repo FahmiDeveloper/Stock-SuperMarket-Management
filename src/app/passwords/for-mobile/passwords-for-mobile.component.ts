@@ -26,6 +26,7 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
 
   modalRefDeletePassword: any;
   content: string = '';
+  
   length: number = 0;
   pageSize: number = 6;
   pageSizeOptions: number[] = [6];
@@ -121,6 +122,10 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  followLink(path: string) {
+    window.open(path);
   }
 
   ngOnDestroy() {

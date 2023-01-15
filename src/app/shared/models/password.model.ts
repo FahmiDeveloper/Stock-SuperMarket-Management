@@ -8,4 +8,5 @@ export class Password {
   note: string;
   numRefPassword: number;
   picture: string;
+  path: string;
 }

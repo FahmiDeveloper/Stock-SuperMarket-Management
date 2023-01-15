@@ -4,7 +4,7 @@
 <mat-grid-list *ngIf="listPartsByCurrentName.length > 1" cols=2 #grid rowHeight="250px" gutterSize="15px">
     <mat-grid-tile *ngFor="let movie of listPartsByCurrentName">
         <mat-card class="settings-card" style="border: 1px solid;" (click)="sendDetailsMovie(movie)">
-            <mat-card-title class="text-application" style="font-size: 5vw;">{{ movie.nameMovieToShow }}</mat-card-title>                  
+            <mat-card-title class="text-application" style="font-size: 5vw;">{{ movie.nameMovie }}</mat-card-title>                  
             <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image" style="height: 85%">
             <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image" style="height: 85%">              
         </mat-card>
