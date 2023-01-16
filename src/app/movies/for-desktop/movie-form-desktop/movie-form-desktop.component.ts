@@ -86,6 +86,7 @@ export class MovieFormDesktopComponent implements OnInit {
   }
 
   save() {
+    if (!this.movie.notLiked) {this.movie.notLiked = false;}
     if (this.movie.key) {
       this.movieService.update(this.movie.key, this.movie);
       Swal.fire(

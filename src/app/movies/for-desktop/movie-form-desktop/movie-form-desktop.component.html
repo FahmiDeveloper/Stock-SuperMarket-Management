@@ -9,7 +9,9 @@
 <mat-dialog-content>
   <form (ngSubmit)="save()" #f="ngForm">
 
-    <mat-checkbox name="isFirst" [(ngModel)]="movie.isFirst" class="mat-checkbox-layout"><span>First</span></mat-checkbox>
+    <mat-checkbox name="isFirst" [(ngModel)]="movie.isFirst" class="mat-checkbox-layout">
+      <span>First</span>
+    </mat-checkbox>
     
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Name</span></mat-placeholder>
@@ -35,6 +37,10 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-checkbox *ngIf="movie.statusId && movie.statusId == 3" name="notLiked" [(ngModel)]="movie.notLiked" class="mat-checkbox-layout">
+      <span>Not liked</span>
+    </mat-checkbox>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Part</span></mat-placeholder>

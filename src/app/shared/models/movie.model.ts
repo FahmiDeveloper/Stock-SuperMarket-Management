@@ -13,6 +13,7 @@ export class Movie {
   priority: number;
   isFirst: boolean;
   parentFilmKey: string;
+  notLiked: boolean;
 
   constructor(){
     this.nameMovie = '';
