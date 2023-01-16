@@ -70,17 +70,30 @@
                     <span
                         [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}"
                         style="display: table; margin: 0 auto;"
-                        [ngClass]="movie.statusId == 1 && !movie.part? 'wait-image' : 
+                        [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
                         movie.statusId == 2 && !movie.part ? 'not-download-image':
                         movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                         movie.statusId == 4 && !movie.part ? 'not-watched-image':
                         movie.statusId == 5 && !movie.part ? 'search-image':
-                        movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
+                        movie.part && movie.part == 1 ? 'parts-image':
                         movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                     </span>
-                    <br>
+                    <br>                    
+                    <button
+                        *ngIf="movie.part && movie.part == 1" 
+                        type="button"
+                        mat-button 
+                        (click)="showDetailsMovie(movie)"
+                        class="style-button text-application"
+                        [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}">
+                        <mat-icon style="color: #a54403">view_list</mat-icon>
+                        <span>Details</span>
+                    </button>
+                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                        Part:&nbsp;{{ movie.part }}
+                    </h4>
                     <button 
-                        *ngIf="!movie.part"
+                        *ngIf="!movie.part || (movie.part && movie.part > 1)"
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 
@@ -136,20 +149,7 @@
                             <mat-icon style="color: #f44336;">delete</mat-icon>
                             Delete
                         </button>
-                    </mat-menu>                     
-                    <button
-                        *ngIf="movie.part && movie.part == 1" 
-                        type="button"
-                        mat-button 
-                        (click)="showDetailsMovie(movie)"
-                        class="style-button text-application"
-                        [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}">
-                        <mat-icon style="color: #a54403">view_list</mat-icon>
-                        <span>Details</span>
-                    </button>
-                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                        Part:&nbsp;{{ movie.part }}
-                    </h4>
+                        </mat-menu>  
                     <br><br>
                 </div>
             </div>
@@ -176,17 +176,30 @@
                     <span
                         [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}"
                         style="display: table; margin: 0 auto;"
-                        [ngClass]="movie.statusId == 1 && !movie.part? 'wait-image' : 
+                        [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
                         movie.statusId == 2 && !movie.part ? 'not-download-image':
                         movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                         movie.statusId == 4 && !movie.part ? 'not-watched-image':
                         movie.statusId == 5 && !movie.part ? 'search-image':
-                        movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
+                        movie.part && movie.part == 1 ? 'parts-image':
                         movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                     </span>
-                    <br>
+                    <br>                    
+                    <button
+                        *ngIf="movie.part && movie.part == 1" 
+                        type="button"
+                        mat-button 
+                        (click)="showDetailsMovie(movie)"
+                        class="style-button text-application"
+                        [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}">
+                        <mat-icon style="color: #a54403">view_list</mat-icon>
+                        <span>Details</span>
+                    </button>
+                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                        Part:&nbsp;{{ movie.part }}
+                    </h4>
                     <button 
-                        *ngIf="!movie.part"
+                        *ngIf="!movie.part || (movie.part && movie.part > 1)"
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 
@@ -242,20 +255,7 @@
                             <mat-icon style="color: #f44336;">delete</mat-icon>
                             Delete
                         </button>
-                    </mat-menu>                     
-                    <button
-                        *ngIf="movie.part && movie.part == 1" 
-                        type="button"
-                        mat-button 
-                        (click)="showDetailsMovie(movie)"
-                        class="style-button text-application"
-                        [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}">
-                        <mat-icon style="color: #a54403">view_list</mat-icon>
-                        <span>Details</span>
-                    </button>
-                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                        Part:&nbsp;{{ movie.part }}
-                    </h4>
+                    </mat-menu>  
                     <br><br>
                 </div>
             </div>
@@ -288,12 +288,25 @@
                             movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                             movie.statusId == 4 && !movie.part ? 'not-watched-image':
                             movie.statusId == 5 && !movie.part ? 'search-image':
-                            movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
+                            movie.part && movie.part == 1 ? 'parts-image':
                             movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                         </span>
-                        <br>
+                        <br>                    
+                        <button
+                            *ngIf="movie.part && movie.part == 1" 
+                            type="button"
+                            mat-button 
+                            (click)="showDetailsMovie(movie)"
+                            class="style-button text-application"
+                            [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}">
+                            <mat-icon style="color: #a54403">view_list</mat-icon>
+                            <span>Details</span>
+                        </button>
+                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
+                            Part:&nbsp;{{ movie.part }}
+                        </h4>
                         <button 
-                            *ngIf="!movie.part"
+                            *ngIf="!movie.part || (movie.part && movie.part > 1)"
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
@@ -349,20 +362,7 @@
                                 <mat-icon style="color: #f44336;">delete</mat-icon>
                                 Delete
                             </button>
-                        </mat-menu>                     
-                        <button
-                            *ngIf="movie.part && movie.part == 1" 
-                            type="button"
-                            mat-button 
-                            (click)="showDetailsMovie(movie)"
-                            class="style-button text-application"
-                            [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}">
-                            <mat-icon style="color: #a54403">view_list</mat-icon>
-                            <span>Details</span>
-                        </button>
-                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                            Part:&nbsp;{{ movie.part }}
-                        </h4>
+                        </mat-menu>  
                         <br><br>
                     </div>
                 </div>
