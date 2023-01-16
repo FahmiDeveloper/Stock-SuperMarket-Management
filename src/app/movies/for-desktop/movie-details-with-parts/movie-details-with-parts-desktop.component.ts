@@ -60,6 +60,15 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.movieService.delete(movieId);
+        this.listPartsByParentFilmKey.forEach((movie, index) => {
+          if(movie.key === movieId) this.listPartsByParentFilmKey.splice(index,1);
+        });
+        if (this.listPartsByParentFilmKey.length == 0) {
+          this.dialogRef.close();
+        }
+        else {
+          this.movie = this.listPartsByParentFilmKey[0];
+        }
         Swal.fire(
           'Movie has been deleted successfully',
           '',
@@ -81,6 +90,14 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  viewNote(movieNote: string) {
+    Swal.fire({
+      text: movieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   close() {

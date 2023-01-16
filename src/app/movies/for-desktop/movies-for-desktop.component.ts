@@ -194,14 +194,6 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     this.pagedList = this.isDesktop ? this.moviesList.slice(0, 8) : this.moviesList.slice(0, 6);
     this.length = this.moviesList.length;
   }
-
-  viewNote(movieNote: string) {
-    Swal.fire({
-      text: movieNote,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
-    });
-  }
   
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();

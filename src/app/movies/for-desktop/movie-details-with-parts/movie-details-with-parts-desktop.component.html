@@ -11,8 +11,8 @@
     <div class="col-md-1"></div>
     <div class="col-md-2">
       <div class="card">
-          <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
-          <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
+        <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
+        <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
       </div>
     </div>
     <div class="col-md-2"></div>
@@ -21,8 +21,8 @@
         <mat-grid-list cols=2 rowHeight="50px" class="text-application">
           <mat-grid-tile>Year</mat-grid-tile>
           <mat-grid-tile>
-              <span *ngIf="movie.year">{{ movie.year }}</span>
-              <span *ngIf="!movie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                     
+            <span *ngIf="movie.year">{{ movie.year }}</span>
+            <span *ngIf="!movie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                     
           </mat-grid-tile>
   
           <mat-grid-tile>Status</mat-grid-tile>
@@ -38,45 +38,42 @@
   
           <mat-grid-tile>Part</mat-grid-tile>
           <mat-grid-tile>
-                  <span *ngIf="movie.part">{{ movie.part }}</span>
-                  <span *ngIf="!movie.part"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
+            <span *ngIf="movie.part">{{ movie.part }}</span>
+            <span *ngIf="!movie.part"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
           </mat-grid-tile>
   
           <mat-grid-tile>Path</mat-grid-tile>
           <mat-grid-tile>
-              <span *ngIf="movie.path">
-                  <mat-icon style="cursor: pointer;" (click)="followLink(movie.path)" target="_blank">link</mat-icon>                            
-              </span>
-              <span *ngIf="!movie.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+            <span *ngIf="movie.path">
+              <mat-icon style="cursor: pointer;" (click)="followLink(movie.path)" target="_blank">link</mat-icon>                            
+            </span>
+            <span *ngIf="!movie.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
           </mat-grid-tile>
   
           <mat-grid-tile>Note</mat-grid-tile>
           <mat-grid-tile>
-              <span *ngIf="movie.note">
-                  <mat-icon *ngIf="movie.note.length == 35 || movie.note.length > 35" style="color: green;" (click)="viewNote(movie.note)">remove_red_eye</mat-icon>
-                  <span *ngIf="movie.note.length < 35">{{ movie.note }}</span>
-              </span>
-              <span *ngIf="!movie.note"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+            <mat-icon *ngIf="movie.note" style="cursor: pointer;" (click)="viewNote(movie.note)">note</mat-icon>         
+            <i *ngIf="!movie.note" class="fa fa-minus-circle" aria-hidden="true"></i>
           </mat-grid-tile>
         </mat-grid-list>
 
         <div class="row justify-content-center" style="margin-top: auto;">
           <mat-card-actions>
             <button
-                type="button"
-                mat-button 
-                (click)="editMovie(movie)"
-                class="text-application">
-                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                <span>Edit</span>
+              type="button"
+              mat-button 
+              (click)="editMovie(movie)"
+              class="text-application">
+              <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+              <span>Edit</span>
             </button>
             <button
-                type="button"
-                mat-button 
-                (click)="deleteMovie(movie.key)" 
-                class="text-application">
-                <mat-icon style="color: #f44336;">delete</mat-icon>
-                <span>Delete</span>
+              type="button"
+              mat-button 
+              (click)="deleteMovie(movie.key)" 
+              class="text-application">
+              <mat-icon style="color: #f44336;">delete</mat-icon>
+              <span>Delete</span>
             </button>
           </mat-card-actions>
       </div>
