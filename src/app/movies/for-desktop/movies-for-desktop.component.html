@@ -72,11 +72,11 @@
                         style="display: table; margin: 0 auto;"
                         [ngClass]="movie.statusId == 1 && !movie.part? 'wait-image' : 
                         movie.statusId == 2 && !movie.part ? 'not-download-image':
-                        movie.statusId == 3 && !movie.part && movie.note !== 'Not liked' ? 'watched-image':
+                        movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                         movie.statusId == 4 && !movie.part ? 'not-watched-image':
                         movie.statusId == 5 && !movie.part ? 'search-image':
                         movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
-                        movie.statusId == 3 && !movie.part && movie.note == 'Not liked' ? 'not-liked-image':''">
+                        movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                     </span>
                     <br>
                     <button 
@@ -178,11 +178,11 @@
                         style="display: table; margin: 0 auto;"
                         [ngClass]="movie.statusId == 1 && !movie.part? 'wait-image' : 
                         movie.statusId == 2 && !movie.part ? 'not-download-image':
-                        movie.statusId == 3 && !movie.part && movie.note !== 'Not liked' ? 'watched-image':
+                        movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                         movie.statusId == 4 && !movie.part ? 'not-watched-image':
                         movie.statusId == 5 && !movie.part ? 'search-image':
                         movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
-                        movie.statusId == 3 && !movie.part && movie.note == 'Not liked' ? 'not-liked-image':''">
+                        movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                     </span>
                     <br>
                     <button 
@@ -285,11 +285,11 @@
                             style="display: table; margin: 0 auto;"
                             [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
                             movie.statusId == 2 && !movie.part ? 'not-download-image':
-                            movie.statusId == 3 && !movie.part && movie.note !== 'Not liked' ? 'watched-image':
+                            movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                             movie.statusId == 4 && !movie.part ? 'not-watched-image':
                             movie.statusId == 5 && !movie.part ? 'search-image':
                             movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
-                            movie.statusId == 3 && !movie.part && movie.note == 'Not liked' ? 'not-liked-image':''">
+                            movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                         </span>
                         <br>
                         <button 
@@ -391,11 +391,11 @@
                             style="display: table; margin: 0 auto;"
                             [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
                             movie.statusId == 2 && !movie.part ? 'not-download-image':
-                            movie.statusId == 3 && !movie.part && movie.note !== 'Not liked' ? 'watched-image':
+                            movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                             movie.statusId == 4 && !movie.part ? 'not-watched-image':
                             movie.statusId == 5 && !movie.part ? 'search-image':
                             movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
-                            movie.statusId == 3 && !movie.part && movie.note == 'Not liked' ? 'not-liked-image':''">
+                            movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                         </span>
                         <br>
                         <button 
@@ -499,11 +499,11 @@
                             style="display: table; margin: 0 auto;"
                             [ngClass]="movie.statusId == 1 && !movie.part? 'wait-image' : 
                             movie.statusId == 2 && !movie.part ? 'not-download-image':
-                            movie.statusId == 3 && !movie.part && movie.note !== 'Not liked' ? 'watched-image':
+                            movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
                             movie.statusId == 4 && !movie.part ? 'not-watched-image':
                             movie.statusId == 5 && !movie.part ? 'search-image':
                             movie.part && (movie.statusId == 1 || movie.statusId == 2|| movie.statusId == 3 || movie.statusId == 4 ||movie.statusId == 5) ? 'parts-image':
-                            movie.statusId == 3 && !movie.part && movie.note == 'Not liked' ? 'not-liked-image':''">
+                            movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
                         </span>
                         <br>
                         <button 
