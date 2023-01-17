@@ -11,7 +11,7 @@ import { Movie } from 'src/app/shared/models/movie.model';
 
 export class ListPartsForMobileComponent {
 
-  @Input() listPartsByCurrentName: Movie[];
+  @Input() listPartsByParentFilmKey: Movie[];
   @Output() partMovieSelected = new EventEmitter();
 
   sendDetailsMovie(movie: Movie) {

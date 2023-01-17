@@ -13,12 +13,12 @@ import { MovieService } from 'src/app/shared/services/movie.service';
 import { Movie, StatusMovies } from 'src/app/shared/models/movie.model';
 
 @Component({
-  selector: 'movie-form-desktop',
-  templateUrl: './movie-form-desktop.component.html',
-  styleUrls: ['./movie-form-desktop.scss']
+  selector: 'movie-form-mobile',
+  templateUrl: './movie-form-mobile.component.html',
+  styleUrls: ['./movie-form-mobile.scss']
 })
 
-export class MovieFormDesktopComponent implements OnInit {
+export class MovieFormMobileComponent implements OnInit {
 
   arrayMovies: Movie[];
   partMoviesList: Movie[] = [];
@@ -45,7 +45,7 @@ export class MovieFormDesktopComponent implements OnInit {
   constructor(
     private movieService: MovieService, 
     private fireStorage: AngularFireStorage,
-    public dialogRef: MatDialogRef<MovieFormDesktopComponent>,
+    public dialogRef: MatDialogRef<MovieFormMobileComponent>,
     public dialogService: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Movie
   ) {}

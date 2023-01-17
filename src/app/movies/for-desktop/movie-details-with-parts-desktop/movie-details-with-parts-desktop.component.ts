@@ -100,6 +100,10 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
     });
   }
 
+  followLink(path: string) {
+    window.open(path);
+  }
+
   close() {
     this.dialogRef.close();
   }
