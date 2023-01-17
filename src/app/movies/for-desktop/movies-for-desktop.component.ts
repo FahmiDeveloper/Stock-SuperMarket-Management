@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
-import { MovieDetailsWithPartsDesktopComponent } from './movie-details-with-parts/movie-details-with-parts-desktop.component';
+import { MovieDetailsWithPartsDesktopComponent } from './movie-details-with-parts-desktop/movie-details-with-parts-desktop.component';
 import { MovieFormDesktopComponent } from './movie-form-desktop/movie-form-desktop.component';
 
 import { AuthService } from '../../shared/services/auth.service';
@@ -193,6 +193,20 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
 
     this.pagedList = this.isDesktop ? this.moviesList.slice(0, 8) : this.moviesList.slice(0, 6);
     this.length = this.moviesList.length;
+  }
+
+  copyText(text: string){
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = text;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
   }
   
   ngOnDestroy() {
