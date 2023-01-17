@@ -60,7 +60,11 @@
                     <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
                 </div>
                 <div class="back">
-                    <h4 class="text-application" style="text-align: center;font-weight: 600;" (click)="copyText(movie.nameMovie)">
+                    <h4 
+                        class="text-application" 
+                        style="text-align: center;font-weight: 600;"
+                        [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
+                        (click)="copyText(movie.nameMovie)">
                         {{ movie.nameMovie }}
                     </h4> 
                     <br>
@@ -172,7 +176,11 @@
                     <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
                 </div>
                 <div class="back">
-                    <h4 class="text-application" style="text-align: center;font-weight: 600;" (click)="copyText(movie.nameMovie)">
+                    <h4 
+                        class="text-application" 
+                        style="text-align: center;font-weight: 600;"
+                        [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
+                        (click)="copyText(movie.nameMovie)">
                         {{ movie.nameMovie }}
                     </h4> 
                     <br>
@@ -285,7 +293,7 @@
                         <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
                     </div>
                     <div class="back">
-                        <h4 class="text-application" style="text-align: center;font-weight: 600;" (click)="copyText(movie.nameMovie)">
+                        <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(movie.nameMovie)">
                             {{ movie.nameMovie }}
                         </h4> 
                         <br>
@@ -397,7 +405,9 @@
                         <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
                     </div>
                     <div class="back">
-                        <h4 class="text-application" style="text-align: center;font-weight: 600;">{{ movie.nameMovie }}</h4>
+                        <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(movie.nameMovie)">
+                            {{ movie.nameMovie }}
+                        </h4> 
                         <br>
                         <h4 class="text-application" style="text-align: center;">
                             <span *ngIf="movie.year">{{ movie.year }}</span>
