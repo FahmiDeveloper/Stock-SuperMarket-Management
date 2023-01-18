@@ -55,29 +55,28 @@
             <mat-icon *ngIf="movie.note" style="cursor: pointer;" (click)="viewNote(movie.note)">note</mat-icon>         
             <i *ngIf="!movie.note" class="fa fa-minus-circle" aria-hidden="true"></i>
           </mat-grid-tile>
-        </mat-grid-list>
 
-        <div class="row justify-content-center" style="margin-top: auto;">
-          <mat-card-actions>
+          <mat-grid-tile>
             <button
               type="button"
               mat-button 
               (click)="editMovie(movie)"
               class="text-application">
               <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-              <span>Edit</span>
             </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
             <button
               type="button"
               mat-button 
               (click)="deleteMovie(movie.key)" 
               class="text-application">
               <mat-icon style="color: #f44336;">delete</mat-icon>
-              <span>Delete</span>
             </button>
-          </mat-card-actions>
+          </mat-grid-tile>
+          
+        </mat-grid-list>
       </div>
-    </div>
       
     </div>
     <div class="col-md-1"></div>

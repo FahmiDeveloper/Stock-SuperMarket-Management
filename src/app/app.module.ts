@@ -75,6 +75,8 @@ import { UserComponent } from './user/index';
 import { 
   AnimesForDesktopComponent,
   ListSeasonsMoviesForDesktopComponent,
+  AnimeFormDesktopComponent,
+  AnimeDetailsWithSeasonsDesktopComponent,
   AnimesForMobileComponent,
   ListSeasonsMoviesForMobileComponent
 } from './animes/index';
@@ -215,6 +217,8 @@ import {
 
     AnimesForDesktopComponent,
     ListSeasonsMoviesForDesktopComponent,
+    AnimeFormDesktopComponent,
+    AnimeDetailsWithSeasonsDesktopComponent,
     AnimesForMobileComponent,
     ListSeasonsMoviesForMobileComponent,
 

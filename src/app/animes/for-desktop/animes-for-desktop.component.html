@@ -1,17 +1,6 @@
-<h1 *ngIf="!getDetailsAnime && !clickNewAnime" class="titleTextInterface text-application">Animes</h1>
+<h1 class="titleTextInterface text-application">Animes</h1>
 
-<h1 *ngIf="getDetailsAnime && !clickNewAnime" class="titleTextInterface text-application">
-    <mat-icon *ngIf="getDetailsAnime && !clickNewAnime" (click)="getAllAnimes()" class="aligned-with-text">home</mat-icon>
-    &nbsp;&nbsp;&nbsp;
-    <span *ngIf="selectedAnime.fullNameAnime" (click)="copyText(selectedAnime.fullNameAnime)" style="cursor: pointer;">{{ selectedAnime.fullNameAnime }}</span>
-    <span *ngIf="!selectedAnime.fullNameAnime" (click)="copyText(selectedAnime.nameAnime)" style="cursor: pointer;">{{ selectedAnime.nameAnime }}</span>
-</h1>
-
-<h1 *ngIf="!getDetailsAnime && clickNewAnime" class="titleTextInterface text-application">New anime</h1>
-
-<br>
-
-<div class="row" *ngIf="!getDetailsAnime && !clickNewAnime">
+<div class="row">
     <div class="col-md-4">
         <mat-form-field class="widthInput">
             <mat-label class="text-application">Name</mat-label>
@@ -31,9 +20,8 @@
     </div>
     <div class="col-md-4">
         <button
-            *ngIf="dataUserConnected.roleAddAnime"
             type="button" 
-            (click)="addNewAnime()" 
+            (click)="newAnime()" 
             mat-mini-fab 
             color="primary" 
             style="background: #2196F3;float: right;">
@@ -62,293 +50,575 @@
     </div> 
 </div>
 
-<br *ngIf="!getDetailsAnime && !clickNewAnime">
+<br>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1 && !getDetailsAnime && !clickNewAnime" cols=1 #grid rowHeight="400px" gutterSize="15px">
+<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1" cols=1 #grid rowHeight="350px" gutterSize="15px">
     <mat-grid-tile *ngFor="let anime of pagedList">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsAnime(anime)">       
-            <mat-card-title class="text-application" style="font-size: 15px !important;">{{ anime.nameAnimeToShow }}</mat-card-title>             
-            <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}">
-            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}">              
-        </mat-card>
+        <div class="flip-container">
+            <div class="card">
+                <div class="front">
+                    <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
+                    <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+                </div>
+                <div class="back">
+                    <h4 
+                        class="text-application" 
+                        style="text-align: center;font-weight: 600;"
+                        [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
+                        (click)="copyText(anime.nameAnime)">
+                        {{ anime.nameAnime }}
+                    </h4> 
+                    <br>
+                    <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                    <br>
+                    <span
+                        *ngIf="!statusId"
+                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
+                        style="display: table; margin: 0 auto;"
+                        [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
+                        anime.statusId == 2 && !anime.season ? 'not-download-image':
+                        anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
+                        anime.statusId == 4 && !anime.season ? 'not-watched-image':
+                        anime.statusId == 5 && !anime.season ? 'search-image':
+                        anime.season && anime.season == 1 ? 'seasons-image':
+                        anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
+                    </span>
+                    <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
+                        Season:&nbsp;{{ anime.season }}
+                    </h4>
+                    <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
+                        One season
+                    </h4>
+                    <br>
+                    <button
+                        *ngIf="anime.season && anime.season == 1" 
+                        type="button"
+                        mat-button 
+                        (click)="showDetailsAnime(anime)"
+                        class="style-button text-application"
+                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                        <mat-icon style="color: #a54403">view_list</mat-icon>
+                        <span>Details</span>
+                    </button>           
+                    <button 
+                        *ngIf="!anime.season || (anime.season && anime.season > 1)"
+                        type="button"
+                        mat-button
+                        [matMenuTriggerFor]="menu" 
+                        class="style-button text-application"
+                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                        <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+                        Actions
+                    </button>
+                    <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="editAnime(anime)">
+                            <mat-icon style="color: #9C27B0">edit</mat-icon>
+                            Edit
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 1" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                            Check
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 2" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: green">cloud_download</mat-icon>
+                            Download
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 4" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                            Watch
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 5" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: #0e8999">search</mat-icon>
+                            Search
+                        </button>
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="deleteAnime(anime.key)">
+                            <mat-icon style="color: #f44336;">delete</mat-icon>
+                            Delete
+                        </button>
+                    </mat-menu>   
+                    <br><br>
+                </div>
+            </div>
+        </div>   
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 2 && !getDetailsAnime && !clickNewAnime" cols=2 #grid rowHeight="400px" gutterSize="15px">
+<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 2" cols=2 #grid rowHeight="350px" gutterSize="15px">
     <mat-grid-tile *ngFor="let anime of pagedList">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsAnime(anime)">       
-            <mat-card-title class="text-application" style="font-size: 15px !important;">{{ anime.nameAnimeToShow }}</mat-card-title>             
-            <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}">
-            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}">            
-        </mat-card>
+        <div class="flip-container">
+            <div class="card">
+                <div class="front">
+                    <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
+                    <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+                </div>
+                <div class="back">
+                    <h4 
+                        class="text-application" 
+                        style="text-align: center;font-weight: 600;"
+                        [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
+                        (click)="copyText(anime.nameAnime)">
+                        {{ anime.nameAnime }}
+                    </h4> 
+                    <br>
+                    <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                    <br>
+                    <span
+                        *ngIf="!statusId"
+                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
+                        style="display: table; margin: 0 auto;"
+                        [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
+                        anime.statusId == 2 && !anime.season ? 'not-download-image':
+                        anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
+                        anime.statusId == 4 && !anime.season ? 'not-watched-image':
+                        anime.statusId == 5 && !anime.season ? 'search-image':
+                        anime.season && anime.season == 1 ? 'seasons-image':
+                        anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
+                    </span>
+                    <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
+                        Season:&nbsp;{{ anime.season }}
+                    </h4>
+                    <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
+                        One season
+                    </h4>
+                    <br>
+                    <button
+                        *ngIf="anime.season && anime.season == 1" 
+                        type="button"
+                        mat-button 
+                        (click)="showDetailsAnime(anime)"
+                        class="style-button text-application"
+                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                        <mat-icon style="color: #a54403">view_list</mat-icon>
+                        <span>Details</span>
+                    </button>           
+                    <button 
+                        *ngIf="!anime.season || (anime.season && anime.season > 1)"
+                        type="button"
+                        mat-button
+                        [matMenuTriggerFor]="menu" 
+                        class="style-button text-application"
+                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                        <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+                        Actions
+                    </button>
+                    <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="editAnime(anime)">
+                            <mat-icon style="color: #9C27B0">edit</mat-icon>
+                            Edit
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 1" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                            Check
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 2" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: green">cloud_download</mat-icon>
+                            Download
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 4" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                            Watch
+                        </button>
+                        <button
+                            *ngIf="anime.statusId == 5" 
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="followLink(anime.path)">
+                            <mat-icon style="color: #0e8999">search</mat-icon>
+                            Search
+                        </button>
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="deleteAnime(anime.key)">
+                            <mat-icon style="color: #f44336;">delete</mat-icon>
+                            Delete
+                        </button>
+                    </mat-menu>   
+                    <br><br>
+                </div>
+            </div>
+        </div>   
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 2 && !getDetailsAnime && !clickNewAnime" cols=3 #grid rowHeight="400px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let anime of pagedList">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="showDetailsAnime(anime)">       
-            <mat-card-title class="text-application" style="font-size: 15px !important;">{{ anime.nameAnimeToShow }}</mat-card-title>             
-            <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}">
-            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}">               
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
+<ng-container *ngIf="isDesktop">
+    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 3" cols=3 #grid rowHeight="320px" gutterSize="15px">
+        <mat-grid-tile *ngFor="let anime of pagedList">
+            <div class="flip-container">
+                <div class="card">
+                    <div class="front">
+                        <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
+                        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+                    </div>
+                    <div class="back">
+                        <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(anime.nameAnime)">
+                            {{ anime.nameAnime }}
+                        </h4>
+                        <br>
+                        <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                        <br>
+                        <span
+                            *ngIf="!statusId"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
+                            style="display: table; margin: 0 auto;"
+                            [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
+                            anime.statusId == 2 && !anime.season ? 'not-download-image':
+                            anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
+                            anime.statusId == 4 && !anime.season ? 'not-watched-image':
+                            anime.statusId == 5 && !anime.season ? 'search-image':
+                            anime.season && anime.season == 1 ? 'seasons-image':
+                            anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
+                        </span>
+                        <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
+                            Season:&nbsp;{{ anime.season }}
+                        </h4>
+                        <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
+                            One season
+                        </h4>
+                        <br>
+                        <button
+                            *ngIf="anime.season && anime.season == 1" 
+                            type="button"
+                            mat-button 
+                            (click)="showDetailsAnime(anime)"
+                            class="style-button text-application"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            <mat-icon style="color: #a54403">view_list</mat-icon>
+                            <span>Details</span>
+                        </button>           
+                        <button 
+                            *ngIf="!anime.season || (anime.season && anime.season > 1)"
+                            type="button"
+                            mat-button
+                            [matMenuTriggerFor]="menu" 
+                            class="style-button text-application"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+                            Actions
+                        </button>
+                        <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="editAnime(anime)">
+                                <mat-icon style="color: #9C27B0">edit</mat-icon>
+                                Edit
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 1" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                                Check
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 2" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: green">cloud_download</mat-icon>
+                                Download
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 4" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                                Watch
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 5" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #0e8999">search</mat-icon>
+                                Search
+                            </button>
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="deleteAnime(anime.key)">
+                                <mat-icon style="color: #f44336;">delete</mat-icon>
+                                Delete
+                            </button>
+                        </mat-menu>   
+                        <br><br>
+                    </div>
+                </div>
+            </div>   
+        </mat-grid-tile>
+    </mat-grid-list>
 
-<div *ngIf="pagedList.length == 0 && !getDetailsAnime && !clickNewAnime" class="row justify-content-center no-results text-application">
+    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 3" cols=4 #grid rowHeight="320px" gutterSize="15px">
+        <mat-grid-tile *ngFor="let anime of pagedList">
+            <div class="flip-container">
+                <div class="card">
+                    <div class="front">
+                        <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
+                        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+                    </div>
+                    <div class="back">
+                        <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(anime.nameAnime)">
+                            {{ anime.nameAnime }}
+                        </h4>
+                        <br>
+                        <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                        <br>
+                        <span
+                            *ngIf="!statusId"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
+                            style="display: table; margin: 0 auto;"
+                            [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
+                            anime.statusId == 2 && !anime.season ? 'not-download-image':
+                            anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
+                            anime.statusId == 4 && !anime.season ? 'not-watched-image':
+                            anime.statusId == 5 && !anime.season ? 'search-image':
+                            anime.season && anime.season == 1 ? 'seasons-image':
+                            anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
+                        </span>
+                        <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
+                            Season:&nbsp;{{ anime.season }}
+                        </h4>
+                        <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
+                            One season
+                        </h4>
+                        <br>
+                        <button
+                            *ngIf="anime.season && anime.season == 1" 
+                            type="button"
+                            mat-button 
+                            (click)="showDetailsAnime(anime)"
+                            class="style-button text-application"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            <mat-icon style="color: #a54403">view_list</mat-icon>
+                            <span>Details</span>
+                        </button>           
+                        <button 
+                            *ngIf="!anime.season || (anime.season && anime.season > 1)"
+                            type="button"
+                            mat-button
+                            [matMenuTriggerFor]="menu" 
+                            class="style-button text-application"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+                            Actions
+                        </button>
+                        <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="editAnime(anime)">
+                                <mat-icon style="color: #9C27B0">edit</mat-icon>
+                                Edit
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 1" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                                Check
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 2" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: green">cloud_download</mat-icon>
+                                Download
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 4" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                                Watch
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 5" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #0e8999">search</mat-icon>
+                                Search
+                            </button>
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="deleteAnime(anime.key)">
+                                <mat-icon style="color: #f44336;">delete</mat-icon>
+                                Delete
+                            </button>
+                        </mat-menu>   
+                        <br><br>
+                    </div>
+                </div>
+            </div>   
+        </mat-grid-tile>
+    </mat-grid-list>
+</ng-container>
+
+<ng-container *ngIf="isTablet">
+    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 2" cols=3 #grid rowHeight="320px" gutterSize="15px">
+        <mat-grid-tile *ngFor="let anime of pagedList">
+            <div class="flip-container">
+                <div class="card">
+                    <div class="front">
+                        <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
+                        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+                    </div>
+                    <div class="back">
+                        <h4 class="text-application" style="text-align: center;font-weight: 600;" (click)="copyText(anime.nameAnime)">
+                            {{ anime.nameAnime }}
+                        </h4>
+                        <br>
+                        <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                        <br>
+                        <span
+                            *ngIf="!statusId"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
+                            style="display: table; margin: 0 auto;"
+                            [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
+                            anime.statusId == 2 && !anime.season ? 'not-download-image':
+                            anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
+                            anime.statusId == 4 && !anime.season ? 'not-watched-image':
+                            anime.statusId == 5 && !anime.season ? 'search-image':
+                            anime.season && anime.season == 1 ? 'seasons-image':
+                            anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
+                        </span>
+                        <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
+                            Season:&nbsp;{{ anime.season }}
+                        </h4>
+                        <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
+                            One season
+                        </h4>
+                        <br>
+                        <button
+                            *ngIf="anime.season && anime.season == 1" 
+                            type="button"
+                            mat-button 
+                            (click)="showDetailsAnime(anime)"
+                            class="style-button text-application"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            <mat-icon style="color: #a54403">view_list</mat-icon>
+                            <span>Details</span>
+                        </button>           
+                        <button 
+                            *ngIf="!anime.season || (anime.season && anime.season > 1)"
+                            type="button"
+                            mat-button
+                            [matMenuTriggerFor]="menu" 
+                            class="style-button text-application"
+                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+                            Actions
+                        </button>
+                        <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="editAnime(anime)">
+                                <mat-icon style="color: #9C27B0">edit</mat-icon>
+                                Edit
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 1" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                                Check
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 2" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: green">cloud_download</mat-icon>
+                                Download
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 4" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                                Watch
+                            </button>
+                            <button
+                                *ngIf="anime.statusId == 5" 
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="followLink(anime.path)">
+                                <mat-icon style="color: #0e8999">search</mat-icon>
+                                Search
+                            </button>
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="deleteAnime(anime.key)">
+                                <mat-icon style="color: #f44336;">delete</mat-icon>
+                                Delete
+                            </button>
+                        </mat-menu>   
+                        <br><br>
+                    </div>
+                </div>
+            </div>   
+        </mat-grid-tile>
+    </mat-grid-list>
+</ng-container>
+
+<div *ngIf="pagedList.length == 0" class="row justify-content-center no-results text-application">
     No results
 </div>
 
-<div *ngIf="!getDetailsAnime && !clickNewAnime" class="row mat-paginator">
+<div class="row mat-paginator">
     <mat-paginator 
         [length]="length"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions"
+        [pageSize]="isDesktop ? 8 : 6"
+        [pageSizeOptions]="isDesktop ? [8] : [6]"
         showFirstLastButtons
         (page)="OnPageChange($event)">
     </mat-paginator>
 </div>
-
-<mat-grid-list *ngIf="getDetailsAnime && !clickNewAnime" cols=2 #grid rowHeight="450px" gutterSize="15px" class="grid-list-new-edit">
-    <mat-grid-tile>
-        <mat-card class="settings-card-new-update-anime" style="cursor: pointer;border: 1px solid;">       
-            <img *ngIf="selectedAnime.imageUrl" [src]="selectedAnime.imageUrl" class="anime-image" (click)="selectImage.click()" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}">
-            <img *ngIf="!selectedAnime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" (click)="selectImage.click()" [ngStyle]="{'height': getDetailsAnime ? '100%' : '92%'}"> 
-            <input type="file" name="file" (change)="uploadPictureForEditAnime($event)" style="display: none" accept=".jpeg,.jpg,.png,.svg" #selectImage>   
-        </mat-card>
-    </mat-grid-tile>
-    
-    <mat-grid-tile>
-        <mat-card class="settings-card-new-update-anime" style="border: 1px solid;">       
-            <mat-grid-list *ngIf="!editButtonClick" cols="12" rowHeight="50px" class="text-application">
-                <mat-grid-tile colspan="3">Status</mat-grid-tile>
-                <mat-grid-tile colspan="9">{{ selectedAnime.status }}</mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Type</mat-grid-tile>
-                <mat-grid-tile colspan="9">{{ selectedAnime.type }}</mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Season</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="selectedAnime.season">{{ selectedAnime.season }}</span>
-                    <span *ngIf="!selectedAnime.season"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Curr ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="selectedAnime.currentEpisode">{{ selectedAnime.currentEpisode }}</span>
-                    <span *ngIf="!selectedAnime.currentEpisode"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Tot ep</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="selectedAnime.totalEpisodes">{{ selectedAnime.totalEpisodes }}</span>
-                    <span *ngIf="!selectedAnime.totalEpisodes"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Path</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="selectedAnime.path">
-                        <mat-icon style="cursor: pointer;" (click)="followLink(selectedAnime.path)" target="_blank">link</mat-icon>                            
-                    </span>
-                    <span *ngIf="!selectedAnime.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>              
-                </mat-grid-tile>
-
-                <mat-grid-tile colspan="3">Note</mat-grid-tile>
-                <mat-grid-tile colspan="9">
-                    <span *ngIf="selectedAnime.note">
-                        <mat-icon *ngIf="selectedAnime.note.length == 35 || selectedAnime.note.length > 35" style="color: green;" (click)="viewNote(selectedAnime.note)">remove_red_eye</mat-icon>
-                        <span *ngIf="selectedAnime.note.length < 35">{{ selectedAnime.note }}</span>
-                    </span>
-                    <span *ngIf="!selectedAnime.note"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
-                </mat-grid-tile>
-
-            </mat-grid-list>
-
-            <div *ngIf="!editButtonClick" class="row justify-content-center">
-                <mat-card-actions>
-                    <button
-                        *ngIf="dataUserConnected.roleUpdateAnime"
-                        type="button"
-                        mat-button 
-                        (click)="editAnime(selectedAnime)"
-                        class="text-application">
-                        <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                        <span>Edit</span>
-                    </button>
-                    <button
-                        *ngIf="dataUserConnected.roleDeleteAnime"
-                        type="button"
-                        mat-button 
-                        (click)="deleteAnime(selectedAnime.key)" 
-                        class="text-application">
-                        <mat-icon style="color: #f44336;">delete</mat-icon>
-                        <span>Delete</span>
-                    </button>
-                </mat-card-actions>
-            </div>
-            
-            <mat-tab-group *ngIf="editButtonClick">
-                <mat-tab label="First data">
-                    <br>
-                    First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="selectedAnime.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-                    <br><br>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Name" type="text" [(ngModel)]="selectedAnime.nameAnime" name="nameAnime" class="text-application">
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Title" type="text" [(ngModel)]="selectedAnime.fullNameAnime" name="fullNameAnime" class="text-application">
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <mat-select placeholder="Status" [(ngModel)]="selectedAnime.statusId" name="statusId" class="text-application">
-                            <mat-option value=""></mat-option>
-                            <mat-option *ngFor="let statusAnime of allStatusAnimes" [value]="statusAnime.id">
-                                <span class="text-application">{{statusAnime.status}}</span>
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <mat-select [(ngModel)]="selectedAnime.type" name="type">
-                        <mat-option value="Manga">Manga</mat-option>
-                        <mat-option value="TV">TV</mat-option>
-                        <mat-option value="Movie">Movie</mat-option>
-                        <mat-option value="Special">Special</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Season" type="number" [(ngModel)]="selectedAnime.season" name="season" class="text-application">
-                    </mat-form-field>
-                </mat-tab>
-                <mat-tab label="Second data">
-                    <br>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Priority" type="number" [(ngModel)]="selectedAnime.priority" name="priority" class="text-application">
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Current episode" type="number" [(ngModel)]="selectedAnime.currentEpisode" name="currentEpisode" class="text-application">
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Total episodes" type="number" [(ngModel)]="selectedAnime.totalEpisodes" name="totalEpisodes" class="text-application">
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Path" type="text" [(ngModel)]="selectedAnime.path" name="path" class="text-application">
-                    </mat-form-field>
-                    <mat-form-field color="accent" style="width: 100%;">
-                        <input matInput placeholder="Note" type="text" [(ngModel)]="selectedAnime.note" name="note" class="text-application">
-                    </mat-form-field>
-                    <br>
-                    <div>                  
-                        <button
-                            mat-button 
-                            (click)="save(selectedAnime)"
-                            class="text-application">
-                            <mat-icon style="color: #FF5722">save</mat-icon>
-                            <span>Save</span>
-                        </button>
-                        <button
-                            mat-button 
-                            (click)="cancel()" 
-                            class="text-application">
-                            <mat-icon style="color: #607D8B;">cancel</mat-icon>
-                            <span>Cancel</span>
-                        </button>                        
-                     </div>
-                </mat-tab>
-            </mat-tab-group>
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
-
-<br *ngIf="getDetailsAnime && selectedAnime.priority && !clickNewAnime">
-
-<list-seasons-movies-desktop
-    *ngIf="getDetailsAnime && selectedAnime.priority && !clickNewAnime" 
-    [listAnimesByCurrentName]="listAnimesByCurrentName"
-    [isTablet]="isTablet"
-    [isPortrait]="isPortrait"
-    (seasonAnimeSelected)="getSeasonAnimeSelected($event)">
-</list-seasons-movies-desktop>
-
-<mat-horizontal-stepper *ngIf="clickNewAnime" [linear] = "isLinear" #stepper>
-    <mat-step>
-        <ng-template matStepLabel>First data</ng-template>
-        First&nbsp;&nbsp;&nbsp;&nbsp;<mat-checkbox name="isFirst" [(ngModel)]="newAnime.isFirst" class="mat-checkbox-layout"></mat-checkbox>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Name" type="text" [(ngModel)]="newAnime.nameAnime" name="nameAnime" class="text-application">
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Title" type="text" [(ngModel)]="newAnime.fullNameAnime" name="fullNameAnime" class="text-application">
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <mat-select placeholder="Status" [(ngModel)]="newAnime.statusId" name="statusId" class="text-application">
-                <mat-option value=""></mat-option>
-                <mat-option *ngFor="let statusAnime of allStatusAnimes" [value]="statusAnime.id">
-                    <span class="text-application">{{statusAnime.status}}</span>
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <mat-select placeholder="Type" [(ngModel)]="newAnime.type" name="type" class="text-application">
-              <mat-option value="Manga" class="text-application">Manga</mat-option>
-              <mat-option value="TV" class="text-application">TV</mat-option>
-              <mat-option value="Movie" class="text-application">Movie</mat-option>
-              <mat-option value="Special" class="text-application">Special</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Season" type="number" [(ngModel)]="newAnime.season" name="season" class="text-application">
-        </mat-form-field>
-        <br>
-        <div>
-            <button mat-button (click)="cancelFromNewAnime()">Cancel</button>
-            <button mat-button matStepperNext>Next</button>
-        </div>
-    </mat-step>
-    <mat-step>
-        <ng-template matStepLabel>Second data</ng-template>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Priority" type="number" [(ngModel)]="newAnime.priority" name="priority" class="text-application">
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Current Episode" type="number" [(ngModel)]="newAnime.currentEpisode" name="currentEpisode" class="text-application">
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Total Episode" type="number" [(ngModel)]="newAnime.totalEpisodes" name="totalEpisodes" class="text-application">
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Path" type="text" [(ngModel)]="newAnime.path" name="path" class="text-application">
-        </mat-form-field>
-        <br>
-        <mat-form-field color="accent" style="width: 30%;">
-            <input matInput placeholder="Note" type="text" [(ngModel)]="newAnime.note" name="note" class="text-application">
-        </mat-form-field>
-        <br>
-        <button type="button" mat-button (click)="fileInput.click()">Choose picture</button>
-        <input hidden (change)="uploadPictureForCreateAnime($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
-        <br *ngIf="progressValue"><br *ngIf="progressValue">
-        <div *ngIf="progressValue | async as val" class="progress-background">
-            <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
-            <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
-        </div>     
-        <br>
-        <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-        </div>
-    </mat-step>
-    <mat-step>
-       <ng-template matStepLabel>Done</ng-template>
-        Details taken
-        <br>
-       <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="saveNewAnime()">Save</button>
-       </div>
-    </mat-step>
-</mat-horizontal-stepper>

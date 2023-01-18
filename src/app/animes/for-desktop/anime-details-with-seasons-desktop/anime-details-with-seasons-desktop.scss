@@ -1,0 +1,56 @@
+.mat-dialog-content {
+  height: 54vh;
+}
+
+.card {
+  height: 300px;
+  width: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.75, 0, 0.85, 1);
+  transform: rotateY(0deg);
+  margin: 0 auto;
+  border: 1px solid white;
+}
+
+.anime-image {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  border-radius: 5px;
+}
+
+.wait-image {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq5VvXEWHDYBdvvFzp_b-YwJiZ-tyk089Utq8D8AKhvSQb5f69u9H4ndXkxq9ZMxNv2oU&usqp=CAU');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+  
+.not-download-image {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRskZIvjwG1IuGUNtOHXPx0RuaNBr3F5sejLtDxSOuKDD0nQp3MlUf12i6yLLgE0uJYVks&usqp=CAU');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.watched-image {
+  background-image: url('https://icones.pro/wp-content/uploads/2021/05/icone-oeil-beurre-vert.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.not-watched-image {
+  background-image: url('https://www.citypng.com/public/uploads/preview/eye-view-watching-red-icon-transparent-png-11640343976d3sbxmunu3.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+  
+.search-image {
+  background-image: url('https://toppng.com/uploads/preview/search-icon-customer-icon-11564158924ifw7wyjtfu.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}

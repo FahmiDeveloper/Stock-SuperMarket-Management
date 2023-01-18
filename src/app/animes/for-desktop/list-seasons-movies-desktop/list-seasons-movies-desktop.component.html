@@ -1,22 +1,20 @@
-<h2  *ngIf="listAnimesByCurrentName.length == 1" class="text-application">No parts yet</h2>
-<h2 *ngIf="listAnimesByCurrentName.length == 2 || listAnimesByCurrentName.length > 2" class="text-application">All parts</h2>
+<h2 *ngIf="listSeasonssByParentAnimeKey.length == 1" class="text-application">No seasons yet</h2>
+<h2 *ngIf="listSeasonssByParentAnimeKey.length > 1" class="text-application">All seasons</h2>
 
-<mat-grid-list *ngIf="listAnimesByCurrentName.length == 2" cols=2 #grid rowHeight="400px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let anime of listAnimesByCurrentName">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsAnime(anime)">
-            <mat-card-title class="text-application" style="font-size: 12px !important;">{{ anime.nameAnimeToShow }}</mat-card-title>                  
+<mat-grid-list *ngIf="listSeasonssByParentAnimeKey.length == 2" cols=2 #grid rowHeight="300px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let anime of listSeasonssByParentAnimeKey">
+        <div class="card" (click)="sendDetailsAnime(anime)">
             <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">              
-        </mat-card>
+            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+        </div>  
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="listAnimesByCurrentName.length > 2" cols=3 #grid rowHeight="400px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let anime of listAnimesByCurrentName">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsAnime(anime)">
-            <mat-card-title class="text-application" style="font-size: 12px !important;">{{ anime.nameAnimeToShow }}</mat-card-title>                  
+<mat-grid-list *ngIf="listSeasonssByParentAnimeKey.length > 2" cols=3 #grid rowHeight="300px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let anime of listSeasonssByParentAnimeKey">
+        <div class="card" (click)="sendDetailsAnime(anime)">
             <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">                 
-        </mat-card>
+            <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+        </div>   
     </mat-grid-tile>
 </mat-grid-list>

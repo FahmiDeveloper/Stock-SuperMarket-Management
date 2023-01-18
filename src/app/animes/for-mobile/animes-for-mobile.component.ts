@@ -132,25 +132,25 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
       
       else this.animesList = animes.filter(anime => anime.isFirst == true).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
-      if (this.animesList.length) {
-        if (this.animesList.length == 1) {
-          this.animesList.forEach(anime => {
-            if (anime.fullNameAnime) {
-              anime.nameAnimeToShow = (anime.fullNameAnime.length > 30) ? anime.fullNameAnime.substring(0, 30) + '...' : anime.fullNameAnime;
-            } else {
-              anime.nameAnimeToShow = (anime.nameAnime.length > 30) ? anime.nameAnime.substring(0, 30) + '...' : anime.nameAnime;
-            }
-          })
-        } else {
-          this.animesList.forEach(anime => {
-            if (anime.fullNameAnime) {
-              anime.nameAnimeToShow = (anime.fullNameAnime.length > 10) ? anime.fullNameAnime.substring(0, 10) + '...' : anime.fullNameAnime;
-            } else {
-              anime.nameAnimeToShow = (anime.nameAnime.length > 10) ? anime.nameAnime.substring(0, 10) + '...' : anime.nameAnime;
-            }
-          })
-        }
-      }   
+      // if (this.animesList.length) {
+      //   if (this.animesList.length == 1) {
+      //     this.animesList.forEach(anime => {
+      //       if (anime.fullNameAnime) {
+      //         anime.nameAnimeToShow = (anime.fullNameAnime.length > 30) ? anime.fullNameAnime.substring(0, 30) + '...' : anime.fullNameAnime;
+      //       } else {
+      //         anime.nameAnimeToShow = (anime.nameAnime.length > 30) ? anime.nameAnime.substring(0, 30) + '...' : anime.nameAnime;
+      //       }
+      //     })
+      //   } else {
+      //     this.animesList.forEach(anime => {
+      //       if (anime.fullNameAnime) {
+      //         anime.nameAnimeToShow = (anime.fullNameAnime.length > 10) ? anime.fullNameAnime.substring(0, 10) + '...' : anime.fullNameAnime;
+      //       } else {
+      //         anime.nameAnimeToShow = (anime.nameAnime.length > 10) ? anime.nameAnime.substring(0, 10) + '...' : anime.nameAnime;
+      //       }
+      //     })
+      //   }
+      // }   
 
       this.pagedList = this.animesList.slice(0, 6);
       this.length = this.animesList.length;
@@ -163,7 +163,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     this.animesList.forEach(element=>{
       this.statusAnimes.forEach(statusAnime => {
         if (statusAnime.id == element.statusId) {
-          element.status = statusAnime.status;
+          // element.status = statusAnime.status;
         }
       })
     })
@@ -185,7 +185,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     this.selectedAnime = anime;
     this.allStatusAnimes.forEach(statusAnime => {
       if (statusAnime.id == this.selectedAnime.statusId) {
-        this.selectedAnime.status = statusAnime.status;
+        // this.selectedAnime.status = statusAnime.status;
       }
     })
     this.listAnimesByCurrentName = this.allAnimes.filter(anime => (anime.nameAnime.toLowerCase() == (this.selectedAnime.nameAnime.toLowerCase()))).sort((n1, n2) => n1.priority - n2.priority);
@@ -196,7 +196,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     this.selectedAnime = seasonAnimeSelected;
     this.allStatusAnimes.forEach(statusAnime => {
       if (statusAnime.id == this.selectedAnime.statusId) {
-        this.selectedAnime.status = statusAnime.status;
+        // this.selectedAnime.status = statusAnime.status;
       }
     })
     this.editButtonClick = false;
@@ -274,7 +274,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     this.animeService.update(this.selectedAnime.key, this.selectedAnime);
     this.allStatusAnimes.forEach(statusAnime => {
       if (statusAnime.id == this.selectedAnime.statusId) {
-        this.selectedAnime.status = statusAnime.status;
+        // this.selectedAnime.status = statusAnime.status;
       }
     })
     this.editButtonClick = false;
