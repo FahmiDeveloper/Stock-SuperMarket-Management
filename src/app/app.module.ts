@@ -75,8 +75,12 @@ import { UserComponent } from './user/index';
 import { 
   AnimesForDesktopComponent,
   ListSeasonsMoviesForDesktopComponent,
+  AnimeFormDesktopComponent,
+  AnimeDetailsWithSeasonsDesktopComponent,
   AnimesForMobileComponent,
-  ListSeasonsMoviesForMobileComponent
+  ListSeasonsMoviesForMobileComponent,
+  AnimeFormMobileComponent,
+  AnimeDetailsWithSeasonsMobileComponent
 } from './animes/index';
 
 import { 
@@ -215,8 +219,12 @@ import {
 
     AnimesForDesktopComponent,
     ListSeasonsMoviesForDesktopComponent,
+    AnimeFormDesktopComponent,
+    AnimeDetailsWithSeasonsDesktopComponent,
     AnimesForMobileComponent,
     ListSeasonsMoviesForMobileComponent,
+    AnimeFormMobileComponent,
+    AnimeDetailsWithSeasonsMobileComponent,
 
     ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,

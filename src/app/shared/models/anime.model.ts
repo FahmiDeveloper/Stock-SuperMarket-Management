@@ -2,13 +2,10 @@ export class Anime {
 
   key: string;
   nameAnime: string;
-  fullNameAnime: string;
   date: string;
-  time: string;
   note: string;
   imageUrl: string;
   statusId: number;
-  status: string;// get name of status foreach anime using statusId
   path: string;
   numRefAnime: number;
   currentEpisode: number;
@@ -17,12 +14,12 @@ export class Anime {
   priority: number;
   type: string;
   isFirst: boolean;
-  nameAnimeToShow: string;
+  parentAnimeKey: string;
+  notLiked: boolean;
 
   constructor(){
     this.nameAnime = '';
     this.date = '';
-    this.time = '';
     this.note = '';
     this.imageUrl = '';
     this.statusId = null;
