@@ -78,7 +78,9 @@ import {
   AnimeFormDesktopComponent,
   AnimeDetailsWithSeasonsDesktopComponent,
   AnimesForMobileComponent,
-  ListSeasonsMoviesForMobileComponent
+  ListSeasonsMoviesForMobileComponent,
+  AnimeFormMobileComponent,
+  AnimeDetailsWithSeasonsMobileComponent
 } from './animes/index';
 
 import { 
@@ -221,6 +223,8 @@ import {
     AnimeDetailsWithSeasonsDesktopComponent,
     AnimesForMobileComponent,
     ListSeasonsMoviesForMobileComponent,
+    AnimeFormMobileComponent,
+    AnimeDetailsWithSeasonsMobileComponent,
 
     ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,

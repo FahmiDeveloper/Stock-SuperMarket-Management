@@ -1,10 +1,17 @@
+.card {
+  height: 200px;
+  width: 140px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.75, 0, 0.85, 1);
+  transform: rotateY(0deg);
+  margin: 0 auto;
+  cursor: pointer;
+}
+
 .anime-image {
+  height: 100%;
   width: 100%;
   background-size: cover;
   border-radius: 5px;
-}
-  
-.settings-card {
-  height: 100%;
-  width: 350px;
 }

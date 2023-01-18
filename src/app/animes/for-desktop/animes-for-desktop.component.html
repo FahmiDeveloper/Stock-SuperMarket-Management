@@ -69,7 +69,17 @@
                         {{ anime.nameAnime }}
                     </h4> 
                     <br>
-                    <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                    <h4 class="text-application" style="text-align: center;">
+                        {{ anime.type }}
+                        <span *ngIf="!anime.season && anime.type == 'TV'">
+                            &nbsp;
+                            (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+                            <span *ngIf="!anime.currentEpisode">?</span>
+                            /
+                            <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
+                            <span *ngIf="!anime.totalEpisodes">?</span>)
+                        </span>
+                    </h4>
                     <br>
                     <span
                         *ngIf="!statusId"
@@ -182,7 +192,17 @@
                         {{ anime.nameAnime }}
                     </h4> 
                     <br>
-                    <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                    <h4 class="text-application" style="text-align: center;">
+                        {{ anime.type }}
+                        <span *ngIf="!anime.season && anime.type == 'TV'">
+                            &nbsp;
+                            (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+                            <span *ngIf="!anime.currentEpisode">?</span>
+                            /
+                            <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
+                            <span *ngIf="!anime.totalEpisodes">?</span>)
+                        </span>
+                    </h4>
                     <br>
                     <span
                         *ngIf="!statusId"
@@ -292,7 +312,17 @@
                             {{ anime.nameAnime }}
                         </h4>
                         <br>
-                        <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                        <h4 class="text-application" style="text-align: center;">
+                            {{ anime.type }}
+                            <span *ngIf="!anime.season && anime.type == 'TV'">
+                                &nbsp;
+                                (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+                                <span *ngIf="!anime.currentEpisode">?</span>
+                                /
+                                <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
+                                <span *ngIf="!anime.totalEpisodes">?</span>)
+                            </span>
+                        </h4>
                         <br>
                         <span
                             *ngIf="!statusId"
@@ -401,7 +431,17 @@
                             {{ anime.nameAnime }}
                         </h4>
                         <br>
-                        <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                        <h4 class="text-application" style="text-align: center;">
+                            {{ anime.type }}
+                            <span *ngIf="!anime.season && anime.type == 'TV'">
+                                &nbsp;
+                                (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+                                <span *ngIf="!anime.currentEpisode">?</span>
+                                /
+                                <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
+                                <span *ngIf="!anime.totalEpisodes">?</span>)
+                            </span>
+                        </h4>
                         <br>
                         <span
                             *ngIf="!statusId"
@@ -512,7 +552,17 @@
                             {{ anime.nameAnime }}
                         </h4>
                         <br>
-                        <h4 class="text-application" style="text-align: center;">{{ anime.type }}</h4>
+                        <h4 class="text-application" style="text-align: center;">
+                            {{ anime.type }}
+                            <span *ngIf="!anime.season && anime.type == 'TV'">
+                                &nbsp;
+                                (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+                                <span *ngIf="!anime.currentEpisode">?</span>
+                                /
+                                <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
+                                <span *ngIf="!anime.totalEpisodes">?</span>)
+                            </span>
+                        </h4>
                         <br>
                         <span
                             *ngIf="!statusId"

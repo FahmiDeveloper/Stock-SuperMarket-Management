@@ -176,7 +176,6 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.value) {
         this.movieService.delete(movieId);
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
         Swal.fire(
           'Movie has been deleted successfully',
           '',

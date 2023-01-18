@@ -7,18 +7,18 @@
   
 <mat-dialog-content>
 
-  <div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-2">
+  <mat-grid-list *ngIf="listSeasonsByParentAnimeKey.length > 0" cols=2 #grid rowHeight="200px" gutterSize="15px">
+
+    <mat-grid-tile>
       <div class="card">
         <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
         <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
       </div>
-    </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-6">
+    </mat-grid-tile>
+
+    <mat-grid-tile>
       <div class="card">
-        <mat-grid-list cols=2 rowHeight="37px" class="text-application">
+        <mat-grid-list cols=2 rowHeight="24px" class="text-application">
           <mat-grid-tile>Type</mat-grid-tile>
           <mat-grid-tile>{{ anime.type }}</mat-grid-tile>
   
@@ -85,16 +85,15 @@
           </mat-grid-tile>
 
         </mat-grid-list>
-      </div>   
-    </div>
-    <div class="col-md-1"></div>
-  </div>
+      </div>  
+    </mat-grid-tile>
+  </mat-grid-list>
 
   <br>
 
-  <list-seasons-movies-desktop
-    [listSeasonssByParentAnimeKey]="listSeasonssByParentAnimeKey"
+  <list-seasons-movies-mobile
+    [listSeasonsByParentAnimeKey]="listSeasonsByParentAnimeKey" 
     (seasonAnimeSelected)="getSeasonAnimeSelected($event)">
-  </list-seasons-movies-desktop>
+  </list-seasons-movies-mobile>
 
 </mat-dialog-content>
