@@ -10,7 +10,7 @@ import { Anime } from 'src/app/shared/models/anime.model';
 
 export class ListSeasonsMoviesForDesktopComponent {
 
-  @Input() listSeasonssByParentAnimeKey: Anime[];
+  @Input() listSeasonsByParentAnimeKey: Anime[];
   @Output() seasonAnimeSelected = new EventEmitter();
 
   sendDetailsAnime(anime: Anime) {

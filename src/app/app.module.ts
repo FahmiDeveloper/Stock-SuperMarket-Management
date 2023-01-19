@@ -140,6 +140,8 @@ import {
 import { 
   SeriesForDesktopComponent,
   ListSeasonsForDesktopComponent,
+  SerieFormDesktopComponent,
+  SerieDetailsWithSeasonsDesktopComponent,
   SeriesForMobileComponent,
   ListSeasonsForMobileComponent
 } from './series/index';
@@ -272,6 +274,8 @@ import {
 
     SeriesForDesktopComponent,
     ListSeasonsForDesktopComponent,
+    SerieFormDesktopComponent,
+    SerieDetailsWithSeasonsDesktopComponent,
     SeriesForMobileComponent,
     ListSeasonsForMobileComponent,
 

@@ -15,25 +15,25 @@ export class ListSeasonsForMobileComponent implements OnChanges {
   @Output() seasonSerieSelected = new EventEmitter();
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
-    if (this.listSeriesByCurrentName.length) {
-      if (this.listSeriesByCurrentName.length == 1) {
-        this.listSeriesByCurrentName.forEach(season => {
-          if (season.fullNameSerie) {
-            season.nameSerieToShow = (season.fullNameSerie.length > 30) ? season.fullNameSerie.substring(0, 30) + '...' : season.fullNameSerie;
-          } else {
-            season.nameSerieToShow = (season.nameSerie.length > 30) ? season.nameSerie.substring(0, 30) + '...' : season.nameSerie;
-          }
-        })
-      } else {
-        this.listSeriesByCurrentName.forEach(season => {
-          if (season.fullNameSerie) {
-            season.nameSerieToShow = (season.fullNameSerie.length > 10) ? season.fullNameSerie.substring(0, 10) + '...' : season.fullNameSerie;
-          } else {
-            season.nameSerieToShow = (season.nameSerie.length > 10) ? season.nameSerie.substring(0, 10) + '...' : season.nameSerie;
-          }
-        })
-      }
-    }  
+    // if (this.listSeriesByCurrentName.length) {
+    //   if (this.listSeriesByCurrentName.length == 1) {
+    //     this.listSeriesByCurrentName.forEach(season => {
+    //       if (season.fullNameSerie) {
+    //         season.nameSerieToShow = (season.fullNameSerie.length > 30) ? season.fullNameSerie.substring(0, 30) + '...' : season.fullNameSerie;
+    //       } else {
+    //         season.nameSerieToShow = (season.nameSerie.length > 30) ? season.nameSerie.substring(0, 30) + '...' : season.nameSerie;
+    //       }
+    //     })
+    //   } else {
+    //     this.listSeriesByCurrentName.forEach(season => {
+    //       if (season.fullNameSerie) {
+    //         season.nameSerieToShow = (season.fullNameSerie.length > 10) ? season.fullNameSerie.substring(0, 10) + '...' : season.fullNameSerie;
+    //       } else {
+    //         season.nameSerieToShow = (season.nameSerie.length > 10) ? season.nameSerie.substring(0, 10) + '...' : season.nameSerie;
+    //       }
+    //     })
+    //   }
+    // }  
   }
 
   sendDetailsSerie(serie: Serie) {

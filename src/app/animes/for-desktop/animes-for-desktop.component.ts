@@ -29,7 +29,7 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   pagedList: Anime[]= [];
   animesListCopie: Anime[] = [];
   allAnimes: Anime[] = [];
-  listSeasonssByParentAnimeKey: Anime[] = [];
+  listSeasonsByParentAnimeKey: Anime[] = [];
 
   animeName: string = '';
   statusId: number;
@@ -134,14 +134,14 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   }
 
   showDetailsAnime(animeSelected: Anime) {
-    this.listSeasonssByParentAnimeKey = this.allAnimes
+    this.listSeasonsByParentAnimeKey = this.allAnimes
     .filter(anime => (anime.key == animeSelected.key) || (anime.parentAnimeKey == animeSelected.key))
     .sort((n1, n2) => n1.priority - n2.priority);
 
     const dialogRef = this.dialogService.open(AnimeDetailsWithSeasonsDesktopComponent, {width: '600px'});
     dialogRef.componentInstance.anime = animeSelected;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
-    dialogRef.componentInstance.listSeasonssByParentAnimeKey = this.listSeasonssByParentAnimeKey;
+    dialogRef.componentInstance.listSeasonsByParentAnimeKey = this.listSeasonsByParentAnimeKey;
   }
 
   newAnime() {
