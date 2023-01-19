@@ -72,13 +72,13 @@
                         <span *ngIf="serie.year">{{ serie.year }}</span>
                         <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                     </h4>
-                    <h4 *ngIf="statusId && serie.season && serie.season > 1" class="text-application" style="text-align: center;">
+                    <h4 *ngIf="(serie.season && serie.season > 1) || (serie.season && statusId)" class="text-application" style="text-align: center;">
                         Season:&nbsp;{{ serie.season }}
                     </h4>
                     <h4 *ngIf="statusId && !serie.season" class="text-application" style="text-align: center;">
                         One season
                     </h4>
-                    <h4 *ngIf="!serie.season" class="text-application" style="text-align: center;">
+                    <h4 *ngIf="!serie.season || statusId" class="text-application" style="text-align: center;">
                         (<span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
                         <span *ngIf="!serie.currentEpisode">?</span>
                         /
@@ -97,9 +97,9 @@
                         serie.season && serie.season == 1 ? 'seasons-image':
                         serie.statusId == 3 && !serie.season && serie.notLiked ? 'not-liked-image':''">
                     </span>
-                    <br *ngIf="!serie.season">   
+                    <br *ngIf="!serie.season">       
                     <button
-                        *ngIf="serie.season && serie.season == 1" 
+                        *ngIf="!statusId && serie.season && serie.season == 1" 
                         type="button"
                         mat-button 
                         (click)="showDetailsSerie(serie)"
@@ -109,7 +109,7 @@
                         <span>Details</span>
                     </button>           
                     <button 
-                        *ngIf="!serie.season || (serie.season && serie.season > 1)"
+                        *ngIf="statusId || !serie.season || (serie.season && serie.season > 1)"
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 
@@ -193,13 +193,13 @@
                         <span *ngIf="serie.year">{{ serie.year }}</span>
                         <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                     </h4>
-                    <h4 *ngIf="statusId && serie.season && serie.season > 1" class="text-application" style="text-align: center;">
+                    <h4 *ngIf="(serie.season && serie.season > 1) || (serie.season && statusId)" class="text-application" style="text-align: center;">
                         Season:&nbsp;{{ serie.season }}
                     </h4>
                     <h4 *ngIf="statusId && !serie.season" class="text-application" style="text-align: center;">
                         One season
                     </h4>
-                    <h4 *ngIf="!serie.season" class="text-application" style="text-align: center;">
+                    <h4 *ngIf="!serie.season || statusId" class="text-application" style="text-align: center;">
                         (<span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
                         <span *ngIf="!serie.currentEpisode">?</span>
                         /
@@ -218,9 +218,9 @@
                         serie.season && serie.season == 1 ? 'seasons-image':
                         serie.statusId == 3 && !serie.season && serie.notLiked ? 'not-liked-image':''">
                     </span>
-                    <br *ngIf="!serie.season">   
+                    <br *ngIf="!serie.season">       
                     <button
-                        *ngIf="serie.season && serie.season == 1" 
+                        *ngIf="!statusId && serie.season && serie.season == 1" 
                         type="button"
                         mat-button 
                         (click)="showDetailsSerie(serie)"
@@ -230,7 +230,7 @@
                         <span>Details</span>
                     </button>           
                     <button 
-                        *ngIf="!serie.season || (serie.season && serie.season > 1)"
+                        *ngIf="statusId || !serie.season || (serie.season && serie.season > 1)"
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 
@@ -311,13 +311,13 @@
                             <span *ngIf="serie.year">{{ serie.year }}</span>
                             <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                         </h4>
-                        <h4 *ngIf="serie.season && serie.season > 1" class="text-application" style="text-align: center;">
+                        <h4 *ngIf="(serie.season && serie.season > 1) || (serie.season && statusId)" class="text-application" style="text-align: center;">
                             Season:&nbsp;{{ serie.season }}
                         </h4>
                         <h4 *ngIf="statusId && !serie.season" class="text-application" style="text-align: center;">
                             One season
                         </h4>
-                        <h4 *ngIf="!serie.season" class="text-application" style="text-align: center;">
+                        <h4 *ngIf="!serie.season || statusId" class="text-application" style="text-align: center;">
                             (<span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
                             <span *ngIf="!serie.currentEpisode">?</span>
                             /
@@ -338,7 +338,7 @@
                         </span>
                         <br *ngIf="!serie.season">       
                         <button
-                            *ngIf="serie.season && serie.season == 1" 
+                            *ngIf="!statusId && serie.season && serie.season == 1" 
                             type="button"
                             mat-button 
                             (click)="showDetailsSerie(serie)"
@@ -348,7 +348,7 @@
                             <span>Details</span>
                         </button>           
                         <button 
-                            *ngIf="!serie.season || (serie.season && serie.season > 1)"
+                            *ngIf="statusId || !serie.season || (serie.season && serie.season > 1)"
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
@@ -405,7 +405,7 @@
                                 Delete
                             </button>
                         </mat-menu>
-                        <br><br>   
+                        <br><br> 
                     </div>
                 </div>
             </div>   
@@ -428,13 +428,13 @@
                             <span *ngIf="serie.year">{{ serie.year }}</span>
                             <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                         </h4>
-                        <h4 *ngIf="serie.season && serie.season > 1" class="text-application" style="text-align: center;">
+                        <h4 *ngIf="(serie.season && serie.season > 1) || (serie.season && statusId)" class="text-application" style="text-align: center;">
                             Season:&nbsp;{{ serie.season }}
                         </h4>
                         <h4 *ngIf="statusId && !serie.season" class="text-application" style="text-align: center;">
                             One season
                         </h4>
-                        <h4 *ngIf="!serie.season" class="text-application" style="text-align: center;">
+                        <h4 *ngIf="!serie.season || statusId" class="text-application" style="text-align: center;">
                             (<span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
                             <span *ngIf="!serie.currentEpisode">?</span>
                             /
@@ -455,7 +455,7 @@
                         </span>
                         <br *ngIf="!serie.season">       
                         <button
-                            *ngIf="serie.season && serie.season == 1" 
+                            *ngIf="!statusId && serie.season && serie.season == 1" 
                             type="button"
                             mat-button 
                             (click)="showDetailsSerie(serie)"
@@ -465,7 +465,7 @@
                             <span>Details</span>
                         </button>           
                         <button 
-                            *ngIf="!serie.season || (serie.season && serie.season > 1)"
+                            *ngIf="statusId || !serie.season || (serie.season && serie.season > 1)"
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
@@ -547,13 +547,13 @@
                             <span *ngIf="serie.year">{{ serie.year }}</span>
                             <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                         </h4>
-                        <h4 *ngIf="serie.season && serie.season > 1" class="text-application" style="text-align: center;">
+                        <h4 *ngIf="(serie.season && serie.season > 1) || (serie.season && statusId)" class="text-application" style="text-align: center;">
                             Season:&nbsp;{{ serie.season }}
                         </h4>
                         <h4 *ngIf="statusId && !serie.season" class="text-application" style="text-align: center;">
                             One season
                         </h4>
-                        <h4 *ngIf="!serie.season" class="text-application" style="text-align: center;">
+                        <h4 *ngIf="!serie.season || statusId" class="text-application" style="text-align: center;">
                             (<span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
                             <span *ngIf="!serie.currentEpisode">?</span>
                             /
@@ -572,9 +572,9 @@
                             serie.season && serie.season == 1 ? 'seasons-image':
                             serie.statusId == 3 && !serie.season && serie.notLiked ? 'not-liked-image':''">
                         </span>
-                        <br *ngIf="!serie.season">    
+                        <br *ngIf="!serie.season">       
                         <button
-                            *ngIf="serie.season && serie.season == 1" 
+                            *ngIf="!statusId && serie.season && serie.season == 1" 
                             type="button"
                             mat-button 
                             (click)="showDetailsSerie(serie)"
@@ -584,7 +584,7 @@
                             <span>Details</span>
                         </button>           
                         <button 
-                            *ngIf="!serie.season || (serie.season && serie.season > 1)"
+                            *ngIf="statusId || !serie.season || (serie.season && serie.season > 1)"
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
@@ -641,7 +641,7 @@
                                 Delete
                             </button>
                         </mat-menu>
-                        <br><br>  
+                        <br><br> 
                     </div>
                 </div>
             </div>   

@@ -14,7 +14,7 @@ export class Serie {
   priority: number;
   isFirst: boolean;
   year: number;
-  parentAnimeKey: string;
+  parentSerieKey: string;
   notLiked: boolean;
 
   constructor(){

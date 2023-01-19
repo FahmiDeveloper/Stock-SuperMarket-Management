@@ -135,7 +135,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
 
   showDetailsSerie(serieSelected: Serie) {
     this.listSeasonsByParentSerieKey = this.allSeries
-    .filter(serie => (serie.key == serieSelected.key) || (serie.parentAnimeKey == serieSelected.key))
+    .filter(serie => (serie.key == serieSelected.key) || (serie.parentSerieKey == serieSelected.key))
     .sort((n1, n2) => n1.priority - n2.priority);
 
     const dialogRef = this.dialogService.open(SerieDetailsWithSeasonsDesktopComponent, {width: '600px'});

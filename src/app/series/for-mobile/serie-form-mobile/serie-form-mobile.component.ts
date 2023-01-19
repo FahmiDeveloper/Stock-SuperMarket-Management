@@ -13,12 +13,12 @@ import { SerieService } from 'src/app/shared/services/serie.service';
 import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 @Component({
-  selector: 'serie-form-desktop',
-  templateUrl: './serie-form-desktop.component.html',
-  styleUrls: ['./serie-form-desktop.scss']
+  selector: 'serie-form-mobile',
+  templateUrl: './serie-form-mobile.component.html',
+  styleUrls: ['./serie-form-mobile.scss']
 })
 
-export class SerieFormDesktopComponent implements OnInit {
+export class SerieFormMobileComponent implements OnInit {
 
   arraySeries: Serie[];
   seasonSeriesList: Serie[] = [];
@@ -45,7 +45,7 @@ export class SerieFormDesktopComponent implements OnInit {
   constructor(
     private serieService: SerieService, 
     private fireStorage: AngularFireStorage,
-    public dialogRef: MatDialogRef<SerieFormDesktopComponent>,
+    public dialogRef: MatDialogRef<SerieFormMobileComponent>,
     public dialogService: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Serie
   ) {}
