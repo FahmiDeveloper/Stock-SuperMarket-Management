@@ -17,7 +17,7 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
 
-  listSeasonssByParentAnimeKey: Anime[];
+  listSeasonsByParentAnimeKey: Anime[];
   allAnimes: Anime[];
 
   anime: Anime = new Anime();
@@ -60,14 +60,14 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.animeService.delete(animeId);
-        this.listSeasonssByParentAnimeKey.forEach((anime, index) => {
-          if(anime.key === animeId) this.listSeasonssByParentAnimeKey.splice(index,1);
+        this.listSeasonsByParentAnimeKey.forEach((anime, index) => {
+          if(anime.key === animeId) this.listSeasonsByParentAnimeKey.splice(index,1);
         });
-        if (this.listSeasonssByParentAnimeKey.length == 0) {
+        if (this.listSeasonsByParentAnimeKey.length == 0) {
           this.dialogRef.close();
         }
         else {
-          this.anime = this.listSeasonssByParentAnimeKey[0];
+          this.anime = this.listSeasonsByParentAnimeKey[0];
         }
         Swal.fire(
           'Anime has been deleted successfully',

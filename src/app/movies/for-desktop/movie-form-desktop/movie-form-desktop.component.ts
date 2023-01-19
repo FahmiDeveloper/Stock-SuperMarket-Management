@@ -60,8 +60,8 @@ export class MovieFormDesktopComponent implements OnInit {
     }
 
     if (this.movie.key) {
-      if (this.partMoviesList.find(movie => movie.key == this.movie.key)) {
-        this.parentFilmName = this.partMoviesList.find(movie => movie.key == this.movie.key).nameMovie;
+      if (this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey)) {
+        this.parentFilmName = this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey).nameMovie;
       }
     }
   }

@@ -1,0 +1,103 @@
+<div mat-dialog-title class="dialog-title" id="name">
+  <h3 mat-dialog-title class="text-application" (click)="copyText(serie.nameSerie)" style="cursor: pointer;">{{ serie.nameSerie }}</h3> 
+  <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+  
+<mat-dialog-content>
+
+  <mat-grid-list *ngIf="listSeasonsByParentSerieKey.length > 0" cols=2 #grid rowHeight="200px" gutterSize="15px">
+
+    <mat-grid-tile>
+      <div class="card">
+        <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image">
+        <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image">   
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="card">
+        <mat-grid-list cols=2 rowHeight="24px" class="text-application">
+          <mat-grid-tile>Year</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="serie.year">{{ serie.year }}</span>
+            <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                     
+          </mat-grid-tile>
+  
+          <mat-grid-tile>Status</mat-grid-tile>
+          <mat-grid-tile>
+            <span
+              [ngClass]="serie.statusId == 1 ? 'wait-image' : 
+              serie.statusId == 2 ? 'not-download-image':
+              serie.statusId == 3 && !serie.notLiked ? 'watched-image':
+              serie.statusId == 4 ? 'not-watched-image':
+              serie.statusId == 5 ? 'search-image': ''">
+            </span>
+          </mat-grid-tile>
+
+          <mat-grid-tile>Season</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="serie.season">{{ serie.season }}</span>
+            <span *ngIf="!serie.season"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
+          </mat-grid-tile> 
+
+          <mat-grid-tile>Curr ep</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
+            <span *ngIf="!serie.currentEpisode"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
+          </mat-grid-tile>
+
+          <mat-grid-tile>Total ep</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="serie.currentEpisode">{{ serie.totalEpisodes }}</span>
+            <span *ngIf="!serie.totalEpisodes"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
+          </mat-grid-tile>
+  
+          <mat-grid-tile>Path</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="serie.path">
+              <mat-icon style="cursor: pointer;" (click)="followLink(serie.path)" target="_blank">link</mat-icon>                            
+            </span>
+            <span *ngIf="!serie.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+          </mat-grid-tile>
+  
+          <mat-grid-tile>Note</mat-grid-tile>
+          <mat-grid-tile>
+            <mat-icon *ngIf="serie.note" style="cursor: pointer;" (click)="viewNote(serie.note)">note</mat-icon>         
+            <i *ngIf="!serie.note" class="fa fa-minus-circle" aria-hidden="true"></i>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <button
+              type="button"
+              mat-button 
+              (click)="editSerie(serie)"
+              class="text-application">
+              <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button
+              type="button"
+              mat-button 
+              (click)="deleteSerie(serie.key)" 
+              class="text-application">
+              <mat-icon style="color: #f44336;">delete</mat-icon>
+            </button>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </div>
+    </mat-grid-tile>
+    
+  </mat-grid-list>
+
+  <br>
+
+  <list-seasons-mobile
+    [listSeasonsByParentSerieKey]="listSeasonsByParentSerieKey" 
+    (seasonSerieSelected)="getSeasonSerieSelected($event)">
+  </list-seasons-mobile>
+
+</mat-dialog-content>

@@ -1,22 +1,20 @@
-<h2  *ngIf="listSeriesByCurrentName.length == 1" class="text-application">No seasons yet</h2>
-<h2 *ngIf="listSeriesByCurrentName.length == 2 || listSeriesByCurrentName.length > 2" class="text-application">All seasons</h2>
+<h2 *ngIf="listSeasonsByParentSerieKey.length == 1" class="text-application">No seasons yet</h2>
+<h2 *ngIf="listSeasonsByParentSerieKey.length > 1" class="text-application">All seasons</h2>
 
-<mat-grid-list *ngIf="listSeriesByCurrentName.length == 2" cols=2 #grid rowHeight="400px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let serie of listSeriesByCurrentName">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsSerie(serie)">
-            <mat-card-title class="text-application" style="font-size: 15px !important;">{{ serie.nameSerieToShow }}</mat-card-title>                  
+<mat-grid-list *ngIf="listSeasonsByParentSerieKey.length == 2" cols=2 #grid rowHeight="300px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let serie of listSeasonsByParentSerieKey">
+        <div class="card" (click)="sendDetailsSerie(serie)">
             <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image">
-            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image">                 
-        </mat-card>
+            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image">    
+        </div>  
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="listSeriesByCurrentName.length > 2" cols=3 #grid rowHeight="400px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let serie of listSeriesByCurrentName">
-        <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;" (click)="sendDetailsSerie(serie)">
-            <mat-card-title class="text-application" style="font-size: 15px !important;">{{ serie.nameSerieToShow }}</mat-card-title>                  
+<mat-grid-list *ngIf="listSeasonsByParentSerieKey.length > 2" cols=3 #grid rowHeight="300px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let serie of listSeasonsByParentSerieKey">
+        <div class="card" (click)="sendDetailsSerie(serie)">
             <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image">
-            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image">   >                 
-        </mat-card>
+            <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image">    
+        </div>  
     </mat-grid-tile>
 </mat-grid-list>

@@ -60,8 +60,8 @@ export class AnimeFormMobileComponent implements OnInit {
     }
 
     if (this.anime.key) {
-      if (this.seasonAnimesList.find(anime => anime.key == this.anime.key)) {
-        this.parentAnimeName = this.seasonAnimesList.find(anime => anime.key == this.anime.key).nameAnime;
+      if (this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey)) {
+        this.parentAnimeName = this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey).nameAnime;
       }
     }
   }
