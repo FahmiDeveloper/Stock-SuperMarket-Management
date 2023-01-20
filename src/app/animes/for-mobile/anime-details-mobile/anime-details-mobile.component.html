@@ -1,0 +1,74 @@
+<div mat-dialog-title class="dialog-title" id="name">
+  <h3 mat-dialog-title class="text-application" (click)="copyText(anime.nameAnime)" style="cursor: pointer;">{{ anime.nameAnime }}</h3> 
+  <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+    
+<mat-dialog-content>
+
+  <mat-grid-list cols=2 #grid rowHeight="200px" gutterSize="15px">
+
+    <mat-grid-tile>
+      <div class="card">
+        <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
+        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="card">
+        <mat-grid-list cols=2 rowHeight="25px" class="text-application">
+          <mat-grid-tile>Type</mat-grid-tile>
+          <mat-grid-tile>{{ anime.type }}</mat-grid-tile>
+  
+          <mat-grid-tile>Status</mat-grid-tile>
+          <mat-grid-tile>
+            <span
+              [ngClass]="anime.statusId == 1 ? 'wait-image' : 
+              anime.statusId == 2 ? 'not-download-image':
+              anime.statusId == 3 && !anime.notLiked ? 'watched-image':
+              anime.statusId == 3 && anime.notLiked ? 'not-liked-image':
+              anime.statusId == 4 ? 'not-watched-image':
+              anime.statusId == 5 ? 'search-image': ''">
+            </span>
+          </mat-grid-tile>
+  
+          <mat-grid-tile>Season</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="anime.season">{{ anime.season }}</span>
+            <span *ngIf="!anime.season"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
+          </mat-grid-tile>
+
+          <mat-grid-tile>Curr ep</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+            <span *ngIf="!anime.currentEpisode"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
+          </mat-grid-tile>
+
+          <mat-grid-tile>Total ep</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="anime.currentEpisode">{{ anime.totalEpisodes }}</span>
+            <span *ngIf="!anime.totalEpisodes"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
+          </mat-grid-tile>
+  
+          <mat-grid-tile>Path</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="anime.path">
+              <mat-icon style="cursor: pointer;" (click)="followLink(anime.path)" target="_blank">link</mat-icon>                            
+            </span>
+            <span *ngIf="!anime.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+          </mat-grid-tile>
+  
+          <mat-grid-tile>Note</mat-grid-tile>
+          <mat-grid-tile>
+            <mat-icon *ngIf="anime.note" style="cursor: pointer;" (click)="viewNote(anime.note)">note</mat-icon>         
+            <i *ngIf="!anime.note" class="fa fa-minus-circle" aria-hidden="true"></i>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+      </div>  
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</mat-dialog-content>

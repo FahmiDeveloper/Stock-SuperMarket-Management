@@ -77,10 +77,12 @@ import {
   ListSeasonsMoviesForDesktopComponent,
   AnimeFormDesktopComponent,
   AnimeDetailsWithSeasonsDesktopComponent,
+  AnimeDetailsDesktopComponent,
   AnimesForMobileComponent,
   ListSeasonsMoviesForMobileComponent,
   AnimeFormMobileComponent,
-  AnimeDetailsWithSeasonsMobileComponent
+  AnimeDetailsWithSeasonsMobileComponent,
+  AnimeDetailsMobileComponent
 } from './animes/index';
 
 import { 
@@ -124,10 +126,12 @@ import {
   ListPartsForDesktopComponent,
   MovieFormDesktopComponent,
   MovieDetailsWithPartsDesktopComponent,
+  MovieDetailsDesktopComponent,
   MoviesForMobileComponent,
   ListPartsForMobileComponent,
   MovieFormMobileComponent,
-  MovieDetailsWithPartsMobileComponent
+  MovieDetailsWithPartsMobileComponent,
+  MovieDetailsMobileComponent
 } from './movies/index';
 
 import { 
@@ -142,10 +146,12 @@ import {
   ListSeasonsForDesktopComponent,
   SerieFormDesktopComponent,
   SerieDetailsWithSeasonsDesktopComponent,
+  SerieDetailsDesktopComponent,
   SeriesForMobileComponent,
   ListSeasonsForMobileComponent,
   SerieFormMobileComponent,
-  SerieDetailsWithSeasonsMobileComponent
+  SerieDetailsWithSeasonsMobileComponent,
+  SerieDetailsMobileComponent
 } from './series/index';
 
 import { 
@@ -225,10 +231,12 @@ import {
     ListSeasonsMoviesForDesktopComponent,
     AnimeFormDesktopComponent,
     AnimeDetailsWithSeasonsDesktopComponent,
+    AnimeDetailsDesktopComponent,
     AnimesForMobileComponent,
     ListSeasonsMoviesForMobileComponent,
     AnimeFormMobileComponent,
     AnimeDetailsWithSeasonsMobileComponent,
+    AnimeDetailsMobileComponent,
 
     ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,
@@ -264,10 +272,12 @@ import {
     ListPartsForDesktopComponent,
     MovieFormDesktopComponent,
     MovieDetailsWithPartsDesktopComponent,
+    MovieDetailsDesktopComponent,
     MoviesForMobileComponent,
     ListPartsForMobileComponent,
     MovieFormMobileComponent,
     MovieDetailsWithPartsMobileComponent,
+    MovieDetailsMobileComponent,
 
     PasswordsForDesktopComponent,
     PasswordFormDesktopComponent,
@@ -278,10 +288,12 @@ import {
     ListSeasonsForDesktopComponent,
     SerieFormDesktopComponent,
     SerieDetailsWithSeasonsDesktopComponent,
+    SerieDetailsDesktopComponent,
     SeriesForMobileComponent,
     ListSeasonsForMobileComponent,
     SerieFormMobileComponent,
     SerieDetailsWithSeasonsMobileComponent,
+    SerieDetailsMobileComponent,
 
     ToDoListForDesktopComponent,
     TaskDesktopComponent,

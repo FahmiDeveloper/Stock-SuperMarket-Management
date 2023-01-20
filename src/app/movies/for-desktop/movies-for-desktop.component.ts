@@ -8,6 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { MovieDetailsWithPartsDesktopComponent } from './movie-details-with-parts-desktop/movie-details-with-parts-desktop.component';
 import { MovieFormDesktopComponent } from './movie-form-desktop/movie-form-desktop.component';
+import { MovieDetailsDesktopComponent } from './movie-details-desktop/movie-details-desktop.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -147,6 +148,11 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arrayMovies = this.moviesListCopie;
     dialogRef.componentInstance.allMovies = this.allMovies;
+  }
+
+  viewDetailsMovie(movie: Movie) {
+    const dialogRef = this.dialogService.open(MovieDetailsDesktopComponent, {width: '500px'});
+    dialogRef.componentInstance.movie = movie;
   }
 
   editMovie(movie?: Movie) {

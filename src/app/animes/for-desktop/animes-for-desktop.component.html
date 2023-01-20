@@ -69,37 +69,6 @@
                         {{ anime.nameAnime }}
                     </h4> 
                     <br>
-                    <h4 class="text-application" style="text-align: center;">
-                        {{ anime.type }}
-                        <span *ngIf="!anime.season && anime.type == 'TV'">
-                            &nbsp;
-                            (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
-                            <span *ngIf="!anime.currentEpisode">?</span>
-                            /
-                            <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
-                            <span *ngIf="!anime.totalEpisodes">?</span>)
-                        </span>
-                    </h4>
-                    <br>
-                    <span
-                        *ngIf="!statusId"
-                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
-                        style="display: table; margin: 0 auto;"
-                        [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
-                        anime.statusId == 2 && !anime.season ? 'not-download-image':
-                        anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
-                        anime.statusId == 4 && !anime.season ? 'not-watched-image':
-                        anime.statusId == 5 && !anime.season ? 'search-image':
-                        anime.season && anime.season == 1 ? 'seasons-image':
-                        anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
-                    </span>
-                    <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
-                        Season:&nbsp;{{ anime.season }}
-                    </h4>
-                    <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
-                        One season
-                    </h4>
-                    <br>
                     <button
                         *ngIf="anime.season && anime.season == 1" 
                         type="button"
@@ -121,6 +90,13 @@
                         Actions
                     </button>
                     <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="viewDetailsAnime(anime)">
+                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                            View
+                        </button>
                         <button
                             mat-menu-item 
                             class="text-application"
@@ -192,37 +168,6 @@
                         {{ anime.nameAnime }}
                     </h4> 
                     <br>
-                    <h4 class="text-application" style="text-align: center;">
-                        {{ anime.type }}
-                        <span *ngIf="!anime.season && anime.type == 'TV'">
-                            &nbsp;
-                            (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
-                            <span *ngIf="!anime.currentEpisode">?</span>
-                            /
-                            <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
-                            <span *ngIf="!anime.totalEpisodes">?</span>)
-                        </span>
-                    </h4>
-                    <br>
-                    <span
-                        *ngIf="!statusId"
-                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
-                        style="display: table; margin: 0 auto;"
-                        [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
-                        anime.statusId == 2 && !anime.season ? 'not-download-image':
-                        anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
-                        anime.statusId == 4 && !anime.season ? 'not-watched-image':
-                        anime.statusId == 5 && !anime.season ? 'search-image':
-                        anime.season && anime.season == 1 ? 'seasons-image':
-                        anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
-                    </span>
-                    <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
-                        Season:&nbsp;{{ anime.season }}
-                    </h4>
-                    <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
-                        One season
-                    </h4>
-                    <br>
                     <button
                         *ngIf="anime.season && anime.season == 1" 
                         type="button"
@@ -244,6 +189,13 @@
                         Actions
                     </button>
                     <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="viewDetailsAnime(anime)">
+                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                            View
+                        </button>
                         <button
                             mat-menu-item 
                             class="text-application"
@@ -312,37 +264,6 @@
                             {{ anime.nameAnime }}
                         </h4>
                         <br>
-                        <h4 class="text-application" style="text-align: center;">
-                            {{ anime.type }}
-                            <span *ngIf="!anime.season && anime.type == 'TV'">
-                                &nbsp;
-                                (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
-                                <span *ngIf="!anime.currentEpisode">?</span>
-                                /
-                                <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
-                                <span *ngIf="!anime.totalEpisodes">?</span>)
-                            </span>
-                        </h4>
-                        <br>
-                        <span
-                            *ngIf="!statusId"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
-                            style="display: table; margin: 0 auto;"
-                            [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
-                            anime.statusId == 2 && !anime.season ? 'not-download-image':
-                            anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
-                            anime.statusId == 4 && !anime.season ? 'not-watched-image':
-                            anime.statusId == 5 && !anime.season ? 'search-image':
-                            anime.season && anime.season == 1 ? 'seasons-image':
-                            anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
-                        </span>
-                        <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
-                            Season:&nbsp;{{ anime.season }}
-                        </h4>
-                        <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
-                            One season
-                        </h4>
-                        <br>
                         <button
                             *ngIf="anime.season && anime.season == 1" 
                             type="button"
@@ -364,6 +285,13 @@
                             Actions
                         </button>
                         <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="viewDetailsAnime(anime)">
+                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                                View
+                            </button>
                             <button
                                 mat-menu-item 
                                 class="text-application"
@@ -431,37 +359,6 @@
                             {{ anime.nameAnime }}
                         </h4>
                         <br>
-                        <h4 class="text-application" style="text-align: center;">
-                            {{ anime.type }}
-                            <span *ngIf="!anime.season && anime.type == 'TV'">
-                                &nbsp;
-                                (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
-                                <span *ngIf="!anime.currentEpisode">?</span>
-                                /
-                                <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
-                                <span *ngIf="!anime.totalEpisodes">?</span>)
-                            </span>
-                        </h4>
-                        <br>
-                        <span
-                            *ngIf="!statusId"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
-                            style="display: table; margin: 0 auto;"
-                            [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
-                            anime.statusId == 2 && !anime.season ? 'not-download-image':
-                            anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
-                            anime.statusId == 4 && !anime.season ? 'not-watched-image':
-                            anime.statusId == 5 && !anime.season ? 'search-image':
-                            anime.season && anime.season == 1 ? 'seasons-image':
-                            anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
-                        </span>
-                        <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
-                            Season:&nbsp;{{ anime.season }}
-                        </h4>
-                        <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
-                            One season
-                        </h4>
-                        <br>
                         <button
                             *ngIf="anime.season && anime.season == 1" 
                             type="button"
@@ -483,6 +380,13 @@
                             Actions
                         </button>
                         <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="viewDetailsAnime(anime)">
+                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                                View
+                            </button>
                             <button
                                 mat-menu-item 
                                 class="text-application"
@@ -552,37 +456,6 @@
                             {{ anime.nameAnime }}
                         </h4>
                         <br>
-                        <h4 class="text-application" style="text-align: center;">
-                            {{ anime.type }}
-                            <span *ngIf="!anime.season && anime.type == 'TV'">
-                                &nbsp;
-                                (<span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
-                                <span *ngIf="!anime.currentEpisode">?</span>
-                                /
-                                <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
-                                <span *ngIf="!anime.totalEpisodes">?</span>)
-                            </span>
-                        </h4>
-                        <br>
-                        <span
-                            *ngIf="!statusId"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}"
-                            style="display: table; margin: 0 auto;"
-                            [ngClass]="anime.statusId == 1 && !anime.season ? 'wait-image' : 
-                            anime.statusId == 2 && !anime.season ? 'not-download-image':
-                            anime.statusId == 3 && !anime.season && !anime.notLiked ? 'watched-image':
-                            anime.statusId == 4 && !anime.season ? 'not-watched-image':
-                            anime.statusId == 5 && !anime.season ? 'search-image':
-                            anime.season && anime.season == 1 ? 'seasons-image':
-                            anime.statusId == 3 && !anime.season && anime.notLiked ? 'not-liked-image':''">
-                        </span>
-                        <h4 *ngIf="anime.season && anime.season > 1" class="text-application" style="text-align: center;">
-                            Season:&nbsp;{{ anime.season }}
-                        </h4>
-                        <h4 *ngIf="statusId && !anime.season" class="text-application" style="text-align: center;">
-                            One season
-                        </h4>
-                        <br>
                         <button
                             *ngIf="anime.season && anime.season == 1" 
                             type="button"
@@ -604,6 +477,13 @@
                             Actions
                         </button>
                         <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="viewDetailsAnime(anime)">
+                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                                View
+                            </button>
                             <button
                                 mat-menu-item 
                                 class="text-application"

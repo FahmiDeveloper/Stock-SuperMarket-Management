@@ -8,6 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { AnimeDetailsWithSeasonsDesktopComponent } from './anime-details-with-seasons-desktop/anime-details-with-seasons-desktop.component';
 import { AnimeFormDesktopComponent } from './anime-form-desktop/anime-form-desktop.component';
+import { AnimeDetailsDesktopComponent } from './anime-details-desktop/anime-details-desktop.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -148,6 +149,11 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arrayAnimes = this.animesListCopie;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
+  }
+
+  viewDetailsAnime(anime: Anime) {
+    const dialogRef = this.dialogService.open(AnimeDetailsDesktopComponent, {width: '500px'});
+    dialogRef.componentInstance.anime = anime;
   }
 
   editAnime(anime?: Anime) {

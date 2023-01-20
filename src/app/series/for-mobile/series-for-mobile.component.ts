@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 
 import { SerieDetailsWithSeasonsMobileComponent } from './serie-details-with-seasons-mobile/serie-details-with-seasons-mobile.component';
 import { SerieFormMobileComponent } from './serie-form-mobile/serie-form-mobile.component';
+import { SerieDetailsMobileComponent } from './serie-details-mobile/serie-details-mobile.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -153,6 +154,14 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.arraySeries = this.seriesListCopie;
     dialogRef.componentInstance.allSeries = this.allSeries;
+  }
+
+  viewDetailsSerie(serie: Serie) {
+    const dialogRef = this.dialogService.open(SerieDetailsMobileComponent, {
+      width: '98vw',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.serie = serie;
   }
 
   editSerie(serie?: Serie) {

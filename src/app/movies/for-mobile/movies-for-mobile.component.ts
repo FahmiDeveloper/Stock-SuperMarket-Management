@@ -15,6 +15,7 @@ import { UsersListService } from '../../shared/services/list-users.service';
 
 import { FirebaseUserModel } from '../../shared/models/user.model';
 import { Movie, StatusMovies } from '../../shared/models/movie.model';
+import { MovieDetailsMobileComponent } from './movie-details-mobile/movie-details-mobile.component';
 
 @Component({
   selector: 'movies-for-mobile',
@@ -153,6 +154,14 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.arrayMovies = this.moviesListCopie;
     dialogRef.componentInstance.allMovies = this.allMovies;  
+  }
+
+  viewDetailsMovie(movie: Movie) {
+    const dialogRef = this.dialogService.open(MovieDetailsMobileComponent, {
+      width: '98vw',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.movie = movie;
   }
 
   editMovie(movie?: Movie) {
