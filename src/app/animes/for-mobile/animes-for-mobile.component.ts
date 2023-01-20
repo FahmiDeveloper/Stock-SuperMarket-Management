@@ -15,6 +15,7 @@ import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
+import { AnimeDetailsMobileComponent } from './anime-details-mobile/anime-details-mobile.component';
 
 @Component({
   selector: 'animes-for-mobile',
@@ -151,6 +152,14 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.arrayAnimes = this.animesListCopie;
     dialogRef.componentInstance.allAnimes = this.allAnimes;  
+  }
+
+  viewDetailsAnime(anime: Anime) {
+    const dialogRef = this.dialogService.open(AnimeDetailsMobileComponent, {
+      width: '98vw',
+      maxWidth: '100vw'
+    });
+    dialogRef.componentInstance.anime = anime;
   }
 
   editAnime(anime?: Anime) {

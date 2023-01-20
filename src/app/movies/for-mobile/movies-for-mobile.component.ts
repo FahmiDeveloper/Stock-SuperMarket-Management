@@ -156,7 +156,7 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allMovies = this.allMovies;  
   }
 
-  viewDetailsMovie(movie) {
+  viewDetailsMovie(movie: Movie) {
     const dialogRef = this.dialogService.open(MovieDetailsMobileComponent, {
       width: '98vw',
       maxWidth: '100vw'

@@ -77,10 +77,12 @@ import {
   ListSeasonsMoviesForDesktopComponent,
   AnimeFormDesktopComponent,
   AnimeDetailsWithSeasonsDesktopComponent,
+  AnimeDetailsDesktopComponent,
   AnimesForMobileComponent,
   ListSeasonsMoviesForMobileComponent,
   AnimeFormMobileComponent,
-  AnimeDetailsWithSeasonsMobileComponent
+  AnimeDetailsWithSeasonsMobileComponent,
+  AnimeDetailsMobileComponent
 } from './animes/index';
 
 import { 
@@ -227,10 +229,12 @@ import {
     ListSeasonsMoviesForDesktopComponent,
     AnimeFormDesktopComponent,
     AnimeDetailsWithSeasonsDesktopComponent,
+    AnimeDetailsDesktopComponent,
     AnimesForMobileComponent,
     ListSeasonsMoviesForMobileComponent,
     AnimeFormMobileComponent,
     AnimeDetailsWithSeasonsMobileComponent,
+    AnimeDetailsMobileComponent,
 
     ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,

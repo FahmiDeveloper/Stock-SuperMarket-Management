@@ -150,7 +150,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allMovies = this.allMovies;
   }
 
-  viewDetailsMovie(movie) {
+  viewDetailsMovie(movie: Movie) {
     const dialogRef = this.dialogService.open(MovieDetailsDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.movie = movie;
   }
