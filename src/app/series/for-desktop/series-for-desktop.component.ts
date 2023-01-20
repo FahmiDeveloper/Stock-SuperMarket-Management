@@ -8,6 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { SerieDetailsWithSeasonsDesktopComponent } from './serie-details-with-seasons-desktop/serie-details-with-seasons-desktop.component';
 import { SerieFormDesktopComponent } from './serie-form-desktop/serie-form-desktop.component';
+import { SerieDetailsDesktopComponent } from './serie-details-desktop/serie-details-desktop.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -148,6 +149,11 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arraySeries = this.seriesListCopie;
     dialogRef.componentInstance.allSeries = this.allSeries;
+  }
+
+  viewDetailsSerie(serie: Serie) {
+    const dialogRef = this.dialogService.open(SerieDetailsDesktopComponent, {width: '500px'});
+    dialogRef.componentInstance.serie = serie;
   }
 
   editSerie(serie?: Serie) {

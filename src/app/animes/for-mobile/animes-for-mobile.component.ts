@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 
 import { AnimeDetailsWithSeasonsMobileComponent } from './anime-details-with-seasons-mobile/anime-details-with-seasons-mobile.component';
 import { AnimeFormMobileComponent } from './anime-form-mobile/anime-form-mobile.component';
+import { AnimeDetailsMobileComponent } from './anime-details-mobile/anime-details-mobile.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -15,7 +16,6 @@ import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
-import { AnimeDetailsMobileComponent } from './anime-details-mobile/anime-details-mobile.component';
 
 @Component({
   selector: 'animes-for-mobile',

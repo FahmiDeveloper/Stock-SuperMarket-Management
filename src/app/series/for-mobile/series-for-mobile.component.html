@@ -69,35 +69,7 @@
                         (click)="copyText(serie.nameSerie)">
                         {{ serie.nameSerie }}
                     </h4>
-                    <h4 class="text-application" style="text-align: center;">
-                        <span *ngIf="serie.year">{{ serie.year }}</span>
-                        <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
-                    </h4>
-                    <h4 *ngIf="(serie.season && serie.season > 1) || (serie.season && statusId)" class="text-application" style="text-align: center;">
-                        Season:&nbsp;{{ serie.season }}
-                    </h4>
-                    <h4 *ngIf="statusId && !serie.season" class="text-application" style="text-align: center;">
-                        One season
-                    </h4>
-                    <h4 *ngIf="!serie.season || statusId" class="text-application" style="text-align: center;">
-                        (<span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
-                        <span *ngIf="!serie.currentEpisode">?</span>
-                        /
-                        <span *ngIf="serie.totalEpisodes">{{ serie.totalEpisodes }}</span>
-                        <span *ngIf="!serie.totalEpisodes">?</span>)
-                    </h4>
-                    <span
-                        *ngIf="!statusId"
-                        [ngStyle]="{'margin-bottom': serie.nameSerie.length > 25 ? '3%' : ''}"
-                        style="display: table; margin: 0 auto;"
-                        [ngClass]="serie.statusId == 1 && !serie.season ? 'wait-image' : 
-                        serie.statusId == 2 && !serie.season ? 'not-download-image':
-                        serie.statusId == 3 && !serie.season && !serie.notLiked ? 'watched-image':
-                        serie.statusId == 4 && !serie.season ? 'not-watched-image':
-                        serie.statusId == 5 && !serie.season ? 'search-image':
-                        serie.season && serie.season == 1 ? 'seasons-image':
-                        serie.statusId == 3 && !serie.season && serie.notLiked ? 'not-liked-image':''">
-                    </span>
+                    <br>
                     <button
                         *ngIf="!statusId && serie.season && serie.season == 1" 
                         type="button"
@@ -119,6 +91,13 @@
                         Actions
                     </button>
                     <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="viewDetailsSerie(serie)">
+                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                            View
+                        </button>
                         <button
                             mat-menu-item 
                             class="text-application"
@@ -166,6 +145,7 @@
                             Delete
                         </button>
                     </mat-menu>
+                    <br><br>
                 </div>
             </div>
         </div>   
@@ -188,35 +168,7 @@
                         (click)="copyText(serie.nameSerie)">
                         {{ serie.nameSerie }}
                     </h4>
-                    <h4 class="text-application" style="text-align: center;">
-                        <span *ngIf="serie.year">{{ serie.year }}</span>
-                        <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
-                    </h4>
-                    <h4 *ngIf="(serie.season && serie.season > 1) || (serie.season && statusId)" class="text-application" style="text-align: center;">
-                        Season:&nbsp;{{ serie.season }}
-                    </h4>
-                    <h4 *ngIf="statusId && !serie.season" class="text-application" style="text-align: center;">
-                        One season
-                    </h4>
-                    <h4 *ngIf="!serie.season || statusId" class="text-application" style="text-align: center;">
-                        (<span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
-                        <span *ngIf="!serie.currentEpisode">?</span>
-                        /
-                        <span *ngIf="serie.totalEpisodes">{{ serie.totalEpisodes }}</span>
-                        <span *ngIf="!serie.totalEpisodes">?</span>)
-                    </h4>
-                    <span
-                        *ngIf="!statusId"
-                        [ngStyle]="{'margin-bottom': serie.nameSerie.length > 25 ? '3%' : ''}"
-                        style="display: table; margin: 0 auto;"
-                        [ngClass]="serie.statusId == 1 && !serie.season ? 'wait-image' : 
-                        serie.statusId == 2 && !serie.season ? 'not-download-image':
-                        serie.statusId == 3 && !serie.season && !serie.notLiked ? 'watched-image':
-                        serie.statusId == 4 && !serie.season ? 'not-watched-image':
-                        serie.statusId == 5 && !serie.season ? 'search-image':
-                        serie.season && serie.season == 1 ? 'seasons-image':
-                        serie.statusId == 3 && !serie.season && serie.notLiked ? 'not-liked-image':''">
-                    </span>
+                    <br>
                     <button
                         *ngIf="!statusId && serie.season && serie.season == 1" 
                         type="button"
@@ -238,6 +190,13 @@
                         Actions
                     </button>
                     <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="viewDetailsSerie(serie)">
+                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                            View
+                        </button>
                         <button
                             mat-menu-item 
                             class="text-application"
@@ -285,6 +244,7 @@
                             Delete
                         </button>
                     </mat-menu>
+                    <br><br>
                 </div>
             </div>
         </div>   

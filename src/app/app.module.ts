@@ -146,10 +146,12 @@ import {
   ListSeasonsForDesktopComponent,
   SerieFormDesktopComponent,
   SerieDetailsWithSeasonsDesktopComponent,
+  SerieDetailsDesktopComponent,
   SeriesForMobileComponent,
   ListSeasonsForMobileComponent,
   SerieFormMobileComponent,
-  SerieDetailsWithSeasonsMobileComponent
+  SerieDetailsWithSeasonsMobileComponent,
+  SerieDetailsMobileComponent
 } from './series/index';
 
 import { 
@@ -286,10 +288,12 @@ import {
     ListSeasonsForDesktopComponent,
     SerieFormDesktopComponent,
     SerieDetailsWithSeasonsDesktopComponent,
+    SerieDetailsDesktopComponent,
     SeriesForMobileComponent,
     ListSeasonsForMobileComponent,
     SerieFormMobileComponent,
     SerieDetailsWithSeasonsMobileComponent,
+    SerieDetailsMobileComponent,
 
     ToDoListForDesktopComponent,
     TaskDesktopComponent,
