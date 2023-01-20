@@ -124,10 +124,12 @@ import {
   ListPartsForDesktopComponent,
   MovieFormDesktopComponent,
   MovieDetailsWithPartsDesktopComponent,
+  MovieDetailsDesktopComponent,
   MoviesForMobileComponent,
   ListPartsForMobileComponent,
   MovieFormMobileComponent,
-  MovieDetailsWithPartsMobileComponent
+  MovieDetailsWithPartsMobileComponent,
+  MovieDetailsMobileComponent
 } from './movies/index';
 
 import { 
@@ -264,10 +266,12 @@ import {
     ListPartsForDesktopComponent,
     MovieFormDesktopComponent,
     MovieDetailsWithPartsDesktopComponent,
+    MovieDetailsDesktopComponent,
     MoviesForMobileComponent,
     ListPartsForMobileComponent,
     MovieFormMobileComponent,
     MovieDetailsWithPartsMobileComponent,
+    MovieDetailsMobileComponent,
 
     PasswordsForDesktopComponent,
     PasswordFormDesktopComponent,

@@ -66,32 +66,8 @@
                         [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
                         (click)="copyText(movie.nameMovie)">
                         {{ movie.nameMovie }}
-                    </h4> 
-                    <br>
-                    <h4 class="text-application" style="text-align: center;">
-                        <span *ngIf="movie.year">{{ movie.year }}</span>
-                        <span *ngIf="!movie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                     </h4>
-                    <br>
-                    <span
-                        *ngIf="!statusId"
-                        [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}"
-                        style="display: table; margin: 0 auto;"
-                        [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
-                        movie.statusId == 2 && !movie.part ? 'not-download-image':
-                        movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
-                        movie.statusId == 4 && !movie.part ? 'not-watched-image':
-                        movie.statusId == 5 && !movie.part ? 'search-image':
-                        movie.part && movie.part == 1 ? 'parts-image':
-                        movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
-                    </span>
-                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                        Part:&nbsp;{{ movie.part }}
-                    </h4>
-                    <h4 *ngIf="statusId && !movie.part" class="text-application" style="text-align: center;">
-                        Full movie
-                    </h4>
-                    <br>
+                    <br>               
                     <button
                         *ngIf="movie.part && movie.part == 1" 
                         type="button"
@@ -113,6 +89,13 @@
                         Actions
                     </button>
                     <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="viewDetailsMovie(movie)">
+                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                            View
+                        </button>
                         <button
                             mat-menu-item 
                             class="text-application"
@@ -182,32 +165,8 @@
                         [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
                         (click)="copyText(movie.nameMovie)">
                         {{ movie.nameMovie }}
-                    </h4> 
-                    <br>
-                    <h4 class="text-application" style="text-align: center;">
-                        <span *ngIf="movie.year">{{ movie.year }}</span>
-                        <span *ngIf="!movie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                     </h4>
-                    <br>
-                    <span
-                        *ngIf="!statusId"
-                        [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}"
-                        style="display: table; margin: 0 auto;"
-                        [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
-                        movie.statusId == 2 && !movie.part ? 'not-download-image':
-                        movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
-                        movie.statusId == 4 && !movie.part ? 'not-watched-image':
-                        movie.statusId == 5 && !movie.part ? 'search-image':
-                        movie.part && movie.part == 1 ? 'parts-image':
-                        movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
-                    </span>
-                    <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                        Part:&nbsp;{{ movie.part }}
-                    </h4>
-                    <h4 *ngIf="statusId && !movie.part" class="text-application" style="text-align: center;">
-                        Full movie
-                    </h4>
-                    <br>
+                    <br>               
                     <button
                         *ngIf="movie.part && movie.part == 1" 
                         type="button"
@@ -229,6 +188,13 @@
                         Actions
                     </button>
                     <mat-menu #menu="matMenu" class="my-menu">
+                        <button
+                            mat-menu-item 
+                            class="text-application"
+                            (click)="viewDetailsMovie(movie)">
+                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                            View
+                        </button>
                         <button
                             mat-menu-item 
                             class="text-application"
@@ -295,32 +261,8 @@
                     <div class="back">
                         <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(movie.nameMovie)">
                             {{ movie.nameMovie }}
-                        </h4> 
-                        <br>
-                        <h4 class="text-application" style="text-align: center;">
-                            <span *ngIf="movie.year">{{ movie.year }}</span>
-                            <span *ngIf="!movie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                         </h4>
-                        <br>
-                        <span
-                            *ngIf="!statusId"
-                            [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}"
-                            style="display: table; margin: 0 auto;"
-                            [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
-                            movie.statusId == 2 && !movie.part ? 'not-download-image':
-                            movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
-                            movie.statusId == 4 && !movie.part ? 'not-watched-image':
-                            movie.statusId == 5 && !movie.part ? 'search-image':
-                            movie.part && movie.part == 1 ? 'parts-image':
-                            movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
-                        </span>
-                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                            Part:&nbsp;{{ movie.part }}
-                        </h4>
-                        <h4 *ngIf="statusId && !movie.part" class="text-application" style="text-align: center;">
-                            Full movie
-                        </h4>
-                        <br>
+                        <br>               
                         <button
                             *ngIf="movie.part && movie.part == 1" 
                             type="button"
@@ -342,6 +284,13 @@
                             Actions
                         </button>
                         <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="viewDetailsMovie(movie)">
+                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                                View
+                            </button>
                             <button
                                 mat-menu-item 
                                 class="text-application"
@@ -388,7 +337,7 @@
                                 <mat-icon style="color: #f44336;">delete</mat-icon>
                                 Delete
                             </button>
-                        </mat-menu>  
+                        </mat-menu>   
                         <br><br>
                     </div>
                 </div>
@@ -407,32 +356,8 @@
                     <div class="back">
                         <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(movie.nameMovie)">
                             {{ movie.nameMovie }}
-                        </h4> 
-                        <br>
-                        <h4 class="text-application" style="text-align: center;">
-                            <span *ngIf="movie.year">{{ movie.year }}</span>
-                            <span *ngIf="!movie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                         </h4>
-                        <br>
-                        <span
-                            *ngIf="!statusId"
-                            [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}"
-                            style="display: table; margin: 0 auto;"
-                            [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
-                            movie.statusId == 2 && !movie.part ? 'not-download-image':
-                            movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
-                            movie.statusId == 4 && !movie.part ? 'not-watched-image':
-                            movie.statusId == 5 && !movie.part ? 'search-image':
-                            movie.part && movie.part == 1 ? 'parts-image':
-                            movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
-                        </span>
-                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                            Part:&nbsp;{{ movie.part }}
-                        </h4>
-                        <h4 *ngIf="statusId && !movie.part" class="text-application" style="text-align: center;">
-                            Full movie
-                        </h4>
-                        <br>
+                        <br>               
                         <button
                             *ngIf="movie.part && movie.part == 1" 
                             type="button"
@@ -454,6 +379,13 @@
                             Actions
                         </button>
                         <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="viewDetailsMovie(movie)">
+                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                                View
+                            </button>
                             <button
                                 mat-menu-item 
                                 class="text-application"
@@ -500,7 +432,7 @@
                                 <mat-icon style="color: #f44336;">delete</mat-icon>
                                 Delete
                             </button>
-                        </mat-menu>    
+                        </mat-menu>   
                         <br><br>
                     </div>
                 </div>
@@ -521,32 +453,8 @@
                     <div class="back">
                         <h4 class="text-application" style="text-align: center;font-weight: 600;" (click)="copyText(movie.nameMovie)">
                             {{ movie.nameMovie }}
-                        </h4> 
-                        <br>
-                        <h4 class="text-application" style="text-align: center;">
-                            <span *ngIf="movie.year">{{ movie.year }}</span>
-                            <span *ngIf="!movie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>  
                         </h4>
-                        <br>
-                        <span
-                            *ngIf="!statusId"
-                            [ngStyle]="{'margin-bottom': movie.nameMovie.length > 25 ? '3%' : ''}"
-                            style="display: table; margin: 0 auto;"
-                            [ngClass]="movie.statusId == 1 && !movie.part ? 'wait-image' : 
-                            movie.statusId == 2 && !movie.part ? 'not-download-image':
-                            movie.statusId == 3 && !movie.part && !movie.notLiked ? 'watched-image':
-                            movie.statusId == 4 && !movie.part ? 'not-watched-image':
-                            movie.statusId == 5 && !movie.part ? 'search-image':
-                            movie.part && movie.part == 1 ? 'parts-image':
-                            movie.statusId == 3 && !movie.part && movie.notLiked ? 'not-liked-image':''">
-                        </span>
-                        <h4 *ngIf="movie.part && movie.part > 1" class="text-application" style="text-align: center;">
-                            Part:&nbsp;{{ movie.part }}
-                        </h4>
-                        <h4 *ngIf="statusId && !movie.part" class="text-application" style="text-align: center;">
-                            Full movie
-                        </h4>
-                        <br>
+                        <br>               
                         <button
                             *ngIf="movie.part && movie.part == 1" 
                             type="button"
@@ -568,6 +476,13 @@
                             Actions
                         </button>
                         <mat-menu #menu="matMenu" class="my-menu">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="viewDetailsMovie(movie)">
+                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
+                                View
+                            </button>
                             <button
                                 mat-menu-item 
                                 class="text-application"
@@ -614,7 +529,7 @@
                                 <mat-icon style="color: #f44336;">delete</mat-icon>
                                 Delete
                             </button>
-                        </mat-menu> 
+                        </mat-menu>   
                         <br><br>
                     </div>
                 </div>
