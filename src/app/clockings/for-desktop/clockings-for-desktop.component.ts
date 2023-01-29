@@ -113,22 +113,22 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
       if (this.subjectSelectedId == 1) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 2) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 3) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 4) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else {
         this.dataSource.data = 

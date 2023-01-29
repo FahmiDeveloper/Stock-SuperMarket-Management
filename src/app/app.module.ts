@@ -31,23 +31,7 @@ import {
   HeaderComponent,
   HomeComponent,
   LoginComponent,
-  RegisterComponent,
-  ListMoviesByStatusForDesktopComponent,
-  ListMoviesByStatusForMobileComponent,
-  ListAnimesByStatusForDesktopComponent,
-  ListAnimesByStatusForMobileComponent,
-  ListSeriesByStatusForDesktopComponent,
-  ListSeriesByStatusForMobileComponent,
-  ListFilesByTypeComponent,
-  ListTasksForDesktopComponent,
-  ListTasksForMobileComponent,
-  TaskDataComponent,
-  ListUsersByStatusForDesktopComponent,
-  ListUsersByStatusForMobileComponent,
-  ListClockingsForDesktopComponent,
-  ListClockingsForMobileComponent,
-  ListExpirationsForDesktopComponent,
-  ListExpirationsForMobileComponent
+  RegisterComponent
 } from './core/components/index';
 
 import { UserComponent } from './user/index';
@@ -173,18 +157,6 @@ import {
     HeaderComponent,
     SortPipe,
 
-    ListMoviesByStatusForDesktopComponent,
-    ListMoviesByStatusForMobileComponent,
-    ListAnimesByStatusForDesktopComponent,
-    ListAnimesByStatusForMobileComponent,
-    ListSeriesByStatusForDesktopComponent,
-    ListSeriesByStatusForMobileComponent,
-    ListFilesByTypeComponent,
-    ListTasksForDesktopComponent,
-    ListTasksForMobileComponent,
-    TaskDataComponent,
-    ListUsersByStatusForDesktopComponent,
-    ListUsersByStatusForMobileComponent,
 
     AnimesForDesktopComponent,
     ListSeasonsMoviesForDesktopComponent,
@@ -199,10 +171,8 @@ import {
 
     ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,
-    ListClockingsForDesktopComponent,
     ClockingsForMobileComponent,
     ClockingFormMobileComponent,
-    ListClockingsForMobileComponent,
 
     DebtsForDesktopComponent,
     DebtFormDesktopComponent,
@@ -211,10 +181,8 @@ import {
 
     ExpirationsForDesktopComponent,
     ExpirationFormDesktopComponent,
-    ListExpirationsForDesktopComponent,
     ExpirationsForMobileComponent,
     ExpirationFormMobileComponent,
-    ListExpirationsForMobileComponent,
 
     FilesComponent,
     UploadFormComponent,
@@ -265,25 +233,13 @@ import {
     ListSeasonsMoviesForDesktopComponent,
     ListSeasonsMoviesForMobileComponent,
 
-    NewOrEditLinkComponent,
+    NewOrEditLinkComponent
 
-    ListMoviesByStatusForDesktopComponent,
-    ListMoviesByStatusForMobileComponent,
 
-    ListAnimesByStatusForDesktopComponent,
-    ListAnimesByStatusForMobileComponent,
 
-    ListSeriesByStatusForDesktopComponent,
-    ListSeriesByStatusForMobileComponent,
 
-    ListFilesByTypeComponent,
 
-    ListTasksForDesktopComponent,
-    ListTasksForMobileComponent,
-    TaskDataComponent,
     
-    ListUsersByStatusForDesktopComponent,
-    ListUsersByStatusForMobileComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
