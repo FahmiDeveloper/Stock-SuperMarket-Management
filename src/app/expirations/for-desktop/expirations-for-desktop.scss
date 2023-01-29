@@ -4,7 +4,6 @@
   border: 1px solid #222;
   cursor: pointer;
 }
-
   
 .widhtInput {
   width: 100%;
@@ -12,7 +11,6 @@
   
 .no-results {
   display: flex;
-  justify-content: center;
   padding: 14px;
   font-size: 20px;
 }
@@ -24,9 +22,9 @@
 }
   
 .mat-cell {
-    font-size: 20px;
-    min-height: 48px;
-    border-bottom-style: none;
+  font-size: 20px;
+  min-height: 48px;
+  border-bottom-style: none;
 }
   
 table {
@@ -130,13 +128,10 @@ td.mat-column-star {
   .mat-paginator {
     margin-top: 24px;
   }
+
+  .example-card-tablet{
+    margin: 0 auto;
+    width: 100%;
+  }
   
 }
-  
-.gridForDelete {
-  display: grid;
-  grid-template-columns: 120px 250px;
-  width: 250px;
-  font-size: 18px;
-}
-  

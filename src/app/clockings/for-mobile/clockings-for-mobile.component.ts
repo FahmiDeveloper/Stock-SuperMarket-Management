@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { ClockingFormMobileComponent } from './clocking-form-mobile/clocking-form-mobile.component';
 
@@ -25,9 +26,6 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
   dataSourceCopieForCalculTotalClockingLate = new MatTableDataSource<Clocking>();
   displayedColumns: string[] = ['date', 'day', 'time', 'clockingNbr', 'note', 'star'];
 
-  clockingToDelete: Clocking = new Clocking();
-
-  modalRefDeleteClocking: any;
   currentMonthAndYear: string;
   totalClockingLate: number = 0;
   minutePartList: number[] = [];
@@ -102,22 +100,22 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
       if (this.subjectSelectedId == 1) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 2) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 3) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 4) {
         this.dataSource.data = 
         clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true))
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else {
         this.dataSource.data = 
@@ -200,21 +198,24 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.monthSelected = this.monthSelected
   }
 
-  openDeleteClockingModal(clocking: Clocking, contentDeleteClocking) {
-    this.clockingToDelete = clocking;
-    this.modalRefDeleteClocking =  this.dialogService.open(contentDeleteClocking, {
-      width: '98vw',
-      height:'55vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.clockingService.delete(this.clockingToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteClocking.close();
+  deleteClocking(clockingKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this clocking!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.clockingService.delete(clockingKey);
+        Swal.fire(
+          'Clocking has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   ngOnDestroy() {

@@ -16,6 +16,8 @@ export class Anime {
   isFirst: boolean;
   parentAnimeKey: string;
   notLiked: boolean;
+  haveSeasons: boolean;
+  year: number;
 
   constructor(){
     this.nameAnime = '';

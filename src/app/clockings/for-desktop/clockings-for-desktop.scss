@@ -5,14 +5,8 @@
   cursor: pointer;
 }
 
-  
-.widhtInput {
-  width: 100%;
-}
-  
 .no-results {
   display: flex;
-  justify-content: center;
   padding: 14px;
   font-size: 20px;
 }
@@ -24,9 +18,9 @@
 }
   
 .mat-cell {
-    font-size: 20px;
-    min-height: 48px;
-    border-bottom-style: none;
+  font-size: 20px;
+  min-height: 48px;
+  border-bottom-style: none;
 }
   
 table {
@@ -44,7 +38,7 @@ td.mat-column-star {
 }
     
 .mat-icon {
-    color: #3e75ff;
+  color: #3e75ff;
 }
     
 @media screen and (max-width: 960px) {
@@ -130,13 +124,11 @@ td.mat-column-star {
   .mat-paginator {
     margin-top: 24px;
   }
+
+  .example-card-tablet{
+    margin: 0 auto;
+    width: 100%;
+  }
   
-}
-  
-.gridForDelete {
-  display: grid;
-  grid-template-columns: 150px 400px;
-  width: 250px;
-  font-size: 18px;
 }
   

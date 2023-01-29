@@ -51,9 +51,7 @@ export class AnimeFormDesktopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.seasonAnimesList = this.allAnimes
-    .filter(anime => anime.isFirst == true && anime.season && anime.season == 1)
-    .sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+    this.seasonAnimesList = this.allAnimes.filter(anime => anime.priority && anime.priority == 1).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
     if (!this.anime.key) {
       this.anime.date = moment().format('YYYY-MM-DD');
@@ -90,7 +88,7 @@ export class AnimeFormDesktopComponent implements OnInit {
     if (this.anime.key) {
       this.animeService.update(this.anime.key, this.anime);
       Swal.fire(
-        'Anime data has been Updated successfully',
+        'Anime data has been updated successfully',
         '',
         'success'
       )

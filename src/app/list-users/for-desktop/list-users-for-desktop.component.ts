@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { ModalPrivilegeDesktopComponent } from './modal-privilege-desktop/modal-privilege-desktop.component';
 
@@ -21,12 +22,8 @@ import { FirebaseUserModel } from '../../shared/models/user.model';
 export class ListUsersForDesktopComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
-  displayedColumns: string[] = ['picture','details', 'movies', 'animes', 'series', 'files', 'debts'];
+  displayedColumns: string[] = ['picture','details', 'movies', 'animes', 'series', 'files', 'debts', 'star'];
   queryEmail: string = '';
-
-  userToDelete: FirebaseUserModel = new FirebaseUserModel();
-
-  modalRefDeleteUser: any;
 
   subscriptionForGetAllUsers: Subscription;
 
@@ -101,21 +98,24 @@ export class ListUsersForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.currentUser = user;
   }
 
-  openDeleteUserModal(user: FirebaseUserModel, contentDeleteUser) {
-    this.userToDelete = user;
-    this.modalRefDeleteUser =  this.dialogService.open(contentDeleteUser, {
-      width: '30vw',
-      height:'35vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.usersListService.delete(this.userToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteUser.close();
+  deleteUser(userKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this user!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.usersListService.delete(userKey);
+        Swal.fire(
+          'User has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   ngOnDestroy() {

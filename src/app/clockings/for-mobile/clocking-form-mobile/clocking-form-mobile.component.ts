@@ -97,7 +97,7 @@ export class ClockingFormMobileComponent implements OnInit {
       this.clockingService.update(this.clocking.key, this.clocking);
 
       Swal.fire(
-        'Clocking data has been Updated successfully',
+        'Clocking data has been updated successfully',
         '',
         'success'
       )

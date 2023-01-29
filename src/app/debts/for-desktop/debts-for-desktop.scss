@@ -35,9 +35,7 @@
     margin-left: 325px;
 }
 
-.gridForDelete {
-    display: grid;
-    grid-template-columns: 80px 400px;
-    width: 250px;
-    font-size: 18px;
+td.mat-column-star {
+    width: 20px;
+    padding-right: 8px !important;
 }

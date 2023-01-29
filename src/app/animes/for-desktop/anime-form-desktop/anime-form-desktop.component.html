@@ -24,12 +24,19 @@
     </mat-form-field>
 
     <mat-form-field color="accent">
+      <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
+      <input matInput #input type="number" [(ngModel)]="anime.year" name="year" class="text-application">
+    </mat-form-field>
+
+    <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Type</span></mat-placeholder>
       <mat-select [(ngModel)]="anime.type" name="type" class="text-application">
-        <mat-option value="Manga" class="text-application">Manga</mat-option>
         <mat-option value="TV" class="text-application">TV</mat-option>
         <mat-option value="Movie" class="text-application">Movie</mat-option>
         <mat-option value="Special" class="text-application">Special</mat-option>
+        <mat-option value="Manga" class="text-application">Manga</mat-option>
+        <mat-option value="Ova" class="text-application">Ova</mat-option>
+        <mat-option value="Ona" class="text-application">Ona</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -67,7 +74,7 @@
       <input matInput #input type="number" [(ngModel)]="anime.totalEpisodes" name="totalEpisodes" class="text-application">
     </mat-form-field>
 
-    <mat-form-field color="accent" *ngIf="anime.season && anime.season > 1">
+    <mat-form-field color="accent" *ngIf="anime.priority && anime.priority > 1">
       <input type="text" placeholder="Parent film" matInput [matAutocomplete]="auto" (keyup)="filterByParentName($event.target.value)" name="parentAnimeName" [(ngModel)]="parentAnimeName">
       <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let anime of seasonAnimesList" [value]="anime.key" (click)="getParentAnimeKey(anime.key)">

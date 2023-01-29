@@ -3,6 +3,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { PasswordFormMobileComponent } from './password-form-mobile/password-form-mobile.component';
 
@@ -22,9 +23,6 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
   pagedList: Password[]= [];
   passwordsListCopie: Password[] = [];
 
-  passwordToDelete: Password = new Password();
-
-  modalRefDeletePassword: any;
   content: string = '';
   
   length: number = 0;
@@ -93,21 +91,24 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.password = password;
   }
 
-  openDeletePasswordModal(password: Password, contentDeletePassword) {
-    this.passwordToDelete = password;
-    this.modalRefDeletePassword =  this.dialogService.open(contentDeletePassword, {
-      width: '98vw',
-      height:'50vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.passwordService.delete(this.passwordToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeletePassword.close();
+  deletePassword(passwordKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this password!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.passwordService.delete(passwordKey);
+        Swal.fire(
+          'Password has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   copyCoordinate(coordinate: string){

@@ -49,19 +49,19 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
     dialogRef.componentInstance.allAnimes = this.allAnimes;
   }
 
-  deleteAnime(animeId) {
+  deleteAnime(animeKey) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this anime!',
+      text: 'Delete this anime!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.animeService.delete(animeId);
+        this.animeService.delete(animeKey);
         this.listSeasonsByParentAnimeKey.forEach((anime, index) => {
-          if(anime.key === animeId) this.listSeasonsByParentAnimeKey.splice(index,1);
+          if(anime.key === animeKey) this.listSeasonsByParentAnimeKey.splice(index,1);
         });
         if (this.listSeasonsByParentAnimeKey.length == 0) {
           this.dialogRef.close();

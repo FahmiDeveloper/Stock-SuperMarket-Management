@@ -2,14 +2,14 @@ import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-
+import Swal from 'sweetalert2';
 import * as fileSaver from 'file-saver';
 import * as JSZip from 'jszip/dist/jszip';
 import { utils, write as XlsxWrite, read as XlsxRead } from 'ts-xlsx';
-import { DomSanitizer } from '@angular/platform-browser';
 import { renderAsync } from 'docx-preview';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 
@@ -33,8 +33,6 @@ export class UploadDetailsComponent implements OnChanges {
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['name', 'star'];
 
-  fileToDelete: FileUpload;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   urlFile: string;
@@ -54,7 +52,6 @@ export class UploadDetailsComponent implements OnChanges {
   headData: any;
   arrayBuffer: any;
   wordFile: File;
-  modalRefDeleteFile: any;
 
   constructor(
     private uploadService: FileUploadService,
@@ -397,29 +394,24 @@ export class UploadDetailsComponent implements OnChanges {
     return extentionvideo.indexOf(extention.toLocaleLowerCase()) != -1;
   }
 
-  openDeleteFileModal(file: FileUpload, contentDeleteFile) {
-    this.fileToDelete = file;
-    if (this.isMobile) {
-      this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {
-      width: '98vw',
-      height:'50vh',
-      maxWidth: '100vw'
-     });
-   } else {
-    this.modalRefDeleteFile = this.dialogService.open(contentDeleteFile, {
-      width: '30vw',
-      height:'30vh',
-      maxWidth: '100vw'
-    }); 
-   }
-  }
-
-  confirmDelete() {
-    this.uploadService.deleteFile(this.fileToDelete);
-  }
-
-  close() {
-    this.modalRefDeleteFile.close();
+  deleteFile(file: FileUpload) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this file!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.uploadService.deleteFile(file);
+        Swal.fire(
+          'File has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
   
 }

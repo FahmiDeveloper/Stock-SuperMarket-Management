@@ -226,16 +226,3 @@ td.mat-column-star {
 .mat-divider {
   border-top-color: black;
 }
-
-.gridForDelete {
-  display: grid;
-  grid-template-columns: 80px 400px;
-  width: 250px;
-  font-size: 18px;
-}
-
-.gridForDeleteInMobile {
-  display: grid;
-  grid-template-columns: 80px 220px;
-  font-size: 18px;
-}

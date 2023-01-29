@@ -381,7 +381,7 @@
             type="button"
             *ngIf="dataUserConnected.roleDeleteDebt" 
             mat-menu-item 
-            (click)="openDeleteDebtModal(debt, contentDeleteDebt)">
+            (click)="deleteDebt(debt.key)" >
             <mat-icon style="color: #f44336;">delete</mat-icon>
             <span>Delete</span>
         </button>
@@ -457,100 +457,4 @@
         <h3 style="text-align: center;">Delete debts in progress...</h3>
       </div>
     </div>
-</ng-template>
-
-<ng-template #contentDeleteDebt>
-
-    <div mat-dialog-title class="dialog-title">
-      <h2 class="text-application">Are you sure ?</h2>
-    </div>
-  
-    <div mat-dialog-content>
-        <div class="gridForDelete text-application">
-            <div><span>Debtor:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.debtor">{{ debtToDelete.debtor }}</span>
-                <span *ngIf="!debtToDelete.debtor">-</span>
-            </div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Creditor:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.creditor">{{ debtToDelete.creditor }}</span>
-                <span *ngIf="!debtToDelete.creditor">-</span>
-            </div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Debt:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.financialDebt">{{ debtToDelete.financialDebt }}</span>
-                <span *ngIf="!debtToDelete.financialDebt">-</span>
-            </div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Rest:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.restMoney">{{ debtToDelete.restMoney }}</span>
-                <span *ngIf="!debtToDelete.restMoney">-</span>
-            </div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Date:</span></div>
-            <div>{{ debtToDelete.date | date:'dd/MM/yyyy' }}</div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Place:</span></div>
-            <div>{{ debtToDelete.place }}</div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Status:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.placeId === 5">
-                    <span *ngIf="debtToDelete.toPayThisMonth">Pay this month</span>
-                    <span *ngIf="debtToDelete.toPayNextMonth">Pay next month</span>
-                    <span *ngIf="debtToDelete.notToPayForNow">Pay will be delayed</span>
-                    <span *ngIf="debtToDelete.toGetThisMonth">Get this month</span>
-                    <span *ngIf="debtToDelete.toGetNextMonth">Get next month</span>
-                    <span *ngIf="debtToDelete.notToGetForNow">Get will be delayed</span>
-                </span>
-                <span *ngIf="debtToDelete.placeId !== 5">-</span>
-            </div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Note:</span></div>
-            <div>{{ debtToDelete.note }}</div>
-        </div> 
-    </div>
-
-    <br>
-
-    <div class="row justify-content-center" mat-dialog-actions>
-        <button 
-            mat-button 
-            type="button" 
-            [mat-dialog-close]="1" 
-            (click)="confirmDelete()" 
-            style="background:rgb(221, 51, 51);color: white;" 
-            class="text-application">
-            Delete
-        </button>
-
-        <button 
-            mat-button 
-            type="button" 
-            (click)="close()" 
-            tabindex="-1" 
-            style="background:#607D8B;color: white;" 
-            class="text-application">
-            Cancel
-        </button>
-    </div>
-  
 </ng-template>

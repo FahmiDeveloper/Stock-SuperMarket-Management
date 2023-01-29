@@ -146,7 +146,7 @@
         </div>
       </div>
           
-      <mat-menu #menu="matMenu">
+      <mat-menu #menu="matMenu" xPosition="before">
         <ng-template matMenuContent let-link="element">
 
           <button
@@ -164,9 +164,9 @@
             *ngIf="link.path"  
             mat-menu-item
             class="text-application">
-            <mat-icon style="color: #283593;">remove_red_eye</mat-icon>
+            <mat-icon style="color: #283593;">link</mat-icon>
             <a href="{{ link.path }}" target="_blank" style="text-decoration: none;">
-              <span style="color: black !important;">View</span>
+              <span style="color: black !important;">Follow</span>
             </a>  
           </button>
 
@@ -174,7 +174,7 @@
             *ngIf="dataUserConnected.roleDeleteFile" 
             type="button" 
             mat-menu-item
-            (click)="openDeleteLinkModal(link, contentDeleteLink)" 
+            (click)="deleteLink(link.key)" 
             class="text-application">
             <mat-icon style="color: #f44336;" aria-label="Delete">delete</mat-icon>
             <span>Delete</span>
@@ -193,45 +193,6 @@
       </mat-menu>
 
     </div>
-  </div>
-
-</ng-template>
-
-<ng-template #contentDeleteLink>
-
-  <div mat-dialog-title class="dialog-title">
-    <h2 class="text-application">Are you sure ?</h2>
-  </div>
-
-  <div mat-dialog-content>
-    <div [ngClass]="isMobile ? 'gridForDeleteInMobile' : 'gridForDelete'" class="text-application">
-      <div><span>Content:</span></div>
-      <div>{{ linkToDelete.content }}</div>
-    </div>
-  </div>
-
-  <br>
-
-  <div class="row justify-content-center" mat-dialog-actions>
-      <button 
-          mat-button 
-          type="button" 
-          [mat-dialog-close]="1" 
-          (click)="confirmDelete()" 
-          style="background:rgb(221, 51, 51);color: white;" 
-          class="text-application">
-          Delete
-      </button>
-
-      <button 
-          mat-button 
-          type="button" 
-          (click)="close()" 
-          tabindex="-1" 
-          style="background:#607D8B;color: white;" 
-          class="text-application">
-          Cancel
-      </button>
   </div>
 
 </ng-template>

@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgNavigatorShareService } from 'ng-navigator-share';
@@ -31,8 +32,6 @@ export class FilesComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Link>();
   displayedColumns: string[] = ['content', 'star'];
 
-  linkToDelete: Link = new Link();
-
   content: string = '';
   numContextFile: number;
   typeFile: TypesFiles;
@@ -44,8 +43,6 @@ export class FilesComponent implements OnInit, OnDestroy {
   subscriptionForGetAllLinks: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
-
-  modalRefDeleteLink: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -264,29 +261,24 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.getAllLinks();
   }
 
-  openDeleteLinkModal(link: Link, contentDeleteLink) {
-    this.linkToDelete = link;
-    if (this.isMobile) {
-      this.modalRefDeleteLink =  this.dialogService.open(contentDeleteLink, {
-        width: '98vw',
-       height:'40vh',
-       maxWidth: '100vw'
-     });
-   } else {
-    this.modalRefDeleteLink =  this.dialogService.open(contentDeleteLink, {
-      width: '30vw',
-      height:'30vh',
-      maxWidth: '100vw'
-    }); 
-   }
-  }
-
-  confirmDelete() {
-    this.linkService.delete(this.linkToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteLink.close();
+  deleteLink(linkKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this link!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.linkService.delete(linkKey);
+        Swal.fire(
+          'Link has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
 }

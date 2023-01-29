@@ -90,7 +90,7 @@ export class MovieFormDesktopComponent implements OnInit {
     if (this.movie.key) {
       this.movieService.update(this.movie.key, this.movie);
       Swal.fire(
-        'Movie data has been Updated successfully',
+        'Movie data has been updated successfully',
         '',
         'success'
       )

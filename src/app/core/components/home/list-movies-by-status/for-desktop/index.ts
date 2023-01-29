@@ -1,1 +1,0 @@
-export * from './list-movies-by-status-desktop.component';

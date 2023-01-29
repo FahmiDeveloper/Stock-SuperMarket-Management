@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<mat-menu #menu="matMenu">
+<mat-menu #menu="matMenu" xPosition="before">
   <ng-template matMenuContent let-file="element">
 
     <button
@@ -79,7 +79,7 @@
       *ngIf="userRoles.roleDeleteFile"
       type="button"
       mat-menu-item
-      (click)="openDeleteFileModal(file, contentDeleteFile)" 
+      (click)="deleteFile(file)" 
       class="text-application">
       <mat-icon style="color: #f44336;">delete</mat-icon>
       <span>Delete</span>
@@ -258,44 +258,5 @@
     <div *ngIf="isWord(fileExtractedName) && isMobile" id="contentWord" class="scroll"></div>
 
     <div *ngIf="isWord(fileExtractedName) && !isMobile" id="contentWord"></div>
-
-</ng-template>
-
-<ng-template #contentDeleteFile>
-
-  <div mat-dialog-title class="dialog-title">
-    <h2 class="text-application">Are you sure ?</h2>
-  </div>
-
-  <div mat-dialog-content>
-      <div [ngClass]="isMobile ? 'gridForDeleteInMobile' : 'gridForDelete'" class="text-application">
-          <div><span>Name:</span></div>
-          <div>{{ fileToDelete.fileNameWithoutType }}</div>
-      </div>
-  </div>
-
-  <br>
-
-  <div class="row justify-content-center" mat-dialog-actions>
-      <button 
-          mat-button 
-          type="button" 
-          [mat-dialog-close]="1" 
-          (click)="confirmDelete()" 
-          style="background:rgb(221, 51, 51);color: white;" 
-          class="text-application">
-          Delete
-      </button>
-
-      <button 
-          mat-button 
-          type="button" 
-          (click)="close()" 
-          tabindex="-1" 
-          style="background:#607D8B;color: white;" 
-          class="text-application">
-          Cancel
-      </button>
-  </div>
 
 </ng-template>

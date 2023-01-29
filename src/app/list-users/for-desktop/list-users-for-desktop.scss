@@ -19,13 +19,7 @@
     font-size: 20px;
     min-height: 48px;
     border-bottom-style: none;
-}
-
-.gridForDelete {
-    display: grid;
-    grid-template-columns: 80px 400px;
-    width: 250px;
-    font-size: 18px;
+    justify-content: center;
 }
 
 .mat-card-md-image {
@@ -45,4 +39,9 @@ img {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+td.mat-column-star {
+    width: 20px;
+    padding-right: 8px !important;
 }

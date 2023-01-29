@@ -70,7 +70,7 @@ export class DebtFormDesktopComponent implements OnInit {
     if (this.debt.key) {
       this.debtService.update(this.debt.key, this.debt);
       Swal.fire(
-        'Debt data has been Updated successfully',
+        'Debt data has been updated successfully',
         '',
         'success'
       )

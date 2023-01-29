@@ -118,10 +118,22 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
       
       else this.animesList = animes.filter(anime => anime.isFirst == true).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
+      this.animesList.forEach(anime => {
+        this.checkIfAnimeHaveSeasons(anime);
+      })
+
       this.pagedList = this.isDesktop ? this.animesList.slice(0, 8) : this.animesList.slice(0, 6);
       this.length = this.animesList.length;
 
     });
+  }
+
+  checkIfAnimeHaveSeasons(animeData: Anime) {
+    if (this.allAnimes.filter(anime => anime.parentAnimeKey && anime.parentAnimeKey == animeData.key).length > 0) {
+      animeData.haveSeasons = true;
+    } else {
+      animeData.haveSeasons = false;
+    }
   }
 
   OnPageChange(event: PageEvent){
@@ -162,17 +174,17 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allAnimes = this.allAnimes;
   }
 
-  deleteAnime(animeId) {
+  deleteAnime(animeKey) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this anime!',
+      text: 'Delete this anime!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.animeService.delete(animeId);
+        this.animeService.delete(animeKey);
         Swal.fire(
           'Anime has been deleted successfully',
           '',
