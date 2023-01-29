@@ -51,7 +51,7 @@ export class ExpirationFormMobileComponent implements OnInit {
       this.expirationService.update(this.expiration.key, this.expiration);
 
       Swal.fire(
-        'Expiration data has been Updated successfully',
+        'Expiration data has been updated successfully',
         '',
         'success'
       )

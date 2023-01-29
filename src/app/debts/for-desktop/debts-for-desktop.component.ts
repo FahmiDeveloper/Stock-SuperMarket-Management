@@ -28,12 +28,10 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Debt>();
   dataSourceCopie = new MatTableDataSource<Debt>();
-  displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'details'];
+  displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'details', 'star'];
   filteredDebtsByPlaceAndDebtForPay: Debt[];
   filteredDebtsByPlaceAndDebtToGet: Debt[];
   
-  debtToDelete: Debt = new Debt();
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   creditors: string[] = [];
@@ -72,7 +70,6 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   customTotalOutDebtsByDebtor: number;
 
   modalRefLodaing: any;
-  modalRefDeleteDebt: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -643,21 +640,24 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     this.sortByDesc = false;
   }
 
-  openDeleteDebtModal(debt: Debt, contentDeleteDebt) {
-    this.debtToDelete = debt;
-    this.modalRefDeleteDebt =  this.dialogService.open(contentDeleteDebt, {
-      width: '30vw',
-      height:'55vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.debtService.delete(this.debtToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteDebt.close();
+  deleteDebt(debtKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this debt!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.debtService.delete(debtKey);
+        Swal.fire(
+          'Debt has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   onContextMenu(event: MouseEvent, debt: Debt) {

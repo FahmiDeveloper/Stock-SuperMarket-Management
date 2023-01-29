@@ -19,13 +19,7 @@
     font-size: 20px;
     min-height: 48px;
     border-bottom-style: none;
-}
-
-.gridForDelete {
-    display: grid;
-    grid-template-columns: 80px 400px;
-    width: 250px;
-    font-size: 18px;
+    justify-content: center;
 }
 
 .mat-card-md-image {

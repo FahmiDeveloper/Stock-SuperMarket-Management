@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
 
 import { PasswordService } from 'src/app/shared/services/password.service';
 
@@ -20,10 +22,15 @@ export class PasswordFormDesktopComponent implements OnInit {
 
   password: Password = new Password();
 
+  basePath = '/PicturesPasswords';
+  task: AngularFireUploadTask;
+  progressValue: Observable<number>;
+
   formControl = new FormControl('', [Validators.required]);
 
   constructor(
-    public passwordService: PasswordService, 
+    public passwordService: PasswordService,
+    private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<PasswordFormDesktopComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Password
   ) {}
@@ -36,7 +43,7 @@ export class PasswordFormDesktopComponent implements OnInit {
       this.passwordService.update(this.password.key, this.password);
 
       Swal.fire(
-        'Password data has been Updated successfully',
+        'Password data has been updated successfully',
         '',
         'success'
       )
@@ -55,6 +62,30 @@ export class PasswordFormDesktopComponent implements OnInit {
 
     }
     this.close();
+  }
+
+  async onFileChanged(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
+      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+
+      // this.progress = this.snapTask.percentageChanges();
+      this.progressValue = this.task.percentageChanges();
+
+      (await this.task).ref.getDownloadURL().then(url => {
+        this.password.imageUrl = url;
+        Swal.fire(
+          'Picture has been uploaded successfully',
+          '',
+          'success'
+        )
+      });  // <<< url is found here
+
+    } else {  
+      alert('No images selected');
+      this.password.imageUrl = '';
+    }
   }
 
   getErrorMessage() {

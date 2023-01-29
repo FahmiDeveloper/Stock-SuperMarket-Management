@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { ExpirationFormMobileComponent } from './expiration-form-mobile/expiration-form-mobile.component';
 
@@ -24,9 +25,6 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
   dataSourceCopie = new MatTableDataSource<Expiration>();
   displayedColumns: string[] = ['content', 'cost', 'start','expiration', 'duration', 'rest', 'status', 'note', 'star'];
 
-  expirationToDelete: Expiration = new Expiration();
-
-  modalRefDeleteExpiration: any;
   content: string = '';
 
   subscriptionForGetAllExpiration: Subscription;
@@ -123,21 +121,24 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.expiration = expiration;
   }
 
-  openDeleteExpirationModal(expiration: Expiration, contentDeleteExpiration) {
-    this.expirationToDelete = expiration;
-    this.modalRefDeleteExpiration =  this.dialogService.open(contentDeleteExpiration, {
-      width: '98vw',
-      height:'65vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.expirationService.delete(this.expirationToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteExpiration.close();
+  deleteExpiration(expirationKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this expiration!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.expirationService.delete(expirationKey);
+        Swal.fire(
+          'Expiration has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   ngOnDestroy() {

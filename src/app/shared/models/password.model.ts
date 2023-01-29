@@ -7,6 +7,6 @@ export class Password {
   secondCoordinate: string;
   note: string;
   numRefPassword: number;
-  picture: string;
   path: string;
+  imageUrl: string;
 }

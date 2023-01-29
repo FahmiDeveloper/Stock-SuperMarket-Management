@@ -70,7 +70,7 @@
                     </h4> 
                     <br>
                     <button
-                        *ngIf="anime.season && anime.season == 1" 
+                        *ngIf="anime.haveSeasons" 
                         type="button"
                         mat-button 
                         (click)="showDetailsAnime(anime)"
@@ -80,7 +80,7 @@
                         <span>Details</span>
                     </button>           
                     <button 
-                        *ngIf="!anime.season || (anime.season && anime.season > 1)"
+                        *ngIf="!anime.parentAnimeKey && !anime.haveSeasons" 
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 
@@ -169,7 +169,7 @@
                     </h4>
                     <br>
                     <button
-                        *ngIf="anime.season && anime.season == 1" 
+                        *ngIf="anime.haveSeasons" 
                         type="button"
                         mat-button 
                         (click)="showDetailsAnime(anime)"
@@ -179,7 +179,7 @@
                         <span>Details</span>
                     </button>           
                     <button 
-                        *ngIf="!anime.season || (anime.season && anime.season > 1)"
+                        *ngIf="!anime.parentAnimeKey && !anime.haveSeasons" 
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 

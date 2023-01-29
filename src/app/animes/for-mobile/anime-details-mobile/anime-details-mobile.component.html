@@ -18,7 +18,13 @@
 
     <mat-grid-tile>
       <div class="card">
-        <mat-grid-list cols=2 rowHeight="25px" class="text-application">
+        <mat-grid-list cols=2 rowHeight="27px" class="text-application">
+          <mat-grid-tile>Year</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="anime.year">{{ anime.year }}</span>
+            <span *ngIf="!anime.year">?</span>                           
+          </mat-grid-tile>
+          
           <mat-grid-tile>Type</mat-grid-tile>
           <mat-grid-tile>{{ anime.type }}</mat-grid-tile>
   

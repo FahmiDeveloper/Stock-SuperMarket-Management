@@ -5,6 +5,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as moment from 'moment';
+import Swal from 'sweetalert2';
 
 import { TaskFormDesktopComponent } from './task-form-desktop/task-form-desktop.component';
 
@@ -139,7 +140,14 @@ export class ToDoListForDesktopComponent implements OnInit {
       }
       let rangeSelected = task.taskToDoIn;
 
-      if (firstRange === rangeSelected) this.store.collection(list).doc(task.id).update(task);
+      if (firstRange === rangeSelected) {
+        this.store.collection(list).doc(task.id).update(task);
+        Swal.fire(
+          'Task data has been updated successfully',
+          '',
+          'success'
+        )
+      }
       else {
         if (result.task.taskToDoIn == 'Today') {
           let previousTaskName = result.task.title;
@@ -179,6 +187,11 @@ export class ToDoListForDesktopComponent implements OnInit {
           result.task.orderNo = this.laterTaskList.length ? this.laterTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
           this.store.collection('toDoLater').add(result.task);
         }
+        Swal.fire(
+          'New task added successfully',
+          '',
+          'success'
+        )
       }
     });
   }
@@ -305,6 +318,11 @@ export class ToDoListForDesktopComponent implements OnInit {
           result.task.orderNo = this.laterTaskList.length ? this.laterTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
           this.store.collection('toDoLater').add(result.task);
         }
+        Swal.fire(
+          'New task added successfully',
+          '',
+          'success'
+        )
     });
 
   }

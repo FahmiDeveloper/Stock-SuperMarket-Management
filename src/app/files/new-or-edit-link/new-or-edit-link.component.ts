@@ -31,7 +31,7 @@ export class NewOrEditLinkComponent implements OnInit {
     if (this.link.key) {
       this.linkService.update(this.link.key, link);
       Swal.fire(
-        'Link data has been Updated successfully',
+        'Link data has been updated successfully',
         '',
         'success'
       );

@@ -90,7 +90,7 @@ export class SerieFormMobileComponent implements OnInit {
     if (this.serie.key) {
       this.serieService.update(this.serie.key, this.serie);
       Swal.fire(
-        'Serie data has been Updated successfully',
+        'Serie data has been updated successfully',
         '',
         'success'
       )

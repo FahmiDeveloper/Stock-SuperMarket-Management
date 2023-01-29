@@ -1,53 +1,15 @@
 <h1 class="titleTextInterface text-application">Debts</h1>
 
-<br>
-
 <div class="row">
-    <div class="col-md-12">
-        <button
-            *ngIf="dataUserConnected.roleAddDebt"
-            type="button" 
-            (click)="newDebt()" 
-            mat-mini-fab 
-            color="primary" 
-            style="background: #2196F3;float: right;">
-            <mat-icon style="color: white;">add</mat-icon>
-        </button>
-
-        <button 
-            *ngIf="!sortByDesc"
-            type="button"  
-            mat-mini-fab 
-            color="primary" 
-            (click)="sortByRefDebtDesc()" 
-            style="background: #2196F3;float: right;margin-right: 10px;">
-            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
-        </button>&nbsp;&nbsp;
-
-        <button 
-            *ngIf="sortByDesc"
-            type="button"
-            mat-mini-fab
-            color="primary" 
-            (click)="sortByRefDebtAsc()" 
-            style="background: #2196F3;float: right;margin-right: 10px;">
-            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
-        </button>
-
-    </div> 
-</div>
-
-<br>
-
-<div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <mat-form-field class="widhtInput text-application">
             <mat-label>Note</mat-label>
             <input matInput type="text" name="queryNote" (keyup)="getAllDebts()" [(ngModel)]="queryNote"/>
         </mat-form-field>
     </div>
+
     <div class="col-md-4">
-        <mat-form-field class="text-application" style="width: 285px;">
+        <mat-form-field class="text-application" style="width: 250px;">
             <mat-label>Place</mat-label>
 			<mat-select name="placeId" [(ngModel)]="placeId" (selectionChange)="getAllDebts()">
                 <mat-option value=""></mat-option>
@@ -57,19 +19,62 @@
 			</mat-select>
 		</mat-form-field>
     </div>
-    <div class="col-md-2">
-        <button mat-flat-button color="primary" (click)="showRest(contentRestMoneyForeachPlace)" class="text-application">Rest</button>
+
+    <div class="col-md-1">
+        <button 
+            mat-flat-button 
+            color="primary" 
+            (click)="showRest(contentRestMoneyForeachPlace)" 
+            class="text-application"
+            style="position: absolute;top: 50%;transform: translateY(-50%);">
+            Rest
+        </button>
     </div>
-    <div class="col-md-2">
+
+    <div class="col-md-1">
         <button 
             *ngIf="(dataSource.data.length) && (dataSource.data.length > 1) && placeId" [hidden]="placeId == 5"
             mat-flat-button 
             color="warn" 
             (click)="deleteAllByPlace(contentLoading)"
-            class="text-application">
+            class="text-application"
+            style="position: absolute;top: 50%;transform: translateY(-50%);">
             Delete all
         </button>
     </div>
+
+    <div class="col-md-3">
+        <button
+            *ngIf="dataUserConnected.roleAddDebt"
+            type="button" 
+            (click)="newDebt()" 
+            mat-mini-fab 
+            color="primary" 
+            style="background: #2196F3;float: right;top: 50%;transform: translateY(-50%);">
+            <mat-icon style="color: white;">add</mat-icon>
+        </button>
+
+        <button 
+            *ngIf="!sortByDesc"
+            type="button"  
+            mat-mini-fab 
+            color="primary" 
+            (click)="sortByRefDebtDesc()" 
+            style="background: #2196F3;float: right;margin-right: 10px;top: 50%;transform: translateY(-50%);">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>&nbsp;&nbsp;
+
+        <button 
+            *ngIf="sortByDesc"
+            type="button"
+            mat-mini-fab
+            color="primary" 
+            (click)="sortByRefDebtAsc()" 
+            style="background: #2196F3;float: right;margin-right: 10px;top: 50%;transform: translateY(-50%);">
+            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
+        </button>
+
+    </div> 
 </div>
 
 <br>
@@ -277,7 +282,7 @@
 
         <ng-container matColumnDef="details">
             <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Details</th>
-            <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element)">
+            <td mat-cell *matCellDef="let element">
                 <div style="margin-top: 50px;margin-bottom: 50px;">
                     <div class="gridForLegend text-application">
                         <div><span>Date:</span></div>
@@ -312,6 +317,15 @@
                 
             </td>
         </ng-container>
+
+        <ng-container matColumnDef="star">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{element:element}">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </td>
+        </ng-container>
     
         <tr mat-header-row style="background: #ff4081;" *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -335,8 +349,8 @@
   [matMenuTriggerFor]="contextMenu">
 </div>
 
-<mat-menu #contextMenu="matMenu">
-	<ng-template matMenuContent let-debt="debt">
+<mat-menu #contextMenu="matMenu" xPosition="before">
+	<ng-template matMenuContent let-debt="element">
 
         <button 
             *ngIf="dataUserConnected.roleUpdateDebt"  
@@ -351,7 +365,7 @@
             *ngIf="dataUserConnected.roleDeleteDebt" 
             type="button"
             mat-menu-item 
-            (click)="openDeleteDebtModal(debt, contentDeleteDebt)" 
+            (click)="deleteDebt(debt.key)" 
             class="text-application">
             <mat-icon style="color: #f44336;">delete</mat-icon>
             <span>Delete</span>
@@ -430,100 +444,4 @@
         <h3 class="text-application" style="text-align: center;">Delete debts in progress...</h3>
       </div>
     </div>
-</ng-template>
-
-<ng-template #contentDeleteDebt>
-
-    <div mat-dialog-title class="dialog-title">
-      <h2 class="text-application">Are you sure ?</h2>
-    </div>
-  
-    <div mat-dialog-content>
-        <div class="gridForDelete text-application">
-            <div><span>Debtor:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.debtor">{{ debtToDelete.debtor }}</span>
-                <span *ngIf="!debtToDelete.debtor">-</span>
-            </div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Creditor:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.creditor">{{ debtToDelete.creditor }}</span>
-                <span *ngIf="!debtToDelete.creditor">-</span>
-            </div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Debt:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.financialDebt">{{ debtToDelete.financialDebt }}</span>
-                <span *ngIf="!debtToDelete.financialDebt">-</span>
-            </div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Rest:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.restMoney">{{ debtToDelete.restMoney }}</span>
-                <span *ngIf="!debtToDelete.restMoney">-</span>
-            </div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Date:</span></div>
-            <div>{{ debtToDelete.date | date:'dd/MM/yyyy' }}</div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Place:</span></div>
-            <div>{{ debtToDelete.place }}</div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Status:</span></div>
-            <div>
-                <span *ngIf="debtToDelete.placeId === 5">
-                    <span *ngIf="debtToDelete.toPayThisMonth">Pay this month</span>
-                    <span *ngIf="debtToDelete.toPayNextMonth">Pay next month</span>
-                    <span *ngIf="debtToDelete.notToPayForNow">Pay will be delayed</span>
-                    <span *ngIf="debtToDelete.toGetThisMonth">Get this month</span>
-                    <span *ngIf="debtToDelete.toGetNextMonth">Get next month</span>
-                    <span *ngIf="debtToDelete.notToGetForNow">Get will be delayed</span>
-                </span>
-                <span *ngIf="debtToDelete.placeId !== 5">-</span>
-            </div>
-        </div> 
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Note:</span></div>
-            <div>{{ debtToDelete.note }}</div>
-        </div> 
-    </div>
-
-    <br>
-
-    <div class="row justify-content-center" mat-dialog-actions>
-        <button 
-            mat-button 
-            type="button" 
-            [mat-dialog-close]="1" 
-            (click)="confirmDelete()" 
-            style="background:rgb(221, 51, 51);color: white;" 
-            class="text-application">
-            Delete
-        </button>
-
-        <button 
-            mat-button 
-            type="button" 
-            (click)="close()" 
-            tabindex="-1" 
-            style="background:#607D8B;color: white;" 
-            class="text-application">
-            Cancel
-        </button>
-    </div>
-  
 </ng-template>

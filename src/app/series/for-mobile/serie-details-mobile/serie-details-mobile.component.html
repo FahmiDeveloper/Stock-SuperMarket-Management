@@ -18,11 +18,11 @@
 
     <mat-grid-tile>
       <div class="card">
-        <mat-grid-list cols=2 rowHeight="25px" class="text-application">
+        <mat-grid-list cols=2 rowHeight="27px" class="text-application">
           <mat-grid-tile>Year</mat-grid-tile>
           <mat-grid-tile>
             <span *ngIf="serie.year">{{ serie.year }}</span>
-            <span *ngIf="!serie.year"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                     
+            <span *ngIf="!serie.year">?</span>                           
           </mat-grid-tile>
   
           <mat-grid-tile>Status</mat-grid-tile>

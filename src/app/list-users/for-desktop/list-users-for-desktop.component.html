@@ -26,7 +26,7 @@
 
         <ng-container matColumnDef="details">
             <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Details</th>
-            <td mat-cell *matCellDef="let element" (contextmenu)="onContextMenu($event, element)">
+            <td mat-cell *matCellDef="let element">
                 <div class="gridForLegend text-application">
                     <div><span>Name:</span></div>
                     <div>{{ element.name }}</div>
@@ -83,6 +83,15 @@
                 <mat-checkbox [(ngModel)]="element.roleDebts" (ngModelChange)="changeRoleStatus(element)"></mat-checkbox>
             </td>        
         </ng-container>
+
+        <ng-container matColumnDef="star">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{element:element}">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </td>
+        </ng-container>
     
         <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -106,8 +115,8 @@
   [matMenuTriggerFor]="contextMenu">
 </div>
 
-<mat-menu #contextMenu="matMenu">
-	<ng-template matMenuContent let-user="user">
+<mat-menu #contextMenu="matMenu" xPosition="before">
+	<ng-template matMenuContent let-user="element">
 
         <button
             *ngIf="user.roleMovies || user.roleAnimes || user.roleSeries || user.roleFiles || user.roleDebts"
@@ -122,7 +131,7 @@
         <button
             type="button"
             mat-menu-item 
-            (click)="openDeleteUserModal(user, contentDeleteUser)"
+            (click)="deleteUser(user.key)"
             class="text-application">
             <mat-icon style="color: #f44336;">delete</mat-icon>
             <span>Delete</span>
@@ -130,52 +139,3 @@
 
 	</ng-template>
 </mat-menu>
-
-<ng-template #contentDeleteUser>
-
-    <div mat-dialog-title class="dialog-title">
-      <h2 class="text-application">Are you sure ?</h2>
-    </div>
-  
-    <div mat-dialog-content>
-        <div class="gridForDelete text-application">
-            <div><span>Name:</span></div>
-            <div>{{ userToDelete.name }}</div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Email:</span></div>
-            <div>{{ userToDelete.email }}</div>
-        </div>
-        <br>
-        <div class="gridForDelete text-application">
-            <div><span>Pwd:</span></div>
-            <div>{{ userToDelete.password }}</div>
-        </div>
-    </div>
-
-    <br>
-
-    <div class="row justify-content-center" mat-dialog-actions>
-        <button 
-            mat-button 
-            type="button" 
-            [mat-dialog-close]="1" 
-            (click)="confirmDelete()" 
-            style="background:rgb(221, 51, 51);color: white;" 
-            class="text-application">
-            Delete
-        </button>
-
-        <button 
-            mat-button 
-            type="button" 
-            (click)="close()" 
-            tabindex="-1" 
-            style="background:#607D8B;color: white;" 
-            class="text-application">
-            Cancel
-        </button>
-    </div>
-  
-</ng-template>

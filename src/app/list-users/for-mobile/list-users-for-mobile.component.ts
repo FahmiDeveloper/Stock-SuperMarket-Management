@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 import { ModalPrivilegeMobileComponent } from './modal-privilege-mobile/modal-privilege-mobile.component';
 
@@ -21,10 +22,6 @@ export class ListUsersForMobileComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
   displayedColumns: string[] = ['picture', 'name', 'email', 'password', 'connected' , 'star'];
-
-  userToDelete: FirebaseUserModel = new FirebaseUserModel();
-
-  modalRefDeleteUser: any;
 
   queryEmail: string = '';
 
@@ -93,21 +90,24 @@ export class ListUsersForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.dialogRef = dialogRef;
   }
 
-  openDeleteUserModal(user: FirebaseUserModel, contentDeleteUser) {
-    this.userToDelete = user;
-    this.modalRefDeleteUser =  this.dialogService.open(contentDeleteUser, {
-      width: '98vw',
-      height:'50vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.usersListService.delete(this.userToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteUser.close();
+  deleteUser(userKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this user!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.usersListService.delete(userKey);
+        Swal.fire(
+          'User has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   ngOnDestroy() {

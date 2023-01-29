@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
-
 import Swal from 'sweetalert2';
 
 import { DebtFormMobileComponent } from './debt-form-mobile/debt-form-mobile.component';
@@ -28,8 +27,6 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Debt>();
   dataSourceCopie = new MatTableDataSource<Debt>();
   displayedColumns: string[] = ['date', 'debtor', 'creditor', 'debt', 'rest', 'place', 'topayin','note', 'star'];
-
-  debtToDelete: Debt = new Debt();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -70,7 +67,6 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
   customTotalOutDebtsByDebtor: number;
 
   modalRefLodaing: any;
-  modalRefDeleteDebt: any;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
@@ -651,21 +647,24 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
     }).then();
   }
 
-  openDeleteDebtModal(debt: Debt, contentDeleteDebt) {
-    this.debtToDelete = debt;
-    this.modalRefDeleteDebt =  this.dialogService.open(contentDeleteDebt, {
-      width: '98vw',
-      height:'75vh',
-      maxWidth: '100vw'
-    }); 
-  }
-
-  confirmDelete() {
-    this.debtService.delete(this.debtToDelete.key);
-  }
-
-  close() {
-    this.modalRefDeleteDebt.close();
+  deleteDebt(debtKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this debt!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.debtService.delete(debtKey);
+        Swal.fire(
+          'Debt has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
   }
 
   ngOnDestroy() {
