@@ -83,27 +83,38 @@
             </button>
         </div>     
     </div>
+
     <br>
-    <div class="row">
-        <div class="col-md-6">
-            <span class="text-application" style="font-size: initial;">
-                Total clocking late in {{ currentMonth }}&nbsp;{{ currentYear }}:&nbsp;
-                <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
-            </span>
-        </div>
-        <div class="col-md-6">
-            <span *ngIf="showVacationLimitDays" class="text-application" style="font-size: initial;">
-                Vacation limit days in {{ currentMonthAndYearForVacation }}:&nbsp;
-                <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
-                <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
-                day(s)
-            </span>
-        </div>
-    </div>
+
+    <mat-grid-list *ngIf="!showVacationLimitDays" cols=1 rowHeight="30px" class="text-application">
+        <mat-grid-tile>Total clocking late in {{ currentMonth }}&nbsp;{{ currentYear }}</mat-grid-tile>
+
+        <mat-grid-tile>
+            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+        </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list *ngIf="showVacationLimitDays" cols=2 rowHeight="30px" class="text-application">
+        <mat-grid-tile>Total clocking late in {{ currentMonth }}&nbsp;{{ currentYear }}</mat-grid-tile>
+
+        <mat-grid-tile> Vacation limit days in {{ currentMonthAndYearForVacation }}</mat-grid-tile>
+
+        <mat-grid-tile>
+            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
+            <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
+            &nbsp;day(s)
+        </mat-grid-tile>
+    </mat-grid-list>
 </ng-container>
 
-<br>
+<br *ngIf="isDesktop">
 
 <div [ngClass]="isDesktop ? 'mat-elevation-z8' : 'row'">
 
@@ -214,7 +225,7 @@
 
     <mat-paginator
         *ngIf="isDesktop"
-        [pageSize]="8 "
+        [pageSize]="8"
         [pageSizeOptions]="[8]"
         showFirstLastButtons>
     </mat-paginator>

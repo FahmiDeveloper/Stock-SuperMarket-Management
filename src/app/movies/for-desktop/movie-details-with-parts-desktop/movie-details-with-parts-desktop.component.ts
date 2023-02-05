@@ -22,6 +22,8 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
 
   movie: Movie = new Movie();
 
+  isDesktop: boolean;
+
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
@@ -39,8 +41,9 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
 
   ngOnInit() {}
 
-  getPartMovieSelected(moviePartSelected: Movie) {
+  showDetailsMovie(moviePartSelected: Movie, elem: HTMLElement) {
     this.movie = moviePartSelected;
+    elem.scrollIntoView();
   }
 
   editMovie(movie?: Movie) {
@@ -52,7 +55,7 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
   deleteMovie(movieId) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this movie!',
+      text: 'Delete this movie!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',

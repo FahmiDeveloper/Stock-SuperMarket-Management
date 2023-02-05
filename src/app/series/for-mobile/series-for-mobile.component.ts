@@ -177,7 +177,7 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
   deleteSerie(serieId) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this serie!',
+      text: 'Delete this serie!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',

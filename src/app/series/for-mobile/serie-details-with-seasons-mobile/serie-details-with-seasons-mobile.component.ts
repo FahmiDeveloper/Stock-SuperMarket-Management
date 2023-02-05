@@ -39,9 +39,11 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
 
   ngOnInit() {}
 
-  getSeasonSerieSelected(serieSeasonSelected: Serie) {
+  showDetailsSerie(serieSeasonSelected: Serie, elem: HTMLElement) {
     this.serie = serieSeasonSelected;
+    elem.scrollIntoView();
   }
+
 
   editSerie(serie?: Serie) {
     const dialogRef = this.dialogService.open(SerieFormMobileComponent, {
@@ -56,7 +58,7 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
   deleteSerie(serieId) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this serie!',
+      text: 'Delete this serie!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',

@@ -7,7 +7,7 @@
   
 <mat-dialog-content>
 
-  <div class="row">
+  <div #target class="row">
     <div class="col-md-1"></div>
     <div class="col-md-2">
       <div class="card">
@@ -98,9 +98,25 @@
 
   <br>
 
-  <list-seasons-movies-desktop
-    [listSeasonsByParentAnimeKey]="listSeasonsByParentAnimeKey"
-    (seasonAnimeSelected)="getSeasonAnimeSelected($event)">
-  </list-seasons-movies-desktop>
+  <h2 *ngIf="listSeasonsByParentAnimeKey.length == 1" class="text-application">No seasons yet</h2>
+  <h2 *ngIf="listSeasonsByParentAnimeKey.length > 1" class="text-application">All seasons</h2>
+
+  <mat-grid-list *ngIf="listSeasonsByParentAnimeKey.length == 2" cols=2 #grid rowHeight="300px" gutterSize="15px">
+      <mat-grid-tile *ngFor="let anime of listSeasonsByParentAnimeKey">
+          <div class="card" (click)="showDetailsAnime(anime, target)" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}">
+              <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
+              <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+          </div>  
+      </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list *ngIf="listSeasonsByParentAnimeKey.length > 2" cols=3 #grid rowHeight="300px" gutterSize="15px">
+      <mat-grid-tile *ngFor="let anime of listSeasonsByParentAnimeKey">
+          <div class="card" (click)="showDetailsAnime(anime, target)">
+              <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}">
+              <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+          </div>   
+      </mat-grid-tile>
+  </mat-grid-list>
 
 </mat-dialog-content>

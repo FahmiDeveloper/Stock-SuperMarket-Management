@@ -1,0 +1,198 @@
+<h1 class="titleTextInterface text-application">Notes</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <mat-form-field class="text-application" style="width: 200px;">
+            <mat-label>Subject</mat-label>
+            <mat-select name="subjectSelectedId" class="text-application" [(ngModel)]="subjectSelectedId" (selectionChange)="getAllNotes()">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let subject of subjectList" [value]="subject.id">
+                    <span class="text-application">{{subject.subjectName}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button 
+            type="button" 
+            (click)="newNote()" 
+            mat-mini-fab 
+            style="background: #2196F3;float: right;">
+            <mat-icon style="color: white;">add</mat-icon>
+        </button>
+    </div> 
+</div>
+
+<mat-nav-list class="nav-list row">
+
+	<mat-list-item *ngFor="let note of pagedList">
+
+        <span style="font-size: x-large;line-height: 1.5em;" matLine (click)="copyText(note.contentNote)">{{ note.contentNote }}</span>
+
+        <br>
+
+        <span style="font-size: larger;" matLine (click)="copyText(note.remark)">{{ note.remark }}</span>
+
+        <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{note:note}">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-divider></mat-divider>
+
+    </mat-list-item>
+
+    <mat-menu #contextMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent let-note="note">
+
+            <button
+                type="button"
+                mat-menu-item 
+                (click)="editNote(note)"
+                class="text-application">
+                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+                <span>Edit</span>
+            </button>
+
+            <button
+                *ngIf="note.urlFile && checkIsImage(note.urlFile)"
+                type="button"
+                mat-menu-item               
+                (click)="viewPictureFile(note, showPicture)"
+                class="text-application">
+                <mat-icon>attach_file</mat-icon>                
+                <span>Picture</span>
+            </button>
+
+            <button
+                *ngIf="note.urlFile && checkIsPdf(note.urlFile)"
+                type="button"
+                mat-menu-item 
+                (click)="viewOtherFile(note, showOtherFile)"
+                class="text-application">
+                <mat-icon>attach_file</mat-icon>                
+                <span>PDF</span>
+            </button>
+
+            <button
+                *ngIf="note.urlFile && checkIsExcel(note.urlFile)"
+                type="button"
+                mat-menu-item 
+                (click)="viewOtherFile(note, showOtherFile)"
+                class="text-application">
+                <mat-icon>attach_file</mat-icon>                
+                <span>Excel</span>
+            </button>
+
+            <button
+                *ngIf="note.urlFile && checkIsTxt(note.urlFile)"
+                type="button"
+                mat-menu-item 
+                (click)="viewOtherFile(note, showOtherFile)"
+                class="text-application">
+                <mat-icon>attach_file</mat-icon>                
+                <span>Txt</span>
+            </button>
+
+            <button
+                *ngIf="note.urlFile && checkIsWord(note.urlFile)"
+                type="button"
+                mat-menu-item 
+                (click)="viewOtherFile(note, showOtherFile)"
+                class="text-application">
+                <mat-icon>attach_file</mat-icon>                
+                <span>Word</span>
+            </button>
+
+            <button
+                *ngIf="note.urlFile"
+                type="button"
+                mat-menu-item 
+                (click)="downloadFile(note)"
+                class="text-application">
+                <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
+                <span>Download</span>
+            </button>
+
+            <button
+                *ngIf="note.contentNote && note.contentNote.length > 30"
+                type="button"
+                mat-menu-item 
+                (click)="viewNoteOrRemark(note.contentNote)"
+                class="text-application">
+                <mat-icon style="color: black;">note</mat-icon>   
+                <span>Note</span>
+            </button>
+
+            <button
+                *ngIf="note.remark && note.remark.length > 30"
+                type="button"
+                mat-menu-item 
+                (click)="viewNoteOrRemark(note.remark)"
+                class="text-application">
+                <mat-icon style="color: black;">note</mat-icon>   
+                <span>Remark</span>
+            </button>
+
+            <button
+                type="button"
+                mat-menu-item 
+                (click)="deleteNote(note.key)"
+                class="text-application">
+                <mat-icon style="color: #f44336;">delete</mat-icon>
+                <span>Delete</span>
+            </button>  
+
+        </ng-template>
+    </mat-menu>
+
+</mat-nav-list>
+
+
+<div class="row justify-content-center no-results text-application" [style.display]="pagedList.length == 0 ? '' : 'none'">
+    No results
+</div>
+
+<br>
+
+<div class="row mat-paginator">
+    <mat-paginator 
+        [length]="length"
+        [pageSize]="8"
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons
+        (page)="OnPageChange($event)">
+    </mat-paginator>
+</div>
+
+<ng-template #showPicture>
+   
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">{{ FileName }}</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+    <div class="row">
+      <img *ngIf="pictureFile" [src]='pictureFile' class="pictureFileMobile">
+    </div>       
+  
+</ng-template>
+
+<ng-template #showOtherFile>
+
+  <div mat-dialog-title class="dialog-title">
+    <h2 class="text-application">{{ FileName }}</h2>
+    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="row">        
+    <ngx-doc-viewer
+      *ngIf="urlFile" 
+      [url]="urlFile" 
+      viewer="google"
+      class="otherFileMobile">
+    </ngx-doc-viewer>
+  </div>
+
+</ng-template>

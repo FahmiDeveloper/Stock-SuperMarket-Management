@@ -39,8 +39,9 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
 
   ngOnInit() {}
 
-  getSeasonAnimeSelected(animeSeasonSelected: Anime) {
+  showDetailsAnime(animeSeasonSelected: Anime, elem: HTMLElement) {
     this.anime = animeSeasonSelected;
+    elem.scrollIntoView();
   }
 
   editAnime(anime?: Anime) {

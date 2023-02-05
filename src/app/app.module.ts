@@ -38,12 +38,10 @@ import { UserComponent } from './user/index';
 
 import { 
   AnimesForDesktopComponent,
-  ListSeasonsMoviesForDesktopComponent,
   AnimeFormDesktopComponent,
   AnimeDetailsWithSeasonsDesktopComponent,
   AnimeDetailsDesktopComponent,
   AnimesForMobileComponent,
-  ListSeasonsMoviesForMobileComponent,
   AnimeFormMobileComponent,
   AnimeDetailsWithSeasonsMobileComponent,
   AnimeDetailsMobileComponent
@@ -86,17 +84,29 @@ import {
 } from './list-users/index';
 
 import { 
+  MedicationsForDesktopComponent,
+  MedicationFormDesktopComponent,
+  MedicationsForMobileComponent,
+  MedicationFormMobileComponent
+} from './medications/index';
+
+import { 
   MoviesForDesktopComponent,
-  ListPartsForDesktopComponent,
   MovieFormDesktopComponent,
   MovieDetailsWithPartsDesktopComponent,
   MovieDetailsDesktopComponent,
   MoviesForMobileComponent,
-  ListPartsForMobileComponent,
   MovieFormMobileComponent,
   MovieDetailsWithPartsMobileComponent,
   MovieDetailsMobileComponent
 } from './movies/index';
+
+import { 
+  NotesForDesktopComponent,
+  NoteFormDesktopComponent,
+  NotesForMobileComponent,
+  NoteFormMobileComponent
+} from './notes/index';
 
 import { 
   PasswordsForDesktopComponent,
@@ -107,12 +117,10 @@ import {
 
 import { 
   SeriesForDesktopComponent,
-  ListSeasonsForDesktopComponent,
   SerieFormDesktopComponent,
   SerieDetailsWithSeasonsDesktopComponent,
   SerieDetailsDesktopComponent,
   SeriesForMobileComponent,
-  ListSeasonsForMobileComponent,
   SerieFormMobileComponent,
   SerieDetailsWithSeasonsMobileComponent,
   SerieDetailsMobileComponent
@@ -157,14 +165,11 @@ import {
     HeaderComponent,
     SortPipe,
 
-
     AnimesForDesktopComponent,
-    ListSeasonsMoviesForDesktopComponent,
     AnimeFormDesktopComponent,
     AnimeDetailsWithSeasonsDesktopComponent,
     AnimeDetailsDesktopComponent,
     AnimesForMobileComponent,
-    ListSeasonsMoviesForMobileComponent,
     AnimeFormMobileComponent,
     AnimeDetailsWithSeasonsMobileComponent,
     AnimeDetailsMobileComponent,
@@ -195,16 +200,24 @@ import {
     ListUsersForMobileComponent,
     ModalPrivilegeMobileComponent,
 
+    MedicationsForDesktopComponent,
+    MedicationFormDesktopComponent,
+    MedicationsForMobileComponent,
+    MedicationFormMobileComponent,
+
     MoviesForDesktopComponent,
-    ListPartsForDesktopComponent,
     MovieFormDesktopComponent,
     MovieDetailsWithPartsDesktopComponent,
     MovieDetailsDesktopComponent,
     MoviesForMobileComponent,
-    ListPartsForMobileComponent,
     MovieFormMobileComponent,
     MovieDetailsWithPartsMobileComponent,
     MovieDetailsMobileComponent,
+
+    NotesForDesktopComponent,
+    NoteFormDesktopComponent,
+    NotesForMobileComponent,
+    NoteFormMobileComponent,
 
     PasswordsForDesktopComponent,
     PasswordFormDesktopComponent,
@@ -212,12 +225,10 @@ import {
     PasswordFormMobileComponent,
 
     SeriesForDesktopComponent,
-    ListSeasonsForDesktopComponent,
     SerieFormDesktopComponent,
     SerieDetailsWithSeasonsDesktopComponent,
     SerieDetailsDesktopComponent,
     SeriesForMobileComponent,
-    ListSeasonsForMobileComponent,
     SerieFormMobileComponent,
     SerieDetailsWithSeasonsMobileComponent,
     SerieDetailsMobileComponent,
@@ -229,18 +240,7 @@ import {
     TaskMobileComponent,
     TaskFormMobileComponent
   ],
-  entryComponents: [
-    ListSeasonsMoviesForDesktopComponent,
-    ListSeasonsMoviesForMobileComponent,
-
-    NewOrEditLinkComponent
-
-
-
-
-
-    
-  ],
+  entryComponents: [],
   providers: [],
   bootstrap: [AppComponent]
 })
