@@ -29,13 +29,14 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
   medicationsListCopieForNewMedication: Medication[] = [];
   diseaseList: Disease[] = [];
 
-  length: number = 0;
+  length: number = 0;s
 
   isDesktop: boolean;
   isTablet: boolean;
   diseaseSelectedId: number;
-  pictureFile: string;
-  FileName: string;
+  pictureFile: string = '';
+  FileName: string = '';
+  medicationName: string = '';
 
   subscriptionForGetAllMedications: Subscription;
   subscriptionForGetAllDiseases: Subscription;
@@ -66,8 +67,15 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
 
       this.medicationsListCopieForNewMedication = medications.sort((n1, n2) => n2.numRefMedication - n1.numRefMedication);
 
-      if (this.diseaseSelectedId) {
-        this.medicationsList = medications.filter(medication => medication.diseaseId == this.diseaseSelectedId).sort((n1, n2) => n2.numRefMedication - n1.numRefMedication);
+      if (this.medicationName) {
+        this.medicationsList = medications
+        .filter(medication => medication.medicationName.toLowerCase().includes(this.medicationName.toLowerCase()))
+        .sort((n1, n2) => n2.numRefMedication - n1.numRefMedication);
+      }
+      else if (this.diseaseSelectedId) {
+        this.medicationsList = medications
+        .filter(medication => medication.diseaseId == this.diseaseSelectedId)
+        .sort((n1, n2) => n2.numRefMedication - n1.numRefMedication);
       }
       else {
         this.medicationsList = medications.sort((n1, n2) => n2.numRefMedication - n1.numRefMedication)

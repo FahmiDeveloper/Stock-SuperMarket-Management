@@ -24,7 +24,7 @@ export class MedicationFormMobileComponent implements OnInit {
   arrayDiseases: Disease[];
 
   medication: Medication = new Medication();
-  disease: Disease = new Disease();
+  diseaseSelected: Disease = new Disease();
 
   basePath = '/PicturesMedications';
   task: AngularFireUploadTask;
@@ -40,9 +40,14 @@ export class MedicationFormMobileComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Medication
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.medication.key) this.diseaseSelected = this.arrayDiseases.find(disease => disease.id == this.medication.diseaseId);
+  }
 
   save() {
+    this.medication.diseaseId = this.diseaseSelected.id;
+    this.medication.medicationFor = this.diseaseSelected.diseaseName;
+
     if (this.medication.key) {
       this.medicationService.update(this.medication.key, this.medication);
 
@@ -56,14 +61,10 @@ export class MedicationFormMobileComponent implements OnInit {
       if (this.arrayMedications[0] && this.arrayMedications[0].numRefMedication) this.medication.numRefMedication = this.arrayMedications[0].numRefMedication + 1;
       else this.medication.numRefMedication = 1;
 
-      if (this.arrayDiseases[0] && this.arrayDiseases[0].id) this.disease.id = this.arrayDiseases[0].id + 1;
-      else this.disease.id = 1;
-      this.disease.diseaseName = this.medication.medicationFor;
-
-      this.medication.diseaseId = this.disease.id;
+      // if (this.arrayDiseases[0] && this.arrayDiseases[0].id) this.disease.id = this.arrayDiseases[0].id + 1;
+      // else this.disease.id = 1;
 
       this.medicationService.create(this.medication);
-      this.diseaseService.create(this.disease);
 
       Swal.fire(
       'New medication added successfully',

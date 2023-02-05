@@ -24,7 +24,6 @@ export class MedicationFormDesktopComponent implements OnInit {
   arrayDiseases: Disease[];
 
   medication: Medication = new Medication();
-
   diseaseSelected: Disease = new Disease();
 
   basePath = '/PicturesMedications';

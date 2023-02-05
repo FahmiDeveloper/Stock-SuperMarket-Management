@@ -34,8 +34,9 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
   isDesktop: boolean;
   isTablet: boolean;
   diseaseSelectedId: number;
-  pictureFile: string;
-  FileName: string;
+  pictureFile: string = '';
+  FileName: string = '';
+  medicationName: string = '';
 
   subscriptionForGetAllMedications: Subscription;
   subscriptionForGetAllDiseases: Subscription;
@@ -66,8 +67,15 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
 
       this.medicationsListCopieForNewMedication = medications.sort((n1, n2) => n2.numRefMedication - n1.numRefMedication);
 
-      if (this.diseaseSelectedId) {
-        this.medicationsList = medications.filter(medication => medication.diseaseId == this.diseaseSelectedId).sort((n1, n2) => n1.numRefMedication - n2.numRefMedication);
+      if (this.medicationName) {
+        this.medicationsList = medications
+        .filter(medication => medication.medicationName.toLowerCase().includes(this.medicationName.toLowerCase()))
+        .sort((n1, n2) => n2.numRefMedication - n1.numRefMedication);
+      }
+      else if (this.diseaseSelectedId) {
+        this.medicationsList = medications
+        .filter(medication => medication.diseaseId == this.diseaseSelectedId)
+        .sort((n1, n2) => n2.numRefMedication - n1.numRefMedication);
       }
       else {
         this.medicationsList = medications.sort((n1, n2) => n2.numRefMedication - n1.numRefMedication)
@@ -113,6 +121,7 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
       maxWidth: '100vw'
     });    
     dialogRef.componentInstance.medication = medication;
+    dialogRef.componentInstance.arrayDiseases = this.diseaseList;
   }
 
   deleteMedication(medicationKey) {

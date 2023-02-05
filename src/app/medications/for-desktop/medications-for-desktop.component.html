@@ -3,7 +3,13 @@
 <br>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
+        <mat-form-field class="widhtInput text-application">
+            <mat-label>Medication Name</mat-label>
+            <input matInput type="text" name="medicationName" (keyup)="getAllMedications()" [(ngModel)]="medicationName"/>
+        </mat-form-field>
+    </div>
+    <div class="col-md-4">
         <mat-form-field class="text-application" style="width: 200px;">
             <mat-label>Disease</mat-label>
             <mat-select name="subjectSelectedId" class="text-application" [(ngModel)]="diseaseSelectedId" (selectionChange)="getAllMedications()">
@@ -14,7 +20,7 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <button 
             type="button" 
             (click)="newMedication()" 
