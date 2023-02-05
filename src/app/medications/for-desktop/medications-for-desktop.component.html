@@ -1,0 +1,141 @@
+<h1 class="titleTextInterface text-application">Medications</h1>
+
+<br>
+
+<div class="row">
+    <div class="col-md-6">
+        <mat-form-field class="text-application" style="width: 200px;">
+            <mat-label>Disease</mat-label>
+            <mat-select name="subjectSelectedId" class="text-application" [(ngModel)]="diseaseSelectedId" (selectionChange)="getAllMedications()">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let disease of diseaseList" [value]="disease.id">
+                    <span class="text-application">{{disease.diseaseName}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col-md-6">
+        <button 
+            type="button" 
+            (click)="newMedication()" 
+            mat-mini-fab 
+            style="background: #2196F3;float: right;">
+            <mat-icon style="color: white;">add</mat-icon>
+        </button>
+    </div>     
+</div>
+
+<mat-nav-list class="nav-list row">
+
+	<mat-list-item *ngFor="let medication of pagedList">
+
+        <span 
+            class="text-application" 
+            style="font-size: x-large;line-height: 1.5em;" 
+            matLine 
+            (click)="copyText(medication.medicationName)">
+            {{ medication.medicationName }}
+        </span>
+
+        <span
+            *ngIf="!diseaseSelectedId" 
+            class="text-application" 
+            style="font-size: larger;line-height: 1.5em;" 
+            matLine 
+            (click)="copyText(medication.medicationFor)">
+            {{ medication.medicationFor }}
+        </span>
+
+        <span 
+            class="text-application" 
+            style="font-size: larger;line-height: 1.5em;" 
+            matLine 
+            (click)="copyText(medication.utilisation)">
+            {{ medication.utilisation }}
+        </span>
+
+        <span matLine></span>
+
+        <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{medication:medication}">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-divider style="color: black;"></mat-divider>
+
+    </mat-list-item>
+
+    <mat-menu #contextMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent let-medication="medication">
+
+            <button
+                type="button"
+                mat-menu-item 
+                (click)="editMedication(medication)"
+                class="text-application">
+                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+                <span>Edit</span>
+            </button>
+
+            <button
+                *ngIf="medication.urlPicture && checkIsImage(medication.urlPicture)"
+                type="button"
+                mat-menu-item               
+                (click)="viewPicture(medication, showPicture)"
+                class="text-application">
+                <mat-icon>attach_file</mat-icon>                
+                <span>Picture</span>
+            </button>
+
+            <button
+                *ngIf="medication.urlPicture"
+                type="button"
+                mat-menu-item 
+                (click)="downloadPicture(medication)"
+                class="text-application">
+                <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
+                <span>Download</span>
+            </button>
+
+            <button
+                type="button"
+                mat-menu-item 
+                (click)="deleteMedication(medication.key)"
+                class="text-application">
+                <mat-icon style="color: #f44336;">delete</mat-icon>
+                <span>Delete</span>
+            </button>  
+
+        </ng-template>
+    </mat-menu>
+
+</mat-nav-list>
+
+
+<div class="row justify-content-center no-results text-application" [style.display]="pagedList.length == 0 ? '' : 'none'">
+    No results
+</div>
+
+<div class="row mat-paginator">
+    <mat-paginator 
+        [length]="length"
+        [pageSize]="8"
+        [pageSizeOptions]="[8]"
+        showFirstLastButtons
+        (page)="OnPageChange($event)">
+    </mat-paginator>
+</div>
+
+<ng-template #showPicture>
+
+    <div mat-dialog-title class="dialog-title">
+      <h2 class="text-application">{{ FileName }}</h2>
+      <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  
+    <div class="row">
+      <img *ngIf="pictureFile" [src]='pictureFile' class="pictureFile">
+    </div>       
+  
+</ng-template>

@@ -31,7 +31,7 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
   minutePartList: number[] = [];
   sumClockingLate: number;
   totalClockingLateByHoursMinute: string = '';
-  vacationLimitDays: number = 4.25;
+  vacationLimitDays: number = 0;
   monthSelected: string = '';
   currentMonth: string = '';
   currentYear: number;

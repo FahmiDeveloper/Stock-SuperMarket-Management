@@ -104,7 +104,7 @@
                             Edit
                         </button>
                         <button
-                            *ngIf="movie.statusId == 1" 
+                            *ngIf="movie.statusId == 1 && movie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -112,7 +112,7 @@
                             Check
                         </button>
                         <button
-                            *ngIf="movie.statusId == 2" 
+                            *ngIf="movie.statusId == 2 && movie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -120,7 +120,7 @@
                             Download
                         </button>
                         <button
-                            *ngIf="movie.statusId == 4" 
+                            *ngIf="movie.statusId == 4 && movie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -128,7 +128,7 @@
                             Watch
                         </button>
                         <button
-                            *ngIf="movie.statusId == 5" 
+                            *ngIf="movie.statusId == 5 && movie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -203,7 +203,7 @@
                             Edit
                         </button>
                         <button
-                            *ngIf="movie.statusId == 1" 
+                            *ngIf="movie.statusId == 1 && movie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -211,7 +211,7 @@
                             Check
                         </button>
                         <button
-                            *ngIf="movie.statusId == 2" 
+                            *ngIf="movie.statusId == 2 && movie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -219,7 +219,7 @@
                             Download
                         </button>
                         <button
-                            *ngIf="movie.statusId == 4" 
+                            *ngIf="movie.statusId == 4 && movie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -227,7 +227,7 @@
                             Watch
                         </button>
                         <button
-                            *ngIf="movie.statusId == 5" 
+                            *ngIf="movie.statusId == 5 && movie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(movie.path)">
@@ -299,7 +299,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="movie.statusId == 1" 
+                                *ngIf="movie.statusId == 1 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -307,7 +307,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="movie.statusId == 2" 
+                                *ngIf="movie.statusId == 2 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -315,7 +315,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="movie.statusId == 4" 
+                                *ngIf="movie.statusId == 4 && movie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -323,7 +323,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="movie.statusId == 5" 
+                                *ngIf="movie.statusId == 5 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -394,7 +394,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="movie.statusId == 1" 
+                                *ngIf="movie.statusId == 1 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -402,7 +402,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="movie.statusId == 2" 
+                                *ngIf="movie.statusId == 2 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -410,7 +410,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="movie.statusId == 4" 
+                                *ngIf="movie.statusId == 4 && movie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -418,7 +418,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="movie.statusId == 5" 
+                                *ngIf="movie.statusId == 5 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -432,7 +432,7 @@
                                 <mat-icon style="color: #f44336;">delete</mat-icon>
                                 Delete
                             </button>
-                        </mat-menu>   
+                        </mat-menu>  
                         <br><br>
                     </div>
                 </div>
@@ -491,7 +491,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="movie.statusId == 1" 
+                                *ngIf="movie.statusId == 1 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -499,7 +499,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="movie.statusId == 2" 
+                                *ngIf="movie.statusId == 2 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -507,7 +507,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="movie.statusId == 4" 
+                                *ngIf="movie.statusId == 4 && movie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -515,7 +515,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="movie.statusId == 5" 
+                                *ngIf="movie.statusId == 5 && movie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(movie.path)">
@@ -529,7 +529,7 @@
                                 <mat-icon style="color: #f44336;">delete</mat-icon>
                                 Delete
                             </button>
-                        </mat-menu>   
+                        </mat-menu>  
                         <br><br>
                     </div>
                 </div>

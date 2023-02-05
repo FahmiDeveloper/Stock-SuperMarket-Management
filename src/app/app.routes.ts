@@ -22,8 +22,14 @@ import { FilesComponent } from './files/files.component';
 import { ListUsersForDesktopComponent } from './list-users/for-desktop/list-users-for-desktop.component';
 import { ListUsersForMobileComponent } from './list-users/for-mobile/list-users-for-mobile.component';
 
+import { MedicationsForDesktopComponent } from './medications/for-desktop/medications-for-desktop.component';
+import { MedicationsForMobileComponent } from './medications/for-mobile/medications-for-mobile.component';
+
 import { MoviesForDesktopComponent } from './movies/for-desktop/movies-for-desktop.component';
 import { MoviesForMobileComponent } from './movies/for-mobile/movies-for-mobile.component';
+
+import { NotesForDesktopComponent } from './notes/for-desktop/notes-for-desktop.component';
+import { NotesForMobileComponent } from './notes/for-mobile/notes-for-mobile.component';
 
 import { PasswordsForMobileComponent } from './passwords/for-mobile/passwords-for-mobile.component';
 import { PasswordsForDesktopComponent } from './passwords/for-desktop/passwords-for-desktop.component';
@@ -36,7 +42,6 @@ import { ToDoListForMobileComponent } from './to-do-list/for-mobile/to-do-list-m
 
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
-
 
 export const rootRouterConfig: Routes = [
   
@@ -65,8 +70,14 @@ export const rootRouterConfig: Routes = [
   { path: 'users-desktop', component: ListUsersForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'users-mobile', component: ListUsersForMobileComponent,  resolve: { data: SharedResolver}},
 
+  { path: 'medications-desktop', component: MedicationsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'medications-mobile', component: MedicationsForMobileComponent,  resolve: { data: SharedResolver}},
+
   { path: 'movies-desktop', component: MoviesForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'movies-mobile', component: MoviesForMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'notes-desktop', component: NotesForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'notes-mobile', component: NotesForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'passwords-desktop', component: PasswordsForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'passwords-mobile', component: PasswordsForMobileComponent,  resolve: { data: SharedResolver}},

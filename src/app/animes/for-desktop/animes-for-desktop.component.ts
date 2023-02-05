@@ -155,6 +155,7 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.anime = animeSelected;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
     dialogRef.componentInstance.listSeasonsByParentAnimeKey = this.listSeasonsByParentAnimeKey;
+    dialogRef.componentInstance.isDesktop = this.isDesktop;
   }
 
   newAnime() {

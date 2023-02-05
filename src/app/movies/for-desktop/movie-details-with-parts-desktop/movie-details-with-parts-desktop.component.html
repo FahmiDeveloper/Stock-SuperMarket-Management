@@ -7,7 +7,7 @@
   
 <mat-dialog-content>
 
-  <div class="row">
+  <div #target class="row">
     <div class="col-md-1"></div>
     <div class="col-md-2">
       <div class="card">
@@ -82,11 +82,27 @@
     <div class="col-md-1"></div>
   </div>
 
-   <br>
+  <br>
 
-  <list-parts-desktop
-    [listPartsByParentFilmKey]="listPartsByParentFilmKey"
-    (partMovieSelected)="getPartMovieSelected($event)">
-  </list-parts-desktop>
+  <h2 *ngIf="listPartsByParentFilmKey.length == 1" class="text-application">No parts yet</h2>
+  <h2 *ngIf="listPartsByParentFilmKey.length > 1" class="text-application">All parts</h2> 
+    
+  <mat-grid-list *ngIf="listPartsByParentFilmKey.length == 2" cols=2 #grid rowHeight="300px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let movie of listPartsByParentFilmKey">
+      <div class="card" (click)="showDetailsMovie(movie, target)" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}">
+        <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
+        <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
+      </div>  
+    </mat-grid-tile>
+  </mat-grid-list>
+  
+  <mat-grid-list *ngIf="listPartsByParentFilmKey.length > 2" cols=3 #grid rowHeight="300px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let movie of listPartsByParentFilmKey">
+      <div class="card" (click)="showDetailsMovie(movie, target)" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}">
+        <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
+        <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
+      </div>   
+    </mat-grid-tile>
+  </mat-grid-list>
 
 </mat-dialog-content>

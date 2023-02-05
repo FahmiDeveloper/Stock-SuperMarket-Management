@@ -39,8 +39,9 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
 
   ngOnInit() {}
 
-  getPartMovieSelected(moviePartSelected: Movie) {
+  showDetailsMovie(moviePartSelected: Movie, elem: HTMLElement) {
     this.movie = moviePartSelected;
+    elem.scrollIntoView();
   }
 
   editMovie(movie?: Movie) {
@@ -56,7 +57,7 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
   deleteMovie(movieId) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this movie!',
+      text: 'Delete this movie!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',

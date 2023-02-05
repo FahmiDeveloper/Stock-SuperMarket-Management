@@ -22,6 +22,8 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
 
   serie: Serie = new Serie();
 
+  isDesktop: boolean;
+
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
@@ -39,8 +41,9 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
 
   ngOnInit() {}
 
-  getSeasonSerieSelected(serieSeasonSelected: Serie) {
+  showDetailsSerie(serieSeasonSelected: Serie, elem: HTMLElement) {
     this.serie = serieSeasonSelected;
+    elem.scrollIntoView();
   }
 
   editSerie(serie?: Serie) {
@@ -52,7 +55,7 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
   deleteSerie(serieId) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this serie!',
+      text: 'Delete this serie!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',

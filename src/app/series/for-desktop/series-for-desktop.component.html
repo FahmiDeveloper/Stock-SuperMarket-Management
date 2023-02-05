@@ -105,7 +105,7 @@
                             Edit
                         </button>
                         <button
-                            *ngIf="serie.statusId == 1" 
+                            *ngIf="serie.statusId == 1 && serie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -113,7 +113,7 @@
                             Check
                         </button>
                         <button
-                            *ngIf="serie.statusId == 2" 
+                            *ngIf="serie.statusId == 2 && serie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -121,7 +121,7 @@
                             Download
                         </button>
                         <button
-                            *ngIf="serie.statusId == 4" 
+                            *ngIf="serie.statusId == 4 && serie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -129,7 +129,7 @@
                             Watch
                         </button>
                         <button
-                            *ngIf="serie.statusId == 5" 
+                            *ngIf="serie.statusId == 5 && serie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -204,7 +204,7 @@
                             Edit
                         </button>
                         <button
-                            *ngIf="serie.statusId == 1" 
+                            *ngIf="serie.statusId == 1 && serie.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -212,7 +212,7 @@
                             Check
                         </button>
                         <button
-                            *ngIf="serie.statusId == 2" 
+                            *ngIf="serie.statusId == 2 && serie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -220,7 +220,7 @@
                             Download
                         </button>
                         <button
-                            *ngIf="serie.statusId == 4" 
+                            *ngIf="serie.statusId == 4 && serie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -228,7 +228,7 @@
                             Watch
                         </button>
                         <button
-                            *ngIf="serie.statusId == 5" 
+                            *ngIf="serie.statusId == 5 && serie.path"  
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(serie.path)">
@@ -300,7 +300,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="serie.statusId == 1" 
+                                *ngIf="serie.statusId == 1 && serie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -308,7 +308,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="serie.statusId == 2" 
+                                *ngIf="serie.statusId == 2 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -316,7 +316,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="serie.statusId == 4" 
+                                *ngIf="serie.statusId == 4 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -324,7 +324,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="serie.statusId == 5" 
+                                *ngIf="serie.statusId == 5 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -395,7 +395,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="serie.statusId == 1" 
+                                *ngIf="serie.statusId == 1 && serie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -403,7 +403,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="serie.statusId == 2" 
+                                *ngIf="serie.statusId == 2 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -411,7 +411,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="serie.statusId == 4" 
+                                *ngIf="serie.statusId == 4 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -419,7 +419,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="serie.statusId == 5" 
+                                *ngIf="serie.statusId == 5 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -492,7 +492,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="serie.statusId == 1" 
+                                *ngIf="serie.statusId == 1 && serie.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -500,7 +500,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="serie.statusId == 2" 
+                                *ngIf="serie.statusId == 2 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -508,7 +508,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="serie.statusId == 4" 
+                                *ngIf="serie.statusId == 4 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">
@@ -516,7 +516,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="serie.statusId == 5" 
+                                *ngIf="serie.statusId == 5 && serie.path"  
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(serie.path)">

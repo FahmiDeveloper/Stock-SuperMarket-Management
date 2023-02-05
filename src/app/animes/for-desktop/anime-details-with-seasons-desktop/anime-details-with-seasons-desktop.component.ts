@@ -22,6 +22,8 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
 
   anime: Anime = new Anime();
 
+  isDesktop: boolean;
+
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 
     {id: 2, status: 'Not downloaded yet'}, 
@@ -39,8 +41,9 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
 
   ngOnInit() {}
 
-  getSeasonAnimeSelected(animeSeasonSelected: Anime) {
+  showDetailsAnime(animeSeasonSelected: Anime, elem: HTMLElement) {
     this.anime = animeSeasonSelected;
+    elem.scrollIntoView();
   }
 
   editAnime(anime?: Anime) {

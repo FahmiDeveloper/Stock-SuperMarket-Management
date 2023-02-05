@@ -2,178 +2,211 @@
 <hr class="bg-dark" />
 
 <div *ngIf="isMobile && isPortrait">
-    <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
-      <ng-container>
-        <!--Movies-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/movies-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }"
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
-              <img
-                style="margin-left: 9rem;"
-                class="pl-5"
-                src="/assets/pictures/movies-logo.png"
-                width="150px"/>
-            </div>
-          </div>
-        </div>
+  <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+    <ng-container>
 
-        <!--Animes-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/animes-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/animes-logo.png"
-                width="150px"/>
-            </div>
+      <!--Movies-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/movies-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }"
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+            <img
+              style="margin-left: 9rem;"
+              class="pl-5"
+              src="/assets/pictures/movies-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--Series-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application"  routerLink="/series-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/series-logo.png"
-                width="150px"/>
-            </div>
+      <!--Animes-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/animes-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/animes-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--Clockings-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clockings-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/clocking-logo.png"
-                width="150px"/>
-            </div>
+      <!--Series-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application"  routerLink="/series-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/series-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--To Do List-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/to-do-list-logo.png"
-                width="150px"/>
-            </div>
+      <!--Notes-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application"  routerLink="/notes-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': 'rgb(80 107 102)', 'border': '1px solid rgb(80 107 102)' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Notes</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/notes-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--Expirations-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expirations-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/expired-logo.png"
-                width="150px"/>
-            </div>
+      <!--Clockings-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/clockings-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#868d25', 'border': '1px solid #868d25' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Clockings</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/clocking-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--Debts-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/debts-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/debts-logo.png"
-                width="150px"/>
-            </div>
+      <!--To Do List-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/to-do-list-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--Files-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/files">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/files-logo.png"
-                width="150px"/>
-            </div>
+      <!--Expirations-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expirations-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/expired-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--Passwords-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/passwords-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/password-logo.png"
-                width="150px"/>
-            </div>
+      <!--Debts-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/debts-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#ff4081', 'border': '1px solid #ff4081' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Debts</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/debts-logo.png"
+              width="150px"/>
           </div>
         </div>
+      </div>
 
-        <!--Users-->
-        <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/users-mobile">
-          <div fxLayout class="overview-style">
-            <div
-              [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" 
-              class="overview-cart-mobile">
-              <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
-              <img
-                class="pl-5"
-                style="margin-left: 9rem;"
-                src="/assets/pictures/users-logo.png"
-                width="150px"/>
-            </div>
+      <!--Files-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/files">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#24a8f2', 'border': '1px solid #24a8f2' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Files</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/files-logo.png"
+              width="150px"/>
           </div>
         </div>
-     
-      </ng-container>
-    </div>
+      </div>
+
+      <!--Passwords-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/passwords-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': 'rgb(46 161 165)', 'border': '1px solid rgb(46 161 165)' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Passwords</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/password-logo.png"
+              width="150px"/>
+          </div>
+        </div>
+      </div>
+
+      <!--Medications-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/medications-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#0f549f', 'border': '1px solid #0f549f' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Medications</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/medication-logo.png"
+              width="150px"/>
+          </div>
+        </div>
+      </div>
+
+      <!--Users-->
+      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/users-mobile">
+        <div fxLayout class="overview-style">
+          <div
+            [ngStyle]="{ 'background-color': '#B96068', 'border': '1px solid #B96068' }" 
+            class="overview-cart-mobile">
+            <div class="mt-4 heading-text" style="margin-left: 16px;">Users</div>
+            <img
+              class="pl-5"
+              style="margin-left: 9rem;"
+              src="/assets/pictures/users-logo.png"
+              width="150px"/>
+          </div>
+        </div>
+      </div>
+    
+    </ng-container>
+  </div>
 </div>
 
 <div *ngIf="isMobile && !isPortrait">
   <mat-grid-list cols=2 #grid rowHeight="3:1" gutterSize="15px">
 
+    <!--Movies-->
     <mat-grid-tile>
-      <!--Movies-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -192,9 +225,9 @@
       </div>
     </mat-grid-tile>
 
+    <!--Animes-->
     <mat-grid-tile>
-      <!--Animes-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -213,9 +246,9 @@
       </div>
     </mat-grid-tile>
 
+    <!--Series-->
     <mat-grid-tile>
-      <!--Series-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -233,10 +266,31 @@
         </ng-container>
       </div>
     </mat-grid-tile>
-  
+
+    <!--Notes-->
     <mat-grid-tile>
-      <!--Clockings-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/clockings-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/notes-mobile">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(80 107 102)', 'border': '1px solid rgb(80 107 102)' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 10px;">Notes</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/notes-logo.png"
+                  width="100px"
+                  height="70px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+  
+    <!--Clockings-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/clockings-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -255,9 +309,9 @@
       </div>
     </mat-grid-tile>
 
+    <!--To Do List-->
     <mat-grid-tile>
-      <!--To Do List-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -276,9 +330,9 @@
       </div>
     </mat-grid-tile>
 
+    <!--Expirations-->
     <mat-grid-tile>
-      <!--Expirations-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -297,9 +351,9 @@
       </div>
     </mat-grid-tile>
 
+    <!--Debts-->
     <mat-grid-tile>
-      <!--Debts-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/debts-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/debts-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -318,8 +372,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Files-->
     <mat-grid-tile>
-      <!--Files-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/files">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -339,9 +393,9 @@
       </div>
     </mat-grid-tile>
 
+    <!--Passwords-->
     <mat-grid-tile>
-      <!--Passwords-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/passwords-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/passwords-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -360,9 +414,30 @@
       </div>
     </mat-grid-tile>
 
+    <!--Medications-->
     <mat-grid-tile>
-      <!--Users-->
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/users-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/medications-mobile">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#0f549f', 'border': '1px solid #0f549f' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 10px;">Medications</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/medications-logo.png"
+                  width="100px"
+                  height="70px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <!--Users-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/users-mobile">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -439,6 +514,26 @@
                   style="margin-left: 10rem;"
                   class="pl-5"
                   src="/assets/pictures/series-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <!--Notes-->
+    <mat-grid-tile>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/notes-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(80 107 102)', 'border': '1px solid rgb(80 107 102);' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Notes</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/notes-logo.png"
                   width="150px"/>
               </div>
             </div>
@@ -566,6 +661,26 @@
         </ng-container>
       </div>
     </mat-grid-tile>
+
+    <!--Medications-->
+    <mat-grid-tile>        
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/medications-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#0f549f', 'border': '1px solid #0f549f' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Medications</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/medication-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
     
      <!--Users-->
     <mat-grid-tile>        
@@ -594,8 +709,8 @@
 <div *ngIf="isTablet && !isPortrait">
   <mat-grid-list cols=3 #grid rowHeight="3:1" gutterSize="15px">
 
+    <!--Movies-->
     <mat-grid-tile>
-      <!--Movies-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -614,8 +729,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Animes-->
     <mat-grid-tile>
-      <!--Animes-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -634,8 +749,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Series-->
     <mat-grid-tile>
-      <!--Series-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -653,9 +768,29 @@
         </ng-container>
       </div>
     </mat-grid-tile>
-  
+
+    <!--Notes-->
     <mat-grid-tile>
-      <!--Clockings-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/notes-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(80 107 102)', 'border': '1px solid rgb(80 107 102);' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Notes</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/notes-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+  
+    <!--Clockings-->
+    <mat-grid-tile>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/clockings-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -674,8 +809,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--To Do List-->
     <mat-grid-tile>
-      <!--To Do List-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -694,8 +829,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Expirations-->
     <mat-grid-tile>
-      <!--Expirations-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -714,8 +849,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Debts-->
     <mat-grid-tile>
-      <!--Debts-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/debts-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -734,8 +869,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Files-->
     <mat-grid-tile>
-      <!--Files-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/files">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -754,8 +889,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Passwords-->
     <mat-grid-tile>
-      <!--Passwords-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/passwords-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -774,8 +909,28 @@
       </div>
     </mat-grid-tile>
 
+    <!--Medications-->
     <mat-grid-tile>
-      <!--Users-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/medications-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#0f549f', 'border': '1px solid #0f549f' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Medications</div>
+                <img
+                  style="margin-left: 7rem;"
+                  class="pl-5"
+                  src="/assets/pictures/medication-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <!--Users-->
+    <mat-grid-tile>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/users-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -800,8 +955,8 @@
 <div *ngIf="isDesktop">
   <mat-grid-list cols=3 #grid rowHeight="3:1" gutterSize="15px">
 
+    <!--Movies-->
     <mat-grid-tile>
-      <!--Movies-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -820,8 +975,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Animes-->
     <mat-grid-tile>
-      <!--Animes-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -840,8 +995,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Series-->
     <mat-grid-tile>
-      <!--Series-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -859,9 +1014,29 @@
         </ng-container>
       </div>
     </mat-grid-tile>
-  
+
+    <!--Notes-->
     <mat-grid-tile>
-      <!--Clockings-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/notes-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': 'rgb(80 107 102)', 'border': '1px solid rgb(80 107 102);' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Notes</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/notes-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+  
+    <!--Clockings-->
+    <mat-grid-tile>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/clockings-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -880,8 +1055,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--To Do List-->
     <mat-grid-tile>
-      <!--To Do List-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -900,8 +1075,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Expirations-->
     <mat-grid-tile>
-      <!--Expirations-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -920,8 +1095,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Debts-->
     <mat-grid-tile>
-      <!--Debts-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/debts-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -940,8 +1115,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Files-->
     <mat-grid-tile>
-      <!--Files-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/files">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -960,8 +1135,8 @@
       </div>
     </mat-grid-tile>
 
+    <!--Passwords-->
     <mat-grid-tile>
-      <!--Passwords-->
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/passwords-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
@@ -980,8 +1155,28 @@
       </div>
     </mat-grid-tile>
 
+    <!--Medications-->
     <mat-grid-tile>
-      <!--Users-->
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/medications-desktop">
+        <ng-container>
+          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
+            <div fxLayout class="overview-style">
+              <div [ngStyle]="{ 'background-color': '#0f549f', 'border': '1px solid #0f549f' }" class="overview-cart-mobile">
+                <div class="mt-4 heading-text" style="margin-left: 16px;">Medications</div>
+                <img
+                  style="margin-left: 10rem;"
+                  class="pl-5"
+                  src="/assets/pictures/medication-logo.png"
+                  width="150px"/>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </mat-grid-tile>
+
+    <!--Users-->
+    <mat-grid-tile>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/users-desktop">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">

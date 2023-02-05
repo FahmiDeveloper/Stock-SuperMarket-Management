@@ -80,7 +80,7 @@
                         <span>Details</span>
                     </button>           
                     <button 
-                        *ngIf="!anime.parentAnimeKey && !anime.haveSeasons" 
+                        *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 
@@ -105,7 +105,7 @@
                             Edit
                         </button>
                         <button
-                            *ngIf="anime.statusId == 1" 
+                            *ngIf="anime.statusId == 1 && anime.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -113,7 +113,7 @@
                             Check
                         </button>
                         <button
-                            *ngIf="anime.statusId == 2" 
+                            *ngIf="anime.statusId == 2 && anime.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -121,7 +121,7 @@
                             Download
                         </button>
                         <button
-                            *ngIf="anime.statusId == 4" 
+                            *ngIf="anime.statusId == 4 && anime.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -129,7 +129,7 @@
                             Watch
                         </button>
                         <button
-                            *ngIf="anime.statusId == 5" 
+                            *ngIf="anime.statusId == 5 && anime.path"
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -179,7 +179,7 @@
                         <span>Details</span>
                     </button>           
                     <button 
-                        *ngIf="!anime.parentAnimeKey && !anime.haveSeasons" 
+                        *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
                         type="button"
                         mat-button
                         [matMenuTriggerFor]="menu" 
@@ -204,7 +204,7 @@
                             Edit
                         </button>
                         <button
-                            *ngIf="anime.statusId == 1" 
+                            *ngIf="anime.statusId == 1 && anime.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -212,7 +212,7 @@
                             Check
                         </button>
                         <button
-                            *ngIf="anime.statusId == 2" 
+                            *ngIf="anime.statusId == 2 && anime.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -220,7 +220,7 @@
                             Download
                         </button>
                         <button
-                            *ngIf="anime.statusId == 4" 
+                            *ngIf="anime.statusId == 4 && anime.path" 
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -228,7 +228,7 @@
                             Watch
                         </button>
                         <button
-                            *ngIf="anime.statusId == 5" 
+                            *ngIf="anime.statusId == 5 && anime.path"
                             mat-menu-item 
                             class="text-application"
                             (click)="followLink(anime.path)">
@@ -242,7 +242,7 @@
                             <mat-icon style="color: #f44336;">delete</mat-icon>
                             Delete
                         </button>
-                    </mat-menu>   
+                    </mat-menu>  
                     <br><br>
                 </div>
             </div>
@@ -275,7 +275,7 @@
                             <span>Details</span>
                         </button>           
                         <button 
-                            *ngIf="!anime.parentAnimeKey && !anime.haveSeasons" 
+                            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
@@ -300,7 +300,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="anime.statusId == 1" 
+                                *ngIf="anime.statusId == 1 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -308,7 +308,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="anime.statusId == 2" 
+                                *ngIf="anime.statusId == 2 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -316,7 +316,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="anime.statusId == 4" 
+                                *ngIf="anime.statusId == 4 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -324,7 +324,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="anime.statusId == 5" 
+                                *ngIf="anime.statusId == 5 && anime.path"
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -370,7 +370,7 @@
                             <span>Details</span>
                         </button>           
                         <button 
-                            *ngIf="!anime.parentAnimeKey && !anime.haveSeasons" 
+                            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
@@ -395,7 +395,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="anime.statusId == 1" 
+                                *ngIf="anime.statusId == 1 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -403,7 +403,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="anime.statusId == 2" 
+                                *ngIf="anime.statusId == 2 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -411,7 +411,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="anime.statusId == 4" 
+                                *ngIf="anime.statusId == 4 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -419,7 +419,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="anime.statusId == 5" 
+                                *ngIf="anime.statusId == 5 && anime.path"
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -467,7 +467,7 @@
                             <span>Details</span>
                         </button>           
                         <button 
-                            *ngIf="!anime.parentAnimeKey && !anime.haveSeasons" 
+                            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
@@ -492,7 +492,7 @@
                                 Edit
                             </button>
                             <button
-                                *ngIf="anime.statusId == 1" 
+                                *ngIf="anime.statusId == 1 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -500,7 +500,7 @@
                                 Check
                             </button>
                             <button
-                                *ngIf="anime.statusId == 2" 
+                                *ngIf="anime.statusId == 2 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -508,7 +508,7 @@
                                 Download
                             </button>
                             <button
-                                *ngIf="anime.statusId == 4" 
+                                *ngIf="anime.statusId == 4 && anime.path" 
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -516,7 +516,7 @@
                                 Watch
                             </button>
                             <button
-                                *ngIf="anime.statusId == 5" 
+                                *ngIf="anime.statusId == 5 && anime.path"
                                 mat-menu-item 
                                 class="text-application"
                                 (click)="followLink(anime.path)">
@@ -530,7 +530,7 @@
                                 <mat-icon style="color: #f44336;">delete</mat-icon>
                                 Delete
                             </button>
-                        </mat-menu>   
+                        </mat-menu>  
                         <br><br>
                     </div>
                 </div>

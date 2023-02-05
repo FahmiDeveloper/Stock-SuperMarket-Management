@@ -177,7 +177,7 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
   deleteMovie(movieId) {
     Swal.fire({
       title: 'Are you sure?',
-      text: 'delete this movie!',
+      text: 'Delete this movie!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
