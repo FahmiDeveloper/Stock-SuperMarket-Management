@@ -131,6 +131,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.moviesList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   showDetailsMovie(movieSelected: Movie) {
@@ -143,6 +144,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allMovies = this.allMovies;
     dialogRef.componentInstance.listPartsByParentFilmKey = this.listPartsByParentFilmKey;
     dialogRef.componentInstance.isDesktop = this.isDesktop;
+    dialogRef.componentInstance.parent = this;
   }
 
   newMovie() {
@@ -160,6 +162,11 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.movie = movie;
     dialogRef.componentInstance.allMovies = this.allMovies;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });  
   }
 
   deleteMovie(movieId) {

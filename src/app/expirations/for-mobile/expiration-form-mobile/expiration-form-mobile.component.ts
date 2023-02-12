@@ -19,6 +19,7 @@ import { Unit } from 'src/app/shared/models/debt.model';
 export class ExpirationFormMobileComponent implements OnInit {
 
   arrayExpirations: Expiration[];
+  dataSource: Expiration[];
 
   expiration: Expiration = new Expiration();
   
@@ -36,10 +37,12 @@ export class ExpirationFormMobileComponent implements OnInit {
   constructor(
     public expirationService: ExpirationService, 
     public dialogRef: MatDialogRef<ExpirationFormMobileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Expiration
+    @Inject(MAT_DIALOG_DATA) public data: Expiration[]
   ) {}
 
   ngOnInit() {
+    this.data = this.dataSource;
+
     if (!this.expiration.key) {
       this.expiration.dateStart = moment().format('YYYY-MM-DD');
     }
@@ -77,7 +80,7 @@ export class ExpirationFormMobileComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
   onSelectUnit() {

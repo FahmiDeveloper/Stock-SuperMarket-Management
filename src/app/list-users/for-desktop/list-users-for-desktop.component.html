@@ -98,21 +98,16 @@
 
     </table>
 
-    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+    <div *ngIf="dataSource.data.length == 0" class="row justify-content-center no-results text-application">
         No results
     </div>
     
     <mat-paginator 
         [pageSizeOptions]="[8]"
         showFirstLastButtons 
-        aria-label="Select page of periodic elements">
+        aria-label="Select page of periodic elements"
+        (page)="OnPageChange($event)">
     </mat-paginator>
-</div>
-
-<div style="visibility: hidden; position: fixed"
-  [style.left]="contextMenuPosition.x"
-  [style.top]="contextMenuPosition.y"
-  [matMenuTriggerFor]="contextMenu">
 </div>
 
 <mat-menu #contextMenu="matMenu" xPosition="before">

@@ -9,6 +9,7 @@ export class Note {
   testWorkInERP: boolean;
   noteToDo: boolean;
   noteForNotif: boolean;
+  toFixAfterTest: boolean;
 }
 
 export interface SubjectList {

@@ -1,15 +1,15 @@
 <h1 class="titleTextInterface text-application">Medications</h1>
 
 <div class="row">
-    <div class="col-md-12">
-        <mat-form-field class="widthInput text-application">
+    <div class="col-md-4">
+        <mat-form-field class="text-application" style="width: 200px;">
             <mat-label>Medication</mat-label>
             <input matInput type="text" name="medicationName" (keyup)="getAllMedications()" [(ngModel)]="medicationName"/>
         </mat-form-field>
         <button 
             type="button" 
             (click)="newMedication()" 
-            mat-mini-fab 
+            mat-mini-fab
             style="background: #2196F3;float: right;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
@@ -49,6 +49,14 @@
             matLine 
             (click)="copyText(medication.medicationFor)">
             {{ medication.medicationFor }}
+        </span>
+
+        <span
+            *ngIf="medication.price" 
+            class="text-application" 
+            style="font-size: larger;line-height: 1.5em;" 
+            matLine>
+            {{ medication.price }}
         </span>
 
         <span 
@@ -102,7 +110,7 @@
             </button>
 
             <button
-                *ngIf="medication.medicationName && medication.medicationName.length > 25"
+                *ngIf="medication.medicationName"
                 type="button"
                 mat-menu-item 
                 (click)="viewMedicationNameOrUtilisation(medication.medicationName)"
@@ -112,7 +120,7 @@
             </button>
 
             <button
-                *ngIf="medication.utilisation && medication.utilisation.length > 25"
+                *ngIf="medication.utilisation"
                 type="button"
                 mat-menu-item 
                 (click)="viewMedicationNameOrUtilisation(medication.utilisation)"
@@ -135,8 +143,7 @@
 
 </mat-nav-list>
 
-
-<div class="row justify-content-center no-results text-application" [style.display]="pagedList.length == 0 ? '' : 'none'">
+<div *ngIf="medicationsList.length == 0" class="row justify-content-center no-results text-application">
     No results
 </div>
 
@@ -154,12 +161,12 @@
 
 <ng-template #showPicture>
    
-  <div mat-dialog-title class="dialog-title">
-    <h2 class="text-application">{{ FileName }}</h2>
-    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+    <div mat-dialog-title class="dialog-title">
+        <h2 class="text-application">{{ FileName }}</h2>
+        <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
   
     <div class="row">
       <img *ngIf="pictureFile" [src]='pictureFile' class="pictureFileMobile">

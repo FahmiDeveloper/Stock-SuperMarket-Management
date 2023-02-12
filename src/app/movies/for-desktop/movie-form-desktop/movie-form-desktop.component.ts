@@ -23,6 +23,7 @@ export class MovieFormDesktopComponent implements OnInit {
   arrayMovies: Movie[];
   partMoviesList: Movie[] = [];
   allMovies: Movie[];
+  pagedList: Movie[];
 
   movie: Movie = new Movie();
 
@@ -47,10 +48,12 @@ export class MovieFormDesktopComponent implements OnInit {
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<MovieFormDesktopComponent>,
     public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Movie
+    @Inject(MAT_DIALOG_DATA) public data: Movie[]
   ) {}
 
   ngOnInit() {
+    this.data = this.pagedList;
+
     this.partMoviesList = this.allMovies
     .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
     .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
@@ -137,7 +140,7 @@ export class MovieFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
 }

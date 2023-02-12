@@ -23,6 +23,7 @@ export class SerieFormDesktopComponent implements OnInit {
   arraySeries: Serie[];
   seasonSeriesList: Serie[] = [];
   allSeries: Serie[];
+  pagedList: Serie[];
 
   serie: Serie = new Serie();
 
@@ -47,10 +48,12 @@ export class SerieFormDesktopComponent implements OnInit {
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<SerieFormDesktopComponent>,
     public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Serie
+    @Inject(MAT_DIALOG_DATA) public data: Serie[]
   ) {}
 
   ngOnInit() {
+    this.data = this.pagedList;
+
     this.seasonSeriesList = this.allSeries
     .filter(serie => serie.isFirst == true && serie.season && serie.season == 1)
     .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
@@ -137,7 +140,7 @@ export class SerieFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
 }

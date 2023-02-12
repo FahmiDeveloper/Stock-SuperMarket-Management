@@ -102,6 +102,7 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.medicationsList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newMedication() {
@@ -114,6 +115,11 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(MedicationFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.medication = medication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteMedication(medicationKey) {
@@ -181,6 +187,14 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  viewMedicationUtilisation(contentMedicationUtilisation: string) {
+    Swal.fire({
+      text: contentMedicationUtilisation,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   ngOnDestroy() {

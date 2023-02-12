@@ -20,6 +20,8 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
   listSeasonsByParentSerieKey: Serie[];
   allSeries: Serie[];
 
+  parent: any;
+
   serie: Serie = new Serie();
 
   statusSeries: StatusSeries[] = [
@@ -33,8 +35,7 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
   constructor(
     private serieService: SerieService, 
     public dialogRef: MatDialogRef<SerieDetailsWithSeasonsMobileComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Serie
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {}
@@ -53,6 +54,11 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
     });    
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
+    dialogRef.componentInstance.pagedList = this.parent.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.parent.pagedList = res;
+    });
   }
 
   deleteSerie(serieId) {

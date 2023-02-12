@@ -70,6 +70,7 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.passwordsList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newPassword() {
@@ -89,6 +90,11 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.password = password;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deletePassword(passwordKey) {

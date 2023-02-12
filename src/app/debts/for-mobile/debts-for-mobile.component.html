@@ -150,7 +150,6 @@
 
                     <mat-grid-tile>
                         <mat-form-field>
-                            <mat-label>وقت الدفع</mat-label>
                             <mat-select *ngIf="getInDebt" name="statusInDebtId" [(ngModel)]="statusInDebtId" (selectionChange)="getTotalInDebtsByStatus()">
                                 <mat-option value=""></mat-option>
                                 <mat-option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
@@ -354,14 +353,15 @@
 
     </table>
 
-    <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+    <div *ngIf="dataSource.data.length == 0" class="row justify-content-center no-results text-application">
         No results
     </div>
     
     <mat-paginator 
         [pageSizeOptions]="[8]"
         showFirstLastButtons 
-        aria-label="Select page of periodic elements">
+        aria-label="Select page of periodic elements"
+        (page)="OnPageChange($event)">
     </mat-paginator>
 </div>
   

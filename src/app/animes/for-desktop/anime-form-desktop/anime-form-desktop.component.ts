@@ -23,6 +23,7 @@ export class AnimeFormDesktopComponent implements OnInit {
   arrayAnimes: Anime[];
   seasonAnimesList: Anime[] = [];
   allAnimes: Anime[];
+  pagedList: Anime[];
 
   anime: Anime = new Anime();
 
@@ -47,10 +48,12 @@ export class AnimeFormDesktopComponent implements OnInit {
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<AnimeFormDesktopComponent>,
     public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Anime
+    @Inject(MAT_DIALOG_DATA) public data: Anime[]
   ) {}
 
   ngOnInit() {
+    this.data = this.pagedList;
+    
     this.seasonAnimesList = this.allAnimes.filter(anime => anime.priority && anime.priority == 1).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
     if (!this.anime.key) {
@@ -135,7 +138,7 @@ export class AnimeFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
 }

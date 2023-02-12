@@ -143,6 +143,7 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.movie = movieSelected;
     dialogRef.componentInstance.allMovies = this.allMovies;
     dialogRef.componentInstance.listPartsByParentFilmKey = this.listPartsByParentFilmKey;
+    dialogRef.componentInstance.parent = this;
   }
 
   newMovie() {
@@ -171,7 +172,12 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.movie = movie;
-    dialogRef.componentInstance.allMovies = this.allMovies;  
+    dialogRef.componentInstance.allMovies = this.allMovies;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });  
   }
 
   deleteMovie(movieId) {

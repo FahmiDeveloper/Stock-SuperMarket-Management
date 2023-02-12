@@ -102,12 +102,13 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.medicationsList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newMedication() {
     const dialogRef = this.dialogService.open(MedicationFormMobileComponent, {
-      width: '98vw',
-      height:'55vh',
+      width: '100vw',
+      height:'73vh',
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.arrayMedications = this.medicationsListCopieForNewMedication;
@@ -116,12 +117,17 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
 
   editMedication(medication?: Medication) {
     const dialogRef = this.dialogService.open(MedicationFormMobileComponent, {
-      width: '98vw',
-      height:'55vh',
+      width: '100vw',
+      height:'73vh',
       maxWidth: '100vw'
     });    
     dialogRef.componentInstance.medication = medication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteMedication(medicationKey) {

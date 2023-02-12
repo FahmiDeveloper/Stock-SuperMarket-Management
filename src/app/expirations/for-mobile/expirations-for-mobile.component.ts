@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
@@ -27,14 +27,12 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
 
   content: string = '';
 
-  subscriptionForGetAllExpiration: Subscription;
+  subscriptionForGetAllExpirations: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   constructor(
     public expirationService: ExpirationService,
     public dialogService: MatDialog
@@ -49,7 +47,7 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
   }
 
   getAllExpirations() {
-    this.subscriptionForGetAllExpiration = this.expirationService
+    this.subscriptionForGetAllExpirations = this.expirationService
     .getAll()
     .subscribe((expirations: Expiration[]) => {
 
@@ -69,6 +67,10 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
       })
            
     });
+  }
+
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   calculateDateDiff(expiration: Expiration) {
@@ -119,6 +121,11 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.expiration = expiration;
+    dialogRef.componentInstance.dataSource = this.dataSource.data;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.dataSource.data = res;
+    });
   }
 
   deleteExpiration(expirationKey) {
@@ -142,7 +149,7 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionForGetAllExpiration.unsubscribe();
+    this.subscriptionForGetAllExpirations.unsubscribe();
   }
 
 }

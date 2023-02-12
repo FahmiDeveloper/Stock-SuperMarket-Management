@@ -153,6 +153,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.anime = animeSelected;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
     dialogRef.componentInstance.listSeasonsByParentAnimeKey = this.listSeasonsByParentAnimeKey;
+    dialogRef.componentInstance.parent = this;
   }
 
   newAnime() {
@@ -181,7 +182,12 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.anime = anime;
-    dialogRef.componentInstance.allAnimes = this.allAnimes;  
+    dialogRef.componentInstance.allAnimes = this.allAnimes;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteAnime(animeKey) {

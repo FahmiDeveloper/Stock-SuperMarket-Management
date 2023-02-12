@@ -20,6 +20,8 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
   listPartsByParentFilmKey: Movie[];
   allMovies: Movie[];
 
+  parent: any;
+
   movie: Movie = new Movie();
 
   isDesktop: boolean;
@@ -35,8 +37,7 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
   constructor(
     private movieService: MovieService, 
     public dialogRef: MatDialogRef<MovieDetailsWithPartsDesktopComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Movie
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {}
@@ -50,6 +51,11 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
     const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.movie = movie;
     dialogRef.componentInstance.allMovies = this.allMovies;
+    dialogRef.componentInstance.pagedList = this.parent.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.parent.pagedList = res;
+    });
   }
 
   deleteMovie(movieId) {

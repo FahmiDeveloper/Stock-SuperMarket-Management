@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -17,6 +17,7 @@ import { UsersListService } from '../../shared/services/list-users.service';
 
 import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from '../../shared/models/debt.model';
 import { FirebaseUserModel } from '../../shared/models/user.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'debts-for-desktop',
@@ -31,9 +32,11 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'details', 'star'];
   filteredDebtsByPlaceAndDebtForPay: Debt[];
   filteredDebtsByPlaceAndDebtToGet: Debt[];
-  
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  debtsList: Debt[] = [];
+  pagedList: Debt[]= [];
+  length: number = 0;
+  
   creditors: string[] = [];
   creditorName: string ='';
   debtors: string[] = [];
@@ -41,12 +44,11 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
 
   sortByDesc: boolean = true;
   isLoading: boolean;
-  restInPocket: string = "";
-  restInWallet: string = "";
-  restInEnvelope: string = "";
-  restInBox: string = "";
-  restInPosteAccount: string = "";
-  queryNote: string = "";
+  restInPocket: string = '';
+  restInWallet: string = '';
+  restInEnvelope: string = '';
+  restInBox: string = '';
+  restInPosteAccount: string = '';
   placeId: number;
   getInDebt: boolean = false;
   getOutDebt: boolean = false;
@@ -54,7 +56,7 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   statusInDebtId: number;
   
   //in debt attributes
-  totalInDebts: string = "";
+  totalInDebts: string = '';
   defaultTotalInDebts: number;
   customTotalInDebts: number;
   totalInDebtsByCreditor: string;
@@ -62,7 +64,7 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   defaultTotalInDebtsByCreditor: number;
 
    //out debt attributes
-  totalOutDebts: string = "";
+  totalOutDebts: string = '';
   defaultTotalOutDebts: number;
   customTotalOutDebts: number;
   totalOutDebtsByDebtor: string;
@@ -70,16 +72,18 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   customTotalOutDebtsByDebtor: number;
 
   modalRefLodaing: any;
+  isDesktop: boolean;
+  isTablet: boolean;
 
   dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   subscriptionForGetAllDebts: Subscription;
   subscriptionForUser: Subscription;
   subscriptionForGetAllUsers: Subscription;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -107,11 +111,17 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
-    this.getAllDebts();
+    this.isDesktop = this.deviceService.isDesktop();
+    this.isTablet = this.deviceService.isTablet();
+
+    if (this.isDesktop) {this.getAllDebtsForDesktop();}
+    else {this.getAllDebtsForTablet();}
+
     this.getRolesUser();
   }
 
@@ -119,21 +129,38 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
-  getAllDebts() {
+  getAllDebtsForDesktop() {
     this.subscriptionForGetAllDebts = this.debtService
     .getAll()
     .subscribe(debts => {
       this.dataSourceCopie.data = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      if (this.queryNote) {
-        this.dataSource.data = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase())).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      }
-      else if (this.placeId) {
+     if (this.placeId) {
         this.dataSource.data = debts.filter(debt => debt.placeId == this.placeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
         if (this.placeId == 5) {
           if (this.getInDebt == true) this.showInDebt();
           if (this.getOutDebt == true) this.showOutDebt();
         } else this.getRestMoneyForeachPlace();
       } else this.dataSource.data = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+      this.getPlaceDebt();
+    });
+  }
+
+  getAllDebtsForTablet() {
+    this.subscriptionForGetAllDebts = this.debtService
+    .getAll()
+    .subscribe(debts => {
+      this.dataSourceCopie.data = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+     if (this.placeId) {
+        this.debtsList = debts.filter(debt => debt.placeId == this.placeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        if (this.placeId == 5) {
+          if (this.getInDebt == true) this.showInDebt();
+          if (this.getOutDebt == true) this.showOutDebt();
+        } else this.getRestMoneyForeachPlace();
+      } else this.debtsList = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+
+      this.pagedList = this.debtsList.slice(0, 6);
+      this.length = this.debtsList.length;
+
       this.getPlaceDebt();
     });
   }
@@ -167,6 +194,20 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     })
   }
 
+  OnPageChangeForDesktop(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
+  OnPageChangeForTablet(event: PageEvent){
+    let startIndex = event.pageIndex * event.pageSize;
+    let endIndex = startIndex + event.pageSize;
+    if(endIndex > this.length){
+      endIndex = this.length;
+    }
+    this.pagedList = this.debtsList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
   showInDebt() {
     if (this.getInDebt == true) {
       this.getOutDebt = false;
@@ -174,8 +215,21 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
       this.creditors = [];
       this.debtorName = '';
       this.getTotalIntDebts();
-      this.dataSource.data = this.dataSourceCopie.data.filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      this.filteredDebtsByPlaceAndDebtForPay = this.dataSourceCopie.data.filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+      if (this.isDesktop) {
+        this.dataSource.data = this.dataSourceCopie.data
+        .filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true))
+        .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+      } else {
+        this.debtsList = this.dataSourceCopie.data
+        .filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true))
+        .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        this.pagedList = this.debtsList.slice(0, 6);
+        this.length = this.debtsList.length;
+      }
+      this.filteredDebtsByPlaceAndDebtForPay = this.dataSourceCopie.data
+      .filter(debt => (debt.placeId == this.placeId) && (debt.debtForPay == true))
+      .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+
       if (this.statusInDebtId) this.getTotalInDebtsByStatus();
       if (this.creditorName) this.getTotalInDebtsByCreditor();
       this.filteredDebtsByPlaceAndDebtForPay.forEach(element => {
@@ -193,8 +247,20 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
       this.debtors = [];
       this.creditorName = '';
       this.getTotalOutDebts();
-      this.dataSource.data = this.dataSourceCopie.data.filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      this.filteredDebtsByPlaceAndDebtToGet = this.dataSourceCopie.data.filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);;
+      if (this.isDesktop) {
+        this.dataSource.data = this.dataSourceCopie.data
+        .filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true))
+        .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+      } else {
+        this.debtsList = this.dataSourceCopie.data
+        .filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true))
+        .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        this.pagedList = this.debtsList.slice(0, 6);
+        this.length = this.debtsList.length;
+      }
+      this.filteredDebtsByPlaceAndDebtToGet = this.dataSourceCopie.data
+      .filter(debt => (debt.placeId == this.placeId) && (debt.debtToGet == true))
+      .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);;
       if (this.statusOutDebtId) this.getTotalOutDebtsByStatus();
       if (this.debtorName) this.getTotalOutDebtsByDebtor();
       this.filteredDebtsByPlaceAndDebtToGet.forEach(element => {
@@ -224,13 +290,23 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   getPlaceDebt() {
-    this.dataSource.data.forEach(element=>{
-      this.placesMoney.forEach(placeMoney => {
-        if (placeMoney.id == element.placeId) {
-          element.place = placeMoney.place;
-        }
+    if (this.isDesktop) {
+      this.dataSource.data.forEach(element=>{
+        this.placesMoney.forEach(placeMoney => {
+          if (placeMoney.id == element.placeId) {
+            element.place = placeMoney.place;
+          }
+        })
       })
-    })
+    } else {
+      this.debtsList.forEach(element=>{
+        this.placesMoney.forEach(placeMoney => {
+          if (placeMoney.id == element.placeId) {
+            element.place = placeMoney.place;
+          }
+        })
+      })
+    }
   }
 
   newDebt() {
@@ -241,15 +317,354 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   editDebt(debt?: Debt) {
     const dialogRef = this.dialogService.open(DebtFormDesktopComponent, {width: '800px'});
     dialogRef.componentInstance.debt = debt;
+    dialogRef.componentInstance.dataSource = this.isDesktop ? this.dataSource.data : this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (this.isDesktop) this.dataSource.data = res;
+      else this.pagedList = res;
+    });
   }
 
   showRest(contentRestMoneyForeachPlace) {
-    this.dialogService.open(contentRestMoneyForeachPlace, {
-      width: '18vw',
-      height:'50vh',
-      maxWidth: '100vw'
-    });
+    this.dialogService.open(contentRestMoneyForeachPlace, {width: '400px'});
     this.getRestMoneyForeachPlace();
+  }
+
+  getTotalIntDebts() { 
+    this.defaultTotalInDebts = 0;
+    this.customTotalInDebts = 0;
+    this.totalInDebts = "";
+    this.creditors = [];
+
+    this.dataSourceCopie.data.filter(debt => debt.debtForPay == true).forEach(element => {
+      if (element.financialDebt.indexOf("DT") !== -1) {
+        element.financialInDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+        element.financialInDebtWithConvert = element.financialInDebtWithConvert + '000';
+      }
+      if (element.financialDebt.indexOf("Mill") !== -1) {
+        element.financialInDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+      }
+      if (element.financialDebt.includes(".")){
+        const composedFinancialDebt = element.financialDebt.split('.');
+        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
+          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
+          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
+        }
+        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
+          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
+        }
+        element.financialInDebtWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
+      }
+
+      this.defaultTotalInDebts += Number(element.financialInDebtWithConvert);
+      if (this.defaultTotalInDebts.toString().length > 4) {
+
+        this.customTotalInDebts = this.defaultTotalInDebts / 1000;
+
+        if (String(this.customTotalInDebts).includes(".")){
+          const customTotalInDebts = String(this.customTotalInDebts).split('.');
+          if (customTotalInDebts[1].length == 1) this.totalInDebts = customTotalInDebts[0] + "DT." + customTotalInDebts[1] + "00Mill";
+          else if (customTotalInDebts[1].length == 2) this.totalInDebts = customTotalInDebts[0] + "DT." + customTotalInDebts[1] + "0Mill";
+          else this.totalInDebts = customTotalInDebts[0] + "DT." + customTotalInDebts[1] + "Mill";
+        } else {
+          this.totalInDebts = String(this.customTotalInDebts) + "DT";
+        }
+      } else {
+        this.totalInDebts = this.defaultTotalInDebts + "Mill";
+      }
+
+      if (!this.creditors.includes(element.creditor)) {
+        this.creditors.push(element.creditor);
+      }
+    });
+  }
+
+  getTotalInDebtsByStatus() {
+    this.defaultTotalInDebtsByCreditor = 0;
+    this.customTotalInDebtsByCreditor = 0;
+    this.totalInDebtsByCreditor = "";
+
+    if (this.isDesktop) {
+      if (this.creditorName) {
+        if (this.statusInDebtId == 1) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayThisMonth == true) && (debt.creditor == this.creditorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusInDebtId == 2) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayNextMonth == true) && (debt.creditor == this.creditorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.notToPayForNow == true) && (debt.creditor == this.creditorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+      } else {
+        if (this.statusInDebtId == 1) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusInDebtId == 2) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+         else {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.notToPayForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }   
+      }
+  
+      this.dataSource.data.forEach(element => {
+  
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialInDebtWithConvertByCreditor = element.financialInDebtWithConvertByCreditor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByCreditor = element.financialDebt.split('.');
+          if (composedFinancialDebtByCreditor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[0].substring(0, composedFinancialDebtByCreditor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialInDebtByCreditor = element.firstPartComposedFinancialInDebtByCreditor + '000';
+          }
+          if (composedFinancialDebtByCreditor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[1].substring(0, composedFinancialDebtByCreditor[1].lastIndexOf("Mill"));
+          }
+          element.financialInDebtWithConvertByCreditor = String(Number(element.firstPartComposedFinancialInDebtByCreditor)+Number(element.secondPartComposedFinancialInDebtByCreditor));
+        }
+  
+        this.defaultTotalInDebtsByCreditor += Number(element.financialInDebtWithConvertByCreditor);
+        if (this.defaultTotalInDebtsByCreditor.toString().length > 4) {
+  
+          this.customTotalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor / 1000;
+  
+          if (String(this.customTotalInDebtsByCreditor).includes(".")){
+            const customTotalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor).split('.');
+            if (customTotalInDebtsByCreditor[1].length == 1) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "00Mill";
+            else if (customTotalInDebtsByCreditor[1].length == 2) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "0Mill";
+            else this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "Mill";
+          } else {
+            this.totalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor) + "DT";
+          }
+        } else {
+          this.totalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor + "Mill";
+        }
+      });
+    }
+    else {
+      if (this.creditorName) {
+        if (this.statusInDebtId == 1) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayThisMonth == true) && (debt.creditor == this.creditorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusInDebtId == 2) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayNextMonth == true) && (debt.creditor == this.creditorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.notToPayForNow == true) && (debt.creditor == this.creditorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+      } else {
+        if (this.statusInDebtId == 1) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusInDebtId == 2) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.toPayNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+         else {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.notToPayForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }   
+      }
+
+      this.pagedList = this.debtsList.slice(0, 6);
+      this.length = this.debtsList.length;
+  
+      this.debtsList.forEach(element => {
+  
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialInDebtWithConvertByCreditor = element.financialInDebtWithConvertByCreditor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByCreditor = element.financialDebt.split('.');
+          if (composedFinancialDebtByCreditor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[0].substring(0, composedFinancialDebtByCreditor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialInDebtByCreditor = element.firstPartComposedFinancialInDebtByCreditor + '000';
+          }
+          if (composedFinancialDebtByCreditor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[1].substring(0, composedFinancialDebtByCreditor[1].lastIndexOf("Mill"));
+          }
+          element.financialInDebtWithConvertByCreditor = String(Number(element.firstPartComposedFinancialInDebtByCreditor)+Number(element.secondPartComposedFinancialInDebtByCreditor));
+        }
+  
+        this.defaultTotalInDebtsByCreditor += Number(element.financialInDebtWithConvertByCreditor);
+        if (this.defaultTotalInDebtsByCreditor.toString().length > 4) {
+  
+          this.customTotalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor / 1000;
+  
+          if (String(this.customTotalInDebtsByCreditor).includes(".")){
+            const customTotalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor).split('.');
+            if (customTotalInDebtsByCreditor[1].length == 1) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "00Mill";
+            else if (customTotalInDebtsByCreditor[1].length == 2) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "0Mill";
+            else this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "Mill";
+          } else {
+            this.totalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor) + "DT";
+          }
+        } else {
+          this.totalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor + "Mill";
+        }
+      });
+    }
+  }
+
+  getTotalInDebtsByCreditor() {
+    this.defaultTotalInDebtsByCreditor = 0;
+    this.customTotalInDebtsByCreditor = 0;
+    this.totalInDebtsByCreditor = "";
+
+    if (this.isDesktop) {
+      if (this.statusInDebtId) {
+        if (this.statusInDebtId == 1) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.creditor == this.creditorName) && (debt.toPayThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusInDebtId == 2) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.creditor == this.creditorName) && (debt.toPayNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.creditor == this.creditorName) && (debt.notToPayForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }   
+      } else this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay
+      .filter(debt => (debt.creditor == this.creditorName))
+      .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+  
+      this.dataSource.data.forEach(element => {
+  
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialInDebtWithConvertByCreditor = element.financialInDebtWithConvertByCreditor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByCreditor = element.financialDebt.split('.');
+          if (composedFinancialDebtByCreditor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[0].substring(0, composedFinancialDebtByCreditor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialInDebtByCreditor = element.firstPartComposedFinancialInDebtByCreditor + '000';
+          }
+          if (composedFinancialDebtByCreditor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[1].substring(0, composedFinancialDebtByCreditor[1].lastIndexOf("Mill"));
+          }
+          element.financialInDebtWithConvertByCreditor = String(Number(element.firstPartComposedFinancialInDebtByCreditor)+Number(element.secondPartComposedFinancialInDebtByCreditor));
+        }
+  
+        this.defaultTotalInDebtsByCreditor += Number(element.financialInDebtWithConvertByCreditor);
+        if (this.defaultTotalInDebtsByCreditor.toString().length > 4) {
+  
+          this.customTotalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor / 1000;
+  
+          if (String(this.customTotalInDebtsByCreditor).includes(".")){
+            const customTotalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor).split('.');
+            if (customTotalInDebtsByCreditor[1].length == 1) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "00Mill";
+            else if (customTotalInDebtsByCreditor[1].length == 2) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "0Mill";
+            else this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "Mill";
+          } else {
+            this.totalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor) + "DT";
+          }
+        } else {
+          this.totalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor + "Mill";
+        }
+      });
+    }
+    else {
+      if (this.statusInDebtId) {
+        if (this.statusInDebtId == 1) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.creditor == this.creditorName) && (debt.toPayThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusInDebtId == 2) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.creditor == this.creditorName) && (debt.toPayNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+          .filter(debt => (debt.creditor == this.creditorName) && (debt.notToPayForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }   
+      } else this.debtsList = this.filteredDebtsByPlaceAndDebtForPay
+      .filter(debt => (debt.creditor == this.creditorName))
+      .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+
+      this.pagedList = this.debtsList.slice(0, 6);
+      this.length = this.debtsList.length;
+  
+      this.debtsList.forEach(element => {
+  
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialInDebtWithConvertByCreditor = element.financialInDebtWithConvertByCreditor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByCreditor = element.financialDebt.split('.');
+          if (composedFinancialDebtByCreditor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[0].substring(0, composedFinancialDebtByCreditor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialInDebtByCreditor = element.firstPartComposedFinancialInDebtByCreditor + '000';
+          }
+          if (composedFinancialDebtByCreditor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[1].substring(0, composedFinancialDebtByCreditor[1].lastIndexOf("Mill"));
+          }
+          element.financialInDebtWithConvertByCreditor = String(Number(element.firstPartComposedFinancialInDebtByCreditor)+Number(element.secondPartComposedFinancialInDebtByCreditor));
+        }
+  
+        this.defaultTotalInDebtsByCreditor += Number(element.financialInDebtWithConvertByCreditor);
+        if (this.defaultTotalInDebtsByCreditor.toString().length > 4) {
+  
+          this.customTotalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor / 1000;
+  
+          if (String(this.customTotalInDebtsByCreditor).includes(".")){
+            const customTotalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor).split('.');
+            if (customTotalInDebtsByCreditor[1].length == 1) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "00Mill";
+            else if (customTotalInDebtsByCreditor[1].length == 2) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "0Mill";
+            else this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "Mill";
+          } else {
+            this.totalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor) + "DT";
+          }
+        } else {
+          this.totalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor + "Mill";
+        }
+      });
+    }
   }
 
   getTotalOutDebts() {
@@ -299,229 +714,7 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
       if (!this.debtors.includes(element.debtor)) {
         this.debtors.push(element.debtor);
       }
-    });
-  }
-
-  getTotalIntDebts() { 
-    this.defaultTotalInDebts = 0;
-    this.customTotalInDebts = 0;
-    this.totalInDebts = "";
-    this.creditors = [];
-
-    this.dataSourceCopie.data.filter(debt => debt.debtForPay == true).forEach(element => {
-      if (element.financialDebt.indexOf("DT") !== -1) {
-        element.financialInDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
-        element.financialInDebtWithConvert = element.financialInDebtWithConvert + '000';
-      }
-      if (element.financialDebt.indexOf("Mill") !== -1) {
-        element.financialInDebtWithConvert = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
-      }
-      if (element.financialDebt.includes(".")){
-        const composedFinancialDebt = element.financialDebt.split('.');
-        if (composedFinancialDebt[0].indexOf("DT") !== -1) {
-          element.firstPartComposedFinancialInDebt = composedFinancialDebt[0].substring(0, composedFinancialDebt[0].lastIndexOf("DT"));
-          element.firstPartComposedFinancialInDebt = element.firstPartComposedFinancialInDebt + '000';
-        }
-        if (composedFinancialDebt[1].indexOf("Mill") !== -1) {
-          element.secondPartComposedFinancialInDebt = composedFinancialDebt[1].substring(0, composedFinancialDebt[1].lastIndexOf("Mill"));
-        }
-        element.financialInDebtWithConvert = String(Number(element.firstPartComposedFinancialInDebt)+Number(element.secondPartComposedFinancialInDebt));
-      }
-
-      this.defaultTotalInDebts += Number(element.financialInDebtWithConvert);
-      if (this.defaultTotalInDebts.toString().length > 4) {
-
-        this.customTotalInDebts = this.defaultTotalInDebts / 1000;
-
-        if (String(this.customTotalInDebts).includes(".")){
-          const customTotalInDebts = String(this.customTotalInDebts).split('.');
-          if (customTotalInDebts[1].length == 1) this.totalInDebts = customTotalInDebts[0] + "DT." + customTotalInDebts[1] + "00Mill";
-          else if (customTotalInDebts[1].length == 2) this.totalInDebts = customTotalInDebts[0] + "DT." + customTotalInDebts[1] + "0Mill";
-          else this.totalInDebts = customTotalInDebts[0] + "DT." + customTotalInDebts[1] + "Mill";
-        } else {
-          this.totalInDebts = String(this.customTotalInDebts) + "DT";
-        }
-      } else {
-        this.totalInDebts = this.defaultTotalInDebts + "Mill";
-      }
-
-      if (!this.creditors.includes(element.creditor)) {
-        this.creditors.push(element.creditor);
-      }
-    }); 
-  }
-
-  getTotalInDebtsByCreditor() {
-    this.defaultTotalInDebtsByCreditor = 0;
-    this.customTotalInDebtsByCreditor = 0;
-    this.totalInDebtsByCreditor = "";
-
-    if (this.statusInDebtId) {
-      if (this.statusInDebtId == 1) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName) && (debt.toPayThisMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else if (this.statusInDebtId == 2) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName) && (debt.toPayNextMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName) && (debt.notToPayForNow == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      }   
-    } else this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.creditor == this.creditorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-
-    this.dataSource.data.forEach(element => {
-
-      if (element.financialDebt.indexOf("DT") !== -1) {
-        element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
-        element.financialInDebtWithConvertByCreditor = element.financialInDebtWithConvertByCreditor + '000';
-      }
-      if (element.financialDebt.indexOf("Mill") !== -1) {
-        element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
-      }
-      if (element.financialDebt.includes(".")){
-        const composedFinancialDebtByCreditor = element.financialDebt.split('.');
-        if (composedFinancialDebtByCreditor[0].indexOf("DT") !== -1) {
-          element.firstPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[0].substring(0, composedFinancialDebtByCreditor[0].lastIndexOf("DT"));
-          element.firstPartComposedFinancialInDebtByCreditor = element.firstPartComposedFinancialInDebtByCreditor + '000';
-        }
-        if (composedFinancialDebtByCreditor[1].indexOf("Mill") !== -1) {
-          element.secondPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[1].substring(0, composedFinancialDebtByCreditor[1].lastIndexOf("Mill"));
-        }
-        element.financialInDebtWithConvertByCreditor = String(Number(element.firstPartComposedFinancialInDebtByCreditor)+Number(element.secondPartComposedFinancialInDebtByCreditor));
-      }
-
-      this.defaultTotalInDebtsByCreditor += Number(element.financialInDebtWithConvertByCreditor);
-      if (this.defaultTotalInDebtsByCreditor.toString().length > 4) {
-
-        this.customTotalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor / 1000;
-
-        if (String(this.customTotalInDebtsByCreditor).includes(".")){
-          const customTotalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor).split('.');
-          if (customTotalInDebtsByCreditor[1].length == 1) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "00Mill";
-          else if (customTotalInDebtsByCreditor[1].length == 2) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "0Mill";
-          else this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "Mill";
-        } else {
-          this.totalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor) + "DT";
-        }
-      } else {
-        this.totalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor + "Mill";
-      }
-    });
-  }
-
-  getTotalInDebtsByStatus() {
-    this.defaultTotalInDebtsByCreditor = 0;
-    this.customTotalInDebtsByCreditor = 0;
-    this.totalInDebtsByCreditor = "";
-
-    if (this.creditorName) {
-      if (this.statusInDebtId == 1) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayThisMonth == true) && (debt.creditor == this.creditorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else if (this.statusInDebtId == 2) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayNextMonth == true) && (debt.creditor == this.creditorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.notToPayForNow == true) && (debt.creditor == this.creditorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      }
-    } else {
-      if (this.statusInDebtId == 1) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayThisMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else if (this.statusInDebtId == 2) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.toPayNextMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtForPay.filter(debt => (debt.notToPayForNow == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      }   
-    }
-
-    this.dataSource.data.forEach(element => {
-
-      if (element.financialDebt.indexOf("DT") !== -1) {
-        element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
-        element.financialInDebtWithConvertByCreditor = element.financialInDebtWithConvertByCreditor + '000';
-      }
-      if (element.financialDebt.indexOf("Mill") !== -1) {
-        element.financialInDebtWithConvertByCreditor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
-      }
-      if (element.financialDebt.includes(".")){
-        const composedFinancialDebtByCreditor = element.financialDebt.split('.');
-        if (composedFinancialDebtByCreditor[0].indexOf("DT") !== -1) {
-          element.firstPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[0].substring(0, composedFinancialDebtByCreditor[0].lastIndexOf("DT"));
-          element.firstPartComposedFinancialInDebtByCreditor = element.firstPartComposedFinancialInDebtByCreditor + '000';
-        }
-        if (composedFinancialDebtByCreditor[1].indexOf("Mill") !== -1) {
-          element.secondPartComposedFinancialInDebtByCreditor = composedFinancialDebtByCreditor[1].substring(0, composedFinancialDebtByCreditor[1].lastIndexOf("Mill"));
-        }
-        element.financialInDebtWithConvertByCreditor = String(Number(element.firstPartComposedFinancialInDebtByCreditor)+Number(element.secondPartComposedFinancialInDebtByCreditor));
-      }
-
-      this.defaultTotalInDebtsByCreditor += Number(element.financialInDebtWithConvertByCreditor);
-      if (this.defaultTotalInDebtsByCreditor.toString().length > 4) {
-
-        this.customTotalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor / 1000;
-
-        if (String(this.customTotalInDebtsByCreditor).includes(".")){
-          const customTotalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor).split('.');
-          if (customTotalInDebtsByCreditor[1].length == 1) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "00Mill";
-          else if (customTotalInDebtsByCreditor[1].length == 2) this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "0Mill";
-          else this.totalInDebtsByCreditor = customTotalInDebtsByCreditor[0] + "DT." + customTotalInDebtsByCreditor[1] + "Mill";
-        } else {
-          this.totalInDebtsByCreditor = String(this.customTotalInDebtsByCreditor) + "DT";
-        }
-      } else {
-        this.totalInDebtsByCreditor = this.defaultTotalInDebtsByCreditor + "Mill";
-      }
-    });
-  }
-
-  getTotalOutDebtsByDebtor() {
-    this.defaultTotalOutDebtsByDebtor = 0;
-    this.customTotalOutDebtsByDebtor = 0;
-    this.totalOutDebtsByDebtor = "";
-
-    if (this.statusOutDebtId) {
-      if (this.statusOutDebtId == 1) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName) && (debt.toGetThisMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else if (this.statusOutDebtId == 2) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName) && (debt.toGetNextMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName) && (debt.notToGetForNow == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      }
-    } else this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.debtor == this.debtorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-
-    this.dataSource.data.forEach(element => {
-      if (element.financialDebt.indexOf("DT") !== -1) {
-        element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
-        element.financialOutDebtWithConvertByDebtor = element.financialOutDebtWithConvertByDebtor + '000';
-      }
-      if (element.financialDebt.indexOf("Mill") !== -1) {
-        element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
-      }
-
-      if (element.financialDebt.includes(".")){
-        const composedFinancialDebtByDebtor = element.financialDebt.split('.');
-        if (composedFinancialDebtByDebtor[0].indexOf("DT") !== -1) {
-          element.firstPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[0].substring(0, composedFinancialDebtByDebtor[0].lastIndexOf("DT"));
-          element.firstPartComposedFinancialOutDebtByDebtor = element.firstPartComposedFinancialOutDebtByDebtor + '000';
-        }
-        if (composedFinancialDebtByDebtor[1].indexOf("Mill") !== -1) {
-          element.secondPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[1].substring(0, composedFinancialDebtByDebtor[1].lastIndexOf("Mill"));
-        }
-        element.financialOutDebtWithConvertByDebtor = String(Number(element.firstPartComposedFinancialOutDebtByDebtor)+Number(element.secondPartComposedFinancialOutDebtByDebtor));
-      }
-
-      this.defaultTotalOutDebtsByDebtor += Number(element.financialOutDebtWithConvertByDebtor);
-
-      if (this.defaultTotalOutDebtsByDebtor.toString().length > 4) {
-
-        this.customTotalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor / 1000;
-        if (String(this.customTotalOutDebtsByDebtor).includes(".")){
-          const customTotalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor).split('.');
-          if (customTotalOutDebtsByDebtor[1].length == 1) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "00Mill";
-          else if (customTotalOutDebtsByDebtor[1].length == 2) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "0Mill";
-          else this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "Mill";
-        } else {
-          this.totalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor) + "DT";
-        }
-      } else {
-        this.totalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor + "Mill";
-      }
-    });
+    });   
   }
 
   getTotalOutDebtsByStatus() {
@@ -529,67 +722,295 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     this.customTotalOutDebtsByDebtor = 0;
     this.totalOutDebtsByDebtor = "";
 
-    if (this.debtorName) {
-      if (this.statusOutDebtId == 1) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetThisMonth == true) && (debt.debtor == this.debtorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      } else if (this.statusOutDebtId == 2) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetNextMonth == true) && (debt.debtor == this.debtorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+    if (this.isDesktop) {
+      if (this.debtorName) {
+        if (this.statusOutDebtId == 1) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetThisMonth == true) && (debt.debtor == this.debtorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusOutDebtId == 2) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetNextMonth == true) && (debt.debtor == this.debtorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.notToGetForNow == true) && (debt.debtor == this.debtorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
       } else {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.notToGetForNow == true) && (debt.debtor == this.debtorName)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      }
-    } else {
-      if (this.statusOutDebtId == 1) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetThisMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);;
-      } else if (this.statusOutDebtId == 2) {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.toGetNextMonth == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);;
-      } else {
-        this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet.filter(debt => (debt.notToGetForNow == true)).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);;
-      }
-      this.dataSource.data.forEach(res => {
-        if (!this.debtors.includes(res.debtor)) {
-          this.debtors.push(res.debtor);
-        }
-      })
-    }
-
-    this.dataSource.data.forEach(element => {
-      if (element.financialDebt.indexOf("DT") !== -1) {
-        element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
-        element.financialOutDebtWithConvertByDebtor = element.financialOutDebtWithConvertByDebtor + '000';
-      }
-      if (element.financialDebt.indexOf("Mill") !== -1) {
-        element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
-      }
-
-      if (element.financialDebt.includes(".")){
-        const composedFinancialDebtByDebtor = element.financialDebt.split('.');
-        if (composedFinancialDebtByDebtor[0].indexOf("DT") !== -1) {
-          element.firstPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[0].substring(0, composedFinancialDebtByDebtor[0].lastIndexOf("DT"));
-          element.firstPartComposedFinancialOutDebtByDebtor = element.firstPartComposedFinancialOutDebtByDebtor + '000';
-        }
-        if (composedFinancialDebtByDebtor[1].indexOf("Mill") !== -1) {
-          element.secondPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[1].substring(0, composedFinancialDebtByDebtor[1].lastIndexOf("Mill"));
-        }
-        element.financialOutDebtWithConvertByDebtor = String(Number(element.firstPartComposedFinancialOutDebtByDebtor)+Number(element.secondPartComposedFinancialOutDebtByDebtor));
-      }
-
-      this.defaultTotalOutDebtsByDebtor += Number(element.financialOutDebtWithConvertByDebtor);
-
-      if (this.defaultTotalOutDebtsByDebtor.toString().length > 4) {
-
-        this.customTotalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor / 1000;
-        if (String(this.customTotalOutDebtsByDebtor).includes(".")){
-          const customTotalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor).split('.');
-          if (customTotalOutDebtsByDebtor[1].length == 1) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "00Mill";
-          else if (customTotalOutDebtsByDebtor[1].length == 2) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "0Mill";
-          else this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "Mill";
+        if (this.statusOutDebtId == 1) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusOutDebtId == 2) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
         } else {
-          this.totalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor) + "DT";
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.notToGetForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+        this.dataSource.data.forEach(res => {
+          if (!this.debtors.includes(res.debtor)) {
+            this.debtors.push(res.debtor);
+          }
+        })
+      }
+  
+      this.dataSource.data.forEach(element => {
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialOutDebtWithConvertByDebtor = element.financialOutDebtWithConvertByDebtor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+  
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByDebtor = element.financialDebt.split('.');
+          if (composedFinancialDebtByDebtor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[0].substring(0, composedFinancialDebtByDebtor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialOutDebtByDebtor = element.firstPartComposedFinancialOutDebtByDebtor + '000';
+          }
+          if (composedFinancialDebtByDebtor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[1].substring(0, composedFinancialDebtByDebtor[1].lastIndexOf("Mill"));
+          }
+          element.financialOutDebtWithConvertByDebtor = String(Number(element.firstPartComposedFinancialOutDebtByDebtor)+Number(element.secondPartComposedFinancialOutDebtByDebtor));
+        }
+  
+        this.defaultTotalOutDebtsByDebtor += Number(element.financialOutDebtWithConvertByDebtor);
+  
+        if (this.defaultTotalOutDebtsByDebtor.toString().length > 4) {
+  
+          this.customTotalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor / 1000;
+          if (String(this.customTotalOutDebtsByDebtor).includes(".")){
+            const customTotalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor).split('.');
+            if (customTotalOutDebtsByDebtor[1].length == 1) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "00Mill";
+            else if (customTotalOutDebtsByDebtor[1].length == 2) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "0Mill";
+            else this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "Mill";
+          } else {
+            this.totalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor) + "DT";
+          }
+        } else {
+          this.totalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor + "Mill";
+        }
+      });
+    }
+    else {
+      if (this.debtorName) {
+        if (this.statusOutDebtId == 1) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetThisMonth == true) && (debt.debtor == this.debtorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusOutDebtId == 2) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetNextMonth == true) && (debt.debtor == this.debtorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.notToGetForNow == true) && (debt.debtor == this.debtorName))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
         }
       } else {
-        this.totalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor + "Mill";
+        if (this.statusOutDebtId == 1) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusOutDebtId == 2) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.toGetNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } else {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.notToGetForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+        this.debtsList.forEach(res => {
+          if (!this.debtors.includes(res.debtor)) {
+            this.debtors.push(res.debtor);
+          }
+        })
       }
-    });
+
+      this.pagedList = this.debtsList.slice(0, 6);
+      this.length = this.debtsList.length;
+  
+      this.debtsList.forEach(element => {
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialOutDebtWithConvertByDebtor = element.financialOutDebtWithConvertByDebtor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+  
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByDebtor = element.financialDebt.split('.');
+          if (composedFinancialDebtByDebtor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[0].substring(0, composedFinancialDebtByDebtor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialOutDebtByDebtor = element.firstPartComposedFinancialOutDebtByDebtor + '000';
+          }
+          if (composedFinancialDebtByDebtor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[1].substring(0, composedFinancialDebtByDebtor[1].lastIndexOf("Mill"));
+          }
+          element.financialOutDebtWithConvertByDebtor = String(Number(element.firstPartComposedFinancialOutDebtByDebtor)+Number(element.secondPartComposedFinancialOutDebtByDebtor));
+        }
+  
+        this.defaultTotalOutDebtsByDebtor += Number(element.financialOutDebtWithConvertByDebtor);
+  
+        if (this.defaultTotalOutDebtsByDebtor.toString().length > 4) {
+  
+          this.customTotalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor / 1000;
+          if (String(this.customTotalOutDebtsByDebtor).includes(".")){
+            const customTotalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor).split('.');
+            if (customTotalOutDebtsByDebtor[1].length == 1) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "00Mill";
+            else if (customTotalOutDebtsByDebtor[1].length == 2) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "0Mill";
+            else this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "Mill";
+          } else {
+            this.totalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor) + "DT";
+          }
+        } else {
+          this.totalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor + "Mill";
+        }
+      });
+    }
+  }
+
+  getTotalOutDebtsByDebtor() {
+    this.defaultTotalOutDebtsByDebtor = 0;
+    this.customTotalOutDebtsByDebtor = 0;
+    this.totalOutDebtsByDebtor = "";
+
+    if (this.isDesktop) {
+      if (this.statusOutDebtId) {
+        if (this.statusOutDebtId == 1) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.debtor == this.debtorName) && (debt.toGetThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusOutDebtId == 2) {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.debtor == this.debtorName) && (debt.toGetNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.debtor == this.debtorName) && (debt.notToGetForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+      } else this.dataSource.data = this.filteredDebtsByPlaceAndDebtToGet
+      .filter(debt => (debt.debtor == this.debtorName))
+      .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+  
+      this.dataSource.data.forEach(element => {
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialOutDebtWithConvertByDebtor = element.financialOutDebtWithConvertByDebtor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+  
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByDebtor = element.financialDebt.split('.');
+          if (composedFinancialDebtByDebtor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[0].substring(0, composedFinancialDebtByDebtor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialOutDebtByDebtor = element.firstPartComposedFinancialOutDebtByDebtor + '000';
+          }
+          if (composedFinancialDebtByDebtor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[1].substring(0, composedFinancialDebtByDebtor[1].lastIndexOf("Mill"));
+          }
+          element.financialOutDebtWithConvertByDebtor = String(Number(element.firstPartComposedFinancialOutDebtByDebtor)+Number(element.secondPartComposedFinancialOutDebtByDebtor));
+        }
+  
+        this.defaultTotalOutDebtsByDebtor += Number(element.financialOutDebtWithConvertByDebtor);
+  
+        if (this.defaultTotalOutDebtsByDebtor.toString().length > 4) {
+  
+          this.customTotalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor / 1000;
+          if (String(this.customTotalOutDebtsByDebtor).includes(".")){
+            const customTotalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor).split('.');
+            if (customTotalOutDebtsByDebtor[1].length == 1) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "00Mill";
+            else if (customTotalOutDebtsByDebtor[1].length == 2) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "0Mill";
+            else this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "Mill";
+          } else {
+            this.totalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor) + "DT";
+          }
+        } else {
+          this.totalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor + "Mill";
+        }
+      });
+    }
+    else {
+      if (this.statusOutDebtId) {
+        if (this.statusOutDebtId == 1) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.debtor == this.debtorName) && (debt.toGetThisMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else if (this.statusOutDebtId == 2) {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.debtor == this.debtorName) && (debt.toGetNextMonth == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        } 
+        else {
+          this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+          .filter(debt => (debt.debtor == this.debtorName) && (debt.notToGetForNow == true))
+          .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+      } else this.debtsList = this.filteredDebtsByPlaceAndDebtToGet
+      .filter(debt => (debt.debtor == this.debtorName))
+      .sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+
+      this.pagedList = this.debtsList.slice(0, 6);
+      this.length = this.debtsList.length;
+  
+      this.debtsList.forEach(element => {
+        if (element.financialDebt.indexOf("DT") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("DT"));
+          element.financialOutDebtWithConvertByDebtor = element.financialOutDebtWithConvertByDebtor + '000';
+        }
+        if (element.financialDebt.indexOf("Mill") !== -1) {
+          element.financialOutDebtWithConvertByDebtor = element.financialDebt.substring(0, element.financialDebt.lastIndexOf("Mill"));
+        }
+  
+        if (element.financialDebt.includes(".")){
+          const composedFinancialDebtByDebtor = element.financialDebt.split('.');
+          if (composedFinancialDebtByDebtor[0].indexOf("DT") !== -1) {
+            element.firstPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[0].substring(0, composedFinancialDebtByDebtor[0].lastIndexOf("DT"));
+            element.firstPartComposedFinancialOutDebtByDebtor = element.firstPartComposedFinancialOutDebtByDebtor + '000';
+          }
+          if (composedFinancialDebtByDebtor[1].indexOf("Mill") !== -1) {
+            element.secondPartComposedFinancialOutDebtByDebtor = composedFinancialDebtByDebtor[1].substring(0, composedFinancialDebtByDebtor[1].lastIndexOf("Mill"));
+          }
+          element.financialOutDebtWithConvertByDebtor = String(Number(element.firstPartComposedFinancialOutDebtByDebtor)+Number(element.secondPartComposedFinancialOutDebtByDebtor));
+        }
+  
+        this.defaultTotalOutDebtsByDebtor += Number(element.financialOutDebtWithConvertByDebtor);
+  
+        if (this.defaultTotalOutDebtsByDebtor.toString().length > 4) {
+  
+          this.customTotalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor / 1000;
+          if (String(this.customTotalOutDebtsByDebtor).includes(".")){
+            const customTotalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor).split('.');
+            if (customTotalOutDebtsByDebtor[1].length == 1) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "00Mill";
+            else if (customTotalOutDebtsByDebtor[1].length == 2) this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "0Mill";
+            else this.totalOutDebtsByDebtor = customTotalOutDebtsByDebtor[0] + "DT." + customTotalOutDebtsByDebtor[1] + "Mill";
+          } else {
+            this.totalOutDebtsByDebtor = String(this.customTotalOutDebtsByDebtor) + "DT";
+          }
+        } else {
+          this.totalOutDebtsByDebtor = this.defaultTotalOutDebtsByDebtor + "Mill";
+        }
+      });
+    } 
   }
 
   deleteAllByPlace(contentLoading) {
@@ -622,7 +1043,8 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
             'success'
           ).then((res) => {
             if (res.value) {
-              this.getAllDebts();
+              if (this.isDesktop) this.getAllDebtsForDesktop();
+              else this.getAllDebtsForTablet();
             }
           })
         }, 5000);
@@ -630,13 +1052,25 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     })
   }
 
-  sortByRefDebtDesc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+  sortByRefDebtDesc() { 
+    if (this.isDesktop) {
+      this.dataSource.data = this.dataSource.data.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+    } else {
+      this.pagedList = this.debtsList.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+      this.pagedList = this.debtsList.slice(0, 6);
+      this.length = this.debtsList.length;
+    }
     this.sortByDesc = true;
   }
 
   sortByRefDebtAsc() {
-    this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefDebt - n2.numRefDebt);
+    if (this.isDesktop) {
+      this.dataSource.data = this.dataSource.data.sort((n1, n2) => n1.numRefDebt - n2.numRefDebt);
+    } else {
+      this.pagedList = this.debtsList.sort((n1, n2) => n1.numRefDebt - n2.numRefDebt);
+      this.pagedList = this.debtsList.slice(0, 6);
+      this.length = this.debtsList.length;
+    }
     this.sortByDesc = false;
   }
 
@@ -660,13 +1094,12 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     })
   }
 
-  onContextMenu(event: MouseEvent, debt: Debt) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'debt': debt };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
+  viewNote(debtNote: string) {
+    Swal.fire({
+      text: debtNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   ngOnDestroy() {

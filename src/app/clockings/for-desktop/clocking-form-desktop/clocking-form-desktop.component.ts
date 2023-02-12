@@ -18,6 +18,7 @@ import { Clocking, SubjectList } from 'src/app/shared/models/clocking.model';
 export class ClockingFormDesktopComponent implements OnInit {
 
   arrayClockings: Clocking[];
+  pagedList: Clocking[];
 
   clocking: Clocking = new Clocking();
 
@@ -39,10 +40,12 @@ export class ClockingFormDesktopComponent implements OnInit {
   constructor(
     public clockingService: ClockingService, 
     public dialogRef: MatDialogRef<ClockingFormDesktopComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Clocking
+    @Inject(MAT_DIALOG_DATA) public data: Clocking[]
   ) {}
 
   ngOnInit() {
+    this.data = this.pagedList;
+
     if (!this.clocking.key) {
       this.clocking.dateClocking = moment().format('YYYY-MM-DD');
       this.clocking.timeClocking = moment().format('HH:mm');
@@ -123,7 +126,7 @@ export class ClockingFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
   selectSubject() {

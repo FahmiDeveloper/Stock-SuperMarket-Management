@@ -14,6 +14,9 @@ import { ClockingsForDesktopComponent } from './clockings/for-desktop/clockings-
 import { DebtsForDesktopComponent } from './debts/for-desktop/debts-for-desktop.component';
 import { DebtsForMobileComponent } from './debts/for-mobile/debts-for-mobile.component';
 
+import { SubjectDocumentsForDesktopComponent } from './documents/for-desktop/subjects-documents-for-desktop.component';
+import { SubjectsDocumentsForMobileComponent } from './documents/for-mobile/subjects-documents-for-mobile.component';
+
 import { ExpirationsForMobileComponent } from './expirations/for-mobile/expirations-for-mobile.component';
 import { ExpirationsForDesktopComponent } from './expirations/for-desktop/expirations-for-desktop.component';
 
@@ -61,6 +64,9 @@ export const rootRouterConfig: Routes = [
 
   { path: 'debts-desktop', component: DebtsForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'debts-mobile', component: DebtsForMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'documents-desktop', component: SubjectDocumentsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'documents-mobile', component: SubjectsDocumentsForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'expirations-desktop', component: ExpirationsForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'expirations-mobile', component: ExpirationsForMobileComponent,  resolve: { data: SharedResolver}},

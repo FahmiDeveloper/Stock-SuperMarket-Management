@@ -34,14 +34,12 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   isTablet: boolean;
   content: string = '';
 
-  subscriptionForGetAllExpiration: Subscription;
+  subscriptionForGetAllExpirations: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
-  
-  contextMenuPosition = { x: '0px', y: '0px' };
-  
+    
   constructor(
     public expirationService: ExpirationService,
     public dialogService: MatDialog,
@@ -61,7 +59,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   getAllExpirationsForDesktop() {
-    this.subscriptionForGetAllExpiration = this.expirationService
+    this.subscriptionForGetAllExpirations = this.expirationService
     .getAll()
     .subscribe((expirations: Expiration[]) => {
 
@@ -84,7 +82,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   getAllExpirationsForTablet() {
-    this.subscriptionForGetAllExpiration = this.expirationService
+    this.subscriptionForGetAllExpirations = this.expirationService
     .getAll()
     .subscribe((expirations: Expiration[]) => {
 
@@ -116,6 +114,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.expirationsList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   calculateDateDiff(expiration: Expiration) {
@@ -150,15 +149,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
     expiration.restdays = years + "Y " + months + "M " + days + "D";
   }
 
-  onContextMenu(event: MouseEvent, expiration: Expiration) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'expiration': expiration };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-  }
-
   newExpiration() {
     const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arrayExpirations = this.dataSourceCopie.data;
@@ -167,6 +157,11 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   editExpiration(expiration?: Expiration) {
     const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.expiration = expiration;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteExpiration(expirationKey) {
@@ -198,7 +193,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionForGetAllExpiration.unsubscribe();
+    this.subscriptionForGetAllExpirations.unsubscribe();
   }
 
 }

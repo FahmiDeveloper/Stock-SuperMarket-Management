@@ -20,6 +20,8 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
   listSeasonsByParentAnimeKey: Anime[];
   allAnimes: Anime[];
 
+  parent: any;
+
   anime: Anime = new Anime();
 
   statusAnimes: StatusAnimes[] = [
@@ -33,8 +35,7 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
   constructor(
     private animeService: AnimeService, 
     public dialogRef: MatDialogRef<AnimeDetailsWithSeasonsMobileComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Anime
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {}
@@ -51,7 +52,12 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.anime = anime;
-    dialogRef.componentInstance.allAnimes = this.allAnimes;  
+    dialogRef.componentInstance.allAnimes = this.allAnimes;
+    dialogRef.componentInstance.pagedList = this.parent.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.parent.pagedList = res;
+    });
   }
 
   deleteAnime(animeKey) {

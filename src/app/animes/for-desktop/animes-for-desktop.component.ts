@@ -156,6 +156,7 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allAnimes = this.allAnimes;
     dialogRef.componentInstance.listSeasonsByParentAnimeKey = this.listSeasonsByParentAnimeKey;
     dialogRef.componentInstance.isDesktop = this.isDesktop;
+    dialogRef.componentInstance.parent = this;
   }
 
   newAnime() {
@@ -173,6 +174,11 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.anime = anime;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteAnime(animeKey) {
