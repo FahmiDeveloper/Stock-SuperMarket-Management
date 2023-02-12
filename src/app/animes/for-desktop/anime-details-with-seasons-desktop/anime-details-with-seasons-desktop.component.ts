@@ -20,6 +20,8 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
   listSeasonsByParentAnimeKey: Anime[];
   allAnimes: Anime[];
 
+  parent: any;
+
   anime: Anime = new Anime();
 
   isDesktop: boolean;
@@ -35,8 +37,7 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
   constructor(
     private animeService: AnimeService, 
     public dialogRef: MatDialogRef<AnimeDetailsWithSeasonsDesktopComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Anime
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {}
@@ -50,6 +51,11 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
     const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.anime = anime;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
+    dialogRef.componentInstance.pagedList = this.parent.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.parent.pagedList = res;
+    });
   }
 
   deleteAnime(animeKey) {

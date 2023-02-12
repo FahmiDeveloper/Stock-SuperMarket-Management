@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
@@ -158,6 +158,10 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
           });   
         }
     })
+  }
+
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   getRestMoneyForeachPlace() {
@@ -637,6 +641,11 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.debt = debt;
     dialogRef.componentInstance.modalRef = dialogRef;
+    dialogRef.componentInstance.dataSource = this.dataSource.data;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.dataSource.data = res;
+    });
   }
 
   viewNote(debtNote: string) {

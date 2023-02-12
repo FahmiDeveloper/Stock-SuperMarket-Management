@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
@@ -49,6 +49,10 @@ export class ListUsersForMobileComponent implements OnInit, OnDestroy {
       if (this.queryEmail) this.dataSource.data = users.filter(user => user.email.toLowerCase().includes(this.queryEmail.toLowerCase())).sort((n1, n2) => n2.numRefUser - n1.numRefUser);
       else this.dataSource.data = users.sort((n1, n2) => n2.numRefUser - n1.numRefUser);
     });
+  }
+
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   changeRoleStatus(user: FirebaseUserModel) {

@@ -146,7 +146,7 @@
         </div>
     </ng-container>
 
-    <div *ngIf="isDesktop" class="row justify-content-center no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+    <div *ngIf="isDesktop && dataSource.data.length == 0" class="row justify-content-center no-results text-application">
         No results
     </div>
 
@@ -159,7 +159,7 @@
 
 </div>
 
-<div *ngIf="isTablet" class="row justify-content-center no-results text-application" [style.display]="pagedList.length == 0 ? '' : 'none'">
+<div *ngIf="isTablet && expirationsList.length == 0" class="row justify-content-center no-results text-application">
     No results
 </div>
 
@@ -171,12 +171,6 @@
         showFirstLastButtons
         (page)="OnPageChange($event)">
     </mat-paginator>
-</div>
-
-<div style="visibility: hidden; position: fixed"
-  [style.left]="contextMenuPosition.x"
-  [style.top]="contextMenuPosition.y"
-  [matMenuTriggerFor]="contextMenu">
 </div>
 
 <mat-menu #contextMenu="matMenu" xPosition="before">

@@ -144,6 +144,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allSeries = this.allSeries;
     dialogRef.componentInstance.listSeasonsByParentSerieKey = this.listSeasonsByParentSerieKey;
     dialogRef.componentInstance.isDesktop = this.isDesktop;
+    dialogRef.componentInstance.parent = this;
   }
 
   newSerie() {
@@ -161,6 +162,11 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteSerie(serieId) {

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -68,6 +68,10 @@ export class UploadDetailsComponent implements OnChanges {
       })
     }
     this.dataSource.paginator = this.paginator;  
+  }
+
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   viewOtherFileUpload(fileUpload: FileUpload, showFile) {

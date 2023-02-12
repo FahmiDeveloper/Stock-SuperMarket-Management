@@ -19,6 +19,8 @@ export class DebtFormDesktopComponent implements OnInit {
 
   debt: Debt = new Debt();
   defaultDebts: Debt[];
+  dataSource: Debt[];
+
   selectedUnit:string;
 
   modalRef: any;
@@ -44,7 +46,7 @@ export class DebtFormDesktopComponent implements OnInit {
   constructor(
     private debtService: DebtService,
     public dialogRef: MatDialogRef<DebtFormDesktopComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Debt
+    @Inject(MAT_DIALOG_DATA) public data: Debt[]
   ) {}
 
   ngOnInit() {
@@ -53,6 +55,9 @@ export class DebtFormDesktopComponent implements OnInit {
       this.debt.debtForPay = false;
       this.debt.debtToGet = false;
       this.debt.date = moment().format('YYYY-MM-DD');
+    }
+    if (this.debt.key) {
+      this.data = this.dataSource;
     }
   }
 
@@ -163,7 +168,7 @@ export class DebtFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 }
 

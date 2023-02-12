@@ -20,6 +20,8 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
   listPartsByParentFilmKey: Movie[];
   allMovies: Movie[];
 
+  parent: any;
+
   movie: Movie = new Movie();
 
   statusMovies: StatusMovies[] = [
@@ -33,8 +35,7 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
   constructor(
     private movieService: MovieService, 
     public dialogRef: MatDialogRef<MovieDetailsWithPartsMobileComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Movie
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {}
@@ -51,7 +52,12 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.movie = movie;
-    dialogRef.componentInstance.allMovies = this.allMovies;  
+    dialogRef.componentInstance.allMovies = this.allMovies;
+    dialogRef.componentInstance.pagedList = this.parent.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.parent.pagedList = res;
+    }); 
   }
 
   deleteMovie(movieId) {

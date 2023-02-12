@@ -11,14 +11,60 @@
           <input matInput #input type="text" [(ngModel)]="medication.medicationName" name="medicationName" class="text-application" required>
         </mat-form-field>
 
-        <mat-form-field color="accent" class="text-application" style="width: 150px;">
-          <mat-select placeholder="Disease" name="diseaseSelectedId" class="text-application" [(ngModel)]="diseaseSelected" required>
+        <mat-form-field color="accent" class="text-application" style="width: 200px;">
+          <mat-select placeholder="Disease" name="diseaseSelected" class="text-application" [(ngModel)]="diseaseSelected" required>
             <mat-option value=""></mat-option>
             <mat-option *ngFor="let disease of arrayDiseases" [value]="disease">
               <span class="text-application">{{disease.diseaseName}}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        &nbsp;&nbsp;&nbsp;
+
+        <mat-icon 
+          style="color: #2196F3;vertical-align: text-top;cursor: pointer;" 
+          (click)="newDisease()">
+          add
+        </mat-icon>
+
+        &nbsp;&nbsp;&nbsp;
+
+        <mat-icon
+          *ngIf="diseaseSelected.key" 
+          style="color: #9C27B0;vertical-align: text-top;cursor: pointer;" 
+          (click)="editDisease(diseaseSelected)">
+          edit
+        </mat-icon>
+
+        &nbsp;&nbsp;&nbsp;
+
+        <mat-icon
+          *ngIf="diseaseSelected.key" 
+          style="color: #f44336;vertical-align: text-top;cursor: pointer;" 
+          (click)="deleteDisease(diseaseSelected.key)">
+          delete
+        </mat-icon>
+
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field color="accent">
+              <mat-placeholder class="text-application"><span>Price</span></mat-placeholder>
+              <input matInput #input type="text" [(ngModel)]="medication.price" name="price" class="text-application">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-6">
+            <mat-form-field color="accent" class="text-application" style="width: 150px;">
+                <mat-select placeholder="Unit" [(ngModel)]="selectedUnit" name="selectedUnit" (selectionChange)="onSelectUnit()">
+                    <mat-option *ngFor="let unit of units" [value]="unit.unitName">
+                        <span class="text-application">{{unit.unitName}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+       
     
         <mat-form-field color="accent">
           <mat-placeholder class="text-application"><span>Utilisation</span></mat-placeholder>

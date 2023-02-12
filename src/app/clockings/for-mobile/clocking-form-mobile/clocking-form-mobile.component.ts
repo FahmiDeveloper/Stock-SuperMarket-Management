@@ -18,6 +18,7 @@ import { Clocking, SubjectList } from 'src/app/shared/models/clocking.model';
 export class ClockingFormMobileComponent implements OnInit {
 
   arrayClockings: Clocking[];
+  dataSource: Clocking[];
 
   clocking: Clocking = new Clocking();
 
@@ -39,7 +40,7 @@ export class ClockingFormMobileComponent implements OnInit {
   constructor(
     public clockingService: ClockingService, 
     public dialogRef: MatDialogRef<ClockingFormMobileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Clocking
+    @Inject(MAT_DIALOG_DATA) public data: Clocking[]
   ) {}
 
   ngOnInit() {
@@ -53,6 +54,7 @@ export class ClockingFormMobileComponent implements OnInit {
       else if (this.clocking.takeOneHour == true) this.selectedSubjectId = 3;
       else if (this.clocking.workHalfDay == true) this.selectedSubjectId = 4;
       else this.selectedSubjectId = null;
+      this.data = this.dataSource;
     }
     if (this.monthSelected == String(new Date().getMonth()+ 1)  || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {this.showVacationLimitDays = true;} 
     else {this.showVacationLimitDays = false;}
@@ -123,7 +125,7 @@ export class ClockingFormMobileComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
   selectSubject() {

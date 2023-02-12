@@ -143,6 +143,7 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.serie = serieSelected;
     dialogRef.componentInstance.allSeries = this.allSeries;
     dialogRef.componentInstance.listSeasonsByParentSerieKey = this.listSeasonsByParentSerieKey;
+    dialogRef.componentInstance.parent = this;
   }
 
   newSerie() {
@@ -172,6 +173,11 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
     });    
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteSerie(serieId) {

@@ -52,8 +52,6 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   monthsList: MonthsList[] = [
     { monthNbr: '06', monthName: 'June'},
     { monthNbr: '07', monthName: 'July'},
@@ -235,6 +233,7 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.clockingsList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   calculTotalClockingLate(timeClocking: string) {
@@ -262,15 +261,6 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     this.currentYear = d.getFullYear();
   }
 
-  onContextMenu(event: MouseEvent, clocking: Clocking) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'clocking': clocking };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-  }
-
   newClocking() {
     const dialogRef = this.dialogService.open(ClockingFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
@@ -284,7 +274,12 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.clocking = clocking;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
-    dialogRef.componentInstance.monthSelected = this.monthSelected
+    dialogRef.componentInstance.monthSelected = this.monthSelected;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deleteClocking(clockingKey) {

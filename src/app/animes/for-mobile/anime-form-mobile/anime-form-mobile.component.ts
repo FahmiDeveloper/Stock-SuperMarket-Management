@@ -23,6 +23,7 @@ export class AnimeFormMobileComponent implements OnInit {
   arrayAnimes: Anime[];
   seasonAnimesList: Anime[] = [];
   allAnimes: Anime[];
+  pagedList: Anime[];
 
   anime: Anime = new Anime();
 
@@ -47,7 +48,7 @@ export class AnimeFormMobileComponent implements OnInit {
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<AnimeFormMobileComponent>,
     public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Anime
+    @Inject(MAT_DIALOG_DATA) public data: Anime[]
   ) {}
 
   ngOnInit() {
@@ -61,6 +62,7 @@ export class AnimeFormMobileComponent implements OnInit {
       if (this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey)) {
         this.parentAnimeName = this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey).nameAnime;
       }
+      this.data = this.pagedList;
     }
   }
 
@@ -135,7 +137,7 @@ export class AnimeFormMobileComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
 }

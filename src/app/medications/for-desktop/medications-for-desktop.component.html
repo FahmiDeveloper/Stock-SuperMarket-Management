@@ -31,7 +31,7 @@
     </div>     
 </div>
 
-<mat-nav-list class="nav-list row">
+<mat-nav-list class="nav-list">
 
 	<mat-list-item *ngFor="let medication of pagedList">
 
@@ -50,6 +50,14 @@
             matLine 
             (click)="copyText(medication.medicationFor)">
             {{ medication.medicationFor }}
+        </span>
+
+        <span
+            *ngIf="medication.price" 
+            class="text-application" 
+            style="font-size: larger;line-height: 1.5em;" 
+            matLine>
+            {{ medication.price }}
         </span>
 
         <span 
@@ -103,6 +111,16 @@
             </button>
 
             <button
+                *ngIf="medication.utilisation"
+                type="button"
+                mat-menu-item 
+                (click)="viewMedicationUtilisation(medication.utilisation)"
+                class="text-application">
+                <mat-icon style="color: black;">note</mat-icon>   
+                <span>Utilisation</span>
+            </button>
+
+            <button
                 type="button"
                 mat-menu-item 
                 (click)="deleteMedication(medication.key)"
@@ -116,8 +134,7 @@
 
 </mat-nav-list>
 
-
-<div class="row justify-content-center no-results text-application" [style.display]="pagedList.length == 0 ? '' : 'none'">
+<div *ngIf="medicationsList.length == 0" class="row justify-content-center no-results text-application">
     No results
 </div>
 

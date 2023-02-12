@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -31,8 +31,6 @@ export class ListUsersForDesktopComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   constructor(
     public usersListService: UsersListService,
     public dialogService: MatDialog
@@ -55,14 +53,9 @@ export class ListUsersForDesktopComponent implements OnInit, OnDestroy {
     });
   }
 
-  onContextMenu(event: MouseEvent, user: FirebaseUserModel) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu.menuData = { 'user': user };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-}  
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }  
 
   changeRoleStatus(user: FirebaseUserModel) {
     if (user.roleMovies == false) {

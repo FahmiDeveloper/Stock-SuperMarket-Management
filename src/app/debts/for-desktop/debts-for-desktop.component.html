@@ -1,17 +1,10 @@
 <h1 class="titleTextInterface text-application">Debts</h1>
 
 <div class="row">
-    <div class="col-md-3">
-        <mat-form-field class="widhtInput text-application">
-            <mat-label>Note</mat-label>
-            <input matInput type="text" name="queryNote" (keyup)="getAllDebts()" [(ngModel)]="queryNote"/>
-        </mat-form-field>
-    </div>
-
     <div class="col-md-4">
         <mat-form-field class="text-application" style="width: 250px;">
             <mat-label>Place</mat-label>
-			<mat-select name="placeId" [(ngModel)]="placeId" (selectionChange)="getAllDebts()">
+			<mat-select name="placeId" [(ngModel)]="placeId" (selectionChange)="isDesktop ? getAllDebtsForDesktop() : getAllDebtsForTablet()">
                 <mat-option value=""></mat-option>
 				<mat-option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
                     {{placeMoney.place}}
@@ -20,7 +13,9 @@
 		</mat-form-field>
     </div>
 
-    <div class="col-md-1">
+    <div class="col-md-2"></div>
+
+    <div class="col-md-2">
         <button 
             mat-flat-button 
             color="primary" 
@@ -33,7 +28,7 @@
 
     <div class="col-md-1">
         <button 
-            *ngIf="(dataSource.data.length) && (dataSource.data.length > 1) && placeId" [hidden]="placeId == 5"
+            *ngIf="(dataSource.data.length || debtsList) && (dataSource.data.length > 1 || debtsList.length > 1) && placeId" [hidden]="placeId == 5"
             mat-flat-button 
             color="warn" 
             (click)="deleteAllByPlace(contentLoading)"
@@ -124,7 +119,7 @@
 </div>
 
 <div *ngIf="placeId == 5">
-    <mat-grid-list cols="8" rowHeight="5:1" style="font-size: 20px;">
+    <mat-grid-list cols="8" rowHeight="3:1" style="font-size: 20px;">
         
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile>الدين المسال</mat-grid-tile>
@@ -155,7 +150,7 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <mat-card class="text-application">
-                <mat-grid-list cols="2" rowHeight="4:1">
+                <mat-grid-list cols="2" rowHeight="3:1">
                     <mat-grid-tile>
                         <span style="font-size: 20px;">
                             <span *ngIf="getInDebt">
@@ -171,8 +166,7 @@
                     <mat-grid-tile><span style="font-size: 20px;">المجموع</span></mat-grid-tile>
 
                     <mat-grid-tile>
-                        <mat-form-field>
-                            <mat-label>وقت الدفع</mat-label>
+                        <mat-form-field  [ngStyle]="{'width': isTablet ? '148px': ''}">
                             <mat-select *ngIf="getInDebt" name="statusInDebtId" [(ngModel)]="statusInDebtId" (selectionChange)="getTotalInDebtsByStatus()" class="text-application">
                                 <mat-option value=""></mat-option>
                                 <mat-option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
@@ -191,7 +185,7 @@
                     <mat-grid-tile><span style="font-size: 20px;">وقت الدفع</span></mat-grid-tile>
 
                     <mat-grid-tile>
-                        <mat-form-field>
+                        <mat-form-field  [ngStyle]="{'width': isTablet ? '148px': ''}">
                             <mat-select *ngIf="getInDebt" name="creditorName" [(ngModel)]="creditorName" (selectionChange)="getTotalInDebtsByCreditor()" class="text-application">
                                 <mat-option value=""></mat-option>
                                 <mat-option *ngFor="let creditor of creditors" [value]="creditor">
@@ -245,108 +239,197 @@
 
 <br>
 
-<div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+<div [ngClass]="isDesktop ? 'mat-elevation-z8' : 'row'">
 
-        <ng-container matColumnDef="debtor">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Debtor</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.debtor">{{ element.debtor }}</span>
-                <span *ngIf="!element.debtor">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="creditor">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Creditor</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.creditor">{{ element.creditor }}</span>
-                <span *ngIf="!element.creditor">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="debt">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Debt</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.financialDebt">{{ element.financialDebt }}</span>
-                <span *ngIf="!element.financialDebt">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="rest">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Rest</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.restMoney">{{ element.restMoney }}</span>
-                <span *ngIf="!element.restMoney">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="details">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Details</th>
-            <td mat-cell *matCellDef="let element">
-                <div style="margin-top: 50px;margin-bottom: 50px;">
-                    <div class="gridForLegend text-application">
-                        <div><span>Date:</span></div>
-                        <div>{{ element.date | date:'dd/MM/yyyy' }}</div>
-                    </div>
-                    <br>
-                    <div class="gridForLegend text-application">
-                        <div><span>Place:</span></div>
-                        <div>{{ element.place }}</div>
-                    </div>
-                    <br>
-                    <div class="gridForLegend text-application">
-                        <div><span>Status:</span></div>
-                        <div>
-                            <span *ngIf="element.placeId === 5">
-                                <span *ngIf="element.toPayThisMonth">Pay this month</span>
-                                <span *ngIf="element.toPayNextMonth">Pay next month</span>
-                                <span *ngIf="element.notToPayForNow">Pay will be delayed</span>
-                                <span *ngIf="element.toGetThisMonth">Get this month</span>
-                                <span *ngIf="element.toGetNextMonth">Get next month</span>
-                                <span *ngIf="element.notToGetForNow">Get will be delayed</span>
-                            </span>
-                            <span *ngIf="element.placeId !== 5">-</span>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="gridForLegend text-application">
-                        <div><span>Note:</span></div>
-                        <div>{{ element.note }}</div>
-                    </div> 
-                </div>
-                
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="star">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> 
-                <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{element:element}">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+    <ng-container *ngIf="isDesktop">
+        <table mat-table [dataSource]="dataSource">
     
-        <tr mat-header-row style="background: #ff4081;" *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
+            <ng-container matColumnDef="debtor">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Debtor</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    <span *ngIf="element.debtor">{{ element.debtor }}</span>
+                    <span *ngIf="!element.debtor">-</span>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="creditor">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Creditor</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    <span *ngIf="element.creditor">{{ element.creditor }}</span>
+                    <span *ngIf="!element.creditor">-</span>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="debt">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Debt</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    <span *ngIf="element.financialDebt">{{ element.financialDebt }}</span>
+                    <span *ngIf="!element.financialDebt">-</span>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="rest">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Rest</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    <span *ngIf="element.restMoney">{{ element.restMoney }}</span>
+                    <span *ngIf="!element.restMoney">-</span>
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="details">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Details</th>
+                <td mat-cell *matCellDef="let element">
+                    <div style="margin-top: 50px;margin-bottom: 50px;">
+                        <div class="gridForLegend text-application">
+                            <div><span>Date:</span></div>
+                            <div>{{ element.date | date:'dd/MM/yyyy' }}</div>
+                        </div>
+                        <br>
+                        <div class="gridForLegend text-application">
+                            <div><span>Place:</span></div>
+                            <div>{{ element.place }}</div>
+                        </div>
+                        <br>
+                        <div class="gridForLegend text-application">
+                            <div><span>Status:</span></div>
+                            <div>
+                                <span *ngIf="element.placeId === 5">
+                                    <span *ngIf="element.toPayThisMonth">Pay this month</span>
+                                    <span *ngIf="element.toPayNextMonth">Pay next month</span>
+                                    <span *ngIf="element.notToPayForNow">Pay will be delayed</span>
+                                    <span *ngIf="element.toGetThisMonth">Get this month</span>
+                                    <span *ngIf="element.toGetNextMonth">Get next month</span>
+                                    <span *ngIf="element.notToGetForNow">Get will be delayed</span>
+                                </span>
+                                <span *ngIf="element.placeId !== 5">-</span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="gridForLegend text-application">
+                            <div><span>Note:</span></div>
+                            <div>{{ element.note }}</div>
+                        </div> 
+                    </div>
+                    
+                </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="star">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{element:element}">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row style="background: #ff4081;" *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row style="border-bottom: 1px solid black;"  *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+        </table>
+    </ng-container>
 
-    </table>
+    <ng-container *ngIf="isTablet">
+        <div *ngFor="let debt of pagedList" class="mx-auto my-3 col-md-4">
+            <mat-card class="text-application example-card-tablet">
+                <mat-card-content>
+                    <mat-grid-list cols="12">
+                        <mat-grid-tile colspan="4">Debtor</mat-grid-tile>             
+                        <mat-grid-tile colspan="8">
+                            <span *ngIf="debt.debtor">{{ debt.debtor }}</span>
+                            <i *ngIf="!debt.debtor" class="fa fa-minus-circle" aria-hidden="true"></i>
+                        </mat-grid-tile><br>
 
-    <div class="no-results text-application" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+                        <mat-grid-tile colspan="4">Creditor</mat-grid-tile>                
+                        <mat-grid-tile colspan="8">
+                            <span *ngIf="debt.creditor">{{ debt.creditor }}</span>
+                            <i *ngIf="!debt.creditor" class="fa fa-minus-circle" aria-hidden="true"></i>
+                        </mat-grid-tile><br>
+
+                        <mat-grid-tile colspan="4">Debt</mat-grid-tile>                
+                        <mat-grid-tile colspan="8">
+                            <span *ngIf="debt.financialDebt">{{ debt.financialDebt }}</span>
+                            <i *ngIf="!debt.financialDebt" class="fa fa-minus-circle" aria-hidden="true"></i>
+                        </mat-grid-tile><br>
+
+                        <mat-grid-tile colspan="4">Rest</mat-grid-tile>               
+                        <mat-grid-tile colspan="8">
+                            <span *ngIf="debt.restMoney">{{ debt.restMoney }}</span>
+                            <i *ngIf="!debt.restMoney" class="fa fa-minus-circle" aria-hidden="true"></i>
+                        </mat-grid-tile><br>
+
+                        <mat-grid-tile colspan="4">Date</mat-grid-tile>
+                        <mat-grid-tile colspan="8">{{ debt.date | date:'dd/MM/yyyy' }}</mat-grid-tile><br>
+
+                        <mat-grid-tile colspan="4">Place</mat-grid-tile>
+                        <mat-grid-tile colspan="8">{{ debt.place }}</mat-grid-tile><br>
+
+                        <mat-grid-tile colspan="4">Status</mat-grid-tile>
+                        <mat-grid-tile colspan="8">
+                            <span *ngIf="debt.placeId === 5">
+                                <span *ngIf="debt.toPayThisMonth">Pay this month</span>
+                                <span *ngIf="debt.toPayNextMonth">Pay next month</span>
+                                <span *ngIf="debt.notToPayForNow">Pay will be delayed</span>
+                                <span *ngIf="debt.toGetThisMonth">Get this month</span>
+                                <span *ngIf="debt.toGetNextMonth">Get next month</span>
+                                <span *ngIf="debt.notToGetForNow">Get will be delayed</span>
+                            </span>
+                            <span *ngIf="debt.placeId !== 5">-</span>
+                        </mat-grid-tile><br>
+
+                        <mat-grid-tile colspan="4">Note</mat-grid-tile>                
+                        <mat-grid-tile colspan="8">
+                            <mat-icon *ngIf="debt.note" style="color: black;" (click)="viewNote(debt.note)">note</mat-icon>         
+                            <i *ngIf="!debt.note" class="fa fa-minus-circle" aria-hidden="true"></i>
+                        </mat-grid-tile>
+
+                    </mat-grid-list>
+                </mat-card-content>
+                <mat-card-actions>
+                    <div class="row justify-content-center">           
+                        <mat-icon 
+                            style="color: #9C27B0; margin-right: 10%;"
+                            aria-label="Edit"
+                            (click)="editDebt(debt)">
+                            edit
+                        </mat-icon>
+                        <mat-icon 
+                            style="color: #f44336;"
+                            (click)="deleteDebt(debt.key)">
+                            delete
+                        </mat-icon>
+                    </div>
+                </mat-card-actions>       
+            </mat-card>
+        </div>
+    </ng-container>
+
+    <div *ngIf="isDesktop && dataSource.data.length == 0" class="row justify-content-center no-results text-application">
         No results
     </div>
-    
-    <mat-paginator 
+
+    <mat-paginator
+        *ngIf="isDesktop"
+        [pageSize]="8"
         [pageSizeOptions]="[8]"
-        showFirstLastButtons 
-        aria-label="Select page of periodic elements">
+        showFirstLastButtons
+        (page)="OnPageChangeForDesktop($event)">
     </mat-paginator>
+
 </div>
 
-<div style="visibility: hidden; position: fixed"
-  [style.left]="contextMenuPosition.x"
-  [style.top]="contextMenuPosition.y"
-  [matMenuTriggerFor]="contextMenu">
+<div *ngIf="isTablet && pagedList.length == 0" class="row justify-content-center no-results text-application">
+    No results
+</div>
+
+<div class="row mat-paginator" *ngIf="isTablet">
+    <mat-paginator 
+        [length]="length"
+        [pageSize]="6"
+        [pageSizeOptions]="[6]"
+        showFirstLastButtons
+        (page)="OnPageChangeForTablet($event)">
+    </mat-paginator>
 </div>
 
 <mat-menu #contextMenu="matMenu" xPosition="before">
@@ -373,7 +456,6 @@
 
 	</ng-template>
 </mat-menu>
-
 
 <ng-template #contentRestMoneyForeachPlace>
 
@@ -427,8 +509,6 @@
 
 </ng-template>
 
-
-
 <ng-template #contentLoading>
 
     <div mat-dialog-title class="dialog-title">
@@ -444,4 +524,5 @@
         <h3 class="text-application" style="text-align: center;">Delete debts in progress...</h3>
       </div>
     </div>
+
 </ng-template>

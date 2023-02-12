@@ -62,6 +62,17 @@ import {
 } from './debts/index';
 
 import { 
+  SubjectDocumentsForDesktopComponent,
+  SubjectDocumentsFormDesktopComponent,
+  DocumentsListForDesktopComponent,
+  DocumentFormDesktopComponent,
+  SubjectsDocumentsForMobileComponent,
+  SubjectDocumentsFormMobileComponent,
+  DocumentsListForMobileComponent,
+  DocumentFormMobileComponent
+} from './documents/index';
+
+import { 
   ExpirationsForDesktopComponent,
   ExpirationFormDesktopComponent,
   ExpirationsForMobileComponent,
@@ -183,6 +194,15 @@ import {
     DebtFormDesktopComponent,
     DebtsForMobileComponent,
     DebtFormMobileComponent,
+
+    SubjectDocumentsForDesktopComponent,
+    SubjectDocumentsFormDesktopComponent,
+    DocumentsListForDesktopComponent,
+    DocumentFormDesktopComponent,
+    SubjectsDocumentsForMobileComponent,
+    SubjectDocumentsFormMobileComponent,
+    DocumentsListForMobileComponent,
+    DocumentFormMobileComponent,
 
     ExpirationsForDesktopComponent,
     ExpirationFormDesktopComponent,

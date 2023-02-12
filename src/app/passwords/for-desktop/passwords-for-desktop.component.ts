@@ -74,6 +74,7 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.passwordsList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newPassword() {
@@ -84,6 +85,11 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   editPassword(password?: Password) {
     const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.password = password;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });
   }
 
   deletePassword(passwordKey) {

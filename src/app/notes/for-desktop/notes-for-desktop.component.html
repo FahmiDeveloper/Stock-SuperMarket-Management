@@ -25,7 +25,7 @@
     </div>     
 </div>
 
-<mat-nav-list class="nav-list row">
+<mat-nav-list class="nav-list">
 
 	<mat-list-item *ngFor="let note of pagedList">
 
@@ -116,6 +116,26 @@
             </button>
 
             <button
+                *ngIf="note.contentNote"
+                type="button"
+                mat-menu-item 
+                (click)="viewNoteOrRemark(note.contentNote)"
+                class="text-application">
+                <mat-icon style="color: black;">note</mat-icon>   
+                <span>Note</span>
+            </button>
+
+            <button
+                *ngIf="note.remark"
+                type="button"
+                mat-menu-item 
+                (click)="viewNoteOrRemark(note.remark)"
+                class="text-application">
+                <mat-icon style="color: black;">note</mat-icon>   
+                <span>Remark</span>
+            </button>
+
+            <button
                 type="button"
                 mat-menu-item 
                 (click)="deleteNote(note.key)"
@@ -129,8 +149,7 @@
 
 </mat-nav-list>
 
-
-<div class="row justify-content-center no-results text-application" [style.display]="pagedList.length == 0 ? '' : 'none'">
+<div *ngIf="notesList.length == 0" class="row justify-content-center no-results text-application">
     No results
 </div>
 

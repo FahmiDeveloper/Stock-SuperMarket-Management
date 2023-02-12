@@ -19,6 +19,7 @@ import { Password } from 'src/app/shared/models/password.model';
 export class PasswordFormMobileComponent implements OnInit {
 
   arrayPasswords: Password[];
+  pagedList: Password[];
 
   password: Password = new Password();
 
@@ -32,10 +33,14 @@ export class PasswordFormMobileComponent implements OnInit {
     public passwordService: PasswordService,
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<PasswordFormMobileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Password
+    @Inject(MAT_DIALOG_DATA) public data: Password[]
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.password.key) {
+      this.data = this.pagedList;
+    }
+  }
 
   save() {
     if (this.password.key) {
@@ -93,7 +98,7 @@ export class PasswordFormMobileComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
 }

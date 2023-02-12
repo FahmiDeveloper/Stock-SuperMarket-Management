@@ -23,6 +23,7 @@ export class MovieFormMobileComponent implements OnInit {
   arrayMovies: Movie[];
   partMoviesList: Movie[] = [];
   allMovies: Movie[];
+  pagedList: Movie[];
 
   movie: Movie = new Movie();
 
@@ -47,7 +48,7 @@ export class MovieFormMobileComponent implements OnInit {
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<MovieFormMobileComponent>,
     public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Movie
+    @Inject(MAT_DIALOG_DATA) public data: Movie[]
   ) {}
 
   ngOnInit() {
@@ -63,6 +64,7 @@ export class MovieFormMobileComponent implements OnInit {
       if (this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey)) {
         this.parentFilmName = this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey).nameMovie;
       }
+      this.data = this.pagedList;
     }
   }
 
@@ -137,7 +139,7 @@ export class MovieFormMobileComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
 }

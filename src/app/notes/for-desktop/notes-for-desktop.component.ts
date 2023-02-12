@@ -45,7 +45,8 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
     {id: 1, subjectName: 'Test in master'},
     {id: 2, subjectName: 'Test in ERP'},
     {id: 3, subjectName: 'Notes to do'},
-    {id: 4, subjectName: 'Notifications'}  
+    {id: 4, subjectName: 'Notifications'},
+    {id: 5, subjectName: 'To fix after test'}  
   ];
   
   constructor(
@@ -80,6 +81,9 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
       else if (this.subjectSelectedId == 4) {
         this.notesList = notes.filter(note => note.noteForNotif == true).sort((n1, n2) => n2.numRefNote - n1.numRefNote);
       }
+      else if (this.subjectSelectedId == 5) {
+        this.notesList = notes.filter(note => note.toFixAfterTest == true).sort((n1, n2) => n2.numRefNote - n1.numRefNote);
+      }
       else {
         this.notesList = notes.sort((n1, n2) => n2.numRefNote - n1.numRefNote)
       }
@@ -97,6 +101,7 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
       endIndex = this.length;
     }
     this.pagedList = this.notesList.slice(startIndex, endIndex);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newNote() {
@@ -107,6 +112,11 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
   editNote(note?: Note) {
     const dialogRef = this.dialogService.open(NoteFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.note = note;
+    dialogRef.componentInstance.pagedList = this.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.pagedList = res;
+    });  
   }
 
   deleteNote(noteKey) {
@@ -216,6 +226,14 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  viewNoteOrRemark(contentNoteOrRemark: string) {
+    Swal.fire({
+      text: contentNoteOrRemark,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   ngOnDestroy() {

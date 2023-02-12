@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
@@ -45,8 +45,6 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
-  contextMenuPosition = { x: '0px', y: '0px' };
-
   monthsList: MonthsList[] = [
     { monthNbr: '06', monthName: 'June'},
     { monthNbr: '07', monthName: 'July'},
@@ -74,7 +72,7 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     public dialogService: MatDialog
   ) {}
 
-   ngOnInit() {
+  ngOnInit() {
     const d = new Date();
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     this.currentMonthAndYearForVacation = months[d.getMonth()] + ' ' + d.getFullYear();
@@ -82,6 +80,7 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     else {this.monthSelected = '0' + String(d.getMonth()+ 1);}
     this.getAllClockings();
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
@@ -149,6 +148,10 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     });
   }
 
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
   calculTotalClockingLate(timeClocking: string) {
     let composedFinancialDebt: string[] = [];
     if (timeClocking && timeClocking > '08:00') {
@@ -195,7 +198,12 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.clocking = clocking;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
-    dialogRef.componentInstance.monthSelected = this.monthSelected
+    dialogRef.componentInstance.monthSelected = this.monthSelected;
+    dialogRef.componentInstance.dataSource = this.dataSource.data;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.dataSource.data = res;
+    });
   }
 
   deleteClocking(clockingKey) {

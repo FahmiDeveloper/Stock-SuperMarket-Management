@@ -19,6 +19,7 @@ import { Note, SubjectList } from 'src/app/shared/models/note.model';
 export class NoteFormMobileComponent implements OnInit {
 
   arrayNotes: Note[];
+  pagedList: Note[];
 
   note: Note = new Note();
 
@@ -34,14 +35,15 @@ export class NoteFormMobileComponent implements OnInit {
     {id: 1, subjectName: 'Notes to do'},
     {id: 2, subjectName: 'Test in master'},
     {id: 3, subjectName: 'Test in ERP'},
-    {id: 4, subjectName: 'Notifications'} 
+    {id: 4, subjectName: 'Notifications'},
+    {id: 5, subjectName: 'To fix after test'}  
   ];
 
   constructor(
     public noteService: NoteService,
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<NoteFormMobileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Note
+    @Inject(MAT_DIALOG_DATA) public data: Note[]
   ) {}
 
   ngOnInit() {
@@ -50,6 +52,8 @@ export class NoteFormMobileComponent implements OnInit {
       else if (this.note.testWorkInMaster == true) this.selectedSubjectId = 2;
       else if (this.note.testWorkInERP == true) this.selectedSubjectId = 3;
       else if (this.note.noteForNotif == true) this.selectedSubjectId = 4;
+      else if (this.note.toFixAfterTest == true) this.selectedSubjectId = 5;
+      this.data = this.pagedList;
     }
   }
 
@@ -59,24 +63,35 @@ export class NoteFormMobileComponent implements OnInit {
       this.note.testWorkInMaster = false;
       this.note.testWorkInERP = false;
       this.note.noteForNotif = false;
+      this.note.toFixAfterTest = false;
     }
     if (this.selectedSubjectId == 2) {
       this.note.noteToDo = false;
       this.note.testWorkInMaster = true;
       this.note.testWorkInERP = false;
       this.note.noteForNotif = false;
+      this.note.toFixAfterTest = false;
     }
     if (this.selectedSubjectId == 3) {
       this.note.noteToDo = false;
       this.note.testWorkInMaster = false;
       this.note.testWorkInERP = true;
       this.note.noteForNotif = false;
+      this.note.toFixAfterTest = false;
     }
     if (this.selectedSubjectId == 4) {
       this.note.noteToDo = false;
       this.note.testWorkInMaster = false;
       this.note.testWorkInERP = false;
       this.note.noteForNotif = true;
+      this.note.toFixAfterTest = false;
+    }
+    if (this.selectedSubjectId == 5) {
+      this.note.noteToDo = false;
+      this.note.testWorkInMaster = false;
+      this.note.testWorkInERP = false;
+      this.note.noteForNotif = false;
+      this.note.toFixAfterTest = true;
     }
        
     if (this.note.key) {
@@ -134,7 +149,7 @@ export class NoteFormMobileComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 
 }

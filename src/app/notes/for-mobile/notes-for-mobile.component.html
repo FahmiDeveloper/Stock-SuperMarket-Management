@@ -112,7 +112,7 @@
             </button>
 
             <button
-                *ngIf="note.contentNote && note.contentNote.length > 30"
+                *ngIf="note.contentNote"
                 type="button"
                 mat-menu-item 
                 (click)="viewNoteOrRemark(note.contentNote)"
@@ -122,7 +122,7 @@
             </button>
 
             <button
-                *ngIf="note.remark && note.remark.length > 30"
+                *ngIf="note.remark"
                 type="button"
                 mat-menu-item 
                 (click)="viewNoteOrRemark(note.remark)"
@@ -145,8 +145,7 @@
 
 </mat-nav-list>
 
-
-<div class="row justify-content-center no-results text-application" [style.display]="pagedList.length == 0 ? '' : 'none'">
+<div *ngIf="notesList.length == 0" class="row justify-content-center no-results text-application">
     No results
 </div>
 

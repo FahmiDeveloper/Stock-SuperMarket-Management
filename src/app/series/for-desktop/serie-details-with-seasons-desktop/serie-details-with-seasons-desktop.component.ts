@@ -20,9 +20,12 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
   listSeasonsByParentSerieKey: Serie[];
   allSeries: Serie[];
 
+  parent: any;
+
   serie: Serie = new Serie();
 
   isDesktop: boolean;
+
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -35,8 +38,7 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
   constructor(
     private serieService: SerieService, 
     public dialogRef: MatDialogRef<SerieDetailsWithSeasonsDesktopComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Serie
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {}
@@ -50,6 +52,11 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
     const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
+    dialogRef.componentInstance.pagedList = this.parent.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.parent.pagedList = res;
+    });
   }
 
   deleteSerie(serieId) {

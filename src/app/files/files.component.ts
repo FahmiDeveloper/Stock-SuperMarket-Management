@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -70,6 +70,7 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isMobile = this.deviceService.isMobile();
+    if (this.isMobile) {document.body.scrollTop = document.documentElement.scrollTop = 0;}
     this.getRolesUser();
   }
 
@@ -163,6 +164,10 @@ export class FilesComponent implements OnInit, OnDestroy {
     });
   }
 
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
   newLink() {
     if (this.isMobile) {
       const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
@@ -200,7 +205,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       dialogRef.componentInstance.link = link;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
-
+      
     } else {
       const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
         width: '25vw',
@@ -211,6 +216,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       dialogRef.componentInstance.link = link;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
+      
     }
   }
 

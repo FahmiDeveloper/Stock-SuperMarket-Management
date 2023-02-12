@@ -9,3 +9,7 @@ export class Medication {
   price: string;
   diseaseId: number
 }
+
+export interface Unit {
+  unitName: string
+}
