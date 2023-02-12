@@ -41,10 +41,11 @@ export class ExpirationFormMobileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.dataSource;
-
     if (!this.expiration.key) {
       this.expiration.dateStart = moment().format('YYYY-MM-DD');
+    }
+    if (this.expiration.key) {
+      this.data = this.dataSource;
     }
   }
 

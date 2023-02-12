@@ -52,8 +52,6 @@ export class MovieFormDesktopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.pagedList;
-
     this.partMoviesList = this.allMovies
     .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
     .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
@@ -66,6 +64,7 @@ export class MovieFormDesktopComponent implements OnInit {
       if (this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey)) {
         this.parentFilmName = this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey).nameMovie;
       }
+      this.data = this.pagedList;
     }
   }
 

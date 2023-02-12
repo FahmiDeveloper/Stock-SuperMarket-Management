@@ -44,8 +44,6 @@ export class ClockingFormMobileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.dataSource;
-
     if (!this.clocking.key) {
       this.clocking.dateClocking = moment().format('YYYY-MM-DD');
       this.clocking.timeClocking = moment().format('HH:mm');
@@ -56,6 +54,7 @@ export class ClockingFormMobileComponent implements OnInit {
       else if (this.clocking.takeOneHour == true) this.selectedSubjectId = 3;
       else if (this.clocking.workHalfDay == true) this.selectedSubjectId = 4;
       else this.selectedSubjectId = null;
+      this.data = this.dataSource;
     }
     if (this.monthSelected == String(new Date().getMonth()+ 1)  || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {this.showVacationLimitDays = true;} 
     else {this.showVacationLimitDays = false;}

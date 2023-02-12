@@ -44,11 +44,12 @@ export class ExpirationFormDesktopComponent implements OnInit {
     if (!this.expiration.key) {
       this.expiration.dateStart = moment().format('YYYY-MM-DD');
     }
+    if (this.expiration.key) {
+      this.data = this.pagedList;
+    }
   }
 
   save() {
-    this.data = this.pagedList;
-
     if (this.expiration.key) {
 
       this.expirationService.update(this.expiration.key, this.expiration);

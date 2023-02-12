@@ -52,8 +52,6 @@ export class SerieFormDesktopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.pagedList;
-
     this.seasonSeriesList = this.allSeries
     .filter(serie => serie.isFirst == true && serie.season && serie.season == 1)
     .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
@@ -66,6 +64,7 @@ export class SerieFormDesktopComponent implements OnInit {
       if (this.seasonSeriesList.find(serie => serie.key == this.serie.parentSerieKey)) {
         this.parentSerieName = this.seasonSeriesList.find(serie => serie.key == this.serie.parentSerieKey).nameSerie;
       }
+      this.data = this.pagedList;
     }
   }
 

@@ -51,9 +51,10 @@ export class MedicationFormDesktopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.pagedList;
-
-    if (this.medication.key) this.diseaseSelected = this.arrayDiseases.find(disease => disease.id == this.medication.diseaseId);
+    if (this.medication.key) {
+      this.diseaseSelected = this.arrayDiseases.find(disease => disease.id == this.medication.diseaseId);
+      this.data = this.pagedList;
+    }
   }
 
   save() {

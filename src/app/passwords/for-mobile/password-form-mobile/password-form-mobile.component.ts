@@ -37,7 +37,9 @@ export class PasswordFormMobileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.pagedList;
+    if (this.password.key) {
+      this.data = this.pagedList;
+    }
   }
 
   save() {

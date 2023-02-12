@@ -51,9 +51,7 @@ export class AnimeFormDesktopComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Anime[]
   ) {}
 
-  ngOnInit() {
-    this.data = this.pagedList;
-    
+  ngOnInit() {    
     this.seasonAnimesList = this.allAnimes.filter(anime => anime.priority && anime.priority == 1).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
     if (!this.anime.key) {
@@ -64,6 +62,7 @@ export class AnimeFormDesktopComponent implements OnInit {
       if (this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey)) {
         this.parentAnimeName = this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey).nameAnime;
       }
+      this.data = this.pagedList;
     }
   }
 

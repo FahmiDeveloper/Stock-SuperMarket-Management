@@ -49,13 +49,14 @@ export class DebtFormMobileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.dataSource;
-
     if (!this.debt.key) {
       this.debt.isRestMoney = true;
       this.debt.debtForPay = false;
       this.debt.debtToGet = false;
       this.debt.date = moment().format('YYYY-MM-DD');
+    }
+    if (this.debt.key) {
+      this.data = this.dataSource;
     }
   }
 

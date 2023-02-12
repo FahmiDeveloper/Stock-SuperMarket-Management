@@ -47,14 +47,13 @@ export class NoteFormMobileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.pagedList;
-
     if (this.note.key) {
       if (this.note.noteToDo == true) this.selectedSubjectId = 1;
       else if (this.note.testWorkInMaster == true) this.selectedSubjectId = 2;
       else if (this.note.testWorkInERP == true) this.selectedSubjectId = 3;
       else if (this.note.noteForNotif == true) this.selectedSubjectId = 4;
       else if (this.note.toFixAfterTest == true) this.selectedSubjectId = 5;
+      this.data = this.pagedList;
     }
   }
 
