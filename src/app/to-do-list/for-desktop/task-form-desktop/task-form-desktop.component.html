@@ -1,5 +1,7 @@
-<h3 *ngIf="!data.task.id" mat-dialog-title class="text-application">Add new task</h3>
-<h3 *ngIf="data.task.id" mat-dialog-title class="text-application">Edit task</h3>
+<div mat-dialog-title class="dialog-title">
+    <h3 *ngIf="!data.task.id" mat-dialog-title class="text-application">New task</h3>
+    <h3 *ngIf="data.task.id" mat-dialog-title class="text-application">Edit task</h3>
+</div>
 
 <div class="row">
     <div class="col-md-12">
@@ -9,6 +11,8 @@
             <input matInput #input type="text" [(ngModel)]="data.task.title" name="title" required class="text-application">
             <mat-error *ngIf="!data.task.title" class="text-application">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
+
+        <br>
 
         <mat-form-field color="accent" style="width: 430px;">
             <mat-placeholder class="text-application"><span>To do in</span></mat-placeholder>
@@ -21,11 +25,15 @@
             <mat-error *ngIf="!data.task.taskToDoIn" class="text-application">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
 
+        <br *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent">
+
         <mat-form-field *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent" style="width: 430px;">
             <mat-placeholder class="text-application"><span>Date</span></mat-placeholder>
             <input matInput #input type="date" [(ngModel)]="data.task.date" name="date" required class="text-application">
             <mat-error *ngIf="!data.task.date" class="text-application">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
+
+        <br>
 
         <mat-form-field color="accent" style="width: 430px;">
             <mat-placeholder class="text-application"><span>Description</span></mat-placeholder>

@@ -16,11 +16,12 @@ import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 export class LoginComponent implements OnInit{
 
+  allUsers: FirebaseUserModel[] = [];
   loginForm: FormGroup;
   errorMessage: string = '';
 
   isMobile: boolean;
-  allUsers: FirebaseUserModel[] = [];
+  hide = true;
 
   constructor(
     public authService: AuthService,
@@ -28,7 +29,6 @@ export class LoginComponent implements OnInit{
     private fb: FormBuilder,
     private deviceService: DeviceDetectorService,
     public usersListService: UsersListService
-
   ) {}
 
   ngOnInit() {

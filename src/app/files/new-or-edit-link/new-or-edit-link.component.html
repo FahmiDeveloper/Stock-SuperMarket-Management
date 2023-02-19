@@ -1,5 +1,7 @@
-<h3 *ngIf="!link.key" mat-dialog-title class="text-application">Add new Link</h3>
-<h3 *ngIf="link.key" mat-dialog-title class="text-application">Edit Link</h3>
+<div mat-dialog-title class="dialog-title">
+    <h3 *ngIf="!link.key" mat-dialog-title class="text-application">New link</h3>
+    <h3 *ngIf="link.key" mat-dialog-title class="text-application">Edit link</h3>
+</div>
 
 <div class="row">
     <div class="col-md-12">
@@ -35,6 +37,8 @@
                 <input matInput #input type="text" [(ngModel)]="link.content" name="content" required class="text-application">
                 <mat-error *ngIf="f.invalid" class="text-application">{{getErrorMessage()}}</mat-error>
             </mat-form-field>
+
+            <br>
     
             <mat-form-field color="accent" [ngStyle]="{'width': isMobile ? '305px' : '430px'}">
                 <mat-placeholder class="text-application"><span>Path</span></mat-placeholder>

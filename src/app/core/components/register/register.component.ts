@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   successMessage: string = '';
 
   isMobile: boolean;
+  hide = true;
 
   user: FirebaseUserModel = new FirebaseUserModel();
 

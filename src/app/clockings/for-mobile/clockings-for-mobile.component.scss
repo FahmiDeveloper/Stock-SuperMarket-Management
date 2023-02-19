@@ -3,10 +3,6 @@
   width: 100%;
 }
 
-.mat-icon {
-  color: #3e75ff;
-}
-
 @media screen and (max-width: 960px) {
   .mat-elevation-z8 {
     background: transparent;
@@ -103,4 +99,14 @@
   justify-content: center;
   padding: 14px;
   font-size: 20px;
+}
+
+.dialog-responsive {
+  width: 40%;
+}
+
+@media only screen and (max-width: 760px) {
+  .dialog-responsive {
+      width: 100%;
+  }
 }

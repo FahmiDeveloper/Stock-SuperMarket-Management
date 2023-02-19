@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -154,8 +154,12 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
   }
 
   viewDetailsMovie(movie: Movie) {
-    const dialogRef = this.dialogService.open(MovieDetailsDesktopComponent, {width: '500px'});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(MovieDetailsDesktopComponent, config);
+
     dialogRef.componentInstance.movie = movie;
+    dialogRef.componentInstance.allMovies = this.allMovies;
+    dialogRef.componentInstance.parent = this;
   }
 
   editMovie(movie?: Movie) {

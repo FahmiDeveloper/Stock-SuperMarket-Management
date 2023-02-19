@@ -18,7 +18,7 @@
 
     <mat-grid-tile>
       <div class="card">
-        <mat-grid-list cols=2 rowHeight="27px" class="text-application">
+        <mat-grid-list cols=2 rowHeight="24px" class="text-application">
           <mat-grid-tile>Year</mat-grid-tile>
           <mat-grid-tile>
             <span *ngIf="serie.year">{{ serie.year }}</span>
@@ -67,6 +67,25 @@
           <mat-grid-tile>
             <mat-icon *ngIf="serie.note" style="cursor: pointer;" (click)="viewNote(serie.note)">note</mat-icon>         
             <i *ngIf="!serie.note" class="fa fa-minus-circle" aria-hidden="true"></i>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <button
+              type="button"
+              mat-button 
+              (click)="editSerie(serie)"
+              class="text-application">
+              <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button
+              type="button"
+              mat-button 
+              (click)="deleteSerie(serie.key)" 
+              class="text-application">
+              <mat-icon style="color: #f44336;">delete</mat-icon>
+            </button>
           </mat-grid-tile>
 
         </mat-grid-list>

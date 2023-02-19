@@ -3,6 +3,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 
 import Swal from 'sweetalert2';
 
+import { SerieFormDesktopComponent } from '../serie-form-desktop/serie-form-desktop.component';
+
+import { SerieService } from 'src/app/shared/services/serie.service';
+
 import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 @Component({
@@ -13,7 +17,11 @@ import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
 
 export class SerieDetailsDesktopComponent implements OnInit {
 
+  allSeries: Serie[];
+
   serie: Serie = new Serie();
+
+  parent: any;
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'Wait to sort'}, 
@@ -24,12 +32,45 @@ export class SerieDetailsDesktopComponent implements OnInit {
   ];
 
   constructor(
+    private serieService: SerieService, 
     public dialogRef: MatDialogRef<SerieDetailsDesktopComponent>,
     public dialogService: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Serie
   ) {}
 
   ngOnInit() {}
+
+  editSerie(serie?: Serie) {
+    const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '500px'});
+    dialogRef.componentInstance.serie = serie;
+    dialogRef.componentInstance.allSeries = this.allSeries;
+    dialogRef.componentInstance.pagedList = this.parent.pagedList;
+
+    dialogRef.afterClosed().subscribe(res => {
+      this.parent.pagedList = res;
+    });
+  }
+
+  deleteSerie(serieId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this serie!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.serieService.delete(serieId);   
+        this.dialogRef.close();
+        Swal.fire(
+          'Serie has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
+  }
   
   copyText(text: string){
     let selBox = document.createElement('textarea');

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
@@ -101,12 +101,16 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   newSubjectDocuments() {
-    const dialogRef = this.dialogService.open(SubjectDocumentsFormDesktopComponent, {width: '500px', data: {movie: {}}});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(SubjectDocumentsFormDesktopComponent, config);
+
     dialogRef.componentInstance.arraysubjectDocuments = this.arraysubjectDocuments;
   }
 
   editSubjectDocuments(subjectDocuments?: SubjectDocuments) {
-    const dialogRef = this.dialogService.open(SubjectDocumentsFormDesktopComponent, {width: '500px'});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(SubjectDocumentsFormDesktopComponent, config); 
+       
     dialogRef.componentInstance.subjectDocuments = subjectDocuments;
     dialogRef.componentInstance.pagedListSubjectDocuments = this.pagedListSubjectDocuments;
 

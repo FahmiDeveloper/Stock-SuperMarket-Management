@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -158,11 +158,16 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
   }
 
   viewDetailsSerie(serie: Serie) {
-    const dialogRef = this.dialogService.open(SerieDetailsMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(SerieDetailsMobileComponent, config);
+
     dialogRef.componentInstance.serie = serie;
+    dialogRef.componentInstance.allSeries = this.allSeries;
+    dialogRef.componentInstance.parent = this;
   }
 
   editSerie(serie?: Serie) {

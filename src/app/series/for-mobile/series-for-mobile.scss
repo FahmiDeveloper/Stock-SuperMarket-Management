@@ -1,8 +1,3 @@
-.widthInput {
-  font-size: 14px;
-  width: 100%;
-}
-
 .no-results {
   display: flex;
   justify-content: center;
@@ -15,55 +10,6 @@
   width: 100%;
   background-size: cover;
   border-radius: 5px;
-}
-
-.wait-image {
-  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq5VvXEWHDYBdvvFzp_b-YwJiZ-tyk089Utq8D8AKhvSQb5f69u9H4ndXkxq9ZMxNv2oU&usqp=CAU');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-
-.not-download-image {
-  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRskZIvjwG1IuGUNtOHXPx0RuaNBr3F5sejLtDxSOuKDD0nQp3MlUf12i6yLLgE0uJYVks&usqp=CAU');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-
-.watched-image {
-  background-image: url('https://icones.pro/wp-content/uploads/2021/05/icone-oeil-beurre-vert.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-
-.not-liked-image {
-  background-image: url('https://www.freeiconspng.com/thumbs/youtube-dislike-png/youtube-dislike-png-red-clipart-13.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-
-.not-watched-image {
-  background-image: url('https://www.citypng.com/public/uploads/preview/eye-view-watching-red-icon-transparent-png-11640343976d3sbxmunu3.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-
-.search-image {
-  background-image: url('https://toppng.com/uploads/preview/search-icon-customer-icon-11564158924ifw7wyjtfu.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-
-.seasons-image {
-  background-image: url('https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-list-icon-png-image_4271229.jpg');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
 }
 
 .flip-container {
@@ -107,11 +53,21 @@
 }
 
 .style-button{
-  width: 100%!important;
   min-width: unset!important;
-  display: table;
+  display: table; 
+  margin: 0 auto;
 }
 
 ::ng-deep .my-menu {
   width: 100%;
+}
+
+.dialog-responsive {
+  width: 40%;
+}
+
+@media only screen and (max-width: 760px) {
+  .dialog-responsive {
+      width: 100%;
+  }
 }

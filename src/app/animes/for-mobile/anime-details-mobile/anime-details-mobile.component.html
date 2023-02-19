@@ -18,7 +18,7 @@
 
     <mat-grid-tile>
       <div class="card">
-        <mat-grid-list cols=2 rowHeight="27px" class="text-application">
+        <mat-grid-list cols=2 rowHeight="21px" class="text-application">
           <mat-grid-tile>Year</mat-grid-tile>
           <mat-grid-tile>
             <span *ngIf="anime.year">{{ anime.year }}</span>
@@ -70,6 +70,25 @@
           <mat-grid-tile>
             <mat-icon *ngIf="anime.note" style="cursor: pointer;" (click)="viewNote(anime.note)">note</mat-icon>         
             <i *ngIf="!anime.note" class="fa fa-minus-circle" aria-hidden="true"></i>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <button
+              type="button"
+              mat-button 
+              (click)="editAnime(anime)"
+              class="text-application">
+              <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            </button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button
+              type="button"
+              mat-button 
+              (click)="deleteAnime(anime.key)" 
+              class="text-application">
+              <mat-icon style="color: #f44336;">delete</mat-icon>
+            </button>
           </mat-grid-tile>
 
         </mat-grid-list>

@@ -45,7 +45,6 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
     elem.scrollIntoView();
   }
 
-
   editSerie(serie?: Serie) {
     const dialogRef = this.dialogService.open(SerieFormMobileComponent, {
       width: '98vw',

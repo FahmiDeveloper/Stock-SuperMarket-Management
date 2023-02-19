@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -158,11 +158,16 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
   }
 
   viewDetailsMovie(movie: Movie) {
-    const dialogRef = this.dialogService.open(MovieDetailsMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(MovieDetailsMobileComponent, config);
+
     dialogRef.componentInstance.movie = movie;
+    dialogRef.componentInstance.allMovies = this.allMovies;  
+    dialogRef.componentInstance.parent = this;
   }
 
   editMovie(movie?: Movie) {

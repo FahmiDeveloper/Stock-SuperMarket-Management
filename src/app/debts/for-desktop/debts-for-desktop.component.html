@@ -386,20 +386,33 @@
                     </mat-grid-list>
                 </mat-card-content>
                 <mat-card-actions>
-                    <div class="row justify-content-center">           
-                        <mat-icon 
-                            style="color: #9C27B0; margin-right: 10%;"
-                            aria-label="Edit"
-                            (click)="editDebt(debt)">
-                            edit
-                        </mat-icon>
-                        <mat-icon 
-                            style="color: #f44336;"
-                            (click)="deleteDebt(debt.key)">
-                            delete
-                        </mat-icon>
+                    <div class="row justify-content-center">
+                        <button 
+                            type="button"
+                            mat-button
+                            [matMenuTriggerFor]="menu" 
+                            class="style-button text-application">
+                            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+                            Actions
+                        </button>
+                        <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="editDebt(debt)">
+                                <mat-icon style="color: #9C27B0">edit</mat-icon>
+                                Edit
+                            </button>
+                            <button
+                                mat-menu-item 
+                                class="text-application"
+                                (click)="deleteDebt(debt.key)">
+                                <mat-icon style="color: #f44336">delete</mat-icon>
+                                Delete
+                            </button>
+                        </mat-menu>
                     </div>
-                </mat-card-actions>       
+                </mat-card-actions>          
             </mat-card>
         </div>
     </ng-container>

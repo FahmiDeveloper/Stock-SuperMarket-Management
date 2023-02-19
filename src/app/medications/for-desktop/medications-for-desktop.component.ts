@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -106,13 +106,17 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   newMedication() {
-    const dialogRef = this.dialogService.open(MedicationFormDesktopComponent, {width: '500px', data: {movie: {}}});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(MedicationFormDesktopComponent, config);
+
     dialogRef.componentInstance.arrayMedications = this.medicationsListCopieForNewMedication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
   }
 
   editMedication(medication?: Medication) {
-    const dialogRef = this.dialogService.open(MedicationFormDesktopComponent, {width: '500px'});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(MedicationFormDesktopComponent, config);
+    
     dialogRef.componentInstance.medication = medication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
     dialogRef.componentInstance.pagedList = this.pagedList;

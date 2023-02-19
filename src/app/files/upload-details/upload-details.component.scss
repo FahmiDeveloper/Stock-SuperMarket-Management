@@ -123,10 +123,6 @@ td.mat-column-star {
   padding-right: 8px !important;
 }
   
-.mat-icon {
-  color: #3e75ff;
-}
-  
 @media screen and (max-width: 960px) {
   .mat-elevation-z8 {
     background: transparent;
@@ -215,12 +211,6 @@ td.mat-column-star {
 
 .trForNotMobile {
   border-bottom: 1px solid black;
-}
-
-.mat-progress-spinner {
-  display: block;
-  position: relative;
-  overflow: hidden;
 }
 
 .mat-divider {

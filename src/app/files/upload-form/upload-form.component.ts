@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
 import { FileUpload } from 'src/app/shared/models/file-upload.model';
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-upload-form',
@@ -14,7 +13,6 @@ import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 export class UploadFormComponent implements OnChanges, OnInit {
 
   @Input() typeFileId: number;
-  @Input() user: FirebaseUserModel;
   @Input() defaultArrayFiles: FileUpload[];
 
   @Output() refContextFile = new EventEmitter<number>();
