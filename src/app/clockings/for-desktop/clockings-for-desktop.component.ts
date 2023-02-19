@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -261,8 +261,10 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     this.currentYear = d.getFullYear();
   }
 
-  newClocking() {
-    const dialogRef = this.dialogService.open(ClockingFormDesktopComponent, {width: '500px', data: {movie: {}}});
+  newClocking() {  
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(ClockingFormDesktopComponent, config);
+
     dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
@@ -270,7 +272,9 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   editClocking(clocking?: Clocking) {
-    const dialogRef = this.dialogService.open(ClockingFormDesktopComponent, {width: '500px'});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(ClockingFormDesktopComponent, config);
+    
     dialogRef.componentInstance.clocking = clocking;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;

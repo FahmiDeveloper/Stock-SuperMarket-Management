@@ -22,6 +22,7 @@ export class DebtFormDesktopComponent implements OnInit {
   dataSource: Debt[];
 
   selectedUnit:string;
+  isLinear = false;
 
   modalRef: any;
 

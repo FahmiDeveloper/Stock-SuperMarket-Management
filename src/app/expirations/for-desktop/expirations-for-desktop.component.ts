@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -150,12 +150,16 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   newExpiration() {
-    const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, {width: '500px', data: {movie: {}}});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, config);
+
     dialogRef.componentInstance.arrayExpirations = this.dataSourceCopie.data;
   }
 
   editExpiration(expiration?: Expiration) {
-    const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, {width: '500px'});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, config);
+    
     dialogRef.componentInstance.expiration = expiration;
     dialogRef.componentInstance.pagedList = this.pagedList;
 

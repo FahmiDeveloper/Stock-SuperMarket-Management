@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -166,8 +166,12 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   }
 
   viewDetailsAnime(anime: Anime) {
-    const dialogRef = this.dialogService.open(AnimeDetailsDesktopComponent, {width: '500px'});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(AnimeDetailsDesktopComponent, config);
+
     dialogRef.componentInstance.anime = anime;
+    dialogRef.componentInstance.allAnimes = this.allAnimes;
+    dialogRef.componentInstance.parent = this;
   }
 
   editAnime(anime?: Anime) {

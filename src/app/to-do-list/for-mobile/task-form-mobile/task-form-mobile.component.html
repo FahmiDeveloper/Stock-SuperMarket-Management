@@ -1,16 +1,20 @@
-<h3 *ngIf="!data.task.id" mat-dialog-title>Add new task</h3>
-<h3 *ngIf="data.task.id" mat-dialog-title>Edit task</h3>
+<div mat-dialog-title class="dialog-title">
+    <h3 *ngIf="!data.task.id" mat-dialog-title class="text-application">New task</h3>
+    <h3 *ngIf="data.task.id" mat-dialog-title class="text-application">Edit task</h3>
+</div>
 
 <div class="row">
     <div class="col-md-12">
 
-        <mat-form-field color="accent" style="width: 305px;">
+        <mat-form-field color="accent">
             <mat-placeholder><span>Title</span></mat-placeholder>
             <input matInput #input type="text" [(ngModel)]="data.task.title" name="title" required>
             <mat-error *ngIf="!data.task.title">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
 
-        <mat-form-field color="accent" style="width: 305px;">
+        <br>
+
+        <mat-form-field color="accent">
             <mat-placeholder><span>To do in</span></mat-placeholder>
             <mat-select [(ngModel)]="data.task.taskToDoIn" name="taskToDoIn" required>
               <mat-option value=""></mat-option>
@@ -21,13 +25,17 @@
             <mat-error *ngIf="!data.task.taskToDoIn">{{getErrorMessage()}}</mat-error>
         </mat-form-field>
 
+        <br *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent">
+
         <mat-form-field *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent" style="width: 430px;">
             <mat-placeholder><span>Date</span></mat-placeholder>
             <input matInput #input type="date" [(ngModel)]="data.task.date" name="date" required>
             <mat-error *ngIf="!data.task.date" >{{getErrorMessage()}}</mat-error>
         </mat-form-field>
 
-        <mat-form-field color="accent" style="width: 305px;">
+        <br>
+
+        <mat-form-field color="accent">
             <mat-placeholder><span>Description</span></mat-placeholder>
             <input matInput #input type="text" [(ngModel)]="data.task.description" name="description">
         </mat-form-field>

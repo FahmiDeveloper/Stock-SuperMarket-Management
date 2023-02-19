@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -11,8 +10,10 @@ import * as fileSaver from 'file-saver';
 import { NoteFormMobileComponent } from './note-form-mobile/note-form-mobile.component';
 
 import { NoteService } from 'src/app/shared/services/note.service';
+import { SubjectNotesService } from 'src/app/shared/services/subject-note.service';
 
-import { Note, SubjectList } from 'src/app/shared/models/note.model';
+import { Note } from 'src/app/shared/models/note.model';
+import { SubjectNotes } from 'src/app/shared/models/subject-note.model';
 
 @Component({
   selector: 'notes-for-mobile',
@@ -23,43 +24,31 @@ import { Note, SubjectList } from 'src/app/shared/models/note.model';
 export class NotesForMobileComponent implements OnInit, OnDestroy {
 
   notesList: Note[] = [];
-  pagedList: Note[]= [];
   notesListCopieForNewNote: Note[] = [];
+  subjectNotesList: SubjectNotes[] = [];
+  arraySubjectNotesForNewSubject: SubjectNotes[] = [];
 
-  length: number = 0;
-
-  isDesktop: boolean;
-  isTablet: boolean;
-  subjectSelectedId: number;
+  subjectNotesSelectedId: number = 1;
   pictureFile: string;
   FileName: string;
   urlFile: string;
 
   subscriptionForGetAllNotes: Subscription;
+  subscriptionForGetAllSubjectNotes: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
-  subjectList: SubjectList[] = [
-    {id: 1, subjectName: 'Test in master'},
-    {id: 2, subjectName: 'Test in ERP'},
-    {id: 3, subjectName: 'Notes to do'} ,
-    {id: 4, subjectName: 'Notifications'},
-    {id: 5, subjectName: 'To fix after test'}  
-  ];
-  
   constructor(
     public noteService: NoteService,
-    public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService
+    public subjectNotesService: SubjectNotesService,
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
-
     this.getAllNotes();
+    this.getAllSubjectNotes();
   }
 
   getAllNotes() {
@@ -69,62 +58,58 @@ export class NotesForMobileComponent implements OnInit, OnDestroy {
 
       this.notesListCopieForNewNote = notes.sort((n1, n2) => n2.numRefNote - n1.numRefNote);
 
-      if (this.subjectSelectedId == 1) {
-        this.notesList = notes.filter(note => note.testWorkInMaster == true).sort((n1, n2) => n1.numRefNote - n2.numRefNote);
-      }
-      else if (this.subjectSelectedId == 2) {
-        this.notesList = notes.filter(note => note.testWorkInERP == true).sort((n1, n2) => n1.numRefNote - n2.numRefNote);
-      }
-      else if (this.subjectSelectedId == 3) {
-        this.notesList = notes.filter(note => note.noteToDo == true).sort((n1, n2) => n2.numRefNote - n1.numRefNote);
-      }
-      else if (this.subjectSelectedId == 4) {
-        this.notesList = notes.filter(note => note.noteForNotif == true).sort((n1, n2) => n2.numRefNote - n1.numRefNote);
-      }
-      else if (this.subjectSelectedId == 5) {
-        this.notesList = notes.filter(note => note.toFixAfterTest == true).sort((n1, n2) => n2.numRefNote - n1.numRefNote);
+      if (this.subjectNotesSelectedId) {
+        if (this.subjectNotesSelectedId == 1 || this.subjectNotesSelectedId == 9) {
+          this.notesList = notes
+          .filter(note => note.subjectNotesId == this.subjectNotesSelectedId)
+          .sort((n1, n2) => n2.numRefNote - n1.numRefNote);
+        }
+        else {
+          this.notesList = notes
+          .filter(note => note.subjectNotesId == this.subjectNotesSelectedId)
+          .sort((n1, n2) => n1.numRefNote - n2.numRefNote);
+        }   
       }
       else {
         this.notesList = notes.sort((n1, n2) => n2.numRefNote - n1.numRefNote)
       }
 
-      this.pagedList = this.notesList.slice(0, 8);
-      this.length = this.notesList.length;
-
     });
   }
 
-  OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.notesList.slice(startIndex, endIndex);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  getAllSubjectNotes() {
+    this.subscriptionForGetAllSubjectNotes = this.subjectNotesService
+    .getAll()
+    .subscribe((subjectNotes: SubjectNotes[]) => {
+      this.subjectNotesList = subjectNotes.sort((n1, n2) => n1.id - n2.id);
+      this.arraySubjectNotesForNewSubject = subjectNotes;
+    });
   }
 
   newNote() {
-    const dialogRef = this.dialogService.open(NoteFormMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
-      height:'55vh',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(NoteFormMobileComponent, config);
+
     dialogRef.componentInstance.arrayNotes = this.notesListCopieForNewNote;
+    dialogRef.componentInstance.arraySubjectNotes = this.subjectNotesList;
+    dialogRef.componentInstance.arraySubjectNotesForNewSubject = this.arraySubjectNotesForNewSubject;
   }
 
   editNote(note?: Note) {
-    const dialogRef = this.dialogService.open(NoteFormMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
-      height:'55vh',
       maxWidth: '100vw'
-    });    
+    }
+    const dialogRef = this.dialogService.open(NoteFormMobileComponent, config);
+    
     dialogRef.componentInstance.note = note;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });
+    dialogRef.componentInstance.arrayNotes = this.notesListCopieForNewNote;
+    dialogRef.componentInstance.arraySubjectNotes = this.subjectNotesList;
   }
 
   deleteNote(noteKey) {
@@ -232,6 +217,7 @@ export class NotesForMobileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllNotes.unsubscribe();
+    this.subscriptionForGetAllSubjectNotes.unsubscribe()
   }
 
 }

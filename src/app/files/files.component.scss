@@ -1,9 +1,4 @@
-.my-flex-card > div > div.card {
-  height: calc(100% - 15px);
-  margin-bottom: 15px;
-  border: 1px solid #222;
-  cursor: pointer;
-}
+
 
 .imageTypeFile {
   height: 90%;
@@ -22,17 +17,13 @@
   width: 360px;
 }
 
-.settings-card-mobile {
-  height: 270px;
-}
-
 .mat-card {
   padding: 16px;
   padding-top: 12px;
 }
 
 .widhtInput {
-  width: 100%;
+  width: 200px;
 }
 
 .no-results {
@@ -67,11 +58,7 @@ td.mat-column-star {
   font-size: 14px;
   width: 100%;
 }
-  
-.mat-icon {
-  color: #3e75ff;
-}
-  
+
 @media screen and (max-width: 960px) {
   .mat-elevation-z8 {
     background: transparent;
@@ -160,4 +147,14 @@ td.mat-column-star {
 
 .trForNotMobile {
   border-bottom: 1px solid black;
+}
+
+.dialog-responsive {
+  width: 40%;
+}
+
+@media only screen and (max-width: 760px) {
+  .dialog-responsive {
+      width: 100%;
+  }
 }

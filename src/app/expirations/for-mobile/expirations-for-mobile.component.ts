@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
@@ -106,20 +106,24 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
   }
 
   newExpiration() {
-    const dialogRef = this.dialogService.open(ExpirationFormMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
-      height:'68vh',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(ExpirationFormMobileComponent, config);
+
     dialogRef.componentInstance.arrayExpirations = this.dataSourceCopie.data;
   }
 
   editExpiration(expiration?: Expiration) {
-    const dialogRef = this.dialogService.open(ExpirationFormMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
-      height:'68vh',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(ExpirationFormMobileComponent, config);
+    
     dialogRef.componentInstance.expiration = expiration;
     dialogRef.componentInstance.dataSource = this.dataSource.data;
 

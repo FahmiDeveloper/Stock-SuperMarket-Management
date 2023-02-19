@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
@@ -74,22 +74,26 @@ export class DocumentsListForMobileComponent implements OnInit, OnDestroy {
   }
 
   newDocument() {
-    const dialogRef = this.dialogService.open(DocumentFormMobileComponent, {
-      width: '100vw',
-      height:'30vh',
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
+      width: '98vw',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(DocumentFormMobileComponent, config);
+
     dialogRef.componentInstance.arrayDocuments = this.documentsListCopieForNewDocument;
     dialogRef.componentInstance.subjectDocumentsKey = this.subjectDocuments.key;
     dialogRef.componentInstance.documentRef = this.documentRef;
   }
 
   editDocument(document?: Document) {
-    const dialogRef = this.dialogService.open(DocumentFormMobileComponent, {
-      width: '100vw',
-      height:'50vh',
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
+      width: '98vw',
       maxWidth: '100vw'
-    });    
+    }
+    const dialogRef = this.dialogService.open(DocumentFormMobileComponent, config);
+    
     dialogRef.componentInstance.document = document;
     dialogRef.componentInstance.documentRef = this.documentRef;
   }

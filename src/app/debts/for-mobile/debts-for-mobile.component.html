@@ -45,14 +45,8 @@
 <br>
  
 <div class="row">
-    <div class="col-md-4">
-        <mat-form-field>
-            <mat-label>Note</mat-label>
-            <input matInput type="text" name="queryNote" (keyup)="getAllDebts()" [(ngModel)]="queryNote"/>
-        </mat-form-field>
-    </div>
-    <div class="col-md-4">
-        <mat-form-field>
+    <div class="col-md-12">
+        <mat-form-field style="width: 200px;">
             <mat-label>Status</mat-label>
             <mat-select name="placeId" [(ngModel)]="placeId" (selectionChange)="getAllDebts()">
                 <mat-option value=""></mat-option>
@@ -61,20 +55,17 @@
 				</mat-option>
             </mat-select>
         </mat-form-field>
-    </div>
-    <div class="col-md-4">
         <button 
             *ngIf="(dataSource.data.length) && (dataSource.data.length > 1) && placeId" [hidden]="placeId == 5"
             mat-flat-button 
             color="warn" 
             (click)="deleteAllByPlace(contentLoading)"
-            style="float: right;">
+            style="float: right;margin-top: 7px;">
             Delete all
         </button>
     </div>
+   
 </div>
-
-<br>
 
 <div *ngIf="placeId == 1">
     <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">

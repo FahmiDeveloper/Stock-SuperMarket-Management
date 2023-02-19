@@ -20,9 +20,9 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
   listSeasonsByParentAnimeKey: Anime[];
   allAnimes: Anime[];
 
-  parent: any;
-
   anime: Anime = new Anime();
+
+  parent: any;
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'Wait to sort'}, 

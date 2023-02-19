@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -106,37 +106,32 @@ export class FilesComponent implements OnInit, OnDestroy {
   openListFiles(contentListFiles, contentLinks, typeFile: TypesFiles) {
     this.typeFile = typeFile;
     this.numContextFile = null;
+
+    let configMobile: MatDialogConfig = {
+      panelClass: "dialog-responsive",
+      width: '98vw',
+      maxWidth: '100vw'
+    };
+
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive"
+    };
+
     if (this.typeFile.id == 6) {
       this.content = '';
       this.angularContext = false;
       this.otherContext = false;
-      this.getAllLinks();
-      if (this.isMobile) {
-        this.dialogService.open(contentLinks, {
-          width: '98vw',
-          height:'85vh',
-          maxWidth: '100vw'
-        });
+      this.getAllLinks();  
+      if (this.isMobile) {     
+        this.dialogService.open(contentLinks, configMobile);
       } else {
-        this.dialogService.open(contentLinks, {
-          width: '30vw',
-          height:'85vh',
-          maxWidth: '100vw'
-        });
-      }
+        this.dialogService.open(contentLinks, config);
+      }   
     } else {
       if (this.isMobile) {
-        this.dialogService.open(contentListFiles, {
-          width: '98vw',
-          height:'81vh',
-          maxWidth: '100vw'
-        });
+        this.dialogService.open(contentListFiles, configMobile);     
       } else {
-        this.dialogService.open(contentListFiles, {
-          width: '30vw',
-          height:'80vh',
-          maxWidth: '100vw'
-        });
+        this.dialogService.open(contentListFiles, config);
       }
     } 
   }
@@ -170,22 +165,20 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   newLink() {
     if (this.isMobile) {
-      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+      let config: MatDialogConfig = {
+        panelClass: "dialog-responsive",
         width: '98vw',
-        height:'40vh',
         maxWidth: '100vw'
-      });
+      }
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, config);
 
       dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
       dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
     } else {
-      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
-        width: '25vw',
-        height:'33vh',
-        maxWidth: '100vw'
-      });
+      let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, config);
 
       dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
       dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
@@ -196,22 +189,20 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   editLink(link?: Link) {
     if (this.isMobile) {
-      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
+      let config: MatDialogConfig = {
+        panelClass: "dialog-responsive",
         width: '98vw',
-        height:'40vh',
         maxWidth: '100vw'
-      });
-      
+      }
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, config);
+
       dialogRef.componentInstance.link = link;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
       
     } else {
-      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, {
-        width: '25vw',
-        height:'33vh',
-        maxWidth: '100vw'
-      });
+      let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+      const dialogRef = this.dialogService.open(NewOrEditLinkComponent, config);
 
       dialogRef.componentInstance.link = link;
       dialogRef.componentInstance.isMobile = this.isMobile;

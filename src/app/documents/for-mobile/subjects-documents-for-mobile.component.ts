@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
@@ -97,20 +97,24 @@ export class SubjectsDocumentsForMobileComponent implements OnInit, OnDestroy {
   }
 
   newSubjectDocuments() {
-    const dialogRef = this.dialogService.open(SubjectDocumentsFormMobileComponent, {
-      width: '100vw',
-      height:'30vh',
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
+      width: '98vw',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(SubjectDocumentsFormMobileComponent, config);
+
     dialogRef.componentInstance.arraysubjectDocuments = this.arraysubjectDocuments;
   }
 
   editSubjectDocuments(subjectDocuments?: SubjectDocuments) {
-    const dialogRef = this.dialogService.open(SubjectDocumentsFormMobileComponent, {
-      width: '100vw',
-      height:'30vh',
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
+      width: '98vw',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(SubjectDocumentsFormMobileComponent, config);
+    
     dialogRef.componentInstance.subjectDocuments = subjectDocuments;
     dialogRef.componentInstance.pagedListSubjectDocuments = this.pagedListSubjectDocuments;
 
@@ -120,21 +124,25 @@ export class SubjectsDocumentsForMobileComponent implements OnInit, OnDestroy {
   }
 
   extractDocument(subjectDocuments: SubjectDocuments) {
-    const dialogRef = this.dialogService.open(DocumentsListForMobileComponent, {
-      width: '100vw',
-      height:'61vh',
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
+      width: '98vw',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(DocumentsListForMobileComponent, config);
+
     dialogRef.componentInstance.subjectDocuments = subjectDocuments;
     dialogRef.componentInstance.documentRef = 1;
   }
 
   renewalDocument(subjectDocuments: SubjectDocuments) {
-    const dialogRef = this.dialogService.open(DocumentsListForMobileComponent, {
-      width: '100vw',
-      height:'73vh',
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
+      width: '98vw',
       maxWidth: '100vw'
-    });    
+    }
+    const dialogRef = this.dialogService.open(DocumentsListForMobileComponent, config);
+   
     dialogRef.componentInstance.subjectDocuments = subjectDocuments;
     dialogRef.componentInstance.documentRef = 2;
   }

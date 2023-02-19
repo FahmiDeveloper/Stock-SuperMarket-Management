@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -168,11 +168,16 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
   }
 
   viewDetailsAnime(anime: Anime) {
-    const dialogRef = this.dialogService.open(AnimeDetailsMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
       maxWidth: '100vw'
-    });
+    }
+    const dialogRef = this.dialogService.open(AnimeDetailsMobileComponent, config);
+
     dialogRef.componentInstance.anime = anime;
+    dialogRef.componentInstance.allAnimes = this.allAnimes;
+    dialogRef.componentInstance.parent = this;
   }
 
   editAnime(anime?: Anime) {

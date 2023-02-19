@@ -1,6 +1,6 @@
 <h1 class="titleTextInterface text-application">Files</h1>
 
-<mat-grid-list cols=2 #grid rowHeight="315px" gutterSize="15px">
+<mat-grid-list [cols]="isMobile ? '2' : '4'" #grid rowHeight="315px" gutterSize="15px">
   <mat-grid-tile *ngFor="let typeFile of typesFiles">
     <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
       <mat-card-title class="text-application">{{ typeFile.title }}</mat-card-title>
@@ -22,7 +22,6 @@
       <div class="col-md-12">
           <app-upload-form 
             [typeFileId]="typeFile.id" 
-            [user]="dataUserConnected" 
             [defaultArrayFiles]="defaultArrayFiles" 
             (refContextFile)="getRefContextFile($event)">
           </app-upload-form>
@@ -34,7 +33,6 @@
             [isMobile]="isMobile" 
             [typeFileId]="typeFile.id" 
             [numContextFile]="numContextFile" 
-            [user]="dataUserConnected" 
             (arrayFiles)="getDefaultArrayFiles($event)">
           </app-upload-list>
       </div>
@@ -56,57 +54,64 @@
       
     <mat-grid-tile>Angular</mat-grid-tile>
     <mat-grid-tile>
-        <mat-checkbox 
-            name="angularContext" 
-            [(ngModel)]="angularContext" 
-            (ngModelChange)="checkAngularContext()"
-            style="margin-top: 10px;">
-        </mat-checkbox>
+      <mat-checkbox 
+        name="angularContext" 
+        [(ngModel)]="angularContext" 
+        (ngModelChange)="checkAngularContext()"
+        style="margin-top: 10px;">
+      </mat-checkbox>
     </mat-grid-tile>
     <mat-grid-tile>Other</mat-grid-tile>
     <mat-grid-tile>
-        <mat-checkbox 
-            name="otherContext" 
-            [(ngModel)]="otherContext"         
-            (ngModelChange)="checkotherContext()"
-            style="margin-top: 10px;">
-        </mat-checkbox>
+      <mat-checkbox 
+        name="otherContext" 
+        [(ngModel)]="otherContext"         
+        (ngModelChange)="checkotherContext()"
+        style="margin-top: 10px;">
+      </mat-checkbox>
     </mat-grid-tile>
       
   </mat-grid-list>
 
   <br *ngIf="angularContext || otherContext">
 
-  <button 
-    *ngIf="dataUserConnected.roleAddFile && (angularContext || otherContext)"
-    type="button"  
-    (click)="newLink()" 
-    mat-mini-fab
-    [ngStyle]="{'margin-left': isMobile ? '240px' : '445px'}"
-    style="background: #2196F3 !important;">
-    <mat-icon style="color: white;">add</mat-icon>
-  </button>
-
-  <br *ngIf="angularContext || otherContext">
-
-  <br>
-
-  <div class="row">
-    <div class="col-md-6" *ngIf="!isMobile">
-      <mat-form-field class="widhtInput text-application">
+  <div class="row" *ngIf="isMobile">
+    <div class="col-md-12">
+      <mat-form-field class="text-application" style="width: 200px;">
         <mat-label>Content</mat-label>
         <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
-      </mat-form-field>
+      </mat-form-field> 
+      <button 
+        *ngIf="angularContext || otherContext"
+        type="button"  
+        (click)="newLink()" 
+        mat-mini-fab
+        style="background: #2196F3 !important;float: right;margin-top: 7px">
+        <mat-icon style="color: white;">add</mat-icon>
+      </button>
+    </div> 
+  </div>
+
+  <div class="row" *ngIf="!isMobile">
+    <div class="col-md-6">
+      <mat-form-field class="text-application">
+        <mat-label>Content</mat-label>
+        <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
+      </mat-form-field>      
     </div>
-    <div class="col-md-4" *ngIf="isMobile">
-      <mat-form-field class="widhtInput text-application">
-        <mat-label>Content</mat-label>
-        <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
-      </mat-form-field>
+    <div class="col-md-6">
+      <button 
+        *ngIf="angularContext || otherContext"
+        type="button"  
+        (click)="newLink()" 
+        mat-mini-fab
+        style="background: #2196F3 !important;float: right;margin-top: 7px">
+        <mat-icon style="color: white;">add</mat-icon>
+      </button>
     </div>
   </div>
 
-  <br>
+  <br *ngIf="angularContext || otherContext">
 
   <div class="row">   
     <div class="col-md-12">
@@ -151,7 +156,6 @@
         <ng-template matMenuContent let-link="element">
 
           <button
-            *ngIf="dataUserConnected.roleUpdateFile" 
             type="button"
             mat-menu-item
             (click)="editLink(link)"
@@ -172,7 +176,6 @@
           </button>
 
           <button 
-            *ngIf="dataUserConnected.roleDeleteFile" 
             type="button" 
             mat-menu-item
             (click)="deleteLink(link.key)" 

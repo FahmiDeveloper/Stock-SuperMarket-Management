@@ -6,25 +6,30 @@
         <mat-form-field>
           <mat-icon matPrefix>person_outline</mat-icon>
           <mat-placeholder class="text-application"><span>Email</span></mat-placeholder>
-          <input autofocus type="email" matInput formControlName="email">
+          <input autofocus type="email" matInput formControlName="email" class="text-application">
         </mat-form-field>
 
         <mat-form-field>
           <mat-icon matPrefix>lock_outline</mat-icon>
           <mat-placeholder class="text-application"><span>Password</span></mat-placeholder>
-          <input type="password" autocomplete="false" matInput formControlName="password">
+          <input type="password" [type]="hide ? 'password' : 'text'" autocomplete="false" matInput formControlName="password" class="text-application">
+          <mat-icon matSuffix (click)="hide = !hide" style="cursor: pointer;">
+            {{hide ? 'visibility_off' : 'visibility'}}
+          </mat-icon>
         </mat-form-field>
 
         <p *ngIf="errorMessage" class="error text-application" [ngStyle]="{'width': isMobile ? '280px' : '358px'}">{{ errorMessage }}</p> 
           
-        <button type="submit" mat-raised-button color="primary" (click)="tryLogin(loginForm.value)" class="text-application" style="font-size: 17px;">Login</button>
+        <button 
+          type="submit"
+          mat-raised-button 
+          color="primary" 
+          (click)="tryLogin(loginForm.value)" 
+          class="text-application" 
+          style="font-size: 17px;width: 100%;">
+          Login
+        </button>
       </form>
-
-      <mat-toolbar class="login-toolbar text-application" style="background-color:white">login with</mat-toolbar>
-      <div class="socialMediaFlex">
-        <button mat-fab color="primary"><i class="fab fa-facebook-f"></i></button>
-        <button mat-fab color="accent"><i class="fab fa-google"></i></button>
-      </div>
       <br>
       <span class="text-application">Don't have an account yet, please&nbsp;<a routerLink ='/register'>Sign Up</a></span>	
 		</mat-card>

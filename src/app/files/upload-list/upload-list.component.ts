@@ -4,7 +4,6 @@ import { map } from 'rxjs/operators';
 
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { FileUpload } from 'src/app/shared/models/file-upload.model';
 
 @Component({
@@ -18,7 +17,6 @@ export class UploadListComponent implements OnChanges {
   @Input() isMobile: boolean;
   @Input() typeFileId: number;
   @Input() numContextFile: number;
-  @Input() user: FirebaseUserModel;
 
   @Output() arrayFiles = new EventEmitter<FileUpload[]>();
 

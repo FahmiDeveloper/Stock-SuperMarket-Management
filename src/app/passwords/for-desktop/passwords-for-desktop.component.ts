@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -78,12 +78,16 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   newPassword() {
-    const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, {width: '500px', data: {movie: {}}});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, config);
+
     dialogRef.componentInstance.arrayPasswords = this.passwordsListCopie;
   }
 
   editPassword(password?: Password) {
-    const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, {width: '500px'});
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, config);
+    
     dialogRef.componentInstance.password = password;
     dialogRef.componentInstance.pagedList = this.pagedList;
 

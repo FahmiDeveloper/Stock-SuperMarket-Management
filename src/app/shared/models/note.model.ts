@@ -10,9 +10,5 @@ export class Note {
   noteToDo: boolean;
   noteForNotif: boolean;
   toFixAfterTest: boolean;
-}
-
-export interface SubjectList {
-  id: number;
-  subjectName: string;
+  subjectNotesId: number;
 }

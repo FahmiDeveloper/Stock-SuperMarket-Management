@@ -21,9 +21,9 @@
     
 </mat-grid-list>
 
-<br *ngIf="user.roleAddFile && (angularContext || otherContext)">
+<br *ngIf="angularContext || otherContext">
 
-<label *ngIf="user.roleAddFile && (angularContext || otherContext)">
+<label *ngIf="angularContext || otherContext">
     <input
       type="file"
       class="text-nowrap text-truncate"

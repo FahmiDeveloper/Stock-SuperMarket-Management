@@ -1,6 +1,4 @@
-<h1 class="text-center text-danger font-weight-bold titleTextInterface text-application">To Do List</h1>
-
-<br>
+<h1 class="titleTextInterface text-application">To Do List</h1>
 
 <div class="row">
 	<div class="col-md-4">
@@ -11,101 +9,85 @@
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
-		<button (click)="newTask()" mat-mini-fab style="background: #2196F3;margin-top: 5px;margin-left: 55px;">
+		<button 
+			type="button" 
+			(click)="newTask()" 
+			mat-mini-fab 
+			style="background: #2196F3;float: right;margin-top: 7px;">
 			<mat-icon style="color: white;">add</mat-icon>
 		</button>
 	</div>
 </div>
 
-<br>
-
 <div class="row">
 	<div class="col-md-4">
-		<div *ngIf="rangeId == 0">
-			<mat-form-field>
-				<mat-label>Search</mat-label>
-				<input matInput type="text" [(ngModel)]="todayTaskName" (input)="searchByTask()"/>
-			</mat-form-field>
-
-			<div
-				cdkDropList
-				id="toDoToday"
-				#todoTodayList="cdkDropList"
-				[cdkDropListData]="todayTaskList"
-				(cdkDropListDropped)="drop($event)">
-				<p class="empty-label" *ngIf="todayTaskList?.length === 0">Empty list</p>
-				<task-mobile style="width: 50px;" (edit)="editTask('toDoToday', $event)" *ngFor="let task of todayTaskList" cdkDrag [task]="task" [currentList]="'toDoToday'"></task-mobile>
-			</div>	
-		</div>
-
-		<div *ngIf="rangeId == 1">
-			<mat-form-field>
-				<mat-label>Search</mat-label>
-				<input matInput type="text" [(ngModel)]="tomorrowTaskName" (input)="searchByTask()"/>
-			</mat-form-field>
-						
-			<div
-				cdkDropList
-				id="toDoTomorrow"
-				#todoTomorrowList="cdkDropList"
-				[cdkDropListData]="tomorrowTaskList"
-				(cdkDropListDropped)="drop($event)">
-				<p class="empty-label" *ngIf="tomorrowTaskList?.length === 0">Empty list</p>
-				<task-mobile style="width: 50px;" (edit)="editTask('toDoTomorrow', $event)" *ngFor="let task of tomorrowTaskList" cdkDrag [task]="task" [currentList]="'toDoTomorrow'"></task-mobile>
-			</div>
-		</div>
-
-		<div *ngIf="rangeId == 2">
-			<mat-form-field>
-				<mat-label>Search</mat-label>
-				<input matInput type="text" [(ngModel)]="thisWeekTaskName" (input)="searchByTask()"/>
-			</mat-form-field>
-			
-			<div
-				cdkDropList
-				id="toDoThisWeek"
-				#todoThisWeekList="cdkDropList"
-				[cdkDropListData]="thisWeekTaskList"
-				(cdkDropListDropped)="drop($event)">
-				<p class="empty-label" *ngIf="thisWeekTaskList?.length === 0">Empty list</p>
-				<task-mobile style="width: 50px;" (edit)="editTask('toDoThisWeek', $event)" *ngFor="let task of thisWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoThisWeek'"></task-mobile>
-			</div>
-		</div>
-
-		<div *ngIf="rangeId == 3">
-			<mat-form-field>
-				<mat-label>Search</mat-label>
-				<input matInput type="text" [(ngModel)]="nextWeekTaskName" (input)="searchByTask()"/>
-			</mat-form-field>
-	
-			<div
-				cdkDropList
-				id="toDoNextWeek"
-				#todoNextWeekList="cdkDropList"
-				[cdkDropListData]="nextWeekTaskList"
-				(cdkDropListDropped)="drop($event)">
-				<p class="empty-label" *ngIf="nextWeekTaskList?.length === 0">Empty list</p>
-				<task-mobile style="width: 50px;" (edit)="editTask('toDoNextWeek', $event)" *ngFor="let task of nextWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoNextWeek'"></task-mobile>
-			</div>
-		</div>
-
-		<div *ngIf="rangeId == 4">
-			<mat-form-field>
-				<mat-label>Search</mat-label>
-				<input matInput type="text" [(ngModel)]="laterTaskName" (input)="searchByTask()"/>
-			</mat-form-field>
-	
-			<div
-				cdkDropList
-				id="toDoLater"
-				#todoNextWeekList="cdkDropList"
-				[cdkDropListData]="laterTaskList"
-				(cdkDropListDropped)="drop($event)">
-				<p class="empty-label" *ngIf="laterTaskList?.length === 0">Empty list</p>
-				<task-mobile style="width: 50px;" (edit)="editTask('toDoLater', $event)" *ngFor="let task of laterTaskList" cdkDrag [task]="task" [currentList]="'toDoLater'"></task-mobile>
-			</div>
-		</div>
+		<mat-form-field class="text-application">
+			<mat-label>Search</mat-label>
+			<input *ngIf="rangeId == 0" matInput type="text" [(ngModel)]="todayTaskName" (input)="searchByTask()"/>
+			<input *ngIf="rangeId == 1" matInput type="text" [(ngModel)]="tomorrowTaskName" (input)="searchByTask()"/>
+			<input *ngIf="rangeId == 2" matInput type="text" [(ngModel)]="thisWeekTaskName" (input)="searchByTask()"/>
+			<input *ngIf="rangeId == 3" matInput type="text" [(ngModel)]="nextWeekTaskName" (input)="searchByTask()"/>
+			<input *ngIf="rangeId == 4" matInput type="text" [(ngModel)]="laterTaskName" (input)="searchByTask()"/>
+		</mat-form-field>
 	</div>
 </div>
+
+<br>
+
+<mat-nav-list
+	*ngIf="rangeId == 0"
+	cdkDropList
+	id="toDoToday"
+	#todoTodayList="cdkDropList"
+	[cdkDropListData]="todayTaskList"
+	(cdkDropListDropped)="drop($event)"
+	class="nav-list row">
+	<p class="empty-label text-application" *ngIf="todayTaskList?.length === 0">Empty list</p>
+	<task-mobile *ngFor="let task of todayTaskList" cdkDrag [cdkDragDisabled]="isScroll" (dblclick)="ujujuj()" [task]="task" [currentList]="'toDoToday'" [currentTaskList]="todayTaskList"></task-mobile>
+</mat-nav-list>
+
+<mat-nav-list
+	*ngIf="rangeId == 1"
+	cdkDropList
+	id="toDoTomorrow"
+	#todoTomorrowList="cdkDropList"
+	[cdkDropListData]="tomorrowTaskList"
+	(cdkDropListDropped)="drop($event)">
+	<p class="empty-label text-application" *ngIf="tomorrowTaskList?.length === 0">Empty list</p>
+	<task-mobile *ngFor="let task of tomorrowTaskList" cdkDrag [task]="task" [currentList]="'toDoTomorrow'" [currentTaskList]="tomorrowTaskList"></task-mobile>
+</mat-nav-list>
+
+<mat-nav-list
+	*ngIf="rangeId == 2"
+	cdkDropList
+	id="toDoThisWeek"
+	#todoThisWeekList="cdkDropList"
+	[cdkDropListData]="thisWeekTaskList"
+	(cdkDropListDropped)="drop($event)">
+	<p class="empty-label text-application" *ngIf="thisWeekTaskList?.length === 0">Empty list</p>
+	<task-mobile *ngFor="let task of thisWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoThisWeek'" [currentTaskList]="thisWeekTaskList"></task-mobile>
+</mat-nav-list>
+
+<mat-nav-list
+	*ngIf="rangeId == 3"
+	cdkDropList
+	id="toDoNextWeek"
+	#todoNextWeekList="cdkDropList"
+	[cdkDropListData]="nextWeekTaskList"
+	(cdkDropListDropped)="drop($event)">
+	<p class="empty-label text-application" *ngIf="nextWeekTaskList?.length === 0">Empty list</p>
+	<task-mobile *ngFor="let task of nextWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoNextWeek'" [currentTaskList]="nextWeekTaskList"></task-mobile>
+</mat-nav-list>
+
+<mat-nav-list
+	*ngIf="rangeId == 4"
+	cdkDropList
+	id="toDoLater"
+	#toDoLaterList="cdkDropList"
+	[cdkDropListData]="laterTaskList"
+	(cdkDropListDropped)="drop($event)">
+	<p class="empty-label text-application" *ngIf="laterTaskList?.length === 0">Empty list</p>
+	<task-mobile *ngFor="let task of laterTaskList" cdkDrag [task]="task" [currentList]="'toDoLater'" [currentTaskList]="laterTaskList"></task-mobile>
+</mat-nav-list>
 
 <!-- [cdkDropListConnectedTo]="[todoTodayList, todoTomorrowList, todoThisWeekList]" -->

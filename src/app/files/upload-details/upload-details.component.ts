@@ -16,7 +16,6 @@ import { NgNavigatorShareService } from 'ng-navigator-share';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
 import { FileUpload, ZipFile } from 'src/app/shared/models/file-upload.model';
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-upload-details',
@@ -28,7 +27,6 @@ export class UploadDetailsComponent implements OnChanges {
 
   @Input() filteredFiles: any[];
   @Input() isMobile: boolean;
-  @Input() userRoles: FirebaseUserModel;
 
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['name', 'star'];

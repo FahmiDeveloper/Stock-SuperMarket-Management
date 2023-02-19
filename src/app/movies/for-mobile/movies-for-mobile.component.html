@@ -2,11 +2,16 @@
 
 <div class="row">
     <div class="col-md-12">
+        <mat-form-field style="width: 200px;">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" name="movieName" (keyup)="getAllMovies()" [(ngModel)]="movieName"/>
+        </mat-form-field>
+
         <button 
             type="button" 
             (click)="newMovie()" 
             mat-mini-fab 
-            style="background: #2196F3;float: right;">
+            style="background: #2196F3;float: right;margin-top: 7px;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
 
@@ -16,7 +21,7 @@
             mat-mini-fab 
             color="primary" 
             (click)="sortByRefMovieDesc()" 
-            style="background: #2196F3;float: right;margin-right: 10px;">
+            style="background: #2196F3;float: right;margin-right: 10px;margin-top: 7px;">
             <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
         </button>&nbsp;&nbsp;
 
@@ -26,7 +31,7 @@
             mat-mini-fab
             color="primary" 
             (click)="sortByRefMovieAsc()" 
-            style="background: #2196F3;float: right;margin-right: 10px;">
+            style="background: #2196F3;float: right;margin-right: 10px;margin-top: 7px;">
             <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
         </button>&nbsp;&nbsp;
     </div> 
@@ -34,13 +39,7 @@
  
 <div class="row">
     <div class="col-md-4">
-        <mat-form-field class="widthInput">
-            <mat-label>Name</mat-label>
-            <input matInput type="text" name="movieName" (keyup)="getAllMovies()" [(ngModel)]="movieName"/>
-        </mat-form-field>
-    </div>
-    <div class="col-md-4">
-        <mat-form-field class="widthInput">
+        <mat-form-field style="width: 200px;">
             <mat-label>Status</mat-label>
             <mat-select name="statusMovie" [(ngModel)]="statusId" (selectionChange)="getAllMovies()">
                 <mat-option value=""></mat-option>
@@ -85,7 +84,7 @@
                         <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
                         Actions
                     </button>
-                    <mat-menu #menu="matMenu" class="my-menu">
+                    <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
                         <button
                             mat-menu-item 
                             class="text-application"
@@ -180,7 +179,7 @@
                         <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
                         Actions
                     </button>
-                    <mat-menu #menu="matMenu" class="my-menu">
+                    <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
                         <button
                             mat-menu-item 
                             class="text-application"

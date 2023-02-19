@@ -1,41 +1,72 @@
-<h3 *ngIf="!note.key" mat-dialog-title class="text-application">Add new note</h3>
-<h3 *ngIf="note.key" mat-dialog-title class="text-application">Edit note</h3>
+<div mat-dialog-title class="dialog-title">
+  <h3 *ngIf="!note.key" mat-dialog-title class="text-application">New note</h3>
+  <h3 *ngIf="note.key" mat-dialog-title class="text-application">Edit note</h3>
+</div>
 
-<mat-dialog-content style="display: inherit !important;">
-  <form (ngSubmit)="save()" #f="ngForm">
+<div class="row">
+  <div class="col-md-12">
+    <form (ngSubmit)="save()" #f="ngForm">
 
-    <mat-form-field color="accent">
-      <mat-placeholder class="text-application"><span>Note</span></mat-placeholder>
-      <input matInput #input type="text" [(ngModel)]="note.contentNote" name="contentNote" class="text-application" required>
-    </mat-form-field>
-
-    <mat-form-field color="accent" class="text-application" style="width: 150px;">
-      <mat-select placeholder="Subject" [(ngModel)]="selectedSubjectId" name="selectedSubjectId" class="text-application" required>
-          <mat-option *ngFor="let subject of subjectList" [value]="subject.id">
-              <span class="text-application">{{subject.subjectName}}</span>
+      <mat-form-field color="accent">
+        <mat-placeholder class="text-application"><span>Note</span></mat-placeholder>
+        <input matInput #input type="text" [(ngModel)]="note.contentNote" name="contentNote" class="text-application" required>
+      </mat-form-field>
+  
+      <mat-form-field color="accent" class="text-application" style="width: 200px !important;">
+        <mat-select placeholder="Subject Note" name="subjectNotesSelected" class="text-application" [(ngModel)]="subjectNotesSelected" (selectionChange)="checkIfSubjectHaveNotes()">
+          <mat-option value=""></mat-option>
+          <mat-option *ngFor="let subjectNotes of arraySubjectNotes" [value]="subjectNotes">
+            <span class="text-application">{{subjectNotes.subjectNotesName}}</span>
           </mat-option>
-      </mat-select>
-    </mat-form-field>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field color="accent">
-      <mat-placeholder class="text-application"><span>Remark</span></mat-placeholder>
-      <input matInput #input type="text" [(ngModel)]="note.remark" name="remark" class="text-application">
-    </mat-form-field>
+      &nbsp;
 
-    <button type="button" mat-button (click)="fileInput.click()">Choose file</button>
-        <input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file">
-        <br *ngIf="progressValue"><br *ngIf="progressValue">
-        <div *ngIf="progressValue | async as val" class="progress-background">
-            <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
-            <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
-        </div>
+      <mat-icon 
+        style="color: #2196F3;vertical-align: text-top;cursor: pointer;" 
+        (click)="newSubjectNotes()">
+        add
+      </mat-icon>
 
-    <br *ngIf="progressValue">
+      &nbsp;&nbsp;
 
-    <mat-dialog-actions>
-      <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;" class="text-application">Save</button>
-      <button mat-button type="button" (click)="close()" tabindex="-1" style="background:#607D8B;color: white;" class="text-application">Cancel</button>
-    </mat-dialog-actions>
+      <mat-icon
+      *ngIf="subjectNotesSelected.key && !subjectDeleted" 
+      style="color: #9C27B0;vertical-align: text-top;cursor: pointer;" 
+        (click)="editSubjectNotes(subjectNotesSelected)">
+        edit
+      </mat-icon>
 
-  </form>
-</mat-dialog-content>
+      &nbsp;&nbsp;
+
+      <mat-icon
+      *ngIf="subjectNotesSelected.key && !subjectHaveNotes && !subjectDeleted" 
+      style="color: #f44336;vertical-align: text-top;cursor: pointer;" 
+        (click)="deleteSubjectNotes(subjectNotesSelected.key)">
+        delete
+      </mat-icon>
+  
+      <mat-form-field color="accent">
+        <mat-placeholder class="text-application"><span>Remark</span></mat-placeholder>
+        <input matInput #input type="text" [(ngModel)]="note.remark" name="remark" class="text-application">
+      </mat-form-field>
+  
+      <button type="button" mat-button (click)="fileInput.click()">Choose file</button>
+      <input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file">
+      <br *ngIf="progressValue"><br *ngIf="progressValue">
+      <div *ngIf="progressValue | async as val" class="progress-background">
+          <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
+          <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
+      </div>
+  
+      <br *ngIf="progressValue">
+
+      <div class="row justify-content-center" mat-dialog-actions>
+        <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;" class="text-application">Save</button>
+        <button mat-button type="button" (click)="close()" tabindex="-1" style="background:#607D8B;color: white;" class="text-application">Cancel</button>
+      </div>
+  
+    </form>
+  </div>
+</div>

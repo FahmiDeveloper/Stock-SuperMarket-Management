@@ -7,8 +7,10 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 
 import { NoteService } from 'src/app/shared/services/note.service';
+import { SubjectNotesService } from 'src/app/shared/services/subject-note.service';
 
-import { Note, SubjectList } from 'src/app/shared/models/note.model';
+import { Note } from 'src/app/shared/models/note.model';
+import { SubjectNotes } from 'src/app/shared/models/subject-note.model';
 
 @Component({
   selector: 'note-form-desktop',
@@ -19,11 +21,14 @@ import { Note, SubjectList } from 'src/app/shared/models/note.model';
 export class NoteFormDesktopComponent implements OnInit {
 
   arrayNotes: Note[];
-  pagedList: Note[];
+  arraySubjectNotes: SubjectNotes[];
+  arraySubjectNotesForNewSubject: SubjectNotes[];
 
   note: Note = new Note();
+  subjectNotesSelected: SubjectNotes = new SubjectNotes();
 
-  selectedSubjectId: number;
+  subjectHaveNotes: boolean;
+  subjectDeleted: boolean = false;
 
   basePath = '/FilesNotes';
   task: AngularFireUploadTask;
@@ -31,69 +36,24 @@ export class NoteFormDesktopComponent implements OnInit {
   
   formControl = new FormControl('', [Validators.required]);
 
-  subjectList: SubjectList[] = [
-    {id: 1, subjectName: 'Notes to do'},
-    {id: 2, subjectName: 'Test in master'},
-    {id: 3, subjectName: 'Test in ERP'},
-    {id: 4, subjectName: 'Notifications'},
-    {id: 5, subjectName: 'To fix after test'} 
-  ];
-
   constructor(
     public noteService: NoteService,
+    public subjectNotesService: SubjectNotesService,
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<NoteFormDesktopComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Note[]
+    @Inject(MAT_DIALOG_DATA) public data: Note
   ) {}
 
   ngOnInit() {
     if (this.note.key) {
-      if (this.note.noteToDo == true) this.selectedSubjectId = 1;
-      else if (this.note.testWorkInMaster == true) this.selectedSubjectId = 2;
-      else if (this.note.testWorkInERP == true) this.selectedSubjectId = 3;
-      else if (this.note.noteForNotif == true) this.selectedSubjectId = 4;
-      else if (this.note.toFixAfterTest == true) this.selectedSubjectId = 5;
-      this.data = this.pagedList;
+      this.subjectNotesSelected = this.arraySubjectNotes.find(subjectNotes => subjectNotes.id == this.note.subjectNotesId);
+      this.subjectHaveNotes = (this.arrayNotes.filter(note => note.subjectNotesId == this.subjectNotesSelected.id).length) ? true : false;
     }
   }
 
-  save() { 
-    if (this.selectedSubjectId == 1) {
-      this.note.noteToDo = true;
-      this.note.testWorkInMaster = false;
-      this.note.testWorkInERP = false;
-      this.note.noteForNotif = false;
-      this.note.toFixAfterTest = false;
-    }
-    if (this.selectedSubjectId == 2) {
-      this.note.noteToDo = false;
-      this.note.testWorkInMaster = true;
-      this.note.testWorkInERP = false;
-      this.note.noteForNotif = false;
-      this.note.toFixAfterTest = false;
-    }
-    if (this.selectedSubjectId == 3) {
-      this.note.noteToDo = false;
-      this.note.testWorkInMaster = false;
-      this.note.testWorkInERP = true;
-      this.note.noteForNotif = false;
-      this.note.toFixAfterTest = false;
-    }
-    if (this.selectedSubjectId == 4) {
-      this.note.noteToDo = false;
-      this.note.testWorkInMaster = false;
-      this.note.testWorkInERP = false;
-      this.note.noteForNotif = true;
-      this.note.toFixAfterTest = false;
-    }
-    if (this.selectedSubjectId == 5) {
-      this.note.noteToDo = false;
-      this.note.testWorkInMaster = false;
-      this.note.testWorkInERP = false;
-      this.note.noteForNotif = false;
-      this.note.toFixAfterTest = true;
-    }
-       
+  save() {
+    this.note.subjectNotesId = this.subjectNotesSelected.id;
+
     if (this.note.key) {
       this.noteService.update(this.note.key, this.note);
 
@@ -149,7 +109,87 @@ export class NoteFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
+  }
+
+  newSubjectNotes() {
+    Swal.fire({
+      title: 'New subject notes',
+      input: 'text',
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.value) {
+        let subjectNotes: SubjectNotes = new SubjectNotes();
+        subjectNotes.id = (this.arraySubjectNotesForNewSubject[this.arraySubjectNotesForNewSubject.length-1] 
+        && this.arraySubjectNotesForNewSubject[this.arraySubjectNotesForNewSubject.length-1].id) ? this.arraySubjectNotesForNewSubject[this.arraySubjectNotesForNewSubject.length-1].id + 1 : 1;
+        subjectNotes.subjectNotesName = result.value;
+
+        this.arraySubjectNotes.push(subjectNotes);
+
+        this.subjectNotesSelected = subjectNotes;
+
+        this.subjectNotesService.create(subjectNotes);
+
+        Swal.fire(
+          'New subject notes added successfully',
+          '',
+          'success'
+        )
+      }
+    })
+  }
+
+  editSubjectNotes(subjectNotesSelected: SubjectNotes) {
+    Swal.fire({
+      title: 'Edit subject notes',
+      input: 'text',
+      inputValue: subjectNotesSelected.subjectNotesName,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.value) {
+        subjectNotesSelected.subjectNotesName = result.value;
+
+        this.subjectNotesService.update(subjectNotesSelected.key, subjectNotesSelected);
+        
+        Swal.fire(
+          'Subject notes data has been updated successfully',
+          '',
+          'success'
+        )
+      }
+    })
+  }
+
+  deleteSubjectNotes(subjectNotesKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this subject notes!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.subjectNotesService.delete(subjectNotesKey);
+        this.arraySubjectNotes.forEach((subjectNotes, index) => {
+          if(subjectNotes.key === subjectNotesKey) this.arraySubjectNotes.splice(index,1);
+        });
+        this.subjectDeleted = true;
+        Swal.fire(
+          'Subject notes has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
+  }
+
+  checkIfSubjectHaveNotes() {
+    this.subjectHaveNotes = (this.arrayNotes.filter(note => note.subjectNotesId == this.subjectNotesSelected.id).length) ? true : false;
   }
 
 }

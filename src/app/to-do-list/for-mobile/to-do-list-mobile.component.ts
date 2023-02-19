@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
@@ -65,6 +65,7 @@ export class ToDoListForMobileComponent implements OnInit {
   ];
   
   rangeId: number = 0;
+  isScroll: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -120,81 +121,6 @@ export class ToDoListForMobileComponent implements OnInit {
           task.indexNo = index + 1;
       })
     })
-  }
-
-  editTask(list: 'toDoLater' | 'toDoNextWeek' | 'toDoThisWeek' | 'toDoToday' | 'toDoTomorrow', task: Task): void {
-    let firstRange = task.taskToDoIn;
-    
-    const dialogRef = this.dialog.open(TaskFormMobileComponent, {
-      width: '98vw',
-      height:'60vh',
-      maxWidth: '100vw',
-      data: {
-        task,
-        enableDelete: true,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result: TaskDialogResult|undefined) => {
-      if (!result) {
-        return;
-      }
-      let rangeSelected = task.taskToDoIn;
-
-      if (firstRange === rangeSelected) {
-        this.store.collection(list).doc(task.id).update(task);
-        Swal.fire(
-          'Task data has been updated successfully',
-          '',
-          'success'
-        )
-      }
-      else {
-        if (result.task.taskToDoIn == 'Today') {
-          let previousTaskName = result.task.title;
-          this.store.collection(list).doc(task.id).delete();
-          result.task.title = previousTaskName;
-          result.task.date = moment().format('YYYY-MM-DD');
-          result.task.orderNo = this.todayTaskList.length ? this.todayTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-          this.store.collection('toDoToday').add(result.task);
-        } 
-        else if (result.task.taskToDoIn == 'Tomorrow') {
-          let previousTaskName = result.task.title;
-          this.store.collection(list).doc(task.id).delete();
-          const today = new Date()
-          let tomorrow =  new Date()
-          tomorrow.setDate(today.getDate() + 1);
-          result.task.title = previousTaskName;
-          result.task.date = moment(tomorrow).format('YYYY-MM-DD');
-          result.task.orderNo = this.tomorrowTaskList.length ? this.tomorrowTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-          this.store.collection('toDoTomorrow').add(result.task);
-        } 
-        else if (result.task.taskToDoIn == 'This week') {
-          let previousTaskName = result.task.title;
-          this.store.collection(list).doc(task.id).delete();
-          result.task.title = previousTaskName;
-          result.task.orderNo = this.thisWeekTaskList.length ? this.thisWeekTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-        this.store.collection('toDoThisWeek').add(result.task);
-        } else if (result.task.taskToDoIn == 'Next week') {
-          let previousTaskName = result.task.title;
-          this.store.collection(list).doc(task.id).delete();
-          result.task.title = previousTaskName;
-          result.task.orderNo = this.nextWeekTaskList.length ? this.nextWeekTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-          this.store.collection('toDoNextWeek').add(result.task);
-        } else {
-          let previousTaskName = result.task.title;
-          this.store.collection(list).doc(task.id).delete();
-          result.task.title = previousTaskName;
-          result.task.orderNo = this.laterTaskList.length ? this.laterTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-          this.store.collection('toDoLater').add(result.task);
-        }
-        Swal.fire(
-          'New task added successfully',
-          '',
-          'success'
-        )
-      }
-    });
   }
 
   drop(event: CdkDragDrop<Task[]>): void {
@@ -281,16 +207,16 @@ export class ToDoListForMobileComponent implements OnInit {
 
   newTask(): void {
 
-    const dialogRef = this.dialog.open(TaskFormMobileComponent, {
+    let config: MatDialogConfig = {
+      panelClass: "dialog-responsive",
       width: '98vw',
-      height:'60vh',
       maxWidth: '100vw',
       data: {
         task: {},
-      },
-    });
+      }
+    }
+    const dialogRef = this.dialog.open(TaskFormMobileComponent, config);
 
-  
     dialogRef
       .afterClosed()
       .subscribe((result: TaskDialogResult|undefined) => {
@@ -340,16 +266,37 @@ export class ToDoListForMobileComponent implements OnInit {
     this.nextWeekTaskList = [];
     this.laterTaskList = [];
 
-    this.todayTaskList = this.todayTaskName ? this.todayTaskListCopie.filter(task => task.title.toLowerCase().includes(this.todayTaskName.toLowerCase())) : this.todayTaskListCopie;
+    this.todayTaskList = this.todayTaskName ? this.todayTaskListCopie
+    .filter(task => task.title.toLowerCase().includes(this.todayTaskName.toLowerCase())) : this.todayTaskListCopie;
 
-    this.tomorrowTaskList = this.tomorrowTaskName ? this.tomorrowTaskListCopie.filter(task => task.title.toLowerCase().includes(this.tomorrowTaskName.toLowerCase())) : this.tomorrowTaskListCopie;
+    this.tomorrowTaskList = this.tomorrowTaskName ? this.tomorrowTaskListCopie
+    .filter(task => task.title.toLowerCase().includes(this.tomorrowTaskName.toLowerCase())) : this.tomorrowTaskListCopie;
 
-    this.thisWeekTaskList = this.thisWeekTaskName ? this.thisWeekTaskListCopie.filter(task => task.title.toLowerCase().includes(this.thisWeekTaskName.toLowerCase())) : this.thisWeekTaskListCopie;
+    this.thisWeekTaskList = this.thisWeekTaskName ? this.thisWeekTaskListCopie
+    .filter(task => task.title.toLowerCase().includes(this.thisWeekTaskName.toLowerCase())) : this.thisWeekTaskListCopie;
 
-    this.nextWeekTaskList = this.nextWeekTaskName ? this.nextWeekTaskListCopie.filter(task => task.title.toLowerCase().includes(this.nextWeekTaskName.toLowerCase())) : this.nextWeekTaskListCopie;
+    this.nextWeekTaskList = this.nextWeekTaskName ? this.nextWeekTaskListCopie
+    .filter(task => task.title.toLowerCase().includes(this.nextWeekTaskName.toLowerCase())) : this.nextWeekTaskListCopie;
 
-    this.laterTaskList = this.laterTaskName ? this.laterTaskListCopie.filter(task => task.title.toLowerCase().includes(this.laterTaskName.toLowerCase())) : this.laterTaskListCopie;
+    this.laterTaskList = this.laterTaskName ? this.laterTaskListCopie
+    .filter(task => task.title.toLowerCase().includes(this.laterTaskName.toLowerCase())) : this.laterTaskListCopie;
 
+  }
+
+  @HostListener("window:scroll", ["$event"])
+  onWindowScroll() {
+  //In chrome and some browser scroll is given to body tag
+  let pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
+  let max = document.documentElement.scrollHeight;
+  // pos/max will give you the distance between scroll bottom and and bottom of screen in percentage.
+   if(pos < max )   {
+    this.isScroll = true;
+  }
+  }
+
+  @HostListener('dblclick') onDoubleClick(event) {
+    // .. do double click logic, just like binding (dbclick) to an element
+    console.log('dbl click')
   }
 
 }

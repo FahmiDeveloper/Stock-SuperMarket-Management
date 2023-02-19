@@ -1,10 +1,3 @@
-.my-flex-card > div > div.card {
-  height: calc(100% - 15px);
-  margin-bottom: 15px;
-  border: 1px solid #222;
-  cursor: pointer;
-}
-
 .no-results {
   display: flex;
   justify-content: center;
@@ -36,10 +29,6 @@ td.mat-column-star {
 .mat-form-field {
   font-size: 14px;
   width: 100%;
-}
-    
-.mat-icon {
-  color: #3e75ff;
 }
     
 @media screen and (max-width: 960px) {
@@ -132,4 +121,23 @@ td.mat-column-star {
   }
   
 }
-  
+
+.dialog-responsive {
+  width: 40%;
+}
+
+@media only screen and (max-width: 760px) {
+  .dialog-responsive {
+      width: 100%;
+  }
+}  
+
+::ng-deep .my-menu {
+  width: 100%;
+}
+
+.style-button{
+  min-width: unset!important;
+  display: table; 
+  margin: 0 auto;
+}

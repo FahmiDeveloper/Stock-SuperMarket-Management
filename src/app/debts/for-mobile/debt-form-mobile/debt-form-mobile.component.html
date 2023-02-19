@@ -1,5 +1,7 @@
-<h3 *ngIf="!debt.key" mat-dialog-title>Add new debt</h3>
-<h3 *ngIf="debt.key" mat-dialog-title>Edit debt</h3>
+<div mat-dialog-title class="dialog-title">
+    <h3 *ngIf="!debt.key" mat-dialog-title class="text-application">New debt</h3>
+    <h3 *ngIf="debt.key" mat-dialog-title class="text-application">Edit debt</h3>
+</div>
 
 <br>
 
