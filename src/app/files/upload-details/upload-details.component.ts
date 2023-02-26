@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -28,8 +27,8 @@ export class UploadDetailsComponent implements OnChanges {
   @Input() filteredFiles: any[];
   @Input() isMobile: boolean;
 
-  dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['name', 'star'];
+  pagedList: any[]= [];
+  length: number = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -60,15 +59,21 @@ export class UploadDetailsComponent implements OnChanges {
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
     if (this.filteredFiles) {
-      this.dataSource.data = this.filteredFiles;
-      this.dataSource.data.forEach(element => {
+      this.filteredFiles.forEach(element => {
         element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
       })
+      this.pagedList = this.filteredFiles.slice(0, 6);
+      this.length = this.filteredFiles.length;
     }
-    this.dataSource.paginator = this.paginator;  
   }
 
   OnPageChange(event: PageEvent){
+    let startIndex = event.pageIndex * event.pageSize;
+    let endIndex = startIndex + event.pageSize;
+    if(endIndex > this.length){
+      endIndex = this.length;
+    }
+    this.pagedList = this.filteredFiles.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -414,6 +419,14 @@ export class UploadDetailsComponent implements OnChanges {
         )
       }
     })
+  }
+
+  viewFileName(fileName: string) {
+    Swal.fire({
+      text: fileName,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
   
 }

@@ -27,7 +27,7 @@
 
         <br *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent">
 
-        <mat-form-field *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent" style="width: 430px;">
+        <mat-form-field *ngIf="data.task.taskToDoIn == 'This week' || data.task.taskToDoIn == 'Next week' || data.task.taskToDoIn == 'Later'" color="accent">
             <mat-placeholder><span>Date</span></mat-placeholder>
             <input matInput #input type="date" [(ngModel)]="data.task.date" name="date" required>
             <mat-error *ngIf="!data.task.date" >{{getErrorMessage()}}</mat-error>

@@ -34,60 +34,74 @@
 
 <br>
 
-<mat-nav-list
-	*ngIf="rangeId == 0"
+<div 
+    *ngIf="rangeId == 0"
 	cdkDropList
 	id="toDoToday"
 	#todoTodayList="cdkDropList"
 	[cdkDropListData]="todayTaskList"
 	(cdkDropListDropped)="drop($event)"
-	class="nav-list row">
+	class="example-list">
 	<p class="empty-label text-application" *ngIf="todayTaskList?.length === 0">Empty list</p>
-	<task-mobile *ngFor="let task of todayTaskList" cdkDrag [cdkDragDisabled]="isScroll" (dblclick)="ujujuj()" [task]="task" [currentList]="'toDoToday'" [currentTaskList]="todayTaskList"></task-mobile>
-</mat-nav-list>
+	<div class="example-box" *ngFor="let task of todayTaskList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+		<task-mobile style="width: 100%;" [task]="task" [currentList]="'toDoToday'" [currentTaskList]="todayTaskList" (allowDrag)="allowDrag($event)"></task-mobile>
+	</div>
+</div>
 
-<mat-nav-list
-	*ngIf="rangeId == 1"
+<div 
+    *ngIf="rangeId == 1"
 	cdkDropList
 	id="toDoTomorrow"
 	#todoTomorrowList="cdkDropList"
 	[cdkDropListData]="tomorrowTaskList"
-	(cdkDropListDropped)="drop($event)">
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
 	<p class="empty-label text-application" *ngIf="tomorrowTaskList?.length === 0">Empty list</p>
-	<task-mobile *ngFor="let task of tomorrowTaskList" cdkDrag [task]="task" [currentList]="'toDoTomorrow'" [currentTaskList]="tomorrowTaskList"></task-mobile>
-</mat-nav-list>
+	<div class="example-box" *ngFor="let task of tomorrowTaskList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+		<task-mobile style="width: 100%;" [task]="task" [currentList]="'toDoTomorrow'" [currentTaskList]="tomorrowTaskList" (allowDrag)="allowDrag($event)"></task-mobile>
+	</div>
+</div>
 
-<mat-nav-list
-	*ngIf="rangeId == 2"
+<div 
+    *ngIf="rangeId == 2"
 	cdkDropList
 	id="toDoThisWeek"
 	#todoThisWeekList="cdkDropList"
 	[cdkDropListData]="thisWeekTaskList"
-	(cdkDropListDropped)="drop($event)">
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
 	<p class="empty-label text-application" *ngIf="thisWeekTaskList?.length === 0">Empty list</p>
-	<task-mobile *ngFor="let task of thisWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoThisWeek'" [currentTaskList]="thisWeekTaskList"></task-mobile>
-</mat-nav-list>
+	<div class="example-box" *ngFor="let task of thisWeekTaskList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+		<task-mobile style="width: 100%;" [task]="task" [currentList]="'toDoThisWeek'" [currentTaskList]="thisWeekTaskList" (allowDrag)="allowDrag($event)"></task-mobile>
+	</div>
+</div>
 
-<mat-nav-list
-	*ngIf="rangeId == 3"
+<div 
+    *ngIf="rangeId == 3"
 	cdkDropList
 	id="toDoNextWeek"
 	#todoNextWeekList="cdkDropList"
 	[cdkDropListData]="nextWeekTaskList"
-	(cdkDropListDropped)="drop($event)">
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
 	<p class="empty-label text-application" *ngIf="nextWeekTaskList?.length === 0">Empty list</p>
-	<task-mobile *ngFor="let task of nextWeekTaskList" cdkDrag [task]="task" [currentList]="'toDoNextWeek'" [currentTaskList]="nextWeekTaskList"></task-mobile>
-</mat-nav-list>
+	<div class="example-box" *ngFor="let task of nextWeekTaskList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+		<task-mobile style="width: 100%;" [task]="task" [currentList]="'toDoNextWeek'" [currentTaskList]="nextWeekTaskList" (allowDrag)="allowDrag($event)"></task-mobile>
+	</div>
+</div>
 
-<mat-nav-list
-	*ngIf="rangeId == 4"
+<div 
+    *ngIf="rangeId == 4"
 	cdkDropList
 	id="toDoLater"
 	#toDoLaterList="cdkDropList"
 	[cdkDropListData]="laterTaskList"
-	(cdkDropListDropped)="drop($event)">
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
 	<p class="empty-label text-application" *ngIf="laterTaskList?.length === 0">Empty list</p>
-	<task-mobile *ngFor="let task of laterTaskList" cdkDrag [task]="task" [currentList]="'toDoLater'" [currentTaskList]="laterTaskList"></task-mobile>
-</mat-nav-list>
+	<div class="example-box" *ngFor="let task of laterTaskList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+		<task-mobile style="width: 100%;" [task]="task" [currentList]="'toDoLater'" [currentTaskList]="laterTaskList" (allowDrag)="allowDrag($event)"></task-mobile>
+	</div>
+</div>
 
 <!-- [cdkDropListConnectedTo]="[todoTodayList, todoTomorrowList, todoThisWeekList]" -->

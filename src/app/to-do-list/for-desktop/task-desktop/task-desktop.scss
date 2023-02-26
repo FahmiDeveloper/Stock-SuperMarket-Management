@@ -1,13 +1,5 @@
-:host {
-    display: block;
-}
-
-.mat-list-item-content { 
-	justify-content: flex-end; 
-}
-
-.mat-divider {
-    border-top-color: black;
+:host ::ng-deep span {
+    line-height: 1.5em;
 }
 
 .dialog-responsive {

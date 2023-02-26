@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <form (ngSubmit)="save()" #f="ngForm">
 
-            <mat-grid-list cols="4" rowHeight="3:1" class="text-application" style="font-size: 20px;">
+            <mat-grid-list *ngIf="link.key" cols="4" rowHeight="3:1" class="text-application" style="font-size: 20px;">
       
                 <mat-grid-tile>Angular</mat-grid-tile>
                 <mat-grid-tile>
@@ -30,7 +30,7 @@
                   
             </mat-grid-list>
 
-            <br>
+            <br *ngIf="link.key">
 
             <mat-form-field color="accent" [ngStyle]="{'width': isMobile ? '305px' : '430px'}">
                 <mat-placeholder class="text-application"><span>Content</span></mat-placeholder>

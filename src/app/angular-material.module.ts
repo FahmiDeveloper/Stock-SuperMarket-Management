@@ -22,57 +22,60 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
-    imports: [
-      MatCardModule,
-      MatButtonModule,
-      MatIconModule,
-      MatDialogModule,
-      MatSelectModule,
-      MatInputModule,
-      MatFormFieldModule,
-      MatToolbarModule,
-      MatMenuModule,
-      MatTableModule,
-      MatPaginatorModule,
-      MatProgressBarModule,
-      MatAutocompleteModule,
-      MatButtonToggleModule,
-      MatGridListModule,
-      MatListModule,
-      MatDividerModule,
-      MatProgressSpinnerModule,
-      MatStepperModule,
-      MatTabsModule,
-      MatCheckboxModule,
-      MatChipsModule
-    ],
-    declarations: [],
-    exports: [
-      MatAutocompleteModule,
-      MatButtonModule,
-      MatButtonToggleModule,
-      MatCardModule,
-      MatCheckboxModule,
-      MatChipsModule,
-      MatDialogModule,
-      MatDividerModule,
-      MatFormFieldModule,
-      MatGridListModule,
-      MatIconModule,
-      MatInputModule,
-      MatListModule,
-      MatMenuModule,
-      MatPaginatorModule,
-      MatProgressBarModule,
-      MatProgressSpinnerModule,
-      MatSelectModule,
-      MatStepperModule,
-      MatTableModule,
-      MatTabsModule,
-      MatToolbarModule
-    ]
-  })
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatAutocompleteModule,
+    MatButtonToggleModule,
+    MatGridListModule,
+    MatListModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatStepperModule,
+    MatTabsModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    DragDropModule
+  ],
+  declarations: [],
+  exports: [
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatStepperModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    DragDropModule
+  ]
+})
 
-  export class AngularMaterialModule {}
+export class AngularMaterialModule {}
