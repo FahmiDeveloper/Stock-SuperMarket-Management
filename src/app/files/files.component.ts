@@ -28,9 +28,10 @@ import { FileUpload, TypesFiles } from '../shared/models/file-upload.model';
 
 export class FilesComponent implements OnInit, OnDestroy {
 
-  dataSource = new MatTableDataSource<Link>();
-  dataSourceCopie = new MatTableDataSource<Link>();
-  displayedColumns: string[] = ['content', 'star'];
+  linksList: Link[]= [];
+  pagedList: Link[]= [];
+  arrayLinksForNewLink: Link[]= [];
+  length: number = 0;
 
   content: string = '';
   numContextFile: number;
@@ -111,28 +112,24 @@ export class FilesComponent implements OnInit, OnDestroy {
       panelClass: "dialog-responsive",
       width: '98vw',
       maxWidth: '100vw'
-    };
-
-    let config: MatDialogConfig = {
-      panelClass: "dialog-responsive"
-    };
+    }
 
     if (this.typeFile.id == 6) {
       this.content = '';
       this.angularContext = false;
       this.otherContext = false;
-      this.getAllLinks();  
-      if (this.isMobile) {     
+      this.getAllLinks();
+      if (this.isMobile) {
         this.dialogService.open(contentLinks, configMobile);
       } else {
-        this.dialogService.open(contentLinks, config);
-      }   
+        this.dialogService.open(contentLinks, {width: '500px'});
+      }
     } else {
       if (this.isMobile) {
-        this.dialogService.open(contentListFiles, configMobile);     
+        this.dialogService.open(contentListFiles, configMobile);
       } else {
-        this.dialogService.open(contentListFiles, config);
-      }
+        this.dialogService.open(contentListFiles, {width: '500px'});
+      }   
     } 
   }
 
@@ -140,26 +137,34 @@ export class FilesComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllLinks = this.linkService
     .getAll()
     .subscribe(links => {
-      this.dataSourceCopie.data = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      this.arrayLinksForNewLink = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+
       if (this.angularContext && this.content) {
-        this.dataSource.data = links.filter(link => (link.typeLinkId == 1) && (link.content.toLowerCase().includes(this.content.toLowerCase()))).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+        this.linksList = links.filter(link => (link.typeLinkId == 1) && (link.content.toLowerCase().includes(this.content.toLowerCase()))).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
       } 
       else if (this.angularContext && !this.content) {
-        this.dataSource.data = links.filter(link => (link.typeLinkId == 1)).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+        this.linksList = links.filter(link => (link.typeLinkId == 1)).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
       } 
       else if (this.otherContext && this.content) {
-        this.dataSource.data = links.filter(link => (link.typeLinkId == 2) && (link.content.toLowerCase().includes(this.content.toLowerCase()))).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+        this.linksList = links.filter(link => (link.typeLinkId == 2) && (link.content.toLowerCase().includes(this.content.toLowerCase()))).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
       } 
       else if (this.otherContext && !this.content) {
-        this.dataSource.data = links.filter(link => (link.typeLinkId == 2)).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+        this.linksList = links.filter(link => (link.typeLinkId == 2)).sort((n1, n2) => n2.numRefLink - n1.numRefLink);
       } 
-      else this.dataSource.data = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
+      else this.linksList = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
       
-      this.dataSource.paginator = this.paginator;
+      this.pagedList = this.linksList.slice(0, 6);
+      this.length = this.linksList.length;
     });
   }
 
   OnPageChange(event: PageEvent){
+    let startIndex = event.pageIndex * event.pageSize;
+    let endIndex = startIndex + event.pageSize;
+    if(endIndex > this.length){
+      endIndex = this.length;
+    }
+    this.pagedList = this.linksList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -173,7 +178,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       const dialogRef = this.dialogService.open(NewOrEditLinkComponent, config);
 
       dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
-      dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
+      dialogRef.componentInstance.arrayLinks = this.arrayLinksForNewLink;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
     } else {
@@ -181,7 +186,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       const dialogRef = this.dialogService.open(NewOrEditLinkComponent, config);
 
       dialogRef.componentInstance.typeLinkId = this.angularContext ? 1 : 2;
-      dialogRef.componentInstance.arrayLinks = this.dataSourceCopie.data;
+      dialogRef.componentInstance.arrayLinks = this.arrayLinksForNewLink;
       dialogRef.componentInstance.isMobile = this.isMobile;
       dialogRef.componentInstance.modalRef = dialogRef;
     }
@@ -278,4 +283,12 @@ export class FilesComponent implements OnInit, OnDestroy {
     })
   }
 
+  viewLinkContent(linkContent: string) {
+    Swal.fire({
+      text: linkContent,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
+  }
+  
 }

@@ -1,9 +1,9 @@
-export interface Task {
+export class Task {
     id?: string;
     title: string;
     date: string;
     description: string;
     orderNo: number;
-    indexNo: number;
     taskToDoIn:string;
+    diffDate: string;
 }

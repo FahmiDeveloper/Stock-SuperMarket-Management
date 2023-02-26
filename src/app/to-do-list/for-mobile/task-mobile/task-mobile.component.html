@@ -1,18 +1,18 @@
-<mat-list-item class="mat-list-item-content" *ngIf="task">
+<span>
+  <span class="text-application" style="font-size: x-large;">{{ task.title }}</span> <br>
 
-  <span class="text-application" style="font-size: x-large;line-height: 1.5em;" matLine>{{ task.title }}</span>
+  <span class="text-application" style="font-size: large;" *ngIf="task.description">{{ task.description }}</span><br *ngIf="task.description">
 
-  <span class="text-application" style="font-size: larger;line-height: 1.5em;" matLine>{{ task.description }}</span>
+  <span class="text-application" style="font-size: large;" [ngStyle]="{'color': passedTask ? 'red': ''}">{{ task.date | date: 'dd/MM/yyyy' }}</span>
 
-  <span class="text-application" style="font-size: larger;line-height: 1.5em;" matLine>{{ task.date | date: 'dd/MM/yyyy' }}</span>
+  &nbsp;
 
-  <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{task:task}">
-    <mat-icon>more_vert</mat-icon>
-  </button>
+  <span *ngIf="passedTask" class="text-application" style="font-size: large;" [ngStyle]="{'color': passedTask ? 'red': ''}">({{ task.diffDate }})</span>
+</span>
 
-  <mat-divider style="color: black;"></mat-divider>
-
-</mat-list-item>
+<button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{task:task}" style="float: right;">
+  <mat-icon>more_vert</mat-icon>
+</button>
 
 <mat-menu #contextMenu="matMenu" xPosition="before">
   <ng-template matMenuContent let-task="task">
@@ -24,6 +24,15 @@
       class="text-application">
       <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
       <span>Edit</span>
+    </button>
+
+    <button
+      type="button"
+      mat-menu-item 
+      (click)="allowDragTask()"
+      class="text-application">
+      <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+      <span>Allow Drag</span>
     </button>
 
     <button

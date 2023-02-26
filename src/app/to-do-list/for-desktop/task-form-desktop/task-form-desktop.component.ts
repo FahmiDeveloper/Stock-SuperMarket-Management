@@ -8,9 +8,9 @@ import { TaskDialogData } from 'src/app/shared/models/task-dialog-data';
 import { Task } from 'src/app/shared/models/task.model';
 
 @Component({
-    selector: 'task-form-desktop',
-    templateUrl: './task-form-desktop.component.html',
-    styleUrls: ['./task-form-desktop.scss']
+  selector: 'task-form-desktop',
+  templateUrl: './task-form-desktop.component.html',
+  styleUrls: ['./task-form-desktop.scss']
 })
 
 export class TaskFormDesktopComponent implements OnInit{
