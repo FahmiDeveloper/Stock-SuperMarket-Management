@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 import { NoteService } from 'src/app/shared/services/note.service';
 import { SubjectNotesService } from 'src/app/shared/services/subject-note.service';
 
-import { Note } from 'src/app/shared/models/note.model';
 import { SubjectNotes } from 'src/app/shared/models/subject-note.model';
+import { NoteDialogData } from 'src/app/shared/models/note-dialog-data';
 
 @Component({
   selector: 'note-form-mobile',
@@ -20,15 +20,10 @@ import { SubjectNotes } from 'src/app/shared/models/subject-note.model';
 
 export class NoteFormMobileComponent implements OnInit {
 
-  arrayNotes: Note[];
   arraySubjectNotes: SubjectNotes[];
   arraySubjectNotesForNewSubject: SubjectNotes[];
 
-  note: Note = new Note();
-  subjectNotesSelected: SubjectNotes = new SubjectNotes();
-
-  subjectHaveNotes: boolean;
-  subjectDeleted: boolean = false;
+  defaultSubjectNotesId: number;
 
   basePath = '/FilesNotes';
   task: AngularFireUploadTask;
@@ -41,42 +36,11 @@ export class NoteFormMobileComponent implements OnInit {
     public subjectNotesService: SubjectNotesService,
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<NoteFormMobileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Note
+    @Inject(MAT_DIALOG_DATA) public data: NoteDialogData
   ) {}
 
   ngOnInit() {
-    if (this.note.key) {
-      this.subjectNotesSelected = this.arraySubjectNotes.find(subjectNotes => subjectNotes.id == this.note.subjectNotesId);
-      this.subjectHaveNotes = (this.arrayNotes.filter(note => note.subjectNotesId == this.subjectNotesSelected.id).length) ? true : false;
-    }
-  }
-
-  save() { 
-    this.note.subjectNotesId = this.subjectNotesSelected.id;
-       
-    if (this.note.key) {
-      this.noteService.update(this.note.key, this.note);
-
-      Swal.fire(
-        'Note data has been updated successfully',
-        '',
-        'success'
-      )
-
-    } else {
-      if (this.arrayNotes[0] && this.arrayNotes[0].numRefNote) this.note.numRefNote = this.arrayNotes[0].numRefNote + 1;
-      else this.note.numRefNote = 1;
-
-      this.noteService.create(this.note);
-
-      Swal.fire(
-      'New note added successfully',
-      '',
-      'success'
-      )
-
-    }
-    this.close();
+    if (this.data.note.id) this.defaultSubjectNotesId = this.data.note.subjectNotesId;
   }
 
   async onFileChanged(event) {
@@ -89,8 +53,8 @@ export class NoteFormMobileComponent implements OnInit {
       this.progressValue = this.task.percentageChanges();
 
       (await this.task).ref.getDownloadURL().then(url => {
-        this.note.urlFile = url;
-        this.note.fileName = file.name;
+        this.data.note.urlFile = url;
+        this.data.note.fileName = file.name;
         Swal.fire(
           'File has been uploaded successfully',
           '',
@@ -100,7 +64,7 @@ export class NoteFormMobileComponent implements OnInit {
 
     } else {  
       alert('No file selected');
-      this.note.urlFile = '';
+      this.data.note.urlFile = '';
     }
   }
 
@@ -128,7 +92,7 @@ export class NoteFormMobileComponent implements OnInit {
 
         this.arraySubjectNotes.push(subjectNotes);
 
-        this.subjectNotesSelected = subjectNotes;
+        this.data.note.subjectNotesId = subjectNotes.id;
 
         this.subjectNotesService.create(subjectNotes);
 
@@ -141,11 +105,12 @@ export class NoteFormMobileComponent implements OnInit {
     })
   }
 
-  editSubjectNotes(subjectNotesSelected: SubjectNotes) {
+  editSubjectNotes(subjectNotesId: number) {
+    let subjectNotesSelected = this.arraySubjectNotes.find(subjectNotes => subjectNotes.id == subjectNotesId);
     Swal.fire({
       title: 'Edit subject notes',
       input: 'text',
-      inputValue: subjectNotesSelected.subjectNotesName,
+      inputValue:subjectNotesSelected.subjectNotesName,
       showCancelButton: true,
       confirmButtonText: 'Save',
       cancelButtonText: 'Cancel'
@@ -164,7 +129,8 @@ export class NoteFormMobileComponent implements OnInit {
     })
   }
 
-  deleteSubjectNotes(subjectNotesKey) {
+  deleteSubjectNotes(subjectNotesId: number) {
+    let subjectNotesSelected = this.arraySubjectNotes.find(subjectNotes => subjectNotes.id == subjectNotesId);
     Swal.fire({
       title: 'Are you sure?',
       text: 'Delete this subject notes!',
@@ -174,11 +140,16 @@ export class NoteFormMobileComponent implements OnInit {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.subjectNotesService.delete(subjectNotesKey);
+        this.subjectNotesService.delete(subjectNotesSelected.key);
         this.arraySubjectNotes.forEach((subjectNotes, index) => {
-          if(subjectNotes.key === subjectNotesKey) this.arraySubjectNotes.splice(index,1);
+          if(subjectNotes.key === subjectNotesSelected.key) this.arraySubjectNotes.splice(index,1);
         });
-        this.subjectDeleted = true;
+        if (!this.data.note.id) {
+          this.data.note.subjectNotesId = null;
+        }
+        else {
+          this.data.note.subjectNotesId = this.defaultSubjectNotesId;
+        }
         Swal.fire(
           'Subject notes has been deleted successfully',
           '',
@@ -186,10 +157,6 @@ export class NoteFormMobileComponent implements OnInit {
         )
       }
     })
-  }
-
-  checkIfSubjectHaveNotes() {
-    this.subjectHaveNotes = (this.arrayNotes.filter(note => note.subjectNotesId == this.subjectNotesSelected.id).length) ? true : false;
   }
 
 }

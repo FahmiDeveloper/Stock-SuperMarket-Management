@@ -115,8 +115,10 @@ import {
 import { 
   NotesForDesktopComponent,
   NoteFormDesktopComponent,
+  NoteDesktopComponent,
   NotesForMobileComponent,
-  NoteFormMobileComponent
+  NoteFormMobileComponent,
+  NoteMobileComponent
 } from './notes/index';
 
 import { 
@@ -236,8 +238,10 @@ import {
 
     NotesForDesktopComponent,
     NoteFormDesktopComponent,
+    NoteDesktopComponent,
     NotesForMobileComponent,
     NoteFormMobileComponent,
+    NoteMobileComponent,
 
     PasswordsForDesktopComponent,
     PasswordFormDesktopComponent,

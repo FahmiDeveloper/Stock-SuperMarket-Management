@@ -64,7 +64,8 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     {id: 1, subjectName: 'Work on sunday'},
     {id: 2, subjectName: 'Take vacation'},
     {id: 3, subjectName: 'Take one hour'},
-    {id: 4, subjectName: 'Work half day'}   
+    {id: 4, subjectName: 'Work half day'} ,
+    {id: 5, subjectName: 'Days Clocking late'}  
   ];
 
   constructor(
@@ -92,28 +93,35 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
 
       this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
-      this.dataSourceCopieForCalculTotalClockingLate.data = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      this.dataSourceCopieForCalculTotalClockingLate.data = clockings
+      .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
+      .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+
       this.currentMonth = this.monthsList.find(month => month.monthNbr == this.monthSelected).monthName;
 
-
       if (this.subjectSelectedId == 1) {
-        this.dataSource.data = 
-        clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true))
+        this.dataSource.data = clockings
+        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 2) {
-        this.dataSource.data = 
-        clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true))
+        this.dataSource.data = clockings
+        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 3) {
-        this.dataSource.data = 
-        clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true))
+        this.dataSource.data = clockings
+        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 4) {
-        this.dataSource.data = 
-        clockings.filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true))
+        this.dataSource.data = clockings
+        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true))
+        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
+      }
+      else if (this.subjectSelectedId == 5) {
+        this.dataSource.data = clockings
+        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected && clocking.timeClocking && clocking.timeClocking > '08:00' ))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else {
@@ -124,7 +132,9 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
 
       if ((this.monthSelected == String(new Date().getMonth()+ 1)) || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {
         this.showVacationLimitDays = true;
-        let lastClockingByCurrentMonth = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
+        let lastClockingByCurrentMonth = clockings
+        .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
+        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
         if (lastClockingByCurrentMonth) this.vacationLimitDays = lastClockingByCurrentMonth.restVacationDays;
       } 
       else {this.showVacationLimitDays = false;}

@@ -11,21 +11,25 @@ import { Task } from 'src/app/shared/models/task.model';
 import { TaskDialogResult } from 'src/app/shared/models/task-dialog-result';
 
 @Component({
-    selector: 'task-desktop',
-    templateUrl: './task-desktop.component.html',
-    styleUrls: ['./task-desktop.scss']
+  selector: 'task-desktop',
+  templateUrl: './task-desktop.component.html',
+  styleUrls: ['./task-desktop.scss']
 })
 
 export class TaskDesktopComponent implements OnChanges {
 
   @Input() task: Task | null = null;
   @Input() currentList: string | null = null;
-  @Input() currentTaskList: Task[];
+  @Input() todayTaskList: Task[];
+  @Input() tomorrowTaskList: Task[];
+  @Input() thisWeekTaskList: Task[];
+  @Input() nextWeekTaskList: Task[];
+  @Input() laterTaskList: Task[];
 
   @Output() edit = new EventEmitter<Task>();
 
-  passedTask: boolean = false;
   inCorrectDate: boolean = false;
+  passedTask: boolean = false;
   
   constructor(private store: AngularFirestore, public dialogService: MatDialog) {}
 
@@ -39,65 +43,106 @@ export class TaskDesktopComponent implements OnChanges {
         this.passedTask = true;      
       }
     }
+    ////////////////////////////////////////////////////////////////////////////////////
     else if (this.currentList == 'toDoTomorrow') {
       if (this.task.date == today || composedDate.getTime() > taskDate.getTime()) {
         this.passedTask = true;      
       }
     }
+    ////////////////////////////////////////////////////////////////////////////////////
     else if (this.currentList == 'toDoThisWeek') {
-      let tomorrow =  new Date();
-      tomorrow.setDate(new Date().getDate() + 1);
+      let curr = new Date 
+      let thisWeekDaysList = [];
 
-      if (this.task.date == moment(tomorrow).format('YYYY-MM-DD') || this.task.date == today || composedDate.getTime() > taskDate.getTime()) {
+      for (let i = 1; i <= 7; i++) {
+        let first = curr.getDate() - curr.getDay() + i 
+        let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+        thisWeekDaysList.push(day)
+      }
+
+      if(!thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
         this.passedTask = true;      
       }
+      else {
+        const today = new Date()
+        let tomorrow =  new Date()
+        tomorrow.setDate(today.getDate() + 1);
+
+        let taskDateForDateDiff:any = new Date(this.task.date);
+        let dateTodayForDateDiff:any = new Date();
+        let dateDiff = new Date(dateTodayForDateDiff - taskDateForDateDiff);
+
+        if(this.task.date == moment(tomorrow).format('YYYY-MM-DD') || this.task.date == moment().format('YYYY-MM-DD') || dateDiff.getDate() - 1 == 1 || dateDiff.getDate() - 1 > 1) {
+          this.passedTask = true;      
+        }
+      }
     }
+    ////////////////////////////////////////////////////////////////////////////////////
     else if (this.currentList == 'toDoNextWeek') {
-      var curr = new Date; // get current date
-      var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-      var last = first + 6; // last day is the first day + 6
-      
-      var firstday = new Date(curr.setDate(first));
-      var lastday = new Date(curr.setDate(last));
+      const dateCopy = new Date(new Date().getTime());
+      const nextMonday = new Date(
+        dateCopy.setDate(
+          dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+        ),
+      );
+      let nextWeekDaysList = [];
+      for (let i = 1; i <= 7; i++) {
+        let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + i
+        let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+        nextWeekDaysList.push(day)
+      }  
 
-      let tomorrow =  new Date();
-      tomorrow.setDate(new Date().getDate() + 1);
-
-      if (
-        new Date(this.task.date).getTime() <= lastday.getTime() && new Date(this.task.date).getTime() >= firstday.getTime() ||
-        this.task.date == moment(tomorrow).format('YYYY-MM-DD') || 
-        this.task.date == today || composedDate.getTime() > taskDate.getTime()
-      ) {
+      if(!nextWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
         this.passedTask = true;      
       }
+      else {
+        let curr = new Date 
+        let thisWeekDaysList = [];
+
+        for (let i = 1; i <= 7; i++) {
+          let first = curr.getDate() - curr.getDay() + i 
+          let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+          thisWeekDaysList.push(day)
+        }
+
+        const today = new Date()
+        let tomorrow =  new Date()
+        tomorrow.setDate(today.getDate() + 1);
+
+        if(thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) this.passedTask = true;
+      }     
     }
+    ////////////////////////////////////////////////////////////////////////////////////
     else {
-      var curr = new Date; // get current date
-      var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-      var last = first + 6; // last day is the first day + 6
-      
-      var firstday = new Date(curr.setDate(first));
-      var lastday = new Date(curr.setDate(last));
+      let curr = new Date 
+      let thisWeekDaysList = [];
+      for (let i = 1; i <= 7; i++) {
+        let first = curr.getDate() - curr.getDay() + i 
+        let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+        thisWeekDaysList.push(day)
+      }
 
+      const dateCopy = new Date(new Date().getTime());
+      const nextMonday = new Date(
+        dateCopy.setDate(
+          dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+        ),
+      );
+      let nextWeekDaysList = [];
+      for (let j = 1; j <= 7; j++) {
+        let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + j
+        let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+        nextWeekDaysList.push(day)
+      }
 
-      var firstNextWeek = first + 7; // last day is the first day + 6
-      var lastNextWeek = firstNextWeek + 6;
-      
-      var firstNextWeekday = new Date(curr.setDate(firstNextWeek));
-      var lastNextWeekday = new Date(curr.setDate(lastNextWeek));
-
-      let tomorrow =  new Date();
-      tomorrow.setDate(new Date().getDate() + 1);
-
-      if (
-        (new Date(this.task.date).getTime() <= lastNextWeekday.getTime() && new Date(this.task.date).getTime() >= firstNextWeekday.getTime()) ||
-        (new Date(this.task.date).getTime() <= lastday.getTime() && new Date(this.task.date).getTime() >= firstday.getTime()) ||
-        (this.task.date == moment(tomorrow).format('YYYY-MM-DD')) || 
-        (this.task.date == today || composedDate.getTime() > taskDate.getTime())
+      if (nextWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD')) ||
+          thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD')) 
       ) {
         this.passedTask = true;      
       }
     }
+
+    //////////////////////////////////calcul dateDiff//////////////////////////////////////////////////
 
     var taskDateForDateDiff:any = new Date(this.task.date);
     var dateTodayForDateDiff:any = new Date();
@@ -106,41 +151,91 @@ export class TaskDesktopComponent implements OnChanges {
     let dateTomorrow =  new Date();
     dateTomorrow.setDate(new Date().getDate() + 1);
 
-    var curr = new Date; // get current date
-    var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-    var last = first + 6; // last day is the first day + 6
-    
-    var firstday = new Date(curr.setDate(first));
-    var lastday = new Date(curr.setDate(last));
+    let curr = new Date 
+    let thisWeekDaysList = [];
 
-    var firstNextWeek = first + 7; // last day is the first day + 6
-    var lastNextWeek = firstNextWeek + 6;
-    
-    var firstNextWeekday = new Date(curr.setDate(firstNextWeek));
-    var lastNextWeekday = new Date(curr.setDate(lastNextWeek));
+    for (let i = 1; i <= 7; i++) {
+      let first = curr.getDate() - curr.getDay() + i 
+      let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+      thisWeekDaysList.push(day)
+    }
 
-    this.task.diffDate =
-    this.currentList == 'toDoLater' && 
-    (new Date(this.task.date).getTime() <= lastNextWeekday.getTime() && new Date(this.task.date).getTime() >= firstNextWeekday.getTime()) && 
-    (moment(taskDateForDateDiff).format('YYYY-MM-DD') !== moment(dateTomorrow).format('YYYY-MM-DD')) && 
-    (dateDiff.getDate() - 1 !== 0) ? 'Next week'
+    const dateCopy = new Date(new Date().getTime());
 
-    : this.currentList == 'toDoLater' &&
-    (new Date(this.task.date).getTime() <= lastday.getTime() && new Date(this.task.date).getTime() >= firstday.getTime()) && 
-    (moment(taskDateForDateDiff).format('YYYY-MM-DD') !== moment(dateTomorrow).format('YYYY-MM-DD')) && 
-    (dateDiff.getDate() - 1 !== 0) ? 'This week'
-    
-    : this.currentList == 'toDoNextWeek' && 
-    new Date(this.task.date).getTime() <= lastday.getTime() && 
-    new Date(this.task.date).getTime() >= firstday.getTime() && 
-    (moment(taskDateForDateDiff).format('YYYY-MM-DD') !== moment(dateTomorrow).format('YYYY-MM-DD')) && 
-    (dateDiff.getDate() - 1 !== 0) ? 'This week'
+    const nextMonday = new Date(
+      dateCopy.setDate(
+        dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+      ),
+    );
 
-    : (moment(taskDateForDateDiff).format('YYYY-MM-DD') == moment(dateTomorrow).format('YYYY-MM-DD')) ? 'Tomorrow' 
+    let nextWeekDaysList = [];
 
-    : (dateDiff.getDate() - 1 == 0) ? 'Today'
+    for (let j = 1; j <= 7; j++) {
+      let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + j
+      let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+      nextWeekDaysList.push(day)
+    }
 
-    : (dateDiff.getDate() - 1) + "D" ;
+    if (this.currentList == 'toDoLater') {
+      const today = new Date()
+      let tomorrow =  new Date()
+      tomorrow.setDate(today.getDate() + 1);
+      if (nextWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
+      this.task.diffDate = 'Next week';
+      }
+      else if (thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
+        if(this.task.date == moment(tomorrow).format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Tomorrow'  
+        }
+        else if (this.task.date == moment().format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Today'  
+        }
+        else if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
+        else this.task.diffDate = 'This week';
+      }
+    }
+
+    else if (this.currentList == 'toDoNextWeek') {
+      const today = new Date()
+      let tomorrow =  new Date()
+      tomorrow.setDate(today.getDate() + 1);
+      if (thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
+        if(this.task.date == moment(tomorrow).format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Tomorrow'  
+        }
+        else if (this.task.date == moment().format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Today'  
+        }
+        else if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
+        else this.task.diffDate = 'This week';
+      } 
+    }
+
+    else if (this.currentList == 'toDoThisWeek') {
+      const today = new Date()
+      let tomorrow =  new Date()
+      tomorrow.setDate(today.getDate() + 1);
+      if(this.task.date == moment(tomorrow).format('YYYY-MM-DD')) {
+        this.task.diffDate = 'Tomorrow'  
+      }
+      else if (this.task.date == moment().format('YYYY-MM-DD')) {
+        this.task.diffDate = 'Today'  
+      }
+      else if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
+      else this.task.diffDate = (dateDiff.getDate() - 1) + "D";
+    }
+
+    else if (this.currentList == 'toDoTomorrow') {
+      if (this.task.date == moment().format('YYYY-MM-DD')) this.task.diffDate = 'Today';
+      else if (dateDiff.getDate() - 1 == 1)  this.task.diffDate = 'Yesterday';
+      else this.task.diffDate = (dateDiff.getDate() - 1) + "D";
+    }
+
+    else {
+      if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
+      else this.task.diffDate = (dateDiff.getDate() - 1) + "D";
+    }
+
   }
 
   editTask(task: Task){
@@ -175,14 +270,16 @@ export class TaskDesktopComponent implements OnChanges {
           }
         }
         else if (rangeSelected === 'This week') {
-          var curr = new Date; // get current date
-          var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-          var last = first + 6; // last day is the first day + 6
-          
-          var firstday = new Date(curr.setDate(first));
-          var lastday = new Date(curr.setDate(last));
+          let curr = new Date 
+          let thisWeekDaysList = [];
 
-          if((new Date(result.task.date).getTime() <= lastday.getTime() && new Date(result.task.date).getTime() >= firstday.getTime())) {
+          for (let i = 1; i <= 7; i++) {
+            let first = curr.getDate() - curr.getDay() + i 
+            let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+            thisWeekDaysList.push(day)
+          }
+
+          if(thisWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) {
             this.inCorrectDate = false;
           }
           else {
@@ -191,46 +288,64 @@ export class TaskDesktopComponent implements OnChanges {
           }      
         }
         else if (rangeSelected === 'Next week') {
-          var curr = new Date; // get current date
-          var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-          var firstNextWeek = first + 7; // last day is the first day + 6
-          var lastNextWeek = firstNextWeek + 6;
-          
-          var firstNextWeekday = new Date(curr.setDate(firstNextWeek));
-          var lastNextWeekday = new Date(curr.setDate(lastNextWeek));
+          let today = new Date();
 
+          const dateCopy = new Date(today.getTime());
 
-          if((new Date(result.task.date).getTime() <= lastNextWeekday.getTime() && new Date(result.task.date).getTime() >= firstNextWeekday.getTime())) {
+          const nextMonday = new Date(
+            dateCopy.setDate(
+              dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+            ),
+          );
+
+          let nextWeekDaysList = [];
+
+          for (let i = 1; i <= 7; i++) {
+            let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + i
+            let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+            nextWeekDaysList.push(day)
+          }
+
+          if(nextWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) {
             this.inCorrectDate = false;
           }
           else {
             this.inCorrectDate = true;
             result.task.date = defaultTaskDate;
-          }      
+          }          
         } 
         else {
           const today = new Date();
           let tomorrow =  new Date();
           tomorrow.setDate(today.getDate() + 1);
 
-          var curr = new Date; // get current date
-          var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-          var last = first + 6; // last day is the first day + 6
-          
-          var firstday = new Date(curr.setDate(first));
-          var lastday = new Date(curr.setDate(last));
+          let curr = new Date 
+          let thisWeekDaysList = [];
+          for (let i = 1; i <= 7; i++) {
+            let first = curr.getDate() - curr.getDay() + i 
+            let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+            thisWeekDaysList.push(day)
+          }
 
-          var firstNextWeek = first + 7; // last day is the first day + 6
-          var lastNextWeek = firstNextWeek + 6;
+          const dateCopy = new Date(new Date().getTime());
+          const nextMonday = new Date(
+            dateCopy.setDate(
+              dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+            ),
+          );
+          let nextWeekDaysList = [];
+          for (let i = 1; i <= 7; i++) {
+            let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + i
+            let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+            nextWeekDaysList.push(day)
+          }
           
-          var firstNextWeekday = new Date(curr.setDate(firstNextWeek));
-          var lastNextWeekday = new Date(curr.setDate(lastNextWeek));
-
-          if (
+          if 
+          (
             result.task.date == moment().format('YYYY-MM-DD') || 
             result.task.date == moment(tomorrow).format('YYYY-MM-DD') || 
-            (new Date(result.task.date).getTime() <= lastday.getTime() && new Date(result.task.date).getTime() >= firstday.getTime()) ||
-            (new Date(result.task.date).getTime() <= lastNextWeekday.getTime() && new Date(result.task.date).getTime() >= firstNextWeekday.getTime())
+            (thisWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) ||
+            (nextWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD')))
           ) {
             this.inCorrectDate = true;
             result.task.date = defaultTaskDate;
@@ -262,8 +377,13 @@ export class TaskDesktopComponent implements OnChanges {
           this.store.collection(this.currentList).doc(task.id).delete();
           result.task.title = previousTaskName;
           result.task.date = moment().format('YYYY-MM-DD');
-          result.task.orderNo = this.currentTaskList.length ? this.currentTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
+          result.task.orderNo = this.todayTaskList.length ? this.todayTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
           this.store.collection('toDoToday').add(result.task);
+          Swal.fire(
+            'New task added successfully',
+            '',
+            'success'
+          )
         } 
         else if (result.task.taskToDoIn == 'Tomorrow') {
           let previousTaskName = result.task.title;
@@ -273,33 +393,141 @@ export class TaskDesktopComponent implements OnChanges {
           tomorrow.setDate(today.getDate() + 1);
           result.task.title = previousTaskName;
           result.task.date = moment(tomorrow).format('YYYY-MM-DD');
-          result.task.orderNo = this.currentTaskList.length ? this.currentTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
+          result.task.orderNo = this.tomorrowTaskList.length ? this.tomorrowTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
           this.store.collection('toDoTomorrow').add(result.task);
+          Swal.fire(
+            'New task added successfully',
+            '',
+            'success'
+          )
         } 
         else if (result.task.taskToDoIn == 'This week') {
-          let previousTaskName = result.task.title;
-          this.store.collection(this.currentList).doc(task.id).delete();
-          result.task.title = previousTaskName;
-          result.task.orderNo = this.currentTaskList.length ? this.currentTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-        this.store.collection('toDoThisWeek').add(result.task);
-        } else if (result.task.taskToDoIn == 'Next week') {
-          let previousTaskName = result.task.title;
-          this.store.collection(this.currentList).doc(task.id).delete();
-          result.task.title = previousTaskName;
-          result.task.orderNo = this.currentTaskList.length ? this.currentTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-          this.store.collection('toDoNextWeek').add(result.task);
-        } else {
-          let previousTaskName = result.task.title;
-          this.store.collection(this.currentList).doc(task.id).delete();
-          result.task.title = previousTaskName;
-          result.task.orderNo = this.currentTaskList.length ? this.currentTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
-          this.store.collection('toDoLater').add(result.task);
+          let curr = new Date 
+          let thisWeekDaysList = [];
+
+          for (let i = 1; i <= 7; i++) {
+            let first = curr.getDate() - curr.getDay() + i 
+            let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+            thisWeekDaysList.push(day)
+          }
+
+          if(thisWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) {
+            let previousTaskName = result.task.title;
+            this.store.collection(this.currentList).doc(task.id).delete();
+            result.task.title = previousTaskName;
+            result.task.orderNo = this.thisWeekTaskList.length ? this.thisWeekTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
+            this.store.collection('toDoThisWeek').add(result.task);
+            Swal.fire(
+              'New task added successfully',
+              '',
+              'success'
+            )
+          }
+          else {
+            result.task.taskToDoIn = firstRange;
+            result.task.date = defaultTaskDate;
+            Swal.fire(
+              'Choose correct date',
+              '',
+              'warning'
+            ) 
+          }      
+        } 
+        else if (result.task.taskToDoIn == 'Next week') {
+          let today = new Date();
+
+          const dateCopy = new Date(today.getTime());
+
+          const nextMonday = new Date(
+            dateCopy.setDate(
+              dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+            ),
+          );
+
+          let nextWeekDaysList = [];
+
+          for (let i = 1; i <= 7; i++) {
+            let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + i
+            let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+            nextWeekDaysList.push(day)
+          }
+
+          if(nextWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) {
+            let previousTaskName = result.task.title;
+            this.store.collection(this.currentList).doc(task.id).delete();
+            result.task.title = previousTaskName;
+            result.task.orderNo = this.nextWeekTaskList.length ? this.nextWeekTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
+            this.store.collection('toDoNextWeek').add(result.task);
+            Swal.fire(
+              'New task added successfully',
+              '',
+              'success'
+            )
+          }
+          else {
+            result.task.taskToDoIn = firstRange;
+            result.task.date = defaultTaskDate;
+            Swal.fire(
+              'Choose correct date',
+              '',
+              'warning'
+            )
+          }      
+        } 
+        else {
+          const today = new Date();
+          let tomorrow =  new Date();
+          tomorrow.setDate(today.getDate() + 1);
+
+          let curr = new Date 
+          let thisWeekDaysList = [];
+          for (let i = 1; i <= 7; i++) {
+            let first = curr.getDate() - curr.getDay() + i 
+            let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+            thisWeekDaysList.push(day)
+          }
+
+          const dateCopy = new Date(new Date().getTime());
+          const nextMonday = new Date(
+            dateCopy.setDate(
+              dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+            ),
+          );
+          let nextWeekDaysList = [];
+          for (let i = 1; i <= 7; i++) {
+            let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + i
+            let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+            nextWeekDaysList.push(day)
+          }
+          
+          if 
+          (
+            result.task.date == moment().format('YYYY-MM-DD') || 
+            result.task.date == moment(tomorrow).format('YYYY-MM-DD') || 
+            (thisWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) ||
+            (nextWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD')))
+          ) {
+            result.task.taskToDoIn = firstRange;
+            result.task.date = defaultTaskDate;
+            Swal.fire(
+              'Choose correct date',
+              '',
+              'warning'
+            )
+          } 
+          else {
+            let previousTaskName = result.task.title;
+            this.store.collection(this.currentList).doc(task.id).delete();
+            result.task.title = previousTaskName;
+            result.task.orderNo = this.laterTaskList.length ? this.laterTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
+            this.store.collection('toDoLater').add(result.task);
+            Swal.fire(
+              'New task added successfully',
+              '',
+              'success'
+            )
+          }    
         }
-        Swal.fire(
-          'New task added successfully',
-          '',
-          'success'
-        )
       }
     });
   }

@@ -186,14 +186,16 @@ export class ToDoListForDesktopComponent implements OnInit {
           )
         } 
         else if (result.task.taskToDoIn == 'This week') {
-          var curr = new Date; // get current date
-          var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-          var last = first + 6; // last day is the first day + 6
-          
-          var firstday = new Date(curr.setDate(first));
-          var lastday = new Date(curr.setDate(last));
+          let curr = new Date 
+          let thisWeekDays = [];
 
-          if((new Date(result.task.date).getTime() <= lastday.getTime() && new Date(result.task.date).getTime() >= firstday.getTime())) {
+          for (let i = 1; i <= 7; i++) {
+            let first = curr.getDate() - curr.getDay() + i 
+            let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+            thisWeekDays.push(day)
+          }
+
+          if(thisWeekDays.includes(moment(result.task.date).format('YYYY-MM-DD'))) {
             result.task.orderNo = this.thisWeekTaskList.length ? this.thisWeekTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
             this.store.collection('toDoThisWeek').add(result.task);
             Swal.fire(
@@ -207,19 +209,29 @@ export class ToDoListForDesktopComponent implements OnInit {
               'Choose correct date',
               '',
               'warning'
-            )
+            ) 
           }      
         } 
-        else if (result.task.taskToDoIn == 'Next week') {
-          var curr = new Date; // get current date
-          var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-          var firstNextWeek = first + 7; // last day is the first day + 6
-          var lastNextWeek = firstNextWeek + 6;
-          
-          var firstNextWeekday = new Date(curr.setDate(firstNextWeek));
-          var lastNextWeekday = new Date(curr.setDate(lastNextWeek));
+        else if (result.task.taskToDoIn == 'Next week') {         
+          let today = new Date();
 
-          if((new Date(result.task.date).getTime() <= lastNextWeekday.getTime() && new Date(result.task.date).getTime() >= firstNextWeekday.getTime())) {
+          const dateCopy = new Date(today.getTime());
+
+          const nextMonday = new Date(
+            dateCopy.setDate(
+              dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+            ),
+          );
+
+          let nextWeekDaysList = [];
+
+          for (let i = 1; i <= 7; i++) {
+            let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + i
+            let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+            nextWeekDaysList.push(day)
+          }
+
+          if(nextWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) {
             result.task.orderNo = this.nextWeekTaskList.length ? this.nextWeekTaskList.sort((n1, n2) => n2.orderNo - n1.orderNo)[0].orderNo + 1 : 1;
             this.store.collection('toDoNextWeek').add(result.task);
             Swal.fire(
@@ -241,24 +253,32 @@ export class ToDoListForDesktopComponent implements OnInit {
           let tomorrow =  new Date();
           tomorrow.setDate(today.getDate() + 1);
 
-          var curr = new Date; // get current date
-          var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-          var last = first + 6; // last day is the first day + 6
-          
-          var firstday = new Date(curr.setDate(first));
-          var lastday = new Date(curr.setDate(last));
+          let curr = new Date 
+          let thisWeekDays = [];
+          for (let i = 1; i <= 7; i++) {
+            let first = curr.getDate() - curr.getDay() + i 
+            let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+            thisWeekDays.push(day)
+          }
 
-          var firstNextWeek = first + 7; // last day is the first day + 6
-          var lastNextWeek = firstNextWeek + 6;
+          const dateCopy = new Date(new Date().getTime());
+          const nextMonday = new Date(
+            dateCopy.setDate(
+              dateCopy.getDate() + ((7 - dateCopy.getDay() + 1) % 7 || 7),
+            ),
+          );
+          let nextWeekDaysList = [];
+          for (let i = 1; i <= 7; i++) {
+            let nextWeekDays = nextMonday.getDate() - nextMonday.getDay() + i
+            let day = moment(new Date().setDate(nextWeekDays)).format('YYYY-MM-DD').slice(0, 10)
+            nextWeekDaysList.push(day)
+          }
           
-          var firstNextWeekday = new Date(curr.setDate(firstNextWeek));
-          var lastNextWeekday = new Date(curr.setDate(lastNextWeek));
-
           if (
             result.task.date == moment().format('YYYY-MM-DD') || 
             result.task.date == moment(tomorrow).format('YYYY-MM-DD') || 
-            (new Date(result.task.date).getTime() <= lastday.getTime() && new Date(result.task.date).getTime() >= firstday.getTime()) ||
-            (new Date(result.task.date).getTime() <= lastNextWeekday.getTime() && new Date(result.task.date).getTime() >= firstNextWeekday.getTime())
+            (thisWeekDays.includes(moment(result.task.date).format('YYYY-MM-DD'))) ||
+            (nextWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD')))
           ) {
             Swal.fire(
               'Choose correct date',
