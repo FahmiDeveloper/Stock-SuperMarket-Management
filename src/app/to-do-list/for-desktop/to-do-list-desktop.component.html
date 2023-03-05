@@ -45,7 +45,16 @@
 	class="example-list">
 	<p class="empty-label text-application" *ngIf="todayTaskList?.length === 0">Empty list</p>
 	<div class="example-box" *ngFor="let task of todayTaskList" cdkDrag>
-		<task-desktop style="width: 100%;" [task]="task" [currentList]="'toDoToday'" [currentTaskList]="todayTaskList"></task-desktop>
+		<task-desktop 
+			style="width: 100%;" 
+			[task]="task" 
+			[currentList]="'toDoToday'" 
+			[todayTaskList]="todayTaskList"
+			[tomorrowTaskList]="tomorrowTaskList"
+			[thisWeekTaskList]="thisWeekTaskList"
+			[nextWeekTaskList]="nextWeekTaskList"
+			[laterTaskList]="laterTaskList">
+		</task-desktop>
 	</div>
 </div>
 
@@ -59,7 +68,16 @@
 	class="example-list">
 	<p class="empty-label text-application" *ngIf="tomorrowTaskList?.length === 0">Empty list</p>
 	<div class="example-box" *ngFor="let task of tomorrowTaskList" cdkDrag>
-		<task-desktop style="width: 100%;" [task]="task" [currentList]="'toDoTomorrow'" [currentTaskList]="tomorrowTaskList"></task-desktop>
+		<task-desktop 
+			style="width: 100%;" 
+			[task]="task" 
+			[currentList]="'toDoTomorrow'" 
+			[todayTaskList]="todayTaskList"
+			[tomorrowTaskList]="tomorrowTaskList"
+			[thisWeekTaskList]="thisWeekTaskList"
+			[nextWeekTaskList]="nextWeekTaskList"
+			[laterTaskList]="laterTaskList">
+		</task-desktop>
 	</div>
 </div>
 
@@ -73,7 +91,16 @@
 	class="example-list">
 	<p class="empty-label text-application" *ngIf="thisWeekTaskList?.length === 0">Empty list</p>
 	<div class="example-box" *ngFor="let task of thisWeekTaskList" cdkDrag>
-		<task-desktop style="width: 100%;" [task]="task" [currentList]="'toDoThisWeek'" [currentTaskList]="thisWeekTaskList"></task-desktop>
+		<task-desktop 
+			style="width: 100%;" 
+			[task]="task" 
+			[currentList]="'toDoThisWeek'" 
+			[todayTaskList]="todayTaskList"
+			[tomorrowTaskList]="tomorrowTaskList"
+			[thisWeekTaskList]="thisWeekTaskList"
+			[nextWeekTaskList]="nextWeekTaskList"
+			[laterTaskList]="laterTaskList">
+		</task-desktop>
 	</div>
 </div>
 
@@ -87,7 +114,16 @@
 	class="example-list">
 	<p class="empty-label text-application" *ngIf="nextWeekTaskList?.length === 0">Empty list</p>
 	<div class="example-box" *ngFor="let task of nextWeekTaskList" cdkDrag>
-		<task-desktop style="width: 100%;" [task]="task" [currentList]="'toDoNextWeek'" [currentTaskList]="nextWeekTaskList"></task-desktop>
+		<task-desktop 
+			style="width: 100%;" 
+			[task]="task" 
+			[currentList]="'toDoNextWeek'" 
+			[todayTaskList]="todayTaskList"
+			[tomorrowTaskList]="tomorrowTaskList"
+			[thisWeekTaskList]="thisWeekTaskList"
+			[nextWeekTaskList]="nextWeekTaskList"
+			[laterTaskList]="laterTaskList">
+		</task-desktop>
 	</div>
 </div>
 
@@ -101,7 +137,16 @@
 	class="example-list">
 	<p class="empty-label text-application" *ngIf="laterTaskList?.length === 0">Empty list</p>
 	<div class="example-box" *ngFor="let task of laterTaskList" cdkDrag>
-		<task-desktop style="width: 100%;" [task]="task" [currentList]="'toDoLater'" [currentTaskList]="laterTaskList"></task-desktop>
+		<task-desktop 
+			style="width: 100%;" 
+			[task]="task" 
+			[currentList]="'toDoLater'" 
+			[todayTaskList]="todayTaskList"
+			[tomorrowTaskList]="tomorrowTaskList"
+			[thisWeekTaskList]="thisWeekTaskList"
+			[nextWeekTaskList]="nextWeekTaskList"
+			[laterTaskList]="laterTaskList">
+		</task-desktop>
 	</div>
 </div>
 

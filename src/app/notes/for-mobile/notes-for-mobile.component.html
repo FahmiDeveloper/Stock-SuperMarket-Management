@@ -21,165 +21,283 @@
     </div> 
 </div>
 
-<mat-nav-list class="nav-list row">
+<br>
 
-	<mat-list-item *ngFor="let note of notesList">
-
-        <span style="font-size: x-large;line-height: 1.5em;" matLine (click)="copyText(note.contentNote)">{{ note.contentNote }}</span>
-
-        <br>
-
-        <span style="font-size: larger;" matLine (click)="copyText(note.remark)">{{ note.remark }}</span>
-
-        <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{note:note}">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-
-        <mat-divider></mat-divider>
-
-    </mat-list-item>
-
-    <mat-menu #contextMenu="matMenu" xPosition="before">
-        <ng-template matMenuContent let-note="note">
-
-            <button
-                type="button"
-                mat-menu-item 
-                (click)="editNote(note)"
-                class="text-application">
-                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                <span>Edit</span>
-            </button>
-
-            <button
-                *ngIf="note.urlFile && checkIsImage(note.urlFile)"
-                type="button"
-                mat-menu-item               
-                (click)="viewPictureFile(note, showPicture)"
-                class="text-application">
-                <mat-icon>attach_file</mat-icon>                
-                <span>Picture</span>
-            </button>
-
-            <button
-                *ngIf="note.urlFile && checkIsPdf(note.urlFile)"
-                type="button"
-                mat-menu-item 
-                (click)="viewOtherFile(note, showOtherFile)"
-                class="text-application">
-                <mat-icon>attach_file</mat-icon>                
-                <span>PDF</span>
-            </button>
-
-            <button
-                *ngIf="note.urlFile && checkIsExcel(note.urlFile)"
-                type="button"
-                mat-menu-item 
-                (click)="viewOtherFile(note, showOtherFile)"
-                class="text-application">
-                <mat-icon>attach_file</mat-icon>                
-                <span>Excel</span>
-            </button>
-
-            <button
-                *ngIf="note.urlFile && checkIsTxt(note.urlFile)"
-                type="button"
-                mat-menu-item 
-                (click)="viewOtherFile(note, showOtherFile)"
-                class="text-application">
-                <mat-icon>attach_file</mat-icon>                
-                <span>Txt</span>
-            </button>
-
-            <button
-                *ngIf="note.urlFile && checkIsWord(note.urlFile)"
-                type="button"
-                mat-menu-item 
-                (click)="viewOtherFile(note, showOtherFile)"
-                class="text-application">
-                <mat-icon>attach_file</mat-icon>                
-                <span>Word</span>
-            </button>
-
-            <button
-                *ngIf="note.urlFile"
-                type="button"
-                mat-menu-item 
-                (click)="downloadFile(note)"
-                class="text-application">
-                <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
-                <span>Download</span>
-            </button>
-
-            <button
-                *ngIf="note.contentNote"
-                type="button"
-                mat-menu-item 
-                (click)="viewNoteOrRemark(note.contentNote)"
-                class="text-application">
-                <mat-icon style="color: black;">note</mat-icon>   
-                <span>Note</span>
-            </button>
-
-            <button
-                *ngIf="note.remark"
-                type="button"
-                mat-menu-item 
-                (click)="viewNoteOrRemark(note.remark)"
-                class="text-application">
-                <mat-icon style="color: black;">note</mat-icon>   
-                <span>Remark</span>
-            </button>
-
-            <button
-                type="button"
-                mat-menu-item 
-                (click)="deleteNote(note.key)"
-                class="text-application">
-                <mat-icon style="color: #f44336;">delete</mat-icon>
-                <span>Delete</span>
-            </button>  
-
-        </ng-template>
-    </mat-menu>
-
-</mat-nav-list>
-
-<div *ngIf="notesList.length == 0" class="row justify-content-center no-results text-application">
-    No results
+<div 
+    *ngIf="subjectNotesSelectedId == 1"
+	cdkDropList
+	id="toDoInErp"
+	#toDoInErpList="cdkDropList"
+	[cdkDropListData]="notesToDoInErpList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToDoInErpList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToDoInErpList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+		<note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toDoInErp'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                                                       
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
 </div>
 
-<ng-template #showPicture>
-   
-  <div mat-dialog-title class="dialog-title">
-    <h2 class="text-application">{{ FileName }}</h2>
-    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-  
-    <div class="row">
-      <img *ngIf="pictureFile" [src]='pictureFile' class="pictureFileMobile">
-    </div>       
-  
-</ng-template>
+<div 
+    *ngIf="subjectNotesSelectedId == 2"
+    cdkDropList
+	id="toDoInPersApp"
+	#toDoInPersAppList="cdkDropList"
+	[cdkDropListData]="notesToDoInPersAppList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToDoInPersAppList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToDoInPersAppList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toDoInPersApp'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                                                        
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
 
-<ng-template #showOtherFile>
+<div 
+    *ngIf="subjectNotesSelectedId == 3"
+    cdkDropList
+	id="toTestInMaster"
+	#toTestInMasterList="cdkDropList"
+	[cdkDropListData]="notesToTestInMasterList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToTestInMasterList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToTestInMasterList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toTestInMaster'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                                                         
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
 
-  <div mat-dialog-title class="dialog-title">
-    <h2 class="text-application">{{ FileName }}</h2>
-    <button mat-icon-button aria-label="close dialog" mat-dialog-close>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+<div 
+    *ngIf="subjectNotesSelectedId == 4"
+    cdkDropList
+	id="toTestInErp"
+	#toTestInErpList="cdkDropList"
+	[cdkDropListData]="notesToTestInErpList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToTestInErpList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToTestInErpList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toTestInErp'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                                                        
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
 
-  <div class="row">        
-    <ngx-doc-viewer
-      *ngIf="urlFile" 
-      [url]="urlFile" 
-      viewer="google"
-      class="otherFileMobile">
-    </ngx-doc-viewer>
-  </div>
+<div 
+    *ngIf="subjectNotesSelectedId == 5"
+    cdkDropList
+	id="toTestInPersAppAfterBuild"
+	#toTestInPersAppAfterBuildList="cdkDropList"
+	[cdkDropListData]="notesToTestInPersAppAfterBuildList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToTestInPersAppAfterBuildList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToTestInPersAppAfterBuildList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toTestInPersAppAfterBuild'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                                                      
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
 
-</ng-template>
+<div 
+    *ngIf="subjectNotesSelectedId == 6"
+    cdkDropList
+	id="toFixAfterTestInMaster"
+	#toFixAfterTestInMaster="cdkDropList"
+	[cdkDropListData]="notesToFixAfterTestInMasterList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToFixAfterTestInMasterList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToFixAfterTestInMasterList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toFixAfterTestInMaster'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                                                  
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
+
+<div 
+    *ngIf="subjectNotesSelectedId == 7"
+    cdkDropList
+	id="toFixAfterTestInErp"
+	#toFixAfterTestInErp="cdkDropList"
+	[cdkDropListData]="notesToFixAfterTestInErpList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToFixAfterTestInErpList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToFixAfterTestInErpList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toFixAfterTestInErp'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                                          
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
+
+<div 
+    *ngIf="subjectNotesSelectedId == 8"
+    cdkDropList
+	id="toFixAfterTestInPersAppAfterBuild"
+	#toFixAfterTestInPersAppAfterBuild="cdkDropList"
+	[cdkDropListData]="notesToFixAfterTestInPersAppAfterBuildList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notesToFixAfterTestInPersAppAfterBuildList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notesToFixAfterTestInPersAppAfterBuildList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'toFixAfterTestInPersAppAfterBuild'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                                                                      
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
+
+<div 
+    *ngIf="subjectNotesSelectedId == 9"
+    cdkDropList
+	id="notifications"
+	#notifications="cdkDropList"
+	[cdkDropListData]="notificationsList"
+	(cdkDropListDropped)="drop($event)"
+	class="example-list">
+	<p class="empty-label text-application" *ngIf="notificationsList?.length === 0">Empty list</p>
+	<div class="example-box" *ngFor="let note of notificationsList" cdkDrag [cdkDragDisabled]="!allowDragTask">
+        <note-mobile 
+            style="width: 100%;" 
+            [note]="note" 
+            [currentList]="'notifications'"
+            [notesToDoInErpList]="notesToDoInErpList"
+            [notesToDoInPersAppList]="notesToDoInPersAppList"
+            [notesToTestInMasterList]="notesToTestInMasterList"
+            [notesToTestInErpList]="notesToTestInErpList"
+            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
+            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
+            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
+            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
+            [notificationsList]="notificationsList"                                                                              
+            [subjectNotesList]="subjectNotesList"
+            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
+            [isTablet]="isTablet"
+            (allowDrag)="allowDrag($event)">
+        </note-mobile>
+	</div>
+</div>
