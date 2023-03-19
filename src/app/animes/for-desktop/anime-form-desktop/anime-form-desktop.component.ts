@@ -5,7 +5,6 @@ import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';
@@ -23,7 +22,6 @@ export class AnimeFormDesktopComponent implements OnInit {
   arrayAnimes: Anime[];
   seasonAnimesList: Anime[] = [];
   allAnimes: Anime[];
-  pagedList: Anime[];
 
   anime: Anime = new Anime();
 
@@ -36,11 +34,11 @@ export class AnimeFormDesktopComponent implements OnInit {
   formControl = new FormControl('', [Validators.required]);
 
   statusAnimes: StatusAnimes[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'}, 
     {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -54,15 +52,10 @@ export class AnimeFormDesktopComponent implements OnInit {
   ngOnInit() {    
     this.seasonAnimesList = this.allAnimes.filter(anime => anime.priority && anime.priority == 1).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
-    if (!this.anime.key) {
-      this.anime.date = moment().format('YYYY-MM-DD');
-    }
-
     if (this.anime.key) {
       if (this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey)) {
         this.parentAnimeName = this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey).nameAnime;
       }
-      this.data = this.pagedList;
     }
   }
 
@@ -137,7 +130,7 @@ export class AnimeFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
 }

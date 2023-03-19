@@ -23,7 +23,6 @@ export class SerieFormDesktopComponent implements OnInit {
   arraySeries: Serie[];
   seasonSeriesList: Serie[] = [];
   allSeries: Serie[];
-  pagedList: Serie[];
 
   serie: Serie = new Serie();
 
@@ -36,11 +35,11 @@ export class SerieFormDesktopComponent implements OnInit {
   formControl = new FormControl('', [Validators.required]);
 
   statusSeries: StatusSeries[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'}, 
     {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -56,15 +55,10 @@ export class SerieFormDesktopComponent implements OnInit {
     .filter(serie => serie.isFirst == true && serie.season && serie.season == 1)
     .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
 
-    if (!this.serie.key) {
-      this.serie.date = moment().format('YYYY-MM-DD');
-    }
-
     if (this.serie.key) {
       if (this.seasonSeriesList.find(serie => serie.key == this.serie.parentSerieKey)) {
         this.parentSerieName = this.seasonSeriesList.find(serie => serie.key == this.serie.parentSerieKey).nameSerie;
       }
-      this.data = this.pagedList;
     }
   }
 
@@ -139,7 +133,7 @@ export class SerieFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
 }

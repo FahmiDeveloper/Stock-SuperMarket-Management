@@ -148,6 +148,8 @@ import {
   TaskFormMobileComponent
 } from './to-do-list/index';
 
+import { ToastsContainer } from './shared/components/toasts-container.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -262,7 +264,9 @@ import {
     TaskFormDesktopComponent,
     ToDoListForMobileComponent,
     TaskMobileComponent,
-    TaskFormMobileComponent
+    TaskFormMobileComponent,
+
+    ToastsContainer
   ],
   entryComponents: [],
   providers: [],

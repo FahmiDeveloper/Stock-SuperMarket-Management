@@ -16,11 +16,6 @@
     </mat-form-field>
 
     <mat-form-field color="accent">
-      <mat-placeholder class="text-application"><span>Date</span></mat-placeholder>
-      <input matInput #input type="date" [(ngModel)]="movie.date" name="date" readonly class="text-application">
-    </mat-form-field>
-
-    <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
       <input matInput #input type="number" [(ngModel)]="movie.year" name="year" class="text-application">
     </mat-form-field>
@@ -35,8 +30,13 @@
       </mat-select>
     </mat-form-field>
 
+    <mat-form-field *ngIf="movie.statusId && movie.statusId == 1" color="accent">
+      <mat-placeholder class="text-application"><span>Check</span></mat-placeholder>
+      <input matInput #input type="date" [(ngModel)]="movie.checkDate" name="checkDate" class="text-application">
+    </mat-form-field>
+
     <mat-checkbox *ngIf="movie.statusId && movie.statusId == 3" name="notLiked" [(ngModel)]="movie.notLiked" class="mat-checkbox-layout">
-      <span>Not liked</span>
+      <span>Dislike</span>
     </mat-checkbox>
 
     <mat-form-field color="accent">

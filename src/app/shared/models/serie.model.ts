@@ -2,10 +2,10 @@ export class Serie {
 
   key: string;
   nameSerie: string;
-  date: string;
   note: string;
   imageUrl: string;
   statusId: number;
+  checkDate: string;
   path: string;
   numRefSerie: number;
   currentEpisode: number;
@@ -19,7 +19,7 @@ export class Serie {
 
   constructor(){
     this.nameSerie = '';
-    this.date = '';
+    this.checkDate = '';
     this.note = '';
     this.imageUrl = '';
     this.statusId = null;

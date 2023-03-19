@@ -2,10 +2,10 @@ export class Movie {
 
   key: string;
   nameMovie: string;
-  date: string;
   note: string;
   imageUrl: string;
   statusId: number;
+  checkDate: string;
   path: string;
   numRefMovie: number;
   year: number;
@@ -17,7 +17,7 @@ export class Movie {
 
   constructor(){
     this.nameMovie = '';
-    this.date = '';
+    this.checkDate = '';
     this.note = '';
     this.imageUrl = '';
     this.statusId = null;

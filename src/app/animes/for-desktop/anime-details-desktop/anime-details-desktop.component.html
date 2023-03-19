@@ -19,14 +19,17 @@
     <div class="col-md-6">
       <div class="card">
         <mat-grid-list cols=2 rowHeight="32px" class="text-application">
-          <mat-grid-tile>Year</mat-grid-tile>
-          <mat-grid-tile>
+          <mat-grid-tile *ngIf="anime.statusId !== 1">Year</mat-grid-tile>
+          <mat-grid-tile *ngIf="anime.statusId !== 1">
             <span *ngIf="anime.year">{{ anime.year }}</span>
             <span *ngIf="!anime.year">?</span>                           
           </mat-grid-tile>
 
           <mat-grid-tile>Type</mat-grid-tile>
-          <mat-grid-tile>{{ anime.type }}</mat-grid-tile>
+          <mat-grid-tile>
+            <span *ngIf="anime.type">{{ anime.type }}</span>
+            <span *ngIf="!anime.type">?</span>                           
+          </mat-grid-tile>
   
           <mat-grid-tile>Status</mat-grid-tile>
           <mat-grid-tile>
@@ -38,6 +41,12 @@
               anime.statusId == 4 ? 'not-watched-image':
               anime.statusId == 5 ? 'search-image': ''">
             </span>
+          </mat-grid-tile>
+
+          <mat-grid-tile *ngIf="anime.statusId == 1">Check</mat-grid-tile>
+          <mat-grid-tile *ngIf="anime.statusId == 1">
+            <span *ngIf="anime.checkDate">{{ anime.checkDate | date: 'dd/MM/yyyy' }}</span>
+            <span *ngIf="!anime.checkDate">?</span>                           
           </mat-grid-tile>
   
           <mat-grid-tile>Season</mat-grid-tile>

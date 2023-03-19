@@ -40,7 +40,6 @@
 
     <div class="col-md-3">
         <button
-            *ngIf="dataUserConnected.roleAddDebt"
             type="button" 
             (click)="newDebt()" 
             mat-mini-fab 
@@ -449,7 +448,6 @@
 	<ng-template matMenuContent let-debt="element">
 
         <button 
-            *ngIf="dataUserConnected.roleUpdateDebt"  
             type="button" 
             mat-menu-item 
             (click)="editDebt(debt)">
@@ -458,7 +456,6 @@
         </button>
 
         <button
-            *ngIf="dataUserConnected.roleDeleteDebt" 
             type="button"
             mat-menu-item 
             (click)="deleteDebt(debt.key)" 

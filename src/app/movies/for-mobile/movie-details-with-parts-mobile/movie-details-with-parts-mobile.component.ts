@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2';
 
@@ -20,16 +20,14 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
   listPartsByParentFilmKey: Movie[];
   allMovies: Movie[];
 
-  parent: any;
-
   movie: Movie = new Movie();
 
   statusMovies: StatusMovies[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'}, 
     {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -53,11 +51,6 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
     });
     dialogRef.componentInstance.movie = movie;
     dialogRef.componentInstance.allMovies = this.allMovies;
-    dialogRef.componentInstance.pagedList = this.parent.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.parent.pagedList = res;
-    }); 
   }
 
   deleteMovie(movieId) {

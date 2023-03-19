@@ -3,7 +3,6 @@
 <div class="row">
     <div class="col-md-12">
         <button
-            *ngIf="dataUserConnected.roleAddDebt"
             type="button" 
             (click)="newDebt()" 
             mat-mini-fab 
@@ -361,7 +360,6 @@
 
         <button 
             type="button"
-            *ngIf="dataUserConnected.roleUpdateDebt" 
             (click)="editDebt(debt)"  
             mat-menu-item>
             <mat-icon aria-label="Edit" style="color: #9C27B0;">edit</mat-icon>
@@ -370,7 +368,6 @@
 
         <button 
             type="button"
-            *ngIf="dataUserConnected.roleDeleteDebt" 
             mat-menu-item 
             (click)="deleteDebt(debt.key)" >
             <mat-icon style="color: #f44336;">delete</mat-icon>

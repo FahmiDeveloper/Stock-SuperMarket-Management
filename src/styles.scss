@@ -39,3 +39,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   align-items: center !important;
   color: #dc3545 !important;
 }
+
+.pagination {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  display:flex;
+  justify-content:center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
+}

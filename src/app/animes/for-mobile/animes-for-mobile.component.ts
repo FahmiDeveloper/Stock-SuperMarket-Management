@@ -4,6 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 import { AnimeDetailsWithSeasonsMobileComponent } from './anime-details-with-seasons-mobile/anime-details-with-seasons-mobile.component';
 import { AnimeFormMobileComponent } from './anime-form-mobile/anime-form-mobile.component';
@@ -14,7 +15,6 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { AnimeService } from 'src/app/shared/services/anime.service';
 import { UsersListService } from 'src/app/shared/services/list-users.service';
 
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 @Component({
@@ -26,29 +26,28 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 export class AnimesForMobileComponent implements OnInit, OnDestroy {
 
   animesList: Anime[] = [];
-  pagedList: Anime[]= [];
   animesListCopie: Anime[] = [];
   allAnimes: Anime[] = [];
   listSeasonsByParentAnimeKey: Anime[] = [];
 
+  p: number = 1;
+
   animeName: string = '';
   statusId: number;
   sortByDesc: boolean = true;
-
-  length: number = 0;
-  pageSize: number = 6;
-  pageSizeOptions: number[] = [6];
+  optionSelected: number;
+  dislike: boolean = false;
+  nbrAnimesToCheckToday: number = 0;
 
   subscriptionForGetAllAnimes: Subscription;
-  subscriptionForUser: Subscription;
-  subscriptionForGetAllUsers: Subscription;
-
-  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
+  subscriptionForGetAllAnimesForSelect: Subscription;
 
   statusAnimes: StatusAnimes[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
-    {id: 5, status: 'To search about it'}
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'},
+    {id: 3, status: 'Watched'}, 
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -59,38 +58,9 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     public dialogService: MatDialog
   ) {}
 
-  ngOnInit() {
-    this.getRolesUser();
+  ngOnInit() { 
     this.getAllAnimes();
-  }
-
-  getRolesUser() {
-    this.subscriptionForUser = this.authService
-      .isConnected
-      .subscribe(res=>{
-        if(res) {
-          this.userService
-            .getCurrentUser()
-            .then(user=>{
-              if(user) {
-                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
-
-                this.subscriptionForGetAllUsers = this.usersListService
-                .getAll()
-                .subscribe((users: FirebaseUserModel[]) => { 
-                  connectedUserFromList = users.find(element => element.email == user.email);
-
-                  this.usersListService
-                  .get(connectedUserFromList.key)
-                  .valueChanges()
-                  .subscribe(dataUser=>{
-                    this.dataUserConnected = dataUser;
-                  });
-                });
-              }
-          });   
-        }
-    })
+    this.getAllAnimesForSelect();
   }
 
   getAllAnimes() {
@@ -104,22 +74,58 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
         this.animesList = animes.filter(anime => (anime.nameAnime.toLowerCase().includes(this.animeName.toLowerCase()) && (anime.isFirst == true)));
         this.animesList = this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
       }
-      
+
       else if (this.statusId) {
-        this.animesList = animes.filter(anime => anime.statusId == this.statusId);       
-        this.animesList = this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+        if (this.statusId == 1) {
+          if (this.dislike) this.dislike = false;
+          if (this.optionSelected) {
+            if (this.optionSelected == 1) {
+              this.animesList = animes.filter(anime => anime.statusId == this.statusId && !anime.checkDate); 
+            }
+            else {
+              this.animesList = animes.filter(anime => anime.statusId == this.statusId && anime.checkDate && anime.checkDate == moment().format('YYYY-MM-DD') &&
+              (!anime.currentEpisode || (anime.currentEpisode && !anime.totalEpisodes) || (anime.currentEpisode && anime.currentEpisode && anime.currentEpisode < anime.totalEpisodes)));
+            }       
+          }
+          else  {
+            this.animesList = animes.filter(anime => anime.statusId == this.statusId);
+          }
+          this.animesList = this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+        }
+        else {
+          if (this.optionSelected) this.optionSelected = null;
+          if (this.statusId == 3) {
+            if (this.dislike) {
+              this.animesList = animes.filter(anime => anime.statusId == this.statusId && anime.notLiked == true);
+            }
+            else  {
+              this.animesList = animes.filter(anime => anime.statusId == this.statusId);
+            }
+          }
+          else {
+            if (this.dislike) this.dislike = false;
+            this.animesList = animes.filter(anime => anime.statusId == this.statusId);
+          }     
+          this.animesList = this.statusId == 2 ? this.animesList.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime) : this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);            
+        }
       }
       
       else this.animesList = animes.filter(anime => anime.isFirst == true).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
-      
+
       this.animesList.forEach(anime => {
         this.checkIfAnimeHaveSeasons(anime);
       })
 
-      this.pagedList = this.animesList.slice(0, 6);
-      this.length = this.animesList.length;
-
     });
+  }
+
+  getAllAnimesForSelect() {
+    this.subscriptionForGetAllAnimesForSelect = this.animeService
+    .getAll()
+    .subscribe((animes: Anime[]) => {
+      this.nbrAnimesToCheckToday = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate == moment().format('YYYY-MM-DD') &&
+      (!anime.currentEpisode || (anime.currentEpisode && !anime.totalEpisodes) || (anime.currentEpisode && anime.currentEpisode && anime.currentEpisode < anime.totalEpisodes))).length;
+    })
   }
 
   checkIfAnimeHaveSeasons(animeData: Anime) {
@@ -131,12 +137,6 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
   }
 
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.animesList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -153,7 +153,6 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.anime = animeSelected;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
     dialogRef.componentInstance.listSeasonsByParentAnimeKey = this.listSeasonsByParentAnimeKey;
-    dialogRef.componentInstance.parent = this;
   }
 
   newAnime() {
@@ -177,7 +176,6 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.anime = anime;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
-    dialogRef.componentInstance.parent = this;
   }
 
   editAnime(anime?: Anime) {
@@ -188,14 +186,9 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     });
     dialogRef.componentInstance.anime = anime;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });
   }
 
-  deleteAnime(animeKey) {
+  deleteAnime(animeKey: string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'Delete this anime!',
@@ -219,22 +212,6 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     window.open(path);
   }
 
-  sortByRefAnimeDesc() {
-    this.pagedList = this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
-    this.sortByDesc = true;
-
-    this.pagedList = this.animesList.slice(0, 6);
-    this.length = this.animesList.length;
-  }
-
-  sortByRefAnimeAsc() {
-    this.pagedList = this.animesList.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime);
-    this.sortByDesc = false;
-
-    this.pagedList = this.animesList.slice(0, 6);
-    this.length = this.animesList.length;
-  }
-
   copyText(text: string){
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
@@ -251,8 +228,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
-    this.subscriptionForUser.unsubscribe();
-    this.subscriptionForGetAllUsers.unsubscribe();
+    this.subscriptionForGetAllAnimesForSelect.unsubscribe();
   }
 
 }

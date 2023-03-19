@@ -16,7 +16,6 @@ import { UserService } from '../../shared/services/user.service';
 import { UsersListService } from '../../shared/services/list-users.service';
 
 import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from '../../shared/models/debt.model';
-import { FirebaseUserModel } from '../../shared/models/user.model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
@@ -75,13 +74,9 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   isDesktop: boolean;
   isTablet: boolean;
 
-  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
-
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
   subscriptionForGetAllDebts: Subscription;
-  subscriptionForUser: Subscription;
-  subscriptionForGetAllUsers: Subscription;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -121,8 +116,6 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
 
     if (this.isDesktop) {this.getAllDebtsForDesktop();}
     else {this.getAllDebtsForTablet();}
-
-    this.getRolesUser();
   }
 
   ngAfterViewInit() {
@@ -163,35 +156,6 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
 
       this.getPlaceDebt();
     });
-  }
-
-  getRolesUser() {
-    this.subscriptionForUser = this.authService
-      .isConnected
-      .subscribe(res=>{
-        if(res) {
-          this.userService
-            .getCurrentUser()
-            .then(user=>{
-              if(user) {
-                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
-
-                this.subscriptionForGetAllUsers = this.usersListService
-                .getAll()
-                .subscribe((users: FirebaseUserModel[]) => { 
-                  connectedUserFromList = users.find(element => element.email == user.email);
-
-                  this.usersListService
-                  .get(connectedUserFromList.key)
-                  .valueChanges()
-                  .subscribe(dataUser=>{
-                    this.dataUserConnected = dataUser;
-                  });
-                });
-              }
-          });   
-        }
-    })
   }
 
   OnPageChangeForDesktop(event: PageEvent){
@@ -1104,8 +1068,6 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();
-    this.subscriptionForUser.unsubscribe();
-    this.subscriptionForGetAllUsers.unsubscribe();
   }
   
 }
