@@ -17,7 +17,6 @@ import { UserService } from '../shared/services/user.service';
 import { UsersListService } from '../shared/services/list-users.service';
 
 import { Link } from '../shared/models/link.model';
-import { FirebaseUserModel } from '../shared/models/user.model';
 import { FileUpload, TypesFiles } from '../shared/models/file-upload.model';
 
 @Component({
@@ -42,10 +41,6 @@ export class FilesComponent implements OnInit, OnDestroy {
   otherContext: boolean = false;
 
   subscriptionForGetAllLinks: Subscription;
-  subscriptionForUser: Subscription;
-  subscriptionForGetAllUsers: Subscription;
-
-  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -72,36 +67,6 @@ export class FilesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isMobile = this.deviceService.isMobile();
     if (this.isMobile) {document.body.scrollTop = document.documentElement.scrollTop = 0;}
-    this.getRolesUser();
-  }
-
-  getRolesUser() {
-    this.subscriptionForUser = this.authService
-      .isConnected
-      .subscribe(res=>{
-        if(res) {
-          this.userService
-            .getCurrentUser()
-            .then(user=>{
-              if(user) {
-                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
-
-                this.subscriptionForGetAllUsers = this.usersListService
-                .getAll()
-                .subscribe((users: FirebaseUserModel[]) => { 
-                  connectedUserFromList = users.find(element => element.email == user.email);
-
-                  this.usersListService
-                  .get(connectedUserFromList.key)
-                  .valueChanges()
-                  .subscribe(dataUser=>{
-                    this.dataUserConnected = dataUser;
-                  });
-                });
-              }
-          });   
-        }
-    })
   }
 
   openListFiles(contentListFiles, contentLinks, typeFile: TypesFiles) {
@@ -247,8 +212,6 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.subscriptionForGetAllLinks) this.subscriptionForGetAllLinks.unsubscribe();
-    this.subscriptionForUser.unsubscribe();
-    this.subscriptionForGetAllUsers.unsubscribe();
   }
 
   checkAngularContext() {

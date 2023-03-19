@@ -21,14 +21,12 @@ export class AnimeDetailsMobileComponent implements OnInit {
 
   anime: Anime = new Anime();
 
-  parent: any;
-
   statusAnimes: StatusAnimes[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'}, 
     {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -48,11 +46,6 @@ export class AnimeDetailsMobileComponent implements OnInit {
     });
     dialogRef.componentInstance.anime = anime;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
-    dialogRef.componentInstance.pagedList = this.parent.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.parent.pagedList = res;
-    });
   }
 
   deleteAnime(animeKey) {

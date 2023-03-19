@@ -19,8 +19,8 @@
     <div class="col-md-6">
       <div class="card">
         <mat-grid-list cols=2 rowHeight="50px" class="text-application">
-          <mat-grid-tile>Year</mat-grid-tile>
-          <mat-grid-tile>
+          <mat-grid-tile *ngIf="movie.statusId !== 1">Year</mat-grid-tile>
+          <mat-grid-tile *ngIf="movie.statusId !== 1">
             <span *ngIf="movie.year">{{ movie.year }}</span>
             <span *ngIf="!movie.year">?</span>                           
           </mat-grid-tile>
@@ -34,6 +34,12 @@
               movie.statusId == 4 ? 'not-watched-image':
               movie.statusId == 5 ? 'search-image': ''">
             </span>
+          </mat-grid-tile>
+
+          <mat-grid-tile *ngIf="movie.statusId == 1">Check</mat-grid-tile>
+          <mat-grid-tile *ngIf="movie.statusId == 1">
+            <span *ngIf="movie.checkDate">{{ movie.checkDate | date: 'dd/MM/yyyy' }}</span>
+            <span *ngIf="!movie.checkDate">?</span>                           
           </mat-grid-tile>
   
           <mat-grid-tile>Part</mat-grid-tile>

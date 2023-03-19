@@ -2,10 +2,10 @@ export class Anime {
 
   key: string;
   nameAnime: string;
-  date: string;
   note: string;
   imageUrl: string;
   statusId: number;
+  checkDate: string;
   path: string;
   numRefAnime: number;
   currentEpisode: number;
@@ -21,7 +21,7 @@ export class Anime {
 
   constructor(){
     this.nameAnime = '';
-    this.date = '';
+    this.checkDate = '';
     this.note = '';
     this.imageUrl = '';
     this.statusId = null;

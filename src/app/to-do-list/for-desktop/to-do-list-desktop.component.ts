@@ -275,6 +275,7 @@ export class ToDoListForDesktopComponent implements OnInit {
           }
           
           if (
+            result.task.date < moment().format('YYYY-MM-DD') || 
             result.task.date == moment().format('YYYY-MM-DD') || 
             result.task.date == moment(tomorrow).format('YYYY-MM-DD') || 
             (thisWeekDays.includes(moment(result.task.date).format('YYYY-MM-DD'))) ||

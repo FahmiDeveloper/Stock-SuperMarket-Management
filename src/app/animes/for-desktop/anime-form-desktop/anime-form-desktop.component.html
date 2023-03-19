@@ -16,11 +16,6 @@
     </mat-form-field>
 
     <mat-form-field color="accent">
-      <mat-placeholder class="text-application"><span>Date</span></mat-placeholder>
-      <input matInput #input type="date" [(ngModel)]="anime.date" name="date" readonly class="text-application">
-    </mat-form-field>
-
-    <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
       <input matInput #input type="number" [(ngModel)]="anime.year" name="year" class="text-application">
     </mat-form-field>
@@ -47,8 +42,13 @@
       </mat-select>
     </mat-form-field>
 
+    <mat-form-field *ngIf="anime.statusId && anime.statusId == 1" color="accent">
+      <mat-placeholder class="text-application"><span>Check</span></mat-placeholder>
+      <input matInput #input type="date" [(ngModel)]="anime.checkDate" name="checkDate" class="text-application">
+    </mat-form-field>
+
     <mat-checkbox *ngIf="anime.statusId && anime.statusId == 3" name="notLiked" [(ngModel)]="anime.notLiked" class="mat-checkbox-layout">
-      <span>Not liked</span>
+      <span>Dislike</span>
     </mat-checkbox>
 
     <mat-form-field color="accent">

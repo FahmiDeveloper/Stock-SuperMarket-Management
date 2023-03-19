@@ -20,16 +20,14 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
   listSeasonsByParentSerieKey: Serie[];
   allSeries: Serie[];
 
-  parent: any;
-
   serie: Serie = new Serie();
 
   statusSeries: StatusSeries[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'}, 
     {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -53,11 +51,6 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
     });    
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
-    dialogRef.componentInstance.pagedList = this.parent.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.parent.pagedList = res;
-    });
   }
 
   deleteSerie(serieId) {

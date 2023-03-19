@@ -17,8 +17,8 @@
   <div class="col-md-6">
     <div class="card">
       <mat-grid-list cols=2 rowHeight="37px" class="text-application">
-        <mat-grid-tile>Year</mat-grid-tile>
-        <mat-grid-tile>
+        <mat-grid-tile *ngIf="serie.statusId !== 1">Year</mat-grid-tile>
+        <mat-grid-tile *ngIf="serie.statusId !== 1">
           <span *ngIf="serie.year">{{ serie.year }}</span>
           <span *ngIf="!serie.year">?</span>                           
         </mat-grid-tile>
@@ -33,6 +33,12 @@
             serie.statusId == 4 ? 'not-watched-image':
             serie.statusId == 5 ? 'search-image': ''">
           </span>
+        </mat-grid-tile>
+
+        <mat-grid-tile *ngIf="serie.statusId == 1">Check</mat-grid-tile>
+        <mat-grid-tile *ngIf="serie.statusId == 1">
+          <span *ngIf="serie.checkDate">{{ serie.checkDate | date: 'dd/MM/yyyy' }}</span>
+          <span *ngIf="!serie.checkDate">?</span>                           
         </mat-grid-tile>
 
         <mat-grid-tile>Season</mat-grid-tile>

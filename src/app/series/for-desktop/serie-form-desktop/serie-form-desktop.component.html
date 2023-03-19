@@ -16,11 +16,6 @@
     </mat-form-field>
 
     <mat-form-field color="accent">
-      <mat-placeholder class="text-application"><span>Date</span></mat-placeholder>
-      <input matInput #input type="date" [(ngModel)]="serie.date" name="date" readonly class="text-application">
-    </mat-form-field>
-
-    <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
       <input matInput #input type="number" [(ngModel)]="serie.year" name="year" class="text-application">
     </mat-form-field>
@@ -35,8 +30,13 @@
       </mat-select>
     </mat-form-field>
 
+    <mat-form-field *ngIf="serie.statusId && serie.statusId == 1" color="accent">
+      <mat-placeholder class="text-application"><span>Check</span></mat-placeholder>
+      <input matInput #input type="date" [(ngModel)]="serie.checkDate" name="checkDate" class="text-application">
+    </mat-form-field>
+
     <mat-checkbox *ngIf="serie.statusId && serie.statusId == 3" name="notLiked" [(ngModel)]="serie.notLiked" class="mat-checkbox-layout">
-      <span>Not liked</span>
+      <span class="text-application">Dislike</span>
     </mat-checkbox>
 
     <mat-form-field color="accent">

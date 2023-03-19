@@ -23,7 +23,6 @@ export class MovieFormDesktopComponent implements OnInit {
   arrayMovies: Movie[];
   partMoviesList: Movie[] = [];
   allMovies: Movie[];
-  pagedList: Movie[];
 
   movie: Movie = new Movie();
 
@@ -36,11 +35,11 @@ export class MovieFormDesktopComponent implements OnInit {
   formControl = new FormControl('', [Validators.required]);
 
   statusMovies: StatusMovies[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'}, 
     {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not watched yet'},
-    {id: 5, status: 'To search about it'}
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -52,19 +51,15 @@ export class MovieFormDesktopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.movie.key)
     this.partMoviesList = this.allMovies
     .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
     .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-
-    if (!this.movie.key) {
-      this.movie.date = moment().format('YYYY-MM-DD');
-    }
 
     if (this.movie.key) {
       if (this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey)) {
         this.parentFilmName = this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey).nameMovie;
       }
-      this.data = this.pagedList;
     }
   }
 
@@ -139,7 +134,7 @@ export class MovieFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
 }

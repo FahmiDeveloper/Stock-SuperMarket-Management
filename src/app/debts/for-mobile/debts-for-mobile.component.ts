@@ -14,7 +14,6 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from 'src/app/shared/models/debt.model';
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'debts-for-mobile',
@@ -68,11 +67,7 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
 
   modalRefLodaing: any;
 
-  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
-
   subscriptionForGetAllDebts: Subscription;
-  subscriptionForUser: Subscription;
-  subscriptionForGetAllUsers: Subscription;
 
   placesMoney: PlacesMoney[] = [
     {id: 1, place: 'الجيب'},
@@ -105,7 +100,6 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getAllDebts();
-    this.getRolesUser();
   }
 
   ngAfterViewInit() {
@@ -129,35 +123,6 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
       } else this.dataSource.data = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
       this.getPlaceDebt();
     });
-  }
-
-  getRolesUser() {
-    this.subscriptionForUser = this.authService
-      .isConnected
-      .subscribe(res=>{
-        if(res) {
-          this.userService
-            .getCurrentUser()
-            .then(user=>{
-              if(user) {
-                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
-
-                this.subscriptionForGetAllUsers = this.usersListService
-                .getAll()
-                .subscribe((users: FirebaseUserModel[]) => { 
-                  connectedUserFromList = users.find(element => element.email == user.email);
-
-                  this.usersListService
-                  .get(connectedUserFromList.key)
-                  .valueChanges()
-                  .subscribe(dataUser=>{
-                    this.dataUserConnected = dataUser;
-                  });
-                });
-              }
-          });   
-        }
-    })
   }
 
   OnPageChange(event: PageEvent){
@@ -678,8 +643,6 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionForGetAllDebts.unsubscribe();
-    this.subscriptionForUser.unsubscribe();
-    this.subscriptionForGetAllUsers.unsubscribe();
   }
   
 }

@@ -1,13 +1,13 @@
 <h1 class="titleTextInterface text-application">Animes</h1>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <mat-form-field class="widthInput">
             <mat-label class="text-application">Name</mat-label>
             <input matInput type="text" name="animeName" (keyup)="getAllAnimes()" [(ngModel)]="animeName"/>
         </mat-form-field>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <mat-form-field class="widthInput">
             <mat-label class="text-application">Status</mat-label>
 			<mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllAnimes()">
@@ -18,7 +18,23 @@
 			</mat-select>
 		</mat-form-field>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-2">
+        <ng-container *ngIf="statusId">
+            <mat-form-field class="widthInput" *ngIf="statusId == 1">
+                <mat-select [(ngModel)]="optionSelected" name="optionSelected" class="text-application" (selectionChange)="getAllAnimes()">
+                    <mat-option value=""></mat-option>
+                    <mat-option [value]="1" class="text-application">Not yet aired</mat-option>
+                    <mat-option [value]="2" class="text-application">{{nbrAnimesToCheckToday}}&nbsp;anime(s) to check Today</mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <mat-checkbox *ngIf="statusId == 3" name="dislike" [(ngModel)]="dislike" (ngModelChange)="getAllAnimes()" class="mat-checkbox-layout" style="margin-top: 10%;">
+                <span class="text-application">Dislike</span>
+            </mat-checkbox>
+        </ng-container> 
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
         <button
             type="button" 
             (click)="newAnime()" 
@@ -27,33 +43,13 @@
             style="background: #2196F3;float: right;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
-
-        <button 
-            *ngIf="!sortByDesc"
-            type="button"  
-            mat-mini-fab 
-            color="primary" 
-            (click)="sortByRefAnimeDesc()" 
-            style="background: #2196F3;float: right;margin-right: 10px;">
-            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
-        </button>&nbsp;&nbsp;
-
-        <button 
-            *ngIf="sortByDesc"
-            type="button"
-            mat-mini-fab
-            color="primary" 
-            (click)="sortByRefAnimeAsc()" 
-            style="background: #2196F3;float: right;margin-right: 10px;">
-            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
-        </button>&nbsp;&nbsp;
     </div> 
 </div>
 
 <br>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1" cols=1 #grid rowHeight="350px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let anime of pagedList">
+<mat-grid-list *ngIf="animesList.length !== 0 && animesList.length == 1" cols=1 #grid rowHeight="350px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 1, currentPage: p })">
         <div class="flip-container">
             <div class="card">
                 <div class="front">
@@ -151,8 +147,8 @@
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 2" cols=2 #grid rowHeight="350px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let anime of pagedList">
+<mat-grid-list *ngIf="animesList.length !== 0 && animesList.length == 2" cols=2 #grid rowHeight="350px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 2, currentPage: p })">
         <div class="flip-container">
             <div class="card">
                 <div class="front">
@@ -251,8 +247,8 @@
 </mat-grid-list>
 
 <ng-container *ngIf="isDesktop">
-    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 3" cols=3 #grid rowHeight="320px" gutterSize="15px">
-        <mat-grid-tile *ngFor="let anime of pagedList">
+    <mat-grid-list *ngIf="animesList.length !== 0 && animesList.length == 3" cols=3 #grid rowHeight="320px" gutterSize="15px">
+        <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 3, currentPage: p })">
             <div class="flip-container">
                 <div class="card">
                     <div class="front">
@@ -346,8 +342,8 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 3" cols=4 #grid rowHeight="320px" gutterSize="15px">
-        <mat-grid-tile *ngFor="let anime of pagedList">
+    <mat-grid-list *ngIf="animesList.length !== 0 && animesList.length > 3" cols=4 #grid rowHeight="320px" gutterSize="15px">
+        <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 8, currentPage: p })">
             <div class="flip-container">
                 <div class="card">
                     <div class="front">
@@ -443,8 +439,8 @@
 </ng-container>
 
 <ng-container *ngIf="isTablet">
-    <mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 2" cols=3 #grid rowHeight="320px" gutterSize="15px">
-        <mat-grid-tile *ngFor="let anime of pagedList">
+    <mat-grid-list *ngIf="animesList.length !== 0 && animesList.length > 2" cols=3 #grid rowHeight="320px" gutterSize="15px">
+        <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 6, currentPage: p })">
             <div class="flip-container">
                 <div class="card">
                     <div class="front">
@@ -539,16 +535,12 @@
     </mat-grid-list>
 </ng-container>
 
-<div *ngIf="animesList.length == 0" class="row justify-content-center no-results text-application">
-    No results
+<br>
+
+<div *ngIf="animesList.length !== 0" class="pagination">
+    <pagination-controls (pageChange)="p = $event;OnPageChange($event)"></pagination-controls>
 </div>
 
-<div class="row mat-paginator">
-    <mat-paginator 
-        [length]="length"
-        [pageSize]="isDesktop ? 8 : 6"
-        [pageSizeOptions]="isDesktop ? [8] : [6]"
-        showFirstLastButtons
-        (page)="OnPageChange($event)">
-    </mat-paginator>
+<div *ngIf="animesList.length == 0" class="row justify-content-center no-results text-application">
+    No results
 </div>

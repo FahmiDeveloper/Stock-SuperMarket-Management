@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import * as moment from 'moment';
 
 import { MovieDetailsWithPartsDesktopComponent } from './movie-details-with-parts-desktop/movie-details-with-parts-desktop.component';
 import { MovieFormDesktopComponent } from './movie-form-desktop/movie-form-desktop.component';
@@ -15,7 +16,6 @@ import { UserService } from '../../shared/services/user.service';
 import { MovieService } from '../../shared/services/movie.service';
 import { UsersListService } from '../../shared/services/list-users.service';
 
-import { FirebaseUserModel } from '../../shared/models/user.model';
 import { Movie, StatusMovies } from '../../shared/models/movie.model';
 
 @Component({
@@ -27,31 +27,30 @@ import { Movie, StatusMovies } from '../../shared/models/movie.model';
 export class MoviesForDesktopComponent implements OnInit, OnDestroy {
 
   moviesList: Movie[] = [];
-  pagedList: Movie[]= [];
   moviesListCopie: Movie[] = [];
   allMovies: Movie[] = [];
   listPartsByParentFilmKey: Movie[] = [];
+
+  p: number = 1;
 
   movieName: string = '';
   statusId: number;
   sortByDesc: boolean = true;
   isDesktop: boolean;
   isTablet: boolean;
-
-  length: number = 0;
+  optionSelected: number;
+  dislike: boolean = false;
+  nbrMoviesToCheckToday: number = 0;
 
   subscriptionForGetAllMovies: Subscription;
-  subscriptionForUser: Subscription;
-  subscriptionForGetAllUsers: Subscription;
-
-  dataUserConnected: FirebaseUserModel = new FirebaseUserModel();
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  subscriptionForGetAllMoviesForSelect: Subscription;
 
   statusMovies: StatusMovies[] = [
-    {id: 1, status: 'Wait to sort'}, 
-    {id: 2, status: 'Not downloaded yet'}, 
-    {id: 5, status: 'To search about it'}
+    {id: 1, status: 'On hold'}, 
+    {id: 2, status: 'Not yet downloaded'},
+    {id: 3, status: 'Watched'}, 
+    {id: 4, status: 'Downloaded but not yet watched'},
+    {id: 5, status: 'Will be looked for'}
   ];
 
   constructor(
@@ -66,43 +65,14 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isDesktop = this.deviceService.isDesktop();
     this.isTablet = this.deviceService.isTablet();
-    this.getRolesUser();
-    this.getAllMovies(); 
-  }
-
-  getRolesUser() {
-    this.subscriptionForUser = this.authService
-      .isConnected
-      .subscribe(res=>{
-        if(res) {
-          this.userService
-            .getCurrentUser()
-            .then(user=>{
-              if(user) {
-                let connectedUserFromList: FirebaseUserModel = new FirebaseUserModel();
-
-                this.subscriptionForGetAllUsers = this.usersListService
-                .getAll()
-                .subscribe((users: FirebaseUserModel[]) => { 
-                  connectedUserFromList = users.find(element => element.email == user.email);
-
-                  this.usersListService
-                  .get(connectedUserFromList.key)
-                  .valueChanges()
-                  .subscribe(dataUser=>{
-                    this.dataUserConnected = dataUser;
-                  });
-                });
-              }
-          });   
-        }
-    })
+    this.getAllMovies();
+    this.getAllMoviesForSelect();
   }
 
   getAllMovies() {    
     this.subscriptionForGetAllMovies = this.movieService
     .getAll()
-    .subscribe(movies => {
+    .subscribe((movies: Movie[]) => {
       this.moviesListCopie = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
       this.allMovies = movies;
 
@@ -110,27 +80,54 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
         this.moviesList = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.movieName.toLowerCase()) && (movie.isFirst == true)));
         this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
       }
-      
+
       else if (this.statusId) {
-        this.moviesList = movies.filter(movie => movie.statusId == this.statusId);       
-        this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+        if (this.statusId == 1) {
+          if (this.dislike) this.dislike = false;
+          if (this.optionSelected) {
+            if (this.optionSelected == 1) {
+              this.moviesList = movies.filter(movie => movie.statusId == this.statusId && !movie.checkDate); 
+            }
+            else {
+              this.moviesList = movies.filter(movie => movie.statusId == this.statusId && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD'));
+            }      
+          }
+          else  {
+            this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
+          }
+          this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+        }
+        else {
+          if (this.optionSelected) this.optionSelected = null;
+          if (this.statusId == 3) {
+            if (this.dislike) {
+              this.moviesList = movies.filter(movie => movie.statusId == this.statusId && movie.notLiked == true);
+            }
+            else  {
+              this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
+            }
+          }
+          else {
+            if (this.dislike) this.dislike = false;
+            this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
+          }     
+          this.moviesList = this.statusId == 2 ? this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie) : this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);            
+        }
       }
       
       else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-
-      this.pagedList = this.isDesktop ? this.moviesList.slice(0, 8) : this.moviesList.slice(0, 6);
-      this.length = this.moviesList.length;
-
     });
   }
 
+  getAllMoviesForSelect() {
+    this.subscriptionForGetAllMoviesForSelect = this.movieService
+    .getAll()
+    .subscribe((movies: Movie[]) => {
+      this.nbrMoviesToCheckToday = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD')).length;
+    })
+  }
+
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.moviesList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -144,7 +141,6 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allMovies = this.allMovies;
     dialogRef.componentInstance.listPartsByParentFilmKey = this.listPartsByParentFilmKey;
     dialogRef.componentInstance.isDesktop = this.isDesktop;
-    dialogRef.componentInstance.parent = this;
   }
 
   newMovie() {
@@ -159,21 +155,15 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.movie = movie;
     dialogRef.componentInstance.allMovies = this.allMovies;
-    dialogRef.componentInstance.parent = this;
   }
 
   editMovie(movie?: Movie) {
     const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.movie = movie;
-    dialogRef.componentInstance.allMovies = this.allMovies;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });  
+    dialogRef.componentInstance.allMovies = this.allMovies; 
   }
 
-  deleteMovie(movieId) {
+  deleteMovie(movieKey: string) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'Delete this movie!',
@@ -183,7 +173,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
-        this.movieService.delete(movieId);
+        this.movieService.delete(movieKey);
         Swal.fire(
           'Movie has been deleted successfully',
           '',
@@ -195,22 +185,6 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
 
   followLink(path: string) {
     window.open(path);
-  }
-
-  sortByRefMovieDesc() {
-    this.pagedList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-    this.sortByDesc = true;
-
-    this.pagedList = this.isDesktop ? this.moviesList.slice(0, 8) : this.moviesList.slice(0, 6);
-    this.length = this.moviesList.length;
-  }
-
-  sortByRefMovieAsc() {
-    this.pagedList = this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
-    this.sortByDesc = false;
-
-    this.pagedList = this.isDesktop ? this.moviesList.slice(0, 8) : this.moviesList.slice(0, 6);
-    this.length = this.moviesList.length;
   }
 
   copyText(text: string){
@@ -229,8 +203,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
   
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
-    this.subscriptionForUser.unsubscribe();
-    this.subscriptionForGetAllUsers.unsubscribe();
+    this.subscriptionForGetAllMoviesForSelect.unsubscribe();
   }
 
 }

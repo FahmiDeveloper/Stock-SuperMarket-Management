@@ -15,26 +15,6 @@
             style="background: #2196F3;float: right;margin-top: 7px;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
-
-        <button 
-            *ngIf="!sortByDesc"
-            type="button"  
-            mat-mini-fab 
-            color="primary" 
-            (click)="sortByRefSerieDesc()"
-            style="background: #2196F3;float: right;margin-right: 10px;margin-top: 7px;">
-            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
-        </button>&nbsp;&nbsp;
-
-        <button 
-            *ngIf="sortByDesc"
-            type="button"
-            mat-mini-fab
-            color="primary" 
-            (click)="sortByRefSerieAsc()" 
-            style="background: #2196F3;float: right;margin-right: 10px;margin-top: 7px;">
-            <mat-icon style="color: white;" aria-label="Example icon-button with a heart icon">sort</mat-icon>
-        </button>&nbsp;&nbsp;
     </div> 
 </div>
  
@@ -49,11 +29,27 @@
 				</mat-option>
             </mat-select>
         </mat-form-field>
+
+        &nbsp;&nbsp;
+
+        <ng-container *ngIf="statusId">
+            <mat-form-field *ngIf="statusId == 1" style="width: 100px;">
+                <mat-select [(ngModel)]="optionSelected" name="optionSelected" class="text-application" (selectionChange)="getAllSeries()">
+                    <mat-option value=""></mat-option>
+                    <mat-option [value]="1" class="text-application">Not yet aired</mat-option>
+                    <mat-option [value]="2" class="text-application">{{nbrSeriesToCheckToday}}&nbsp;serie(s) to check Today</mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <mat-checkbox *ngIf="statusId == 3" name="dislike" [(ngModel)]="dislike" (ngModelChange)="getAllSeries()" class="mat-checkbox-layout" style="margin-top: 4%;margin-left: 9%;">
+                <span class="text-application">Dislike</span>
+            </mat-checkbox>
+        </ng-container> 
     </div>
 </div>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length == 1" cols=1 #grid rowHeight="200px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let serie of pagedList">
+<mat-grid-list *ngIf="seriesList.length !== 0 && seriesList.length == 1" cols=1 #grid rowHeight="200px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let serie of (seriesList | paginate: { itemsPerPage: 6, currentPage: p })">
         <div class="flip-container">
             <div class="card">
                 <div class="front">
@@ -151,8 +147,8 @@
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list *ngIf="pagedList.length !== 0 && pagedList.length > 1" cols=2 #grid rowHeight="200px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let serie of pagedList">
+<mat-grid-list *ngIf="seriesList.length !== 0 && seriesList.length > 1" cols=2 #grid rowHeight="200px" gutterSize="15px">
+    <mat-grid-tile *ngFor="let serie of (seriesList | paginate: { itemsPerPage: 6, currentPage: p })">
         <div class="flip-container">
             <div class="card">
                 <div class="front">
@@ -249,17 +245,13 @@
         </div>   
     </mat-grid-tile>
 </mat-grid-list>
+
+<br>
+
+<div *ngIf="seriesList.length !== 0" class="pagination">
+    <pagination-controls (pageChange)="p = $event;OnPageChange($event)" responsive="true"></pagination-controls>
+</div>
 
 <div *ngIf="seriesList.length == 0" class="row justify-content-center no-results text-application">
     No results
-</div>
-
-<div class="row mat-paginator">
-    <mat-paginator 
-        [length]="length"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions"
-        showFirstLastButtons
-        (page)="OnPageChange($event)">
-    </mat-paginator>
 </div>

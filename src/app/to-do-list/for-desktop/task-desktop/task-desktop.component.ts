@@ -60,21 +60,11 @@ export class TaskDesktopComponent implements OnChanges {
         thisWeekDaysList.push(day)
       }
 
-      if(!thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
-        this.passedTask = true;      
+      if(thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
+        this.passedTask = false;      
       }
       else {
-        const today = new Date()
-        let tomorrow =  new Date()
-        tomorrow.setDate(today.getDate() + 1);
-
-        let taskDateForDateDiff:any = new Date(this.task.date);
-        let dateTodayForDateDiff:any = new Date();
-        let dateDiff = new Date(dateTodayForDateDiff - taskDateForDateDiff);
-
-        if(this.task.date == moment(tomorrow).format('YYYY-MM-DD') || this.task.date == moment().format('YYYY-MM-DD') || dateDiff.getDate() - 1 == 1 || dateDiff.getDate() - 1 > 1) {
-          this.passedTask = true;      
-        }
+        this.passedTask = true;      
       }
     }
     ////////////////////////////////////////////////////////////////////////////////////
@@ -92,24 +82,11 @@ export class TaskDesktopComponent implements OnChanges {
         nextWeekDaysList.push(day)
       }  
 
-      if(!nextWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
-        this.passedTask = true;      
+      if(nextWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) {
+        this.passedTask = false;      
       }
       else {
-        let curr = new Date 
-        let thisWeekDaysList = [];
-
-        for (let i = 1; i <= 7; i++) {
-          let first = curr.getDate() - curr.getDay() + i 
-          let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
-          thisWeekDaysList.push(day)
-        }
-
-        const today = new Date()
-        let tomorrow =  new Date()
-        tomorrow.setDate(today.getDate() + 1);
-
-        if(thisWeekDaysList.includes(moment(this.task.date).format('YYYY-MM-DD'))) this.passedTask = true;
+        this.passedTask = true;
       }     
     }
     ////////////////////////////////////////////////////////////////////////////////////
@@ -193,6 +170,16 @@ export class TaskDesktopComponent implements OnChanges {
         else if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
         else this.task.diffDate = 'This week';
       }
+      else {
+        if(this.task.date == moment(tomorrow).format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Tomorrow'  
+        }
+        else if (this.task.date == moment().format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Today'  
+        }
+        else if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
+        else this.task.diffDate = (dateDiff.getDate() - 1) + "D";
+      }
     }
 
     else if (this.currentList == 'toDoNextWeek') {
@@ -208,7 +195,17 @@ export class TaskDesktopComponent implements OnChanges {
         }
         else if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
         else this.task.diffDate = 'This week';
-      } 
+      }
+      else {
+        if(this.task.date == moment(tomorrow).format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Tomorrow'  
+        }
+        else if (this.task.date == moment().format('YYYY-MM-DD')) {
+          this.task.diffDate = 'Today'  
+        }
+        else if (dateDiff.getDate() - 1 == 1) this.task.diffDate = 'Yesterday';
+        else this.task.diffDate = (dateDiff.getDate() - 1) + "D";
+      }
     }
 
     else if (this.currentList == 'toDoThisWeek') {
@@ -258,8 +255,11 @@ export class TaskDesktopComponent implements OnChanges {
       let rangeSelected = task.taskToDoIn;
 
       if (firstRange === rangeSelected) {
-        if (rangeSelected === 'Today' && result.task.date !== moment().format('YYYY-MM-DD')) {
-          result.task.date = moment().format('YYYY-MM-DD');
+        if (rangeSelected === 'Today') {
+          if(result.task.date !== moment().format('YYYY-MM-DD')) {
+            result.task.date = moment().format('YYYY-MM-DD');
+            this.inCorrectDate = false;
+          }
         } 
         else if (rangeSelected === 'Tomorrow') {
           const today = new Date()
@@ -342,6 +342,7 @@ export class TaskDesktopComponent implements OnChanges {
           
           if 
           (
+            result.task.date < moment().format('YYYY-MM-DD') ||
             result.task.date == moment().format('YYYY-MM-DD') || 
             result.task.date == moment(tomorrow).format('YYYY-MM-DD') || 
             (thisWeekDaysList.includes(moment(result.task.date).format('YYYY-MM-DD'))) ||
