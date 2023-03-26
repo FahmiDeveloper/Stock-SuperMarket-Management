@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -59,7 +60,9 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     public usersListService: UsersListService,
     public authService: AuthService,
     private deviceService: DeviceDetectorService,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private snackBar: MatSnackBar,
+    private cdRef:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -127,6 +130,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     .subscribe((series: Serie[]) => {
       this.nbrSeriesToCheckToday = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
       (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.currentEpisode && serie.currentEpisode < serie.totalEpisodes))).length;
+      this.cdRef.detectChanges();
     })
   }
 
@@ -202,6 +206,15 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
   }
 
   ngOnDestroy() {

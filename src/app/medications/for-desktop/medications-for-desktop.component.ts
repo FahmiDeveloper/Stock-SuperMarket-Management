@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
@@ -49,7 +50,8 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     public diseaseService: DiseaseService,
     public medicationService: MedicationService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -179,7 +181,8 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     else return false;
   }
 
-  copyText(text: string){
+  copyText(text: string, event: Event){
+    event.stopPropagation();
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -191,14 +194,19 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
   }
 
-  viewMedicationUtilisation(contentMedicationUtilisation: string) {
-    Swal.fire({
-      text: contentMedicationUtilisation,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
     });
+  }
+
+  propStop(event: Event) {
+    event.stopPropagation();
   }
 
   ngOnDestroy() {

@@ -98,7 +98,8 @@ import {
   MedicationsForDesktopComponent,
   MedicationFormDesktopComponent,
   MedicationsForMobileComponent,
-  MedicationFormMobileComponent
+  MedicationFormMobileComponent,
+  ShowMedicationDetailsComponent
 } from './medications/index';
 
 import { 
@@ -147,8 +148,6 @@ import {
   TaskMobileComponent,
   TaskFormMobileComponent
 } from './to-do-list/index';
-
-import { ToastsContainer } from './shared/components/toasts-container.component';
 
 @NgModule({
   imports: [
@@ -228,6 +227,7 @@ import { ToastsContainer } from './shared/components/toasts-container.component'
     MedicationFormDesktopComponent,
     MedicationsForMobileComponent,
     MedicationFormMobileComponent,
+    ShowMedicationDetailsComponent,
 
     MoviesForDesktopComponent,
     MovieFormDesktopComponent,
@@ -264,9 +264,7 @@ import { ToastsContainer } from './shared/components/toasts-container.component'
     TaskFormDesktopComponent,
     ToDoListForMobileComponent,
     TaskMobileComponent,
-    TaskFormMobileComponent,
-
-    ToastsContainer
+    TaskFormMobileComponent
   ],
   entryComponents: [],
   providers: [],

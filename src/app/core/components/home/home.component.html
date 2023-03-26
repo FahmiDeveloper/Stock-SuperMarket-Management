@@ -11,8 +11,14 @@
             [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }"
             class="overview-cart-mobile">
             <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+            <div
+              class="mt-4 heading-text" 
+              style="margin-left: 16px;font-size: larger !important">
+              {{nbrMoviesToCheckToday}}
+              to check today
+            </div>
             <img
-              style="margin-left: 9rem;"
+              style="margin-left: 9rem;margin-top: -93px"
               class="pl-5"
               src="/assets/pictures/movies-logo.png"
               width="150px"/>
@@ -27,9 +33,15 @@
             [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" 
             class="overview-cart-mobile">
             <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+            <div
+              class="mt-4 heading-text" 
+              style="margin-left: 16px;font-size: larger !important">
+              {{nbrAnimesToCheckToday}}
+              to check today
+            </div>
             <img
               class="pl-5"
-              style="margin-left: 9rem;"
+              style="margin-left: 9rem;margin-top: -93px"
               src="/assets/pictures/animes-logo.png"
               width="150px"/>
           </div>
@@ -43,9 +55,15 @@
             [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" 
             class="overview-cart-mobile">
             <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+            <div
+              class="mt-4 heading-text" 
+              style="margin-left: 16px;font-size: larger !important">
+              {{nbrSeriesToCheckToday}}
+              to check today
+            </div>
             <img
               class="pl-5"
-              style="margin-left: 9rem;"
+              style="margin-left: 9rem;margin-top: -93px"
               src="/assets/pictures/series-logo.png"
               width="150px"/>
           </div>
@@ -107,9 +125,17 @@
             [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" 
             class="overview-cart-mobile">
             <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+            <div
+              *ngIf="contentsExpiredList.length"
+              class="mt-4 heading-text" 
+              style="margin-left: 16px;font-size: larger !important">
+              {{contentsExpiredList.length}}
+              expired
+            </div>
             <img
               class="pl-5"
               style="margin-left: 9rem;"
+              [ngStyle]="{'margin-top': contentsExpiredList.length ? '-93px' : ''}"
               src="/assets/pictures/expired-logo.png"
               width="150px"/>
           </div>
@@ -211,8 +237,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 10px;">Movies</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrMoviesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 7rem;"
+                  style="margin-left: 7rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/movies-logo.png"
                   width="100px"
@@ -232,8 +264,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 10px;">Animes</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrAnimesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 7rem;"
+                  style="margin-left: 7rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/animes-logo.png"
                   width="100px"
@@ -253,8 +291,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 10px;">Series</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrSeriesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 7rem;"
+                  style="margin-left: 7rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/series-logo.png"
                   width="100px"
@@ -337,8 +381,16 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 10px;">Expirations</div>
+                <div
+                  *ngIf="contentsExpiredList.length"
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{contentsExpiredList.length}}
+                  expired
+                </div>
                 <img
                   style="margin-left: 7rem;"
+                  [ngStyle]="{'margin-top': contentsExpiredList.length ? '-93px' : ''}"
                   class="pl-5"
                   src="/assets/pictures/expired-logo.png"
                   width="100px"
@@ -424,7 +476,7 @@
                 <img
                   style="margin-left: 7rem;"
                   class="pl-5"
-                  src="/assets/pictures/medications-logo.png"
+                  src="/assets/pictures/medication-logo.png"
                   width="100px"
                   height="70px"/>
               </div>
@@ -469,8 +521,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrMoviesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 10rem;"
+                  style="margin-left: 10rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/movies-logo.png"
                   width="150px"/>
@@ -489,8 +547,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrAnimesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 10rem;"
+                  style="margin-left: 10rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/animes-logo.png"
                   width="150px"/>
@@ -509,8 +573,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrSeriesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 10rem;"
+                  style="margin-left: 10rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/series-logo.png"
                   width="150px"/>
@@ -589,8 +659,16 @@
               <div fxLayout class="overview-style">
                 <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                   <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+                  <div
+                    *ngIf="contentsExpiredList.length"
+                    class="mt-4 heading-text" 
+                    style="margin-left: 16px;font-size: larger !important">
+                    {{contentsExpiredList.length}}
+                    expired
+                  </div>
                   <img
                     style="margin-left: 10rem;"
+                    [ngStyle]="{'margin-top': contentsExpiredList.length ? '-93px' : ''}"
                     class="pl-5"
                     src="/assets/pictures/expired-logo.png"
                     width="150px"/>
@@ -716,8 +794,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrMoviesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 7rem;"
+                  style="margin-left: 7rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/movies-logo.png"
                   width="150px"/>
@@ -736,8 +820,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrAnimesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 7rem;"
+                  style="margin-left: 7rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/animes-logo.png"
                   width="150px"/>
@@ -756,8 +846,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrSeriesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 7rem;"
+                  style="margin-left: 7rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/series-logo.png"
                   width="150px"/>
@@ -836,8 +932,16 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+                <div
+                  *ngIf="contentsExpiredList.length"
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{contentsExpiredList.length}}
+                  expired
+                </div>
                 <img
                   style="margin-left: 7rem;"
+                  [ngStyle]="{'margin-top': contentsExpiredList.length ? '-93px' : ''}"
                   class="pl-5"
                   src="/assets/pictures/expired-logo.png"
                   width="150px"/>
@@ -962,8 +1066,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#3f51b5', 'border': '1px solid #3f51b5' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Movies</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrMoviesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 10rem;"
+                  style="margin-left: 10rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/movies-logo.png"
                   width="150px"/>
@@ -982,8 +1092,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#4CAF50', 'border': '1px solid #4CAF50' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Animes</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrAnimesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 10rem;"
+                  style="margin-left: 10rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/animes-logo.png"
                   width="150px"/>
@@ -1002,8 +1118,14 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#ec4b53', 'border': '1px solid #ec4b53' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Series</div>
+                <div
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{nbrSeriesToCheckToday}}
+                  to check today
+                </div>
                 <img
-                  style="margin-left: 10rem;"
+                  style="margin-left: 10rem;margin-top: -93px"
                   class="pl-5"
                   src="/assets/pictures/series-logo.png"
                   width="150px"/>
@@ -1082,8 +1204,16 @@
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
+                <div
+                  *ngIf="contentsExpiredList.length"
+                  class="mt-4 heading-text" 
+                  style="margin-left: 16px;font-size: larger !important">
+                  {{contentsExpiredList.length}}
+                  expired
+                </div>
                 <img
                   style="margin-left: 10rem;"
+                  [ngStyle]="{'margin-top': contentsExpiredList.length ? '-93px' : ''}"
                   class="pl-5"
                   src="/assets/pictures/expired-logo.png"
                   width="150px"/>

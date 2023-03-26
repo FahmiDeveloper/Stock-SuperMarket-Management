@@ -31,108 +31,80 @@
     </div>     
 </div>
 
-<mat-nav-list class="nav-list">
-
-	<mat-list-item *ngFor="let medication of pagedList">
-
-        <span 
-            class="text-application" 
-            style="font-size: x-large;line-height: 1.5em;" 
-            matLine 
-            (click)="copyText(medication.medicationName)">
-            {{ medication.medicationName }}
-        </span>
-
-        <span
-            *ngIf="!diseaseSelectedId" 
-            class="text-application" 
-            style="font-size: larger;line-height: 1.5em;" 
-            matLine 
-            (click)="copyText(medication.medicationFor)">
-            {{ medication.medicationFor }}
-        </span>
-
-        <span
-            *ngIf="medication.price" 
-            class="text-application" 
-            style="font-size: larger;line-height: 1.5em;" 
-            matLine>
-            {{ medication.price }}
-        </span>
-
-        <span 
-            class="text-application" 
-            style="font-size: larger;line-height: 1.5em;" 
-            matLine 
-            (click)="copyText(medication.utilisation)">
-            {{ medication.utilisation }}
-        </span>
-
-        <span matLine></span>
-
-        <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{medication:medication}">
+<show-medication-details *ngFor="let medication of pagedList" [medication]="medication">
+    <span
+        *ngIf="!diseaseSelectedId" 
+        class="text-application" 
+        style="font-size: larger;cursor: pointer;" 
+        (click)="copyText(medication.medicationFor, $event)">
+        {{ medication.medicationFor }}&nbsp;
+        <button (click)="propStop($event)" mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{medication:medication}">
             <mat-icon>more_vert</mat-icon>
         </button>
+    </span>
 
-        <mat-divider style="color: black;"></mat-divider>
+    <br *ngIf="medication.price && !diseaseSelectedId"><br *ngIf="medication.price && !diseaseSelectedId">
+    
+    <span
+        *ngIf="medication.price" 
+        class="text-application" 
+        style="font-size: larger;">
+        {{ medication.price }}
+    </span>
 
-    </mat-list-item>
+    <br *ngIf="medication.utilisation"><br *ngIf="medication.utilisation">
+    <span
+        *ngIf="medication.utilisation" 
+        class="text-application" 
+        style="font-size: larger;cursor: pointer;" 
+        (click)="copyText(medication.utilisation, $event)">
+        {{ medication.utilisation }}
+    </span>
+</show-medication-details>
 
-    <mat-menu #contextMenu="matMenu" xPosition="before">
-        <ng-template matMenuContent let-medication="medication">
+<mat-menu #contextMenu="matMenu" xPosition="before">
+    <ng-template matMenuContent let-medication="medication">
 
-            <button
-                type="button"
-                mat-menu-item 
-                (click)="editMedication(medication)"
-                class="text-application">
-                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                <span>Edit</span>
-            </button>
+        <button
+            type="button"
+            mat-menu-item 
+            (click)="editMedication(medication)"
+            class="text-application">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
+        </button>
 
-            <button
-                *ngIf="medication.urlPicture && checkIsImage(medication.urlPicture)"
-                type="button"
-                mat-menu-item               
-                (click)="viewPicture(medication, showPicture)"
-                class="text-application">
-                <mat-icon>attach_file</mat-icon>                
-                <span>Picture</span>
-            </button>
+        <button
+            *ngIf="medication.urlPicture && checkIsImage(medication.urlPicture)"
+            type="button"
+            mat-menu-item               
+            (click)="viewPicture(medication, showPicture)"
+            class="text-application">
+            <mat-icon>attach_file</mat-icon>                
+            <span>Picture</span>
+        </button>
 
-            <button
-                *ngIf="medication.urlPicture"
-                type="button"
-                mat-menu-item 
-                (click)="downloadPicture(medication)"
-                class="text-application">
-                <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
-                <span>Download</span>
-            </button>
+        <button
+            *ngIf="medication.urlPicture"
+            type="button"
+            mat-menu-item 
+            (click)="downloadPicture(medication)"
+            class="text-application">
+            <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
+            <span>Download</span>
+        </button>
 
-            <button
-                *ngIf="medication.utilisation"
-                type="button"
-                mat-menu-item 
-                (click)="viewMedicationUtilisation(medication.utilisation)"
-                class="text-application">
-                <mat-icon style="color: black;">note</mat-icon>   
-                <span>Utilisation</span>
-            </button>
+        <button
+            type="button"
+            mat-menu-item 
+            (click)="deleteMedication(medication.key)"
+            class="text-application">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            <span>Delete</span>
+        </button>  
 
-            <button
-                type="button"
-                mat-menu-item 
-                (click)="deleteMedication(medication.key)"
-                class="text-application">
-                <mat-icon style="color: #f44336;">delete</mat-icon>
-                <span>Delete</span>
-            </button>  
-
-        </ng-template>
-    </mat-menu>
-
-</mat-nav-list>
+    </ng-template>
+</mat-menu>
 
 <div *ngIf="medicationsList.length == 0" class="row justify-content-center no-results text-application">
     No results
