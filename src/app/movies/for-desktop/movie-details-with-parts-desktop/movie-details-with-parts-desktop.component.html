@@ -31,6 +31,7 @@
               [ngClass]="movie.statusId == 1 ? 'wait-image' : 
               movie.statusId == 2 ? 'not-download-image':
               movie.statusId == 3 && !movie.notLiked ? 'watched-image':
+              movie.statusId == 3 && movie.notLiked ? 'not-liked-image':
               movie.statusId == 4 ? 'not-watched-image':
               movie.statusId == 5 ? 'search-image': ''">
             </span>
