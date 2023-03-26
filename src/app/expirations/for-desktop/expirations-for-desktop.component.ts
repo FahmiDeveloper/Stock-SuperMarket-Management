@@ -13,7 +13,6 @@ import { ExpirationFormDesktopComponent } from './expiration-form-desktop/expira
 import { ExpirationService } from 'src/app/shared/services/expiration.service';
 
 import { Expiration } from 'src/app/shared/models/expiration.model';
-import { ToastService } from 'src/app/shared/services/toast-service';
 
 @Component({
   selector: 'expirations-for-desktop',
@@ -25,7 +24,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Expiration>();
   dataSourceCopie = new MatTableDataSource<Expiration>();
-  displayedColumns: string[] = ['content', 'cost', 'date', 'diffdays', 'note', 'star'];
+  displayedColumns: string[] = ['content', 'cost', 'date', 'diffdays', 'note', 'expiredPicture', 'star'];
 
   expirationsList: Expiration[] = [];
   pagedList: Expiration[]= [];
@@ -44,8 +43,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   constructor(
     public expirationService: ExpirationService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService,
-    public toastService: ToastService
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
@@ -132,9 +130,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
     let dateExpiration = new Date(expiration.dateExpiration);
 
     expiration.isExpired = (composedDate.getTime() > dateExpiration.getTime()) ? true : false ;
-    if (expiration.isExpired) {
-      this.showDanger(expiration.contentName);
-    }
   }
 
   calculateRestDays(expiration: Expiration) { 
@@ -200,13 +195,8 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
     });
   }
 
-  showDanger(expirationContent: string) {
-    this.toastService.show(expirationContent + ' is expired', { classname: 'bg-danger text-light', delay: 10000 });
-  }
-
   ngOnDestroy() {
     this.subscriptionForGetAllExpirations.unsubscribe();
-    this.toastService.clear();
   }
 
 }

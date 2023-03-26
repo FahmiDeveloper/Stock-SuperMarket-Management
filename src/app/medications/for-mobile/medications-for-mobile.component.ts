@@ -3,6 +3,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -49,7 +50,8 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     public diseaseService: DiseaseService,
     public medicationService: MedicationService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -188,7 +190,8 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     });
   }
 
-  copyText(text: string){
+  copyText(text: string, event: Event){
+    event.stopPropagation();
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -200,6 +203,19 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  propStop(event: Event) {
+    event.stopPropagation();
   }
 
   ngOnDestroy() {

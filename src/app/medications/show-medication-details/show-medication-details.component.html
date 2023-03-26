@@ -1,0 +1,13 @@
+<div class="zippy">
+
+    <div class="zippy-heading text-application" [class.expanded]="isExpanded" (click)="toggle()">   
+        <span (click)="copyText(medication.medicationName, $event)">{{ medication.medicationName }}</span>
+        <mat-icon *ngIf="!isExpanded" style="color: black;float: right;cursor: pointer;">arrow_downward</mat-icon>
+        <mat-icon *ngIf="isExpanded" style="color: black;float: right;cursor: pointer;">arrow_upward</mat-icon>
+    </div>
+
+    <div [@expandCollapse] = "isExpanded ? 'expanded' : 'collapsed'" class="zippy-body">
+      <ng-content></ng-content>
+    </div>
+
+</div>

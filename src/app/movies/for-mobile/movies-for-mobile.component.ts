@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -55,7 +56,9 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private snackBar: MatSnackBar,
+    private cdRef:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -118,6 +121,7 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe((movies: Movie[]) => {
       this.nbrMoviesToCheckToday = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD')).length;
+      this.cdRef.detectChanges();
     })
   }
 
@@ -209,6 +213,15 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
   }
 
   ngOnDestroy() {

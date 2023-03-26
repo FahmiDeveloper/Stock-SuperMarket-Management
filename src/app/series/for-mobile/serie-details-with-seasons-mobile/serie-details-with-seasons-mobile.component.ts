@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import Swal from 'sweetalert2';
 
@@ -33,7 +34,8 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
   constructor(
     private serieService: SerieService, 
     public dialogRef: MatDialogRef<SerieDetailsWithSeasonsMobileComponent>,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {}
@@ -94,6 +96,15 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
   }
 
   viewNote(serieNote: string) {

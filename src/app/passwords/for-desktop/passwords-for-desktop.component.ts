@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -38,7 +39,8 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   constructor(
     public passwordService: PasswordService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -128,10 +130,19 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
   }
 
   followLink(path: string) {
     window.open(path);
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
   }
 
   ngOnDestroy() {

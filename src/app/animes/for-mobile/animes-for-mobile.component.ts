@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -55,7 +56,9 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private snackBar: MatSnackBar,
+    private cdRef:ChangeDetectorRef
   ) {}
 
   ngOnInit() { 
@@ -125,6 +128,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     .subscribe((animes: Anime[]) => {
       this.nbrAnimesToCheckToday = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate == moment().format('YYYY-MM-DD') &&
       (!anime.currentEpisode || (anime.currentEpisode && !anime.totalEpisodes) || (anime.currentEpisode && anime.currentEpisode && anime.currentEpisode < anime.totalEpisodes))).length;
+      this.cdRef.detectChanges();
     })
   }
 
@@ -224,6 +228,15 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
   }
 
   ngOnDestroy() {

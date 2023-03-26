@@ -1,9 +1,5 @@
 <h1 class="titleTextInterface text-application">Expirations</h1>
 
-<div  class="row justify-content-center">
-    <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
-</div>
-
 <div class="row">
     <div class="col-md-12">
         <mat-form-field class="text-application" style="width: 200px;">
@@ -27,12 +23,24 @@
     <div class="example-table-container">
         <table mat-table [dataSource]="dataSource">
 
+            <ng-container matColumnDef="expiredPicture">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-grid-list *ngIf="element.isExpired" cols="12" rowHeight="70px">
+                        <mat-grid-tile colspan="3">
+                            <img src="/assets/gif/expired.gif" class="style-picture">
+                        </mat-grid-tile>
+                        <mat-grid-tile colspan="9"></mat-grid-tile>
+                    </mat-grid-list>
+                </td>
+            </ng-container>
+
             <ng-container matColumnDef="content">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
                     <mat-grid-list cols="12">
                         <mat-grid-tile colspan="3"><div>Content:</div></mat-grid-tile>
-                        <mat-grid-tile colspan="9"><div style="margin-left: 17px;">{{ element.contentName }}</div></mat-grid-tile>
+                        <mat-grid-tile colspan="9"><div style="margin-left: 8px;">{{ element.contentName }}</div></mat-grid-tile>
                     </mat-grid-list>
                 </td>
             </ng-container>
@@ -86,26 +94,16 @@
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
                     <mat-grid-list cols="12">
-                        <mat-grid-tile colspan="3"><div>Rest:</div></mat-grid-tile>
-                        <mat-grid-tile colspan="9">
-                            <div style="margin-left: 8px;">
-                                <span *ngIf="element.restdays">{{ element.restdays }}</span>
-                                <span *ngIf="!element.restdays">-</span>
+                        <mat-grid-tile colspan="3">
+                            <div>
+                                <span *ngIf="element.isExpired" style="color: red;">Passed:</span>
+                                <span *ngIf="!element.isExpired" style="color: green;">Rest:</span>
                             </div>
                         </mat-grid-tile>
-                    </mat-grid-list>
-                </td>
-            </ng-container>
-    
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-grid-list cols="12">
-                        <mat-grid-tile colspan="3"><div>Status:</div></mat-grid-tile>
                         <mat-grid-tile colspan="9">
                             <div style="margin-left: 8px;">
-                                <span *ngIf="element.isExpired" style="color: red;">Expired</span>
-                                <span *ngIf="!element.isExpired" style="color: green;">Unexpired</span>
+                                <span *ngIf="element.isExpired" style="color: red;">{{ element.restdays }}</span>
+                                <span *ngIf="!element.isExpired" style="color: green;">{{ element.restdays }}</span>
                             </div>
                         </mat-grid-tile>
                     </mat-grid-list>
