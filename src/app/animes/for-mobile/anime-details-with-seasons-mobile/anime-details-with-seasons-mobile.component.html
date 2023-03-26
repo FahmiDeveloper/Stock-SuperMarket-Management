@@ -38,6 +38,7 @@
                 [ngClass]="anime.statusId == 1 ? 'wait-image' : 
                 anime.statusId == 2 ? 'not-download-image':
                 anime.statusId == 3 && !anime.notLiked ? 'watched-image':
+                anime.statusId == 3 && anime.notLiked ? 'not-liked-image':
                 anime.statusId == 4 ? 'not-watched-image':
                 anime.statusId == 5 ? 'search-image': ''">
               </span>

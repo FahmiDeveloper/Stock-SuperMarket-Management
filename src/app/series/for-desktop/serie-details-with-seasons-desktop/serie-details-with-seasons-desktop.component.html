@@ -31,6 +31,7 @@
               [ngClass]="serie.statusId == 1 ? 'wait-image' : 
               serie.statusId == 2 ? 'not-download-image':
               serie.statusId == 3 && !serie.notLiked ? 'watched-image':
+              serie.statusId == 3 && serie.notLiked ? 'not-liked-image':
               serie.statusId == 4 ? 'not-watched-image':
               serie.statusId == 5 ? 'search-image': ''">
             </span>
