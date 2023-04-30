@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
@@ -10,7 +10,6 @@ import * as moment from 'moment';
 
 import { SerieDetailsWithSeasonsDesktopComponent } from './serie-details-with-seasons-desktop/serie-details-with-seasons-desktop.component';
 import { SerieFormDesktopComponent } from './serie-form-desktop/serie-form-desktop.component';
-import { SerieDetailsDesktopComponent } from './serie-details-desktop/serie-details-desktop.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -143,24 +142,17 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     .filter(serie => (serie.key == serieSelected.key) || (serie.parentSerieKey == serieSelected.key))
     .sort((n1, n2) => n1.priority - n2.priority);
 
-    const dialogRef = this.dialogService.open(SerieDetailsWithSeasonsDesktopComponent, {width: '600px'});
+    const dialogRef = this.dialogService.open(SerieDetailsWithSeasonsDesktopComponent, {width: '1150px'});
     dialogRef.componentInstance.serie = serieSelected;
     dialogRef.componentInstance.allSeries = this.allSeries;
     dialogRef.componentInstance.listSeasonsByParentSerieKey = this.listSeasonsByParentSerieKey;
     dialogRef.componentInstance.isDesktop = this.isDesktop;
+    dialogRef.componentInstance.isTablet = this.isTablet;
   }
 
   newSerie() {
     const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arraySeries = this.seriesListCopie;
-    dialogRef.componentInstance.allSeries = this.allSeries;
-  }
-
-  viewDetailsSerie(serie: Serie) {
-    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(SerieDetailsDesktopComponent, config);
-
-    dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
   }
 
@@ -214,6 +206,14 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
       duration: 2000,
       verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
       horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  viewNote(serieNote: string) {
+    Swal.fire({
+      text: serieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
     });
   }
 

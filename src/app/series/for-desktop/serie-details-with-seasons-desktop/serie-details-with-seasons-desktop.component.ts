@@ -24,6 +24,7 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
   serie: Serie = new Serie();
 
   isDesktop: boolean;
+  isTablet: boolean;
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'On hold'}, 

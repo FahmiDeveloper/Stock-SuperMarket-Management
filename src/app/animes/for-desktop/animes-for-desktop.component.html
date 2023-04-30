@@ -48,246 +48,120 @@
 
 <br>
 
-<mat-grid-list *ngIf="animesList.length !== 0 && animesList.length == 1" cols=1 #grid rowHeight="350px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 1, currentPage: p })">
-        <div class="flip-container">
-            <div class="card">
-                <div class="front">
-                    <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-                    <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
-                </div>
-                <div class="back">
-                    <h4 
-                        class="text-application" 
-                        style="text-align: center;font-weight: 600;"
-                        [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
-                        (click)="copyText(anime.nameAnime)">
-                        {{ anime.nameAnime }}
-                    </h4> 
-                    <br>
-                    <button
-                        *ngIf="anime.haveSeasons" 
-                        type="button"
-                        mat-button 
-                        (click)="showDetailsAnime(anime)"
-                        class="style-button text-application"
-                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                        <mat-icon style="color: #a54403">view_list</mat-icon>
-                        <span>Details</span>
-                    </button>           
-                    <button 
-                        *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
-                        type="button"
-                        mat-button
-                        [matMenuTriggerFor]="menu" 
-                        class="style-button text-application"
-                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                        <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-                        Actions
-                    </button>
-                    <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
-                        <button
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="viewDetailsAnime(anime)">
-                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
-                            View
-                        </button>
-                        <button
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="editAnime(anime)">
-                            <mat-icon style="color: #9C27B0">edit</mat-icon>
-                            Edit
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 1 && anime.path" 
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                            Check
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 2 && anime.path" 
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: green">cloud_download</mat-icon>
-                            Download
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 4 && anime.path" 
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                            Watch
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 5 && anime.path"
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: #0e8999">search</mat-icon>
-                            Search
-                        </button>
-                        <button
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="deleteAnime(anime.key)">
-                            <mat-icon style="color: #f44336;">delete</mat-icon>
-                            Delete
-                        </button>
-                    </mat-menu>   
-                    <br><br>
-                </div>
-            </div>
-        </div>   
-    </mat-grid-tile>
-</mat-grid-list>
+<div class="row mt-4">
+    <div class="col-12">
+     
+        <div class="card" *ngFor="let anime of (animesList | paginate: { itemsPerPage: 6, currentPage: p })" style="margin-bottom: 20px !important;">
+            <div class="card-body">
+                <div class="row">
 
-<mat-grid-list *ngIf="animesList.length !== 0 && animesList.length == 2" cols=2 #grid rowHeight="350px" gutterSize="15px">
-    <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 2, currentPage: p })">
-        <div class="flip-container">
-            <div class="card">
-                <div class="front">
-                    <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-                    <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
-                </div>
-                <div class="back">
-                    <h4 
-                        class="text-application" 
-                        style="text-align: center;font-weight: 600;"
-                        [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" 
-                        (click)="copyText(anime.nameAnime)">
-                        {{ anime.nameAnime }}
-                    </h4> 
-                    <br>
-                    <button
-                        *ngIf="anime.haveSeasons" 
-                        type="button"
-                        mat-button 
-                        (click)="showDetailsAnime(anime)"
-                        class="style-button text-application"
-                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                        <mat-icon style="color: #a54403">view_list</mat-icon>
-                        <span>Details</span>
-                    </button>           
-                    <button 
-                        *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
-                        type="button"
-                        mat-button
-                        [matMenuTriggerFor]="menu" 
-                        class="style-button text-application"
-                        [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                        <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-                        Actions
-                    </button>
-                    <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
-                        <button
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="viewDetailsAnime(anime)">
-                            <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
-                            View
-                        </button>
-                        <button
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="editAnime(anime)">
-                            <mat-icon style="color: #9C27B0">edit</mat-icon>
-                            Edit
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 1 && anime.path" 
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                            Check
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 2 && anime.path" 
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: green">cloud_download</mat-icon>
-                            Download
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 4 && anime.path" 
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                            Watch
-                        </button>
-                        <button
-                            *ngIf="anime.statusId == 5 && anime.path"
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="followLink(anime.path)">
-                            <mat-icon style="color: #0e8999">search</mat-icon>
-                            Search
-                        </button>
-                        <button
-                            mat-menu-item 
-                            class="text-application"
-                            (click)="deleteAnime(anime.key)">
-                            <mat-icon style="color: #f44336;">delete</mat-icon>
-                            Delete
-                        </button>
-                    </mat-menu>  
-                    <br><br>
-                </div>
-            </div>
-        </div>   
-    </mat-grid-tile>
-</mat-grid-list>
-
-<ng-container *ngIf="isDesktop">
-    <mat-grid-list *ngIf="animesList.length !== 0 && animesList.length == 3" cols=3 #grid rowHeight="320px" gutterSize="15px">
-        <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 3, currentPage: p })">
-            <div class="flip-container">
-                <div class="card">
-                    <div class="front">
+                    <div [ngClass]="isTablet ? 'col-md-3' : 'col-md-2'">
                         <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-                        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
+                        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">
                     </div>
-                    <div class="back">
-                        <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(anime.nameAnime)">
-                            {{ anime.nameAnime }}
-                        </h4>
+
+                    <div [ngClass]="isTablet ? 'col-md-3' : 'col-md-4'" class="dotted-border center-name-anime">
+                        <h1 class="text-application" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" (click)="copyText(anime.nameAnime)">{{ anime.nameAnime }}</h1>
+                    </div>
+
+                    <div class="col-md-4 dotted-border text-application">
+                        <div class="gridForLegend">
+                            <div><dt>Year</dt></div>
+                            <div>
+                                <span *ngIf="anime.year">{{ anime.year }}</span>
+                                <span *ngIf="!anime.year">?</span>
+                            </div>
+                        </div>
+
                         <br>
+
+                        <div class="gridForLegend">
+                            <div><dt>Type</dt></div>
+                            <div>
+                                <span *ngIf="anime.type">{{ anime.type }}</span>
+                                <span *ngIf="!anime.type">?</span>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div *ngIf="!anime.notLiked" class="gridForLegend">
+                            <div><dt>Season</dt></div>
+                            <div>
+                                <span *ngIf="anime.season && !anime.notLiked">{{ anime.season }}</span>
+                                <span *ngIf="!anime.season && !anime.notLiked">?</span> 
+                            </div>
+                        </div>
+
+                        <br *ngIf="!anime.notLiked">
+
+                        <div class="gridForLegend">
+                            <div><dt>Status</dt></div>
+                            <div>
+                                <i *ngIf="anime.statusId == 1" class="fa fa-spinner fa-spin" style="color:goldenrod;"></i>
+                                <i *ngIf="anime.statusId == 2" class="fa fa-download" style="color: red;"></i>
+                                <i *ngIf="anime.statusId == 3" class="fa fa-eye" style="color: green;"></i>
+                                <i *ngIf="anime.statusId == 4" class="fa fa-eye" style="color: red;"></i>
+                                <i *ngIf="anime.statusId == 5" class="fa fa-search" style="color:#07609b;"></i>
+                                &nbsp;
+                                <i *ngIf="anime.notLiked" class="fa fa-thumbs-down" style="color: red;"></i>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div *ngIf="anime.statusId == 1" class="gridForLegend">
+                            <div><dt>Check</dt></div>
+                            <div>
+                                <span *ngIf="anime.checkDate">{{ anime.checkDate | date: 'dd/MM/yyyy' }}</span>
+                                <span *ngIf="!anime.checkDate">?</span>
+                            </div>
+                        </div>
+
+                        <br *ngIf="anime.statusId == 1">
+
+                        <div class="gridForLegend" *ngIf="!anime.notLiked">
+                            <div><dt>Curr/Tot</dt></div>
+                            <div>
+                                <span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+                                <span *ngIf="!anime.currentEpisode">?</span>
+                                /
+                                <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
+                                <span *ngIf="!anime.totalEpisodes">?</span>   
+                            </div>
+                        </div>
+
+                        <br *ngIf="!anime.notLiked">
+
+                        <div class="gridForLegend">
+                            <div><dt>Note</dt></div>
+                            <div>
+                                <mat-icon *ngIf="anime.note" style="color: black;" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" (click)="viewNote(anime.note)">note</mat-icon>         
+                                <i *ngIf="!anime.note" class="fa fa-minus-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 dotted-border">
                         <button
-                            *ngIf="anime.haveSeasons"  
+                            *ngIf="anime.haveSeasons" 
                             type="button"
                             mat-button 
                             (click)="showDetailsAnime(anime)"
-                            class="style-button text-application"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            class="style-button text-application center-btn">
                             <mat-icon style="color: #a54403">view_list</mat-icon>
-                            <span>Details</span>
+                            <span>Seasons</span>
                         </button>           
                         <button 
                             *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
                             type="button"
                             mat-button
                             [matMenuTriggerFor]="menu" 
-                            class="style-button text-application"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
+                            class="style-button text-application center-btn">
                             <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
                             Actions
                         </button>
                         <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
-                            <button
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="viewDetailsAnime(anime)">
-                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
-                                View
-                            </button>
                             <button
                                 mat-menu-item 
                                 class="text-application"
@@ -335,205 +209,13 @@
                                 Delete
                             </button>
                         </mat-menu>   
-                        <br><br>
                     </div>
-                </div>
-            </div>   
-        </mat-grid-tile>
-    </mat-grid-list>
-
-    <mat-grid-list *ngIf="animesList.length !== 0 && animesList.length > 3" cols=4 #grid rowHeight="320px" gutterSize="15px">
-        <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 8, currentPage: p })">
-            <div class="flip-container">
-                <div class="card">
-                    <div class="front">
-                        <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-                        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
-                    </div>
-                    <div class="back">
-                        <h4 class="text-application" style="text-align: center;font-weight: 600;cursor: pointer;" (click)="copyText(anime.nameAnime)">
-                            {{ anime.nameAnime }}
-                        </h4>
-                        <br>
-                        <button
-                            *ngIf="anime.haveSeasons" 
-                            type="button"
-                            mat-button 
-                            (click)="showDetailsAnime(anime)"
-                            class="style-button text-application"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                            <mat-icon style="color: #a54403">view_list</mat-icon>
-                            <span>Details</span>
-                        </button>           
-                        <button 
-                            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
-                            type="button"
-                            mat-button
-                            [matMenuTriggerFor]="menu" 
-                            class="style-button text-application"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-                            Actions
-                        </button>
-                        <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
-                            <button
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="viewDetailsAnime(anime)">
-                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
-                                View
-                            </button>
-                            <button
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="editAnime(anime)">
-                                <mat-icon style="color: #9C27B0">edit</mat-icon>
-                                Edit
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 1 && anime.path" 
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                                Check
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 2 && anime.path" 
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: green">cloud_download</mat-icon>
-                                Download
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 4 && anime.path" 
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                                Watch
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 5 && anime.path"
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: #0e8999">search</mat-icon>
-                                Search
-                            </button>
-                            <button
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="deleteAnime(anime.key)">
-                                <mat-icon style="color: #f44336;">delete</mat-icon>
-                                Delete
-                            </button>
-                        </mat-menu>   
-                        <br><br>
-                    </div>
-                </div>
-            </div>   
-        </mat-grid-tile>
-    </mat-grid-list>
-</ng-container>
-
-<ng-container *ngIf="isTablet">
-    <mat-grid-list *ngIf="animesList.length !== 0 && animesList.length > 2" cols=3 #grid rowHeight="320px" gutterSize="15px">
-        <mat-grid-tile *ngFor="let anime of (animesList | paginate: { itemsPerPage: 6, currentPage: p })">
-            <div class="flip-container">
-                <div class="card">
-                    <div class="front">
-                        <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image">
-                        <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image">    
-                    </div>
-                    <div class="back">
-                        <h4 class="text-application" style="text-align: center;font-weight: 600;" (click)="copyText(anime.nameAnime)">
-                            {{ anime.nameAnime }}
-                        </h4>
-                        <br>
-                        <button
-                            *ngIf="anime.haveSeasons" 
-                            type="button"
-                            mat-button 
-                            (click)="showDetailsAnime(anime)"
-                            class="style-button text-application"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                            <mat-icon style="color: #a54403">view_list</mat-icon>
-                            <span>Details</span>
-                        </button>           
-                        <button 
-                            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
-                            type="button"
-                            mat-button
-                            [matMenuTriggerFor]="menu" 
-                            class="style-button text-application"
-                            [ngStyle]="{'margin-bottom': anime.nameAnime.length > 25 ? '3%' : ''}">
-                            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-                            Actions
-                        </button>
-                        <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
-                            <button
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="viewDetailsAnime(anime)">
-                                <mat-icon style="color: #07949b">remove_red_eye</mat-icon>
-                                View
-                            </button>
-                            <button
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="editAnime(anime)">
-                                <mat-icon style="color: #9C27B0">edit</mat-icon>
-                                Edit
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 1 && anime.path" 
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                                Check
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 2 && anime.path" 
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: green">cloud_download</mat-icon>
-                                Download
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 4 && anime.path" 
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                                Watch
-                            </button>
-                            <button
-                                *ngIf="anime.statusId == 5 && anime.path"
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="followLink(anime.path)">
-                                <mat-icon style="color: #0e8999">search</mat-icon>
-                                Search
-                            </button>
-                            <button
-                                mat-menu-item 
-                                class="text-application"
-                                (click)="deleteAnime(anime.key)">
-                                <mat-icon style="color: #f44336;">delete</mat-icon>
-                                Delete
-                            </button>
-                        </mat-menu>  
-                        <br><br>
-                    </div>
-                </div>
-            </div>   
-        </mat-grid-tile>
-    </mat-grid-list>
-</ng-container>
+                    
+                </div>        
+            </div>
+        </div>
+    </div>
+</div>
 
 <br>
 

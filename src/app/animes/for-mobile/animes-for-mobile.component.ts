@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
@@ -9,7 +9,6 @@ import * as moment from 'moment';
 
 import { AnimeDetailsWithSeasonsMobileComponent } from './anime-details-with-seasons-mobile/anime-details-with-seasons-mobile.component';
 import { AnimeFormMobileComponent } from './anime-form-mobile/anime-form-mobile.component';
-import { AnimeDetailsMobileComponent } from './anime-details-mobile/anime-details-mobile.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -170,18 +169,6 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allAnimes = this.allAnimes;  
   }
 
-  viewDetailsAnime(anime: Anime) {
-    let config: MatDialogConfig = {
-      panelClass: "dialog-responsive",
-      width: '98vw',
-      maxWidth: '100vw'
-    }
-    const dialogRef = this.dialogService.open(AnimeDetailsMobileComponent, config);
-
-    dialogRef.componentInstance.anime = anime;
-    dialogRef.componentInstance.allAnimes = this.allAnimes;
-  }
-
   editAnime(anime?: Anime) {
     const dialogRef = this.dialogService.open(AnimeFormMobileComponent, {
       width: '98vw',
@@ -236,6 +223,14 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
       duration: 2000,
       verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
       horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  viewNote(animeNote: string) {
+    Swal.fire({
+      text: animeNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
     });
   }
 

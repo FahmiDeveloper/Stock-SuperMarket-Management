@@ -1,5 +1,6 @@
 <div mat-dialog-title class="dialog-title" id="name">
-  <h3 mat-dialog-title class="text-application" (click)="copyText(movie.nameMovie)" style="cursor: pointer;">{{ movie.nameMovie }}</h3> 
+  <h2 *ngIf="listPartsByParentFilmKey.length == 1" class="text-application">No parts yet</h2>
+  <h2 *ngIf="listPartsByParentFilmKey.length > 1" class="text-application">All parts</h2>
   <button mat-icon-button aria-label="close dialog" mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -7,101 +8,129 @@
   
 <mat-dialog-content>
 
-  <div #target>
-    <mat-grid-list *ngIf="listPartsByParentFilmKey.length > 0" cols=2 #grid rowHeight="200px" gutterSize="15px">
+  <div class="card" *ngFor="let movie of listPartsByParentFilmKey" style="margin-bottom: 20px !important;">
 
-      <mat-grid-tile>
-        <div class="card">
-          <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
-          <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
-        </div>
-      </mat-grid-tile>
+    <div class="card" style="flex-direction: row;border: white;">
+      <img *ngIf="movie.imageUrl" [src]="movie.imageUrl">
+      <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png">
   
-      <mat-grid-tile>
-        <div class="card">
-          <mat-grid-list cols=3 rowHeight="33px" class="text-application">
-            <mat-grid-tile *ngIf="movie.statusId !== 1" colspan="1">Year</mat-grid-tile>
-            <mat-grid-tile *ngIf="movie.statusId !== 1" colspan="2">
-              <span *ngIf="movie.year">{{ movie.year }}</span>
-              <span *ngIf="!movie.year">?</span>                           
-            </mat-grid-tile>
-    
-            <mat-grid-tile colspan="1">Status</mat-grid-tile>
-            <mat-grid-tile colspan="2">
-              <span
-                [ngClass]="movie.statusId == 1 ? 'wait-image' : 
-                movie.statusId == 2 ? 'not-download-image':
-                movie.statusId == 3 && !movie.notLiked ? 'watched-image':
-                movie.statusId == 3 && movie.notLiked ? 'not-liked-image':
-                movie.statusId == 4 ? 'not-watched-image':
-                movie.statusId == 5 ? 'search-image': ''">
-              </span>
-            </mat-grid-tile>
-  
-            <mat-grid-tile *ngIf="movie.statusId == 1" colspan="1">Check</mat-grid-tile>
-            <mat-grid-tile *ngIf="movie.statusId == 1" colspan="2">
-              <span *ngIf="movie.checkDate">{{ movie.checkDate | date: 'dd/MM/yyyy' }}</span>
-              <span *ngIf="!movie.checkDate">?</span>                           
-            </mat-grid-tile>   
-    
-            <mat-grid-tile colspan="1">Part</mat-grid-tile>
-            <mat-grid-tile colspan="2">
-              <span *ngIf="movie.part">{{ movie.part }}</span>
-              <span *ngIf="!movie.part"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>                           
-            </mat-grid-tile>
-    
-            <mat-grid-tile colspan="1">Path</mat-grid-tile>
-            <mat-grid-tile colspan="2">
-              <span *ngIf="movie.path">
-                <mat-icon style="cursor: pointer;" (click)="followLink(movie.path)" target="_blank">link</mat-icon>                            
-              </span>
-              <span *ngIf="!movie.path"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
-            </mat-grid-tile>
-    
-            <mat-grid-tile colspan="1">Note</mat-grid-tile>
-            <mat-grid-tile colspan="2">
-              <mat-icon *ngIf="movie.note" style="cursor: pointer;" (click)="viewNote(movie.note)">note</mat-icon>         
-              <i *ngIf="!movie.note" class="fa fa-minus-circle" aria-hidden="true"></i>
-            </mat-grid-tile>
-  
-            <mat-grid-tile colspan="1">
-              <button
-                type="button"
-                mat-button 
-                (click)="editMovie(movie)"
-                class="text-application">
-                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-              </button>
-            </mat-grid-tile>
-            <mat-grid-tile colspan="2">
-              <button
-                type="button"
-                mat-button 
-                (click)="deleteMovie(movie.key)" 
-                class="text-application">
-                <mat-icon style="color: #f44336;">delete</mat-icon>
-              </button>
-            </mat-grid-tile>
-  
-          </mat-grid-list>
-        </div>
-      </mat-grid-tile>
+      <h3 class="text-application center-name-movie" (click)="copyText(movie.nameMovie)" style="font-weight: 600;width: 60%;">{{ movie.nameMovie }}</h3>
+    </div>
 
-    </mat-grid-list>
+    <div class="card-body">
+        
+      <div class="card-block text-application">
+        <div class="gridForLegend">
+          <div><dt>Year</dt></div>
+          <div>
+            <span *ngIf="movie.year">{{ movie.year }}</span>
+            <span *ngIf="!movie.year">?</span>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="gridForLegend">
+          <div><dt>Status</dt></div>
+          <div>
+            <i *ngIf="movie.statusId == 1" class="fa fa-spinner fa-spin" style="color:goldenrod;"></i>
+            <i *ngIf="movie.statusId == 2" class="fa fa-download" style="color: red;"></i>
+            <i *ngIf="movie.statusId == 3" class="fa fa-eye" style="color: green;"></i>
+            <i *ngIf="movie.statusId == 4" class="fa fa-eye" style="color: red;"></i>
+            <i *ngIf="movie.statusId == 5" class="fa fa-search" style="color:#07609b;"></i>
+            &nbsp;
+            <i *ngIf="movie.notLiked" class="fa fa-thumbs-down" style="color: red;"></i>
+          </div>
+        </div>
+
+        <br>
+
+        <div *ngIf="movie.statusId == 1" class="gridForLegend">
+          <div><dt>Check</dt></div>
+          <div>
+            <span *ngIf="movie.checkDate">{{ movie.checkDate | date: 'dd/MM/yyyy' }}</span>
+            <span *ngIf="!movie.checkDate">?</span>
+          </div>
+        </div>
+
+        <br *ngIf="movie.statusId == 1">
+
+        <div *ngIf="movie.part" class="gridForLegend">
+          <div><dt>Part</dt></div>
+          <div>{{ movie.part }}</div>
+        </div>
+
+        <br *ngIf="movie.part">
+
+        <div class="gridForLegend">
+          <div><dt>Note</dt></div>
+          <div>
+            <mat-icon *ngIf="movie.note" style="color: black;" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" (click)="viewNote(movie.note)">note</mat-icon>         
+            <i *ngIf="!movie.note" class="fa fa-minus-circle"></i>
+          </div>
+        </div>
+      </div>
+
+      <br>
+          
+      <button 
+        type="button"
+        mat-button
+        [matMenuTriggerFor]="menu" 
+        class="style-button text-application center-btn">
+        <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+        Actions
+      </button>
+      <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
+        <button
+            mat-menu-item 
+            class="text-application"
+            (click)="editMovie(movie)">
+            <mat-icon style="color: #9C27B0">edit</mat-icon>
+            Edit
+        </button>
+        <button
+            *ngIf="movie.statusId == 1 && movie.path" 
+            mat-menu-item 
+            class="text-application"
+            (click)="followLink(movie.path)">
+            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+            Check
+        </button>
+        <button
+            *ngIf="movie.statusId == 2 && movie.path" 
+            mat-menu-item 
+            class="text-application"
+            (click)="followLink(movie.path)">
+            <mat-icon style="color: green">cloud_download</mat-icon>
+            Download
+        </button>
+        <button
+            *ngIf="movie.statusId == 4 && movie.path"  
+            mat-menu-item 
+            class="text-application"
+            (click)="followLink(movie.path)">
+            <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+            Watch
+        </button>
+        <button
+            *ngIf="movie.statusId == 5 && movie.path" 
+            mat-menu-item 
+            class="text-application"
+            (click)="followLink(movie.path)">
+            <mat-icon style="color: #0e8999">search</mat-icon>
+            Search
+        </button>
+        <button
+            mat-menu-item 
+            class="text-application"
+            (click)="deleteMovie(movie.key)">
+            <mat-icon style="color: #f44336;">delete</mat-icon>
+            Delete
+        </button>
+      </mat-menu>
+      
+    </div>
   </div>
-
-  <br>
-
-  <h2 *ngIf="listPartsByParentFilmKey.length == 1" class="text-application">No parts yet</h2>
-  <h2 *ngIf="listPartsByParentFilmKey.length > 1" class="text-application">All parts</h2>
-
-  <mat-grid-list *ngIf="listPartsByParentFilmKey.length > 1" cols=2 #grid rowHeight="200px" gutterSize="15px">
-      <mat-grid-tile *ngFor="let movie of listPartsByParentFilmKey">
-          <div class="card" (click)="showDetailsMovie(movie, target)">
-              <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
-              <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">    
-          </div>  
-      </mat-grid-tile>
-  </mat-grid-list>
 
 </mat-dialog-content>

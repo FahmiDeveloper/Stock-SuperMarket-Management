@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
@@ -10,7 +10,6 @@ import * as moment from 'moment';
 
 import { MovieDetailsWithPartsDesktopComponent } from './movie-details-with-parts-desktop/movie-details-with-parts-desktop.component';
 import { MovieFormDesktopComponent } from './movie-form-desktop/movie-form-desktop.component';
-import { MovieDetailsDesktopComponent } from './movie-details-desktop/movie-details-desktop.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -52,7 +51,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not yet watched'},
     {id: 5, status: 'Will be looked for'}
-  ];
+  ]; 
 
   constructor(
     private movieService: MovieService, 
@@ -119,6 +118,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
       }
       
       else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+
     });
   }
 
@@ -140,24 +140,17 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     .filter(movie => (movie.key == movieSelected.key) || (movie.parentFilmKey == movieSelected.key))
     .sort((n1, n2) => n1.priority - n2.priority);
 
-    const dialogRef = this.dialogService.open(MovieDetailsWithPartsDesktopComponent, {width: '600px'});
+    const dialogRef = this.dialogService.open(MovieDetailsWithPartsDesktopComponent, {width: '1150px'});
     dialogRef.componentInstance.movie = movieSelected;
     dialogRef.componentInstance.allMovies = this.allMovies;
     dialogRef.componentInstance.listPartsByParentFilmKey = this.listPartsByParentFilmKey;
     dialogRef.componentInstance.isDesktop = this.isDesktop;
+    dialogRef.componentInstance.isTablet = this.isTablet;
   }
 
   newMovie() {
     const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arrayMovies = this.moviesListCopie;
-    dialogRef.componentInstance.allMovies = this.allMovies;
-  }
-
-  viewDetailsMovie(movie: Movie) {
-    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(MovieDetailsDesktopComponent, config);
-
-    dialogRef.componentInstance.movie = movie;
     dialogRef.componentInstance.allMovies = this.allMovies;
   }
 
@@ -211,6 +204,14 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
       duration: 2000,
       verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
       horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  viewNote(movieNote: string) {
+    Swal.fire({
+      text: movieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
     });
   }
   
