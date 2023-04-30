@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
@@ -10,7 +10,6 @@ import * as moment from 'moment';
 
 import { AnimeDetailsWithSeasonsDesktopComponent } from './anime-details-with-seasons-desktop/anime-details-with-seasons-desktop.component';
 import { AnimeFormDesktopComponent } from './anime-form-desktop/anime-form-desktop.component';
-import { AnimeDetailsDesktopComponent } from './anime-details-desktop/anime-details-desktop.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -155,24 +154,17 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     .filter(anime => (anime.key == animeSelected.key) || (anime.parentAnimeKey == animeSelected.key))
     .sort((n1, n2) => n1.priority - n2.priority);
 
-    const dialogRef = this.dialogService.open(AnimeDetailsWithSeasonsDesktopComponent, {width: '600px'});
+    const dialogRef = this.dialogService.open(AnimeDetailsWithSeasonsDesktopComponent, {width: '1150px'});
     dialogRef.componentInstance.anime = animeSelected;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
     dialogRef.componentInstance.listSeasonsByParentAnimeKey = this.listSeasonsByParentAnimeKey;
     dialogRef.componentInstance.isDesktop = this.isDesktop;
+    dialogRef.componentInstance.isTablet = this.isTablet;
   }
 
   newAnime() {
     const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, {width: '500px', data: {movie: {}}});
     dialogRef.componentInstance.arrayAnimes = this.animesListCopie;
-    dialogRef.componentInstance.allAnimes = this.allAnimes;
-  }
-
-  viewDetailsAnime(anime: Anime) {
-    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(AnimeDetailsDesktopComponent, config);
-
-    dialogRef.componentInstance.anime = anime;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
   }
 
@@ -226,6 +218,14 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
       duration: 2000,
       verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
       horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  viewNote(animeNote: string) {
+    Swal.fire({
+      text: animeNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
     });
   }
 

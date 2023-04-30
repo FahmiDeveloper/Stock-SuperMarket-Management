@@ -1,63 +1,37 @@
-.mat-dialog-content {
-  height: 60vh;
-}
-
-.card {
-  height: 200px;
-  width: 150px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.75, 0, 0.85, 1);
-  transform: rotateY(0deg);
+.style-button{
+  min-width: unset!important;
+  display: table; 
   margin: 0 auto;
-  border: 1px solid white;
 }
 
-.anime-image {
-  height: 100%;
+::ng-deep .my-menu {
   width: 100%;
-  background-size: cover;
-  border-radius: 5px;
 }
 
-.wait-image {
-  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq5VvXEWHDYBdvvFzp_b-YwJiZ-tyk089Utq8D8AKhvSQb5f69u9H4ndXkxq9ZMxNv2oU&usqp=CAU');
-  background-size: cover;
-  width: 25px;
-  height: 25px;
-}
-  
-.not-download-image {
-  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRskZIvjwG1IuGUNtOHXPx0RuaNBr3F5sejLtDxSOuKDD0nQp3MlUf12i6yLLgE0uJYVks&usqp=CAU');
-  background-size: cover;
-  width: 21px;
-  height: 21px;
+.gridForLegend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
-.watched-image {
-  background-image: url('https://icones.pro/wp-content/uploads/2021/05/icone-oeil-beurre-vert.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
+@media screen and (max-width: 567px) {
+  .card-text {
+    margin-bottom: 0.5em;
+  }
 }
 
-.not-watched-image {
-  background-image: url('https://www.citypng.com/public/uploads/preview/eye-view-watching-red-icon-transparent-png-11640343976d3sbxmunu3.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-}
-  
-.search-image {
-  background-image: url('https://toppng.com/uploads/preview/search-icon-customer-icon-11564158924ifw7wyjtfu.png');
-  background-size: cover;
-  width: 21px;
-  height: 21px;
+.card-body {
+  padding: 0.5em 1em;
 }
 
-.not-liked-image {
-  background-image: url('https://www.freeiconspng.com/thumbs/youtube-dislike-png/youtube-dislike-png-red-clipart-13.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
+.card img {
+  max-width: 9em;
+  border-bottom-left-radius: calc(0.25rem - 1px);
+  border-top-left-radius: calc(0.25rem - 1px);
+}
+
+.center-name-anime{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

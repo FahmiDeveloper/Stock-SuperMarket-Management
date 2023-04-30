@@ -24,6 +24,7 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
   movie: Movie = new Movie();
 
   isDesktop: boolean;
+  isTablet: boolean;
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'On hold'}, 

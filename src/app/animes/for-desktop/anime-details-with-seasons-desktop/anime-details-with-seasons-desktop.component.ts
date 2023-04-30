@@ -24,6 +24,7 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
   anime: Anime = new Anime();
 
   isDesktop: boolean;
+  isTablet: boolean;
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'On hold'}, 

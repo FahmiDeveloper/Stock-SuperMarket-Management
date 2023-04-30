@@ -40,11 +40,9 @@ import {
   AnimesForDesktopComponent,
   AnimeFormDesktopComponent,
   AnimeDetailsWithSeasonsDesktopComponent,
-  AnimeDetailsDesktopComponent,
   AnimesForMobileComponent,
   AnimeFormMobileComponent,
-  AnimeDetailsWithSeasonsMobileComponent,
-  AnimeDetailsMobileComponent
+  AnimeDetailsWithSeasonsMobileComponent
 } from './animes/index';
 
 import { 
@@ -106,11 +104,9 @@ import {
   MoviesForDesktopComponent,
   MovieFormDesktopComponent,
   MovieDetailsWithPartsDesktopComponent,
-  MovieDetailsDesktopComponent,
   MoviesForMobileComponent,
   MovieFormMobileComponent,
-  MovieDetailsWithPartsMobileComponent,
-  MovieDetailsMobileComponent
+  MovieDetailsWithPartsMobileComponent
 } from './movies/index';
 
 import { 
@@ -133,11 +129,9 @@ import {
   SeriesForDesktopComponent,
   SerieFormDesktopComponent,
   SerieDetailsWithSeasonsDesktopComponent,
-  SerieDetailsDesktopComponent,
   SeriesForMobileComponent,
   SerieFormMobileComponent,
-  SerieDetailsWithSeasonsMobileComponent,
-  SerieDetailsMobileComponent
+  SerieDetailsWithSeasonsMobileComponent
 } from './series/index';
 
 import { 
@@ -182,11 +176,9 @@ import {
     AnimesForDesktopComponent,
     AnimeFormDesktopComponent,
     AnimeDetailsWithSeasonsDesktopComponent,
-    AnimeDetailsDesktopComponent,
     AnimesForMobileComponent,
     AnimeFormMobileComponent,
     AnimeDetailsWithSeasonsMobileComponent,
-    AnimeDetailsMobileComponent,
 
     ClockingsForDesktopComponent,
     ClockingFormDesktopComponent,
@@ -232,11 +224,9 @@ import {
     MoviesForDesktopComponent,
     MovieFormDesktopComponent,
     MovieDetailsWithPartsDesktopComponent,
-    MovieDetailsDesktopComponent,
     MoviesForMobileComponent,
     MovieFormMobileComponent,
     MovieDetailsWithPartsMobileComponent,
-    MovieDetailsMobileComponent,
 
     NotesForDesktopComponent,
     NoteFormDesktopComponent,
@@ -253,11 +243,9 @@ import {
     SeriesForDesktopComponent,
     SerieFormDesktopComponent,
     SerieDetailsWithSeasonsDesktopComponent,
-    SerieDetailsDesktopComponent,
     SeriesForMobileComponent,
     SerieFormMobileComponent,
     SerieDetailsWithSeasonsMobileComponent,
-    SerieDetailsMobileComponent,
 
     ToDoListForDesktopComponent,
     TaskDesktopComponent,

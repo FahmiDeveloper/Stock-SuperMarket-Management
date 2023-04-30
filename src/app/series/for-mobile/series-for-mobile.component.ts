@@ -9,7 +9,6 @@ import * as moment from 'moment';
 
 import { SerieDetailsWithSeasonsMobileComponent } from './serie-details-with-seasons-mobile/serie-details-with-seasons-mobile.component';
 import { SerieFormMobileComponent } from './serie-form-mobile/serie-form-mobile.component';
-import { SerieDetailsMobileComponent } from './serie-details-mobile/serie-details-mobile.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -158,18 +157,6 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allSeries = this.allSeries;
   }
 
-  viewDetailsSerie(serie: Serie) {
-    let config: MatDialogConfig = {
-      panelClass: "dialog-responsive",
-      width: '98vw',
-      maxWidth: '100vw'
-    }
-    const dialogRef = this.dialogService.open(SerieDetailsMobileComponent, config);
-
-    dialogRef.componentInstance.serie = serie;
-    dialogRef.componentInstance.allSeries = this.allSeries;
-  }
-
   editSerie(serie?: Serie) {
     const dialogRef = this.dialogService.open(SerieFormMobileComponent, {
       width: '98vw',
@@ -224,6 +211,14 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
       duration: 2000,
       verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
       horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  viewNote(serieNote: string) {
+    Swal.fire({
+      text: serieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
     });
   }
  

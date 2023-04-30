@@ -51,7 +51,6 @@ export class MovieFormDesktopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.movie.key)
     this.partMoviesList = this.allMovies
     .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
     .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);

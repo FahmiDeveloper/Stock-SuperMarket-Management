@@ -9,7 +9,6 @@ import * as moment from 'moment';
 
 import { MovieDetailsWithPartsMobileComponent } from './movie-details-with-parts-mobile/movie-details-with-parts-mobile.component';
 import { MovieFormMobileComponent } from './movie-form-mobile/movie-form-mobile.component';
-import { MovieDetailsMobileComponent } from './movie-details-mobile/movie-details-mobile.component';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { UserService } from '../../shared/services/user.service';
@@ -155,18 +154,6 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.allMovies = this.allMovies;  
   }
 
-  viewDetailsMovie(movie: Movie) {
-    let config: MatDialogConfig = {
-      panelClass: "dialog-responsive",
-      width: '98vw',
-      maxWidth: '100vw'
-    }
-    const dialogRef = this.dialogService.open(MovieDetailsMobileComponent, config);
-
-    dialogRef.componentInstance.movie = movie;
-    dialogRef.componentInstance.allMovies = this.allMovies;  
-  }
-
   editMovie(movie?: Movie) {
     const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
       width: '98vw',
@@ -221,6 +208,14 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
       duration: 2000,
       verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
       horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  viewNote(movieNote: string) {
+    Swal.fire({
+      text: movieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
     });
   }
 
