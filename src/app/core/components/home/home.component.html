@@ -126,11 +126,11 @@
             class="overview-cart-mobile">
             <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
             <div
-              *ngIf="contentsExpiredList.length"
               class="mt-4 heading-text" 
-              style="margin-left: 16px;font-size: larger !important">
-              {{contentsExpiredList.length}}
-              expired
+              style="margin-left: 16px;font-size: unset !important">
+              <span *ngIf="soonToExpireList.length">{{ soonToExpireList.length }}&nbsp;to expire</span>
+              <span *ngIf="soonToExpireList.length && contentsExpiredList.length">/</span>
+              <span *ngIf="contentsExpiredList.length">{{ contentsExpiredList.length }}&nbsp;expired</span>                  
             </div>
             <img
               class="pl-5"
@@ -382,11 +382,11 @@
               <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 10px;">Expirations</div>
                 <div
-                  *ngIf="contentsExpiredList.length"
                   class="mt-4 heading-text" 
-                  style="margin-left: 16px;font-size: larger !important">
-                  {{contentsExpiredList.length}}
-                  expired
+                  style="margin-left: 16px;font-size: unset !important">
+                  <span *ngIf="soonToExpireList.length">{{ soonToExpireList.length }}&nbsp;to expire</span>
+                  <span *ngIf="soonToExpireList.length && contentsExpiredList.length">/</span>
+                  <span *ngIf="contentsExpiredList.length">{{ contentsExpiredList.length }}&nbsp;expired</span>                  
                 </div>
                 <img
                   style="margin-left: 7rem;"
@@ -660,11 +660,11 @@
                 <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                   <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
                   <div
-                    *ngIf="contentsExpiredList.length"
                     class="mt-4 heading-text" 
-                    style="margin-left: 16px;font-size: larger !important">
-                    {{contentsExpiredList.length}}
-                    expired
+                    style="margin-left: 16px;font-size: unset !important">
+                    <span *ngIf="soonToExpireList.length">{{ soonToExpireList.length }}&nbsp;to expire</span>
+                    <span *ngIf="soonToExpireList.length && contentsExpiredList.length">/</span>
+                    <span *ngIf="contentsExpiredList.length">{{ contentsExpiredList.length }}&nbsp;expired</span>                  
                   </div>
                   <img
                     style="margin-left: 10rem;"
@@ -933,11 +933,11 @@
               <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
                 <div
-                  *ngIf="contentsExpiredList.length"
                   class="mt-4 heading-text" 
-                  style="margin-left: 16px;font-size: larger !important">
-                  {{contentsExpiredList.length}}
-                  expired
+                  style="margin-left: 16px;font-size: unset !important">
+                  <span *ngIf="soonToExpireList.length">{{ soonToExpireList.length }}&nbsp;to expire</span>
+                  <span *ngIf="soonToExpireList.length && contentsExpiredList.length">/</span>
+                  <span *ngIf="contentsExpiredList.length">{{ contentsExpiredList.length }}&nbsp;expired</span>                  
                 </div>
                 <img
                   style="margin-left: 7rem;"
@@ -1205,11 +1205,11 @@
               <div [ngStyle]="{ 'background-color': 'rgb(21 143 185)', 'border': '1px solid rgb(21 143 185)' }" class="overview-cart-mobile">
                 <div class="mt-4 heading-text" style="margin-left: 16px;">Expirations</div>
                 <div
-                  *ngIf="contentsExpiredList.length"
                   class="mt-4 heading-text" 
-                  style="margin-left: 16px;font-size: larger !important">
-                  {{contentsExpiredList.length}}
-                  expired
+                  style="margin-left: 16px;font-size: unset !important">
+                  <span *ngIf="soonToExpireList.length">{{ soonToExpireList.length }}&nbsp;to expire</span>
+                  <span *ngIf="soonToExpireList.length && contentsExpiredList.length">/</span>
+                  <span *ngIf="contentsExpiredList.length">{{ contentsExpiredList.length }}&nbsp;expired</span>                  
                 </div>
                 <img
                   style="margin-left: 10rem;"

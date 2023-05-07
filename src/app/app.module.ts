@@ -96,8 +96,7 @@ import {
   MedicationsForDesktopComponent,
   MedicationFormDesktopComponent,
   MedicationsForMobileComponent,
-  MedicationFormMobileComponent,
-  ShowMedicationDetailsComponent
+  MedicationFormMobileComponent
 } from './medications/index';
 
 import { 
@@ -219,7 +218,6 @@ import {
     MedicationFormDesktopComponent,
     MedicationsForMobileComponent,
     MedicationFormMobileComponent,
-    ShowMedicationDetailsComponent,
 
     MoviesForDesktopComponent,
     MovieFormDesktopComponent,

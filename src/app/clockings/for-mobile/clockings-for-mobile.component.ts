@@ -26,6 +26,8 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
   dataSourceCopieForCalculTotalClockingLate = new MatTableDataSource<Clocking>();
   displayedColumns: string[] = ['date', 'day', 'time', 'clockingNbr', 'note', 'star'];
 
+  allClockings: Clocking[]= [];
+
   currentMonthAndYear: string;
   totalClockingLate: number = 0;
   minutePartList: number[] = [];
@@ -38,6 +40,10 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
   currentMonthAndYearForVacation: string = '';
   subjectSelectedId: number;
   showVacationLimitDays: boolean = false;
+  isLoading: boolean;
+  showDeleteAllClockingsButtton: boolean;
+
+  modalRefLodaing: any
 
   subscriptionForGetAllClockings: Subscription;
 
@@ -91,6 +97,8 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe((clockings: Clocking[]) => {
 
+      this.allClockings = clockings;
+
       this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
       this.dataSourceCopieForCalculTotalClockingLate.data = clockings
@@ -128,6 +136,13 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
         this.dataSource.data = 
         clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
         .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      }
+
+      if (this.monthSelected == '05' && new Date(this.dataSource.data[0].dateClocking).getDate() == 31) {
+        this.showDeleteAllClockingsButtton = true;
+      }
+      else {
+        this.showDeleteAllClockingsButtton = false;
       }
 
       if ((this.monthSelected == String(new Date().getMonth()+ 1)) || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {
@@ -236,6 +251,41 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
           '',
           'success'
         )
+      }
+    })
+  }
+
+  deleteAllClockings(contentLoading) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete all clockings!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.modalRefLodaing = this.dialogService.open(contentLoading, {
+          width: '20vw',
+          height:'20vw',
+          maxWidth: '100vw'
+        });
+        this.isLoading = true;
+
+        this.allClockings.forEach(clocking => {
+          this.clockingService.delete(clocking.key);
+        });
+
+        setTimeout(() => {
+          this.isLoading = false;
+          this.modalRefLodaing.close();
+
+          Swal.fire(
+            'Clockings has been deleted successfully',
+            '',
+            'success'
+          ).then((res) => {})
+        }, 20000);
       }
     })
   }

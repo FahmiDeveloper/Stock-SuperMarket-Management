@@ -29,6 +29,9 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
   clockingsList: Clocking[] = [];
   pagedList: Clocking[]= [];
+  allClockingsForDesktop: Clocking[]= [];
+  allClockingsForTablet: Clocking[]= [];
+
   length: number = 0;
 
   isDesktop: boolean;
@@ -45,6 +48,10 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
   currentMonthAndYearForVacation: string = '';
   subjectSelectedId: number;
   showVacationLimitDays: boolean;
+  isLoading: boolean;
+  showDeleteAllClockingsButtton: boolean;
+
+  modalRefLodaing: any
 
   subscriptionForGetAllClockings: Subscription;
 
@@ -103,6 +110,8 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe((clockings: Clocking[]) => {
 
+      this.allClockingsForDesktop = clockings;
+
       this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
       this.dataSourceCopieForCalculTotalClockingLate.data = clockings
@@ -142,6 +151,13 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
         .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
       }
 
+      if (this.monthSelected == '05' && new Date(this.dataSource.data[0].dateClocking).getDate() == 31) {
+        this.showDeleteAllClockingsButtton = true;
+      }
+      else {
+        this.showDeleteAllClockingsButtton = false;
+      }
+
       if ((this.monthSelected == String(new Date().getMonth()+ 1)) || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {
         this.showVacationLimitDays = true;
         let lastClockingByCurrentMonth = clockings
@@ -174,6 +190,8 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllClockings = this.clockingService
     .getAll()
     .subscribe((clockings: Clocking[]) => {
+
+      this.allClockingsForTablet = clockings;
 
       this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
@@ -210,6 +228,13 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
         this.clockingsList = clockings
         .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
         .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      }
+
+      if (this.monthSelected == '05' && new Date(this.clockingsList[0].dateClocking).getDate() == 31) {
+        this.showDeleteAllClockingsButtton = true;
+      }
+      else {
+        this.showDeleteAllClockingsButtton = false;
       }
 
       this.pagedList = this.clockingsList.slice(0, 6);
@@ -327,6 +352,48 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });
+  }
+
+  deleteAllClockings(contentLoading) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete all clockings!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.modalRefLodaing = this.dialogService.open(contentLoading, {
+          width: '20vw',
+          height:'20vw',
+          maxWidth: '100vw'
+        });
+        this.isLoading = true;
+
+        if (this.isDesktop) {
+          this.allClockingsForDesktop.forEach(clockingForDesktop => {
+            this.clockingService.delete(clockingForDesktop.key);
+          });
+        }
+        else {
+          this.allClockingsForTablet.forEach(clockingForTablet => {
+            this.clockingService.delete(clockingForTablet.key);
+          });
+        }
+
+        setTimeout(() => {
+          this.isLoading = false;
+          this.modalRefLodaing.close();
+
+          Swal.fire(
+            'Clockings has been deleted successfully',
+            '',
+            'success'
+          ).then((res) => {})
+        }, 20000);
+      }
+    })
   }
 
   ngOnDestroy() {

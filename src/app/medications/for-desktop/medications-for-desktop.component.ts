@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -26,11 +25,10 @@ import { Disease } from 'src/app/shared/models/disease.model';
 export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
 
   medicationsList: Medication[] = [];
-  pagedList: Medication[]= [];
   medicationsListCopieForNewMedication: Medication[] = [];
   diseaseList: Disease[] = [];
 
-  length: number = 0;s
+  p: number = 1;
 
   isDesktop: boolean;
   isTablet: boolean;
@@ -41,10 +39,6 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllMedications: Subscription;
   subscriptionForGetAllDiseases: Subscription;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
     
   constructor(
     public diseaseService: DiseaseService,
@@ -83,9 +77,6 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
         this.medicationsList = medications.sort((n1, n2) => n2.numRefMedication - n1.numRefMedication)
       }
 
-      this.pagedList = this.medicationsList.slice(0, 8);
-      this.length = this.medicationsList.length;
-
     });
   }
 
@@ -98,12 +89,6 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.medicationsList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -121,11 +106,6 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     
     dialogRef.componentInstance.medication = medication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });
   }
 
   deleteMedication(medicationKey) {
@@ -181,8 +161,7 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     else return false;
   }
 
-  copyText(text: string, event: Event){
-    event.stopPropagation();
+  copyText(text: string){
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -205,8 +184,12 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     });
   }
 
-  propStop(event: Event) {
-    event.stopPropagation();
+  viewUtilisation(utilisation: string) {
+    Swal.fire({
+      text: utilisation,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   ngOnDestroy() {

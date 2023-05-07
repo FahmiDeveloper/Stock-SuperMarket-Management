@@ -48,6 +48,23 @@
             </button>
         </div> 
     </div>
+
+    <br *ngIf="showDeleteAllClockingsButtton">
+
+    <div class="row" *ngIf="showDeleteAllClockingsButtton">
+        <div class="col-md-11"></div>
+        <div class="col-md-1">
+            <button 
+                mat-flat-button 
+                color="warn"
+                (click)="deleteAllClockings(contentLoading)" 
+                class="text-application"
+                style="float: right;">
+                <mat-icon style="color: white">delete</mat-icon>
+                Delete all clockings
+            </button>
+        </div>       
+    </div>
 </ng-container>
 
 <ng-container *ngIf="isTablet">
@@ -112,6 +129,23 @@
             &nbsp;day(s)
         </mat-grid-tile>
     </mat-grid-list>
+
+    <br *ngIf="showDeleteAllClockingsButtton">
+
+    <div class="row" *ngIf="showDeleteAllClockingsButtton">
+        <div class="col-md-11"></div>
+        <div class="col-md-1">
+            <button 
+                mat-flat-button 
+                color="warn"
+                (click)="deleteAllClockings(contentLoading)" 
+                class="text-application"
+                style="float: right;">
+                <mat-icon style="color: white">delete</mat-icon>
+                Delete all clockings
+            </button>
+        </div>       
+    </div>
 </ng-container>
 
 <br *ngIf="isDesktop">
@@ -281,3 +315,21 @@
 
 	</ng-template>
 </mat-menu>
+
+<ng-template #contentLoading>
+
+    <div mat-dialog-title class="dialog-title">
+        <h2 class="text-application">Delete clockings</h2>
+        <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+    </div>
+  
+    <div class="modal-body text-application">
+      <div *ngIf="isLoading">
+        <mat-spinner style="margin-left:100px; margin-top: 30px;"></mat-spinner><br>
+        <h3 class="text-application" style="text-align: center;">Delete all clockings in progress...</h3>
+      </div>
+    </div>
+
+</ng-template>

@@ -21,7 +21,6 @@ import { Disease } from 'src/app/shared/models/disease.model';
 export class MedicationFormDesktopComponent implements OnInit {
 
   arrayMedications: Medication[];
-  pagedList: Medication[];
   arrayDiseases: Disease[];
 
   medication: Medication = new Medication();
@@ -53,7 +52,6 @@ export class MedicationFormDesktopComponent implements OnInit {
   ngOnInit() {
     if (this.medication.key) {
       this.diseaseSelected = this.arrayDiseases.find(disease => disease.id == this.medication.diseaseId);
-      this.data = this.pagedList;
     }
   }
 
@@ -116,7 +114,7 @@ export class MedicationFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
   newDisease() {
