@@ -32,10 +32,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   nbrAnimesToCheckToday: number = 0;
   nbrSeriesToCheckToday: number = 0;
   contentsExpiredList: Expiration[] = [];
+  soonToExpireList: Expiration[] = [];
 
   subscriptionForGetAllMoviesToCheckToday: Subscription;
   subscriptionForGetAllAnimesToCheckToday: Subscription;
   subscriptionForGetAllSeriesToCheckToday: Subscription;
+  subscriptionForGetAllSoonToExpire: Subscription;
   subscriptionForGetAllContentsExpired: Subscription;
 
   constructor(
@@ -74,6 +76,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getAllMoviesToCheckToday();
     this.getAllAnimesToCheckToday();
     this.getAllSeriesToCheckToday();
+    this.getAllSoonToExpire();
     this.getAllContentsExpired();
   }
 
@@ -89,7 +92,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllAnimesToCheckToday = this.animeService
     .getAll()
     .subscribe((animes: Anime[]) => {
-      this.nbrAnimesToCheckToday = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate == moment().format('YYYY-MM-DD')).length;
+      this.nbrAnimesToCheckToday = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate == moment().format('YYYY-MM-DD') &&
+      (!anime.currentEpisode || (anime.currentEpisode && !anime.totalEpisodes) || (anime.currentEpisode && anime.currentEpisode && anime.currentEpisode < anime.totalEpisodes))).length;    
     })
   }
 
@@ -97,8 +101,39 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeriesToCheckToday = this.serieService
     .getAll()
     .subscribe((series: Serie[]) => {
-      this.nbrSeriesToCheckToday = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD')).length;
+      this.nbrSeriesToCheckToday = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
+      (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.currentEpisode && serie.currentEpisode < serie.totalEpisodes))).length;
     })
+  }
+
+  getAllSoonToExpire() {
+    this.subscriptionForGetAllSoonToExpire = this.expirationService
+    .getAll()
+    .subscribe((expirations: Expiration[]) => {
+
+      this.soonToExpireList = [];
+
+      expirations.forEach(expiration => {
+        const now = new Date();
+        const dateExpiration = (new Date(expiration.dateExpiration)).getTime();
+        const nowTime = now.getTime();
+
+        const diff = Math.abs(dateExpiration - nowTime);
+
+        let diffEnDays  = Math.round(diff / (1000 * 60 * 60  * 24));
+
+        var years = Math.floor(diffEnDays / 365);
+        var months = Math.floor(diffEnDays % 365 / 30);
+        var days = Math.floor(diffEnDays % 365 % 30);
+
+        expiration.restdays = years + "Y " + months + "M " + days + "D";
+
+        if (expiration.restdays == 0 + "Y " + 0 + "M " + 7 + "D") {
+          this.soonToExpireList.push(expiration);
+        }
+      })
+           
+    });
   }
 
   getAllContentsExpired() {
@@ -125,6 +160,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllMoviesToCheckToday.unsubscribe();
     this.subscriptionForGetAllAnimesToCheckToday.unsubscribe();
     this.subscriptionForGetAllSeriesToCheckToday.unsubscribe();
+    this.subscriptionForGetAllSoonToExpire.unsubscribe();
     this.subscriptionForGetAllContentsExpired.unsubscribe();
   }
   

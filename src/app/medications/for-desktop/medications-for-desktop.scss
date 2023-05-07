@@ -10,14 +10,6 @@
   width: 100%;
 }
 
-.nav-list .mat-list-item-content { 
-	justify-content: flex-end; 
-}
-
-.mat-divider {
-  border-top-color: black;
-}
-
 .pictureFile {
   border: 1px solid #4d4c4c;
   height: 700px;
@@ -35,4 +27,51 @@
   .dialog-responsive {
       width: 100%;
   }
-} 
+}
+
+.medication-image {
+  width: 100%;
+  background-size: cover;
+  border-radius: 5px;
+}
+
+.card {
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.style-button{
+  min-width: unset!important;
+  display: table; 
+  margin: 0 auto;
+}
+
+::ng-deep .my-menu {
+  width: 100%;
+}
+
+.dotted-border {
+  border-left: 2px solid rgb(129, 129, 129);
+  padding-left: 10px;
+}
+
+.gridForLegend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  font-size: initial;
+}
+
+.center-name-medication{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-btn{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

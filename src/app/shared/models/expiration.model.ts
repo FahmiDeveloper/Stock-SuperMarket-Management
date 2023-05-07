@@ -9,4 +9,5 @@ export class Expiration {
   numRefExpiration: number;
   isExpired: boolean;
   restdays: string;
+  soonToExpire: boolean;
 }

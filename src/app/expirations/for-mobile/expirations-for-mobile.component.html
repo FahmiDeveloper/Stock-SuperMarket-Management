@@ -26,9 +26,10 @@
             <ng-container matColumnDef="expiredPicture">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-grid-list *ngIf="element.isExpired" cols="12" rowHeight="70px">
+                    <mat-grid-list *ngIf="(element.isExpired && !element.soonToExpire) || element.soonToExpire" cols="12" rowHeight="70px">
                         <mat-grid-tile colspan="3">
-                            <img src="/assets/gif/expired.gif" class="style-picture">
+                            <img *ngIf="element.isExpired && !element.soonToExpire" src="/assets/gif/expired.gif" class="style-picture"/>
+                            <img *ngIf="element.soonToExpire" src="/assets/gif/soon-to-expire.gif" class="style-picture"/>
                         </mat-grid-tile>
                         <mat-grid-tile colspan="9"></mat-grid-tile>
                     </mat-grid-list>
@@ -96,14 +97,16 @@
                     <mat-grid-list cols="12">
                         <mat-grid-tile colspan="3">
                             <div>
-                                <span *ngIf="element.isExpired" style="color: red;">Passed:</span>
-                                <span *ngIf="!element.isExpired" style="color: green;">Rest:</span>
+                                <span *ngIf="element.isExpired" style="color: red;">Passed</span>
+                                <span *ngIf="!element.isExpired && !element.soonToExpire" style="color: green;">Rest</span>
+                                <span *ngIf="element.soonToExpire" style="color: #ff6900;">Rest</span>
                             </div>
                         </mat-grid-tile>
                         <mat-grid-tile colspan="9">
                             <div style="margin-left: 8px;">
                                 <span *ngIf="element.isExpired" style="color: red;">{{ element.restdays }}</span>
-                                <span *ngIf="!element.isExpired" style="color: green;">{{ element.restdays }}</span>
+                                <span *ngIf="!element.isExpired && !element.soonToExpire" style="color: green;">{{ element.restdays }}</span>
+                                <span *ngIf="element.soonToExpire" style="color: #ff6900;">{{ element.restdays }}</span>
                             </div>
                         </mat-grid-tile>
                     </mat-grid-list>

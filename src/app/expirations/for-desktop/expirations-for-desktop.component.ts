@@ -146,6 +146,8 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
     var days = Math.floor(diffEnDays % 365 % 30);
 
     expiration.restdays = years + "Y " + months + "M " + days + "D";
+
+    expiration.soonToExpire = (expiration.restdays == 0 + "Y " + 0 + "M " + 7 + "D") ? true : false;
   }
 
   newExpiration() {
