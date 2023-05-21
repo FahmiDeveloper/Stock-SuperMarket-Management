@@ -23,6 +23,9 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
 
   serie: Serie = new Serie();
 
+  defaultElevation = 2;
+  raisedElevation = 8;
+
   isDesktop: boolean;
   isTablet: boolean;
 

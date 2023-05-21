@@ -23,8 +23,8 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
 
   anime: Anime = new Anime();
 
-  isDesktop: boolean;
-  isTablet: boolean;
+  defaultElevation = 2;
+  raisedElevation = 8;
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'On hold'}, 

@@ -102,22 +102,6 @@
         </div>
       </div>
 
-      <!--To Do List-->
-      <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/to-do-list-mobile">
-        <div fxLayout class="overview-style">
-          <div
-            [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" 
-            class="overview-cart-mobile">
-            <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
-            <img
-              class="pl-5"
-              style="margin-left: 9rem;"
-              src="/assets/pictures/to-do-list-logo.png"
-              width="150px"/>
-          </div>
-        </div>
-      </div>
-
       <!--Expirations-->
       <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application" routerLink="/expirations-mobile">
         <div fxLayout class="overview-style">
@@ -352,27 +336,6 @@
       </div>
     </mat-grid-tile>
 
-    <!--To Do List-->
-    <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-mobile">
-        <ng-container>
-          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
-            <div fxLayout class="overview-style">
-              <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
-                <div class="mt-4 heading-text" style="margin-left: 10px;">To Do List</div>
-                <img
-                  style="margin-left: 7rem;"
-                  class="pl-5"
-                  src="/assets/pictures/to-do-list-logo.png"
-                  width="100px"
-                  height="70px"/>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-    </mat-grid-tile>
-
     <!--Expirations-->
     <mat-grid-tile>
       <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/expirations-mobile">
@@ -515,7 +478,7 @@
     
     <!--Movies-->
     <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-tablet">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -541,7 +504,7 @@
 
     <!--Animes-->
     <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-tablet">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -567,7 +530,7 @@
 
     <!--Series-->
     <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-tablet">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -623,26 +586,6 @@
                   style="margin-left: 10rem;"
                   class="pl-5"
                   src="/assets/pictures/clocking-logo.png"
-                  width="150px"/>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-    </mat-grid-tile>
-
-    <!--To Do List-->
-    <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
-        <ng-container>
-          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
-            <div fxLayout class="overview-style">
-              <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
-                <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
-                <img
-                  style="margin-left: 10rem;"
-                  class="pl-5"
-                  src="/assets/pictures/to-do-list-logo.png"
                   width="150px"/>
               </div>
             </div>
@@ -788,7 +731,7 @@
 
     <!--Movies-->
     <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/movies-tablet">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -814,7 +757,7 @@
 
     <!--Animes-->
     <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/animes-tablet">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -840,7 +783,7 @@
 
     <!--Series-->
     <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-desktop">
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/series-tablet">
         <ng-container>
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
@@ -896,26 +839,6 @@
                   style="margin-left: 7rem;"
                   class="pl-5"
                   src="/assets/pictures/clocking-logo.png"
-                  width="150px"/>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-    </mat-grid-tile>
-
-    <!--To Do List-->
-    <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
-        <ng-container>
-          <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
-            <div fxLayout class="overview-style">
-              <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
-                <div class="mt-4 heading-text" style="margin-left: 16px;">To Do List</div>
-                <img
-                  style="margin-left: 7rem;"
-                  class="pl-5"
-                  src="/assets/pictures/to-do-list-logo.png"
                   width="150px"/>
               </div>
             </div>
@@ -1178,8 +1101,8 @@
 
     <!--To Do List-->
     <mat-grid-tile>
-      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px" routerLink="/to-do-list-desktop">
-        <ng-container>
+      <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
+        <a href="https://to-do.live.com/tasks/inbox" target="_blank">
           <div fxFlex="calc(33.3% - 20px)" class="m-1 pt-3 text-application">
             <div fxLayout class="overview-style">
               <div [ngStyle]="{ 'background-color': '#9C27B0', 'border': '1px solid #9C27B0' }" class="overview-cart-mobile">
@@ -1192,7 +1115,7 @@
               </div>
             </div>
           </div>
-        </ng-container>
+        </a>
       </div>
     </mat-grid-tile>
 

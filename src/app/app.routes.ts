@@ -6,6 +6,7 @@ import { UserComponent } from './user/user.component';
 import { HomeComponent } from './core/components/home/home.component';
 
 import { AnimesForDesktopComponent } from './animes/for-desktop/animes-for-desktop.component';
+import { AnimesForTabletComponent } from './animes/for-tablet/animes-for-tablet.component';
 import { AnimesForMobileComponent } from './animes/for-mobile/animes-for-mobile.component';
 
 import { ClockingsForMobileComponent } from './clockings/for-mobile/clockings-for-mobile.component';
@@ -29,6 +30,7 @@ import { MedicationsForDesktopComponent } from './medications/for-desktop/medica
 import { MedicationsForMobileComponent } from './medications/for-mobile/medications-for-mobile.component';
 
 import { MoviesForDesktopComponent } from './movies/for-desktop/movies-for-desktop.component';
+import { MoviesForTabletComponent } from './movies/for-tablet/movies-for-tablet.component';
 import { MoviesForMobileComponent } from './movies/for-mobile/movies-for-mobile.component';
 
 import { NotesForDesktopComponent } from './notes/for-desktop/notes-for-desktop.component';
@@ -38,10 +40,8 @@ import { PasswordsForMobileComponent } from './passwords/for-mobile/passwords-fo
 import { PasswordsForDesktopComponent } from './passwords/for-desktop/passwords-for-desktop.component';
 
 import { SeriesForDesktopComponent } from './series/for-desktop/series-for-desktop.component';
+import { SeriesForTabletComponent } from './series/for-tablet/series-for-tablet.component';
 import { SeriesForMobileComponent } from './series/for-mobile/series-for-mobile.component';
-
-import { ToDoListForDesktopComponent } from './to-do-list/for-desktop/to-do-list-desktop.component';
-import { ToDoListForMobileComponent } from './to-do-list/for-mobile/to-do-list-mobile.component';
 
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
@@ -57,6 +57,7 @@ export const rootRouterConfig: Routes = [
   { path: 'home', component: HomeComponent,  resolve: { data: SharedResolver}},
 
   { path: 'animes-desktop', component: AnimesForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'animes-tablet', component: AnimesForTabletComponent,  resolve: { data: SharedResolver}},
   { path: 'animes-mobile', component: AnimesForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'clockings-desktop', component: ClockingsForDesktopComponent,  resolve: { data: SharedResolver}},
@@ -80,6 +81,7 @@ export const rootRouterConfig: Routes = [
   { path: 'medications-mobile', component: MedicationsForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'movies-desktop', component: MoviesForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'movies-tablet', component: MoviesForTabletComponent,  resolve: { data: SharedResolver}},
   { path: 'movies-mobile', component: MoviesForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'notes-desktop', component: NotesForDesktopComponent,  resolve: { data: SharedResolver}},
@@ -89,9 +91,7 @@ export const rootRouterConfig: Routes = [
   { path: 'passwords-mobile', component: PasswordsForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'series-desktop', component: SeriesForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'series-mobile', component: SeriesForMobileComponent,  resolve: { data: SharedResolver}},
-
-  { path: 'to-do-list-desktop', component: ToDoListForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'to-do-list-mobile', component: ToDoListForMobileComponent,  resolve: { data: SharedResolver}},
+  { path: 'series-tablet', component: SeriesForTabletComponent,  resolve: { data: SharedResolver}},
+  { path: 'series-mobile', component: SeriesForMobileComponent,  resolve: { data: SharedResolver}}
 
 ]; 

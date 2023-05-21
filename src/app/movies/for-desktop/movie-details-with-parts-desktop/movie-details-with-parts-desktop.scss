@@ -1,32 +1,16 @@
 .movie-image {
-  height: 100%;
-  width: 100%;
+  width: 60%;
   background-size: cover;
-  border-radius: 5px;
-}
-
-.card {
-  border: 1px solid rgb(0, 0, 0);
-}
-
-.style-button{
-  min-width: unset!important;
-  display: table; 
-  margin: 0 auto;
+  border-radius: 5%;
 }
 
 ::ng-deep .my-menu {
   width: 100%;
 }
 
-.dotted-border {
-  border-left: 2px solid rgb(129, 129, 129);
-  padding-left: 10px;
-}
-
 .gridForLegend {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   font-size: initial;
 }
 
