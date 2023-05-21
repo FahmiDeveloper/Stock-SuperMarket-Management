@@ -1,1 +1,0 @@
-export * from './movie-details-desktop.component';
