@@ -74,10 +74,9 @@
           <div>
             <i *ngIf="movie.statusId == 1" class="fa fa-spinner fa-spin" style="color:goldenrod;"></i>
             <i *ngIf="movie.statusId == 2" class="fa fa-download" style="color: red;"></i>
-            <i *ngIf="movie.statusId == 3" class="fa fa-eye" style="color: green;"></i>
+            <i *ngIf="movie.statusId == 3 && !movie.notLiked" class="fa fa-eye" style="color: green;"></i>
             <i *ngIf="movie.statusId == 4" class="fa fa-eye" style="color: red;"></i>
             <i *ngIf="movie.statusId == 5" class="fa fa-search" style="color:#07609b;"></i>
-            &nbsp;
             <i *ngIf="movie.notLiked" class="fa fa-thumbs-down" style="color: red;"></i>
           </div>
         </div>
@@ -131,6 +130,7 @@
         Actions
       </button>
       <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
+
         <button
           mat-menu-item 
           class="text-application"
@@ -138,6 +138,7 @@
           <mat-icon style="color: #9C27B0">edit</mat-icon>
           Edit
         </button>
+
         <button
           *ngIf="movie.statusId == 1 && movie.path" 
           mat-menu-item 
@@ -146,6 +147,7 @@
           <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
           Check
         </button>
+
         <button
           *ngIf="movie.statusId == 2 && movie.path" 
           mat-menu-item 
@@ -154,6 +156,7 @@
           <mat-icon style="color: green">cloud_download</mat-icon>
           Download
         </button>
+
         <button
           *ngIf="movie.statusId == 4 && movie.path"  
           mat-menu-item 
@@ -162,6 +165,7 @@
           <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
           Watch
         </button>
+
         <button
           *ngIf="movie.statusId == 5 && movie.path" 
           mat-menu-item 
@@ -170,6 +174,7 @@
           <mat-icon style="color: #0e8999">search</mat-icon>
           Search
         </button>
+
         <button
           mat-menu-item 
           class="text-application"
@@ -177,6 +182,7 @@
           <mat-icon style="color: #f44336;">delete</mat-icon>
           Delete
         </button>
+        
       </mat-menu>
       
     </div>

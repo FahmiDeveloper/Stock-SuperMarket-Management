@@ -87,13 +87,12 @@
                     <div class="gridForLegend">
                         <div><dt>Status</dt></div>
                         <div>
-                            <i *ngIf="serie.statusId == 1" class="fa fa-spinner fa-spin" style="color:goldenrod;"></i>
-                            <i *ngIf="serie.statusId == 2" class="fa fa-download" style="color: red;"></i>
-                            <i *ngIf="serie.statusId == 3" class="fa fa-eye" style="color: green;"></i>
-                            <i *ngIf="serie.statusId == 4" class="fa fa-eye" style="color: red;"></i>
-                            <i *ngIf="serie.statusId == 5" class="fa fa-search" style="color:#07609b;"></i>
-                            &nbsp;
-                            <i *ngIf="serie.notLiked" class="fa fa-thumbs-down" style="color: red;"></i>
+                            <i *ngIf="serie.statusId == 1" class="fa fa-2x fa-spinner fa-spin" style="color:goldenrod;"></i>
+                            <i *ngIf="serie.statusId == 2" class="fa fa-2x fa-download" style="color: red;"></i>
+                            <i *ngIf="serie.statusId == 3 && !serie.notLiked" class="fa fa-2x fa-eye" style="color: green;"></i>
+                            <i *ngIf="serie.statusId == 4" class="fa fa-2x fa-eye" style="color: red;"></i>
+                            <i *ngIf="serie.statusId == 5" class="fa fa-2x fa-search" style="color:#07609b;"></i>
+                            <i *ngIf="serie.notLiked" class="fa fa-2x fa-thumbs-down" style="color: red;"></i>
                         </div>
                     </div>
 

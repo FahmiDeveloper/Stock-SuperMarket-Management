@@ -40,6 +40,9 @@ import {
   AnimesForDesktopComponent,
   AnimeFormDesktopComponent,
   AnimeDetailsWithSeasonsDesktopComponent,
+  AnimesForTabletComponent,
+  AnimeFormTabletComponent,
+  AnimeDetailsWithSeasonsTabletComponent,
   AnimesForMobileComponent,
   AnimeFormMobileComponent,
   AnimeDetailsWithSeasonsMobileComponent
@@ -103,6 +106,9 @@ import {
   MoviesForDesktopComponent,
   MovieFormDesktopComponent,
   MovieDetailsWithPartsDesktopComponent,
+  MoviesForTabletComponent,
+  MovieFormTabletComponent,
+  MovieDetailsWithPartsTabletComponent,
   MoviesForMobileComponent,
   MovieFormMobileComponent,
   MovieDetailsWithPartsMobileComponent
@@ -128,6 +134,9 @@ import {
   SeriesForDesktopComponent,
   SerieFormDesktopComponent,
   SerieDetailsWithSeasonsDesktopComponent,
+  SeriesForTabletComponent,
+  SerieFormTabletComponent,
+  SerieDetailsWithSeasonsTabletComponent,
   SeriesForMobileComponent,
   SerieFormMobileComponent,
   SerieDetailsWithSeasonsMobileComponent
@@ -141,6 +150,8 @@ import {
   TaskMobileComponent,
   TaskFormMobileComponent
 } from './to-do-list/index';
+
+import { MaterialElevationDirective } from './shared/directives/material-elevation.directive';
 
 @NgModule({
   imports: [
@@ -175,6 +186,9 @@ import {
     AnimesForDesktopComponent,
     AnimeFormDesktopComponent,
     AnimeDetailsWithSeasonsDesktopComponent,
+    AnimesForTabletComponent,
+    AnimeFormTabletComponent,
+    AnimeDetailsWithSeasonsTabletComponent,
     AnimesForMobileComponent,
     AnimeFormMobileComponent,
     AnimeDetailsWithSeasonsMobileComponent,
@@ -222,6 +236,9 @@ import {
     MoviesForDesktopComponent,
     MovieFormDesktopComponent,
     MovieDetailsWithPartsDesktopComponent,
+    MoviesForTabletComponent,
+    MovieFormTabletComponent,
+    MovieDetailsWithPartsTabletComponent,
     MoviesForMobileComponent,
     MovieFormMobileComponent,
     MovieDetailsWithPartsMobileComponent,
@@ -241,6 +258,9 @@ import {
     SeriesForDesktopComponent,
     SerieFormDesktopComponent,
     SerieDetailsWithSeasonsDesktopComponent,
+    SeriesForTabletComponent,
+    SerieFormTabletComponent,
+    SerieDetailsWithSeasonsTabletComponent,
     SeriesForMobileComponent,
     SerieFormMobileComponent,
     SerieDetailsWithSeasonsMobileComponent,
@@ -250,7 +270,9 @@ import {
     TaskFormDesktopComponent,
     ToDoListForMobileComponent,
     TaskMobileComponent,
-    TaskFormMobileComponent
+    TaskFormMobileComponent,
+
+    MaterialElevationDirective
   ],
   entryComponents: [],
   providers: [],

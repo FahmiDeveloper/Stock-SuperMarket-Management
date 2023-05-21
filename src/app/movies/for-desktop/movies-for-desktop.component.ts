@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import * as moment from 'moment';
 
 import { MovieDetailsWithPartsDesktopComponent } from './movie-details-with-parts-desktop/movie-details-with-parts-desktop.component';
@@ -36,11 +35,11 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
   movieName: string = '';
   statusId: number;
   sortByDesc: boolean = true;
-  isDesktop: boolean;
-  isTablet: boolean;
   optionSelected: number;
   dislike: boolean = false;
   nbrMoviesToCheckToday: number = 0;
+  defaultElevation = 2;
+  raisedElevation = 8;
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForGetAllMoviesForSelect: Subscription;
@@ -51,22 +50,19 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not yet watched'},
     {id: 5, status: 'Will be looked for'}
-  ]; 
+  ];
 
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    private deviceService: DeviceDetectorService,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar,
     private cdRef:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
     this.getAllMovies();
     this.getAllMoviesForSelect();
   }
@@ -144,8 +140,6 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.movie = movieSelected;
     dialogRef.componentInstance.allMovies = this.allMovies;
     dialogRef.componentInstance.listPartsByParentFilmKey = this.listPartsByParentFilmKey;
-    dialogRef.componentInstance.isDesktop = this.isDesktop;
-    dialogRef.componentInstance.isTablet = this.isTablet;
   }
 
   newMovie() {
@@ -214,7 +208,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Close'
     });
   }
-  
+
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
     this.subscriptionForGetAllMoviesForSelect.unsubscribe();

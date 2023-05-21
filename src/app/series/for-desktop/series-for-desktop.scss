@@ -8,23 +8,6 @@
   padding: 14px;
   font-size: 20px;
 }
-  
-.serie-image {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  border-radius: 5px;
-}
-
-.card {
-  border: 1px solid rgb(0, 0, 0);
-}
-
-.style-button{
-  min-width: unset!important;
-  display: table; 
-  margin: 0 auto;
-}
 
 ::ng-deep .my-menu {
   width: 100%;
@@ -40,14 +23,9 @@
   }
 }
 
-.dotted-border {
-  border-left: 2px solid rgb(129, 129, 129);
-  padding-left: 10px;
-}
-
 .gridForLegend {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   font-size: initial;
 }
 
@@ -65,4 +43,10 @@
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.serie-image {
+  width: 60%;
+  background-size: cover;
+  border-radius: 5%;
 }

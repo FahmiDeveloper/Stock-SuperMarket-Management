@@ -41,6 +41,8 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
   optionSelected: number;
   dislike: boolean = false;
   nbrSeriesToCheckToday: number = 0;
+  defaultElevation = 2;
+  raisedElevation = 8;
  
   subscriptionForGetAllSeries: Subscription;
   subscriptionForGetAllSeriesForSelect: Subscription;

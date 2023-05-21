@@ -130,6 +130,7 @@ export class ClockingFormMobileComponent implements OnInit {
 
   selectSubject() {
     this.vacationLimitDays = (this.selectedSubjectId == 2) ? this.vacationLimitDays - 1 : this.vacationLimitDays;
+    if (this.vacationLimitDays < 0) this.vacationLimitDays = 0;
   }
 
 }

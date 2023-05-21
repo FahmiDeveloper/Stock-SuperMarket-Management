@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import * as moment from 'moment';
 
 import { AnimeDetailsWithSeasonsDesktopComponent } from './anime-details-with-seasons-desktop/anime-details-with-seasons-desktop.component';
@@ -36,11 +35,11 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   animeName: string = '';
   statusId: number;
   sortByDesc: boolean = true;
-  isDesktop: boolean;
-  isTablet: boolean;
   optionSelected: number;
   dislike: boolean = false;
   nbrAnimesToCheckToday: number = 0;
+  defaultElevation = 2;
+  raisedElevation = 8;
  
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForGetAllAnimesForSelect: Subscription;
@@ -58,15 +57,12 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    private deviceService: DeviceDetectorService,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar,
     private cdRef:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
     this.getAllAnimes();
     this.getAllAnimesForSelect();
   }
@@ -158,8 +154,6 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.anime = animeSelected;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
     dialogRef.componentInstance.listSeasonsByParentAnimeKey = this.listSeasonsByParentAnimeKey;
-    dialogRef.componentInstance.isDesktop = this.isDesktop;
-    dialogRef.componentInstance.isTablet = this.isTablet;
   }
 
   newAnime() {
