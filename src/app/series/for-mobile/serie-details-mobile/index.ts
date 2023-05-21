@@ -1,1 +1,0 @@
-export * from './serie-details-mobile.component';
