@@ -4,6 +4,11 @@ import { Router } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 import { UserService } from './shared/services/user.service';
 
+interface SideNavToggle {
+  screenWidth: number;
+  collapsed: boolean;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,6 +16,10 @@ import { UserService } from './shared/services/user.service';
 })
 
 export class AppComponent {
+
+  isSideNavCollapsed = false;
+  screenWidth = 0;
+  isConnected:boolean;
 
   constructor(
     public authService:AuthService,
@@ -32,6 +41,21 @@ export class AppComponent {
         });
       }
     })
+  }
+
+  ngOnInit() {
+    this.checkIfUserIsConnected();
+  }
+
+  checkIfUserIsConnected() {
+    this.authService.isConnected.subscribe(res=>{
+      this.isConnected=res;
+    })
+  }
+
+  onToggleSideNav(data: SideNavToggle): void {
+    this.screenWidth = data.screenWidth;
+    this.isSideNavCollapsed = data.collapsed;
   }
 
 }

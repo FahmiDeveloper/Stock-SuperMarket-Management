@@ -1,6 +1,6 @@
 <div mat-dialog-title class="dialog-title" id="name">
-  <h2 *ngIf="listPartsByParentFilmKey.length == 1" class="text-application">No parts yet</h2>
-  <h2 *ngIf="listPartsByParentFilmKey.length > 1" class="text-application">All parts</h2> 
+  <h3 *ngIf="listPartsByParentFilmKey.length == 1" class="text-application">No parts yet</h3>
+  <h3 *ngIf="listPartsByParentFilmKey.length > 1" class="text-application">All parts</h3> 
   <button mat-icon-button aria-label="close dialog" mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -20,7 +20,7 @@
                 </mat-grid-tile>
     
                 <mat-grid-tile class="center-name-movie">
-                    <h1 class="text-application" style="cursor: pointer;" (click)="copyText(movie.nameMovie)">{{ movie.nameMovie }}</h1>
+                    <h3 class="text-application" style="cursor: pointer;" (click)="copyText(movie.nameMovie)">{{ movie.nameMovie }}</h3>
                 </mat-grid-tile>
     
                 <mat-grid-tile class="text-application">

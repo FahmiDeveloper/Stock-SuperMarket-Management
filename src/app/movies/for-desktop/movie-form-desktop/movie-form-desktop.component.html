@@ -7,7 +7,7 @@
   <form (ngSubmit)="save()" #f="ngForm">
 
     <mat-checkbox name="isFirst" [(ngModel)]="movie.isFirst" class="mat-checkbox-layout">
-      <span>First</span>
+      <span class="text-application">First</span>
     </mat-checkbox>
     
     <mat-form-field color="accent">
@@ -68,12 +68,12 @@
       <textarea matInput #input type="text" [(ngModel)]="movie.note" name="note" rows="4" cols="40" class="text-application"></textarea>
     </mat-form-field>
 
-    <button type="button" mat-button (click)="fileInput.click()">Choose picture</button>
+    <button type="button" mat-button (click)="fileInput.click()" class="text-application">Choose picture</button>
     <input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
     <br *ngIf="progressValue"><br *ngIf="progressValue">
     <div *ngIf="progressValue | async as val" class="progress-background">
         <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
-        <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
+        <span style="margin-left: 45%;" class="text-application">{{ val | number: '1.0-0' }}%</span>
     </div>
 
     <br *ngIf="progressValue">

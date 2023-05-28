@@ -1,16 +1,16 @@
-<h1 class="titleTextInterface text-application">Movies</h1>
+<h1 class="text-application">Movies</h1>
 
 <div class="row">
     <div class="col-md-3">
-        <mat-form-field class="widthInput">
-            <mat-label class="text-application">Name</mat-label>
+        <mat-form-field class="widthInput text-application">
+            <mat-label>Name</mat-label>
             <input matInput type="text" name="movieName" (keyup)="getAllMovies()" [(ngModel)]="movieName"/>
         </mat-form-field>
     </div>
     <div class="col-md-3">
         <mat-form-field class="widthInput">
             <mat-label class="text-application">Status</mat-label>
-            <mat-select name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllMovies()">
+            <mat-select class="text-application" name="statusId" [(ngModel)]="statusId" (selectionChange)="getAllMovies()">
                 <mat-option value=""></mat-option>
                 <mat-option *ngFor="let statusMovie of statusMovies" [value]="statusMovie.id">
                     <span class="text-application">{{statusMovie.status}}</span>
@@ -47,156 +47,108 @@
 
 <br>
 
-<ng-container *ngFor="let movie of (moviesList | paginate: { itemsPerPage: 6 , currentPage: p })">
-    
-    <mat-card appMaterialElevation [defaultElevation]="defaultElevation" raisedElevation="16">
+<div class="grid">
+	<div class="card" *ngFor="let movie of (moviesList | paginate: { itemsPerPage: itemsPerPage , currentPage: p })">
+        <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="card-img-top img-fluid" (contextmenu)="onRightClick($event, movie)">
+        <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="card-img-top img-fluid" (contextmenu)="onRightClick($event, movie)">
+		<div class="card-body align-items-center d-flex justify-content-center text-center text-application">
+			<h5 class="card-title" style="cursor: pointer;" (click)="copyText(movie.nameMovie)">
+                {{ movie.nameMovie }}
+            </h5>
+		</div>    
+	</div>   
+</div>
 
-        <mat-grid-list cols="4" rowHeight="250px">
+<div 
+    style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu">
+</div> 
+ 
+<mat-menu #rightMenu="matMenu"> 
 
-            <mat-grid-tile>
-                <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="movie-image">
-                <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="movie-image">
-            </mat-grid-tile>
+  <ng-template matMenuContent let-movie="movie">
 
-            <mat-grid-tile class="center-name-movie">
-                <h1 class="text-application" style="cursor: pointer;" (click)="copyText(movie.nameMovie)">{{ movie.nameMovie }}</h1>
-            </mat-grid-tile>
+    <button
+        *ngIf="!movie.part || (movie.part && movie.part > 1)"
+        mat-menu-item 
+        class="text-application">
+        Status&nbsp;&nbsp;
+        <mat-icon *ngIf="movie.statusId == 1" style="color:goldenrod;">access_time</mat-icon>
+        <mat-icon *ngIf="movie.statusId == 2" style="color: red;">file_download</mat-icon>
+        <mat-icon *ngIf="movie.statusId == 3 && !movie.notLiked" style="color: green;">remove_red_eye</mat-icon>
+        <mat-icon *ngIf="movie.statusId == 4" style="color: red;">remove_red_eye</mat-icon>
+        <mat-icon *ngIf="movie.statusId == 5" style="color:#07609b;">search</mat-icon>
+        <mat-icon *ngIf="movie.notLiked" style="color: red;">thumb_down_alt</mat-icon>
+    </button>
 
-            <mat-grid-tile class="text-application">
+    <button
+        *ngIf="movie.part && movie.part == 1" 
+        mat-menu-item
+        class="text-application"
+        (click)="showDetailsMovie(movie)">
+        <mat-icon style="color: #a54403">view_list</mat-icon>
+        <span>Parts</span>
+    </button> 
 
-                <div style="width:100%;">
+    <button
+        *ngIf="!movie.part || (movie.part && movie.part > 1)"
+        mat-menu-item 
+        class="text-application"
+        (click)="editMovie(movie)">
+        <mat-icon style="color: #9C27B0">edit</mat-icon>
+        Edit
+    </button>
 
-                    <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 2em; margin-bottom: 2em;">
-                        <div><dt>Year</dt></div>
-                        <div></div>
-                        <div>
-                            <span *ngIf="movie.year">{{ movie.year }}</span>
-                            <span *ngIf="!movie.year">?</span>
-                        </div>
-                    </div>
+    <button
+        *ngIf="(!movie.part || (movie.part && movie.part > 1)) && movie.statusId == 1 && movie.path" 
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)">
+        <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+        Check
+    </button>
 
-                    <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 2em; margin-bottom: 2em;">
-                        <div><dt>Status</dt></div>
-                        <div></div>
-                        <div>
-                            <i *ngIf="movie.statusId == 1" class="fa fa-2x fa-spinner fa-spin" style="color:goldenrod;"></i>
-                            <i *ngIf="movie.statusId == 2" class="fa fa-2x fa-download" style="color: red;"></i>
-                            <i *ngIf="movie.statusId == 3 && !movie.notLiked" class="fa fa-2x fa-eye" style="color: green;"></i>
-                            <i *ngIf="movie.statusId == 4" class="fa fa-2x fa-eye" style="color: red;"></i>
-                            <i *ngIf="movie.statusId == 5" class="fa fa-2x fa-search" style="color:#07609b;"></i>
-                            <i *ngIf="movie.notLiked" class="fa fa-2x fa-thumbs-down" style="color: red;"></i>
-                        </div>
-                    </div>
+    <button
+        *ngIf="(!movie.part || (movie.part && movie.part > 1)) && movie.statusId == 2 && movie.path" 
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)">
+        <mat-icon style="color: green">cloud_download</mat-icon>
+        Download
+    </button>
 
-                    <div *ngIf="movie.statusId == 1" class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 2em; margin-bottom: 2em;">
-                        <div><dt>Check</dt></div>
-                        <div></div>
-                        <div style="width: 140%;">
-                            <span *ngIf="movie.checkDate">{{ movie.checkDate | date: 'd MMM y' }}</span>
-                            <span *ngIf="!movie.checkDate">?</span>
-                        </div>
-                    </div>
-                    
-                    <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 2em; margin-bottom: 2em;">
-                        <div><dt>Note</dt></div>
-                        <div></div>
-                        <div>
-                            <mat-icon *ngIf="movie.note" style="color: black;" style="cursor: pointer;" (click)="viewNote(movie.note)">note</mat-icon>         
-                            <i *ngIf="!movie.note" class="fa fa-minus-circle"></i>
-                        </div>
-                    </div> 
+    <button
+        *ngIf="(!movie.part || (movie.part && movie.part > 1)) && movie.statusId == 4 && movie.path"  
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)">
+        <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+        Watch
+    </button>
 
-                </div>          
+    <button
+        *ngIf="(!movie.part || (movie.part && movie.part > 1)) && movie.statusId == 5 && movie.path" 
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)">
+        <mat-icon style="color: #0e8999">search</mat-icon>
+        Search
+    </button>
 
-            </mat-grid-tile>
+    <button
+        *ngIf="!movie.part || (movie.part && movie.part > 1)"
+        mat-menu-item 
+        class="text-application"
+        (click)="deleteMovie(movie.key)">
+        <mat-icon style="color: #f44336;">delete</mat-icon>
+        Delete
+    </button>
 
-            <mat-grid-tile>
+  </ng-template> 
 
-                <button
-                    *ngIf="movie.part && movie.part == 1" 
-                    type="button"
-                    mat-button 
-                    (click)="showDetailsMovie(movie)"
-                    class="style-button text-application center-btn">
-                    <mat-icon style="color: #a54403">view_list</mat-icon>
-                    <span>Parts</span>
-                </button> 
-
-                <button 
-                    *ngIf="!movie.part || (movie.part && movie.part > 1)"
-                    type="button"
-                    mat-button
-                    [matMenuTriggerFor]="menu" 
-                    class="style-button text-application center-btn">
-                    <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-                    Actions
-                </button>
-
-                <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
-
-                    <button
-                        mat-menu-item 
-                        class="text-application"
-                        (click)="editMovie(movie)">
-                        <mat-icon style="color: #9C27B0">edit</mat-icon>
-                        Edit
-                    </button>
-
-                    <button
-                        *ngIf="movie.statusId == 1 && movie.path" 
-                        mat-menu-item 
-                        class="text-application"
-                        (click)="followLink(movie.path)">
-                        <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                        Check
-                    </button>
-
-                    <button
-                        *ngIf="movie.statusId == 2 && movie.path" 
-                        mat-menu-item 
-                        class="text-application"
-                        (click)="followLink(movie.path)">
-                        <mat-icon style="color: green">cloud_download</mat-icon>
-                        Download
-                    </button>
-
-                    <button
-                        *ngIf="movie.statusId == 4 && movie.path"  
-                        mat-menu-item 
-                        class="text-application"
-                        (click)="followLink(movie.path)">
-                        <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
-                        Watch
-                    </button>
-
-                    <button
-                        *ngIf="movie.statusId == 5 && movie.path" 
-                        mat-menu-item 
-                        class="text-application"
-                        (click)="followLink(movie.path)">
-                        <mat-icon style="color: #0e8999">search</mat-icon>
-                        Search
-                    </button>
-
-                    <button
-                        mat-menu-item 
-                        class="text-application"
-                        (click)="deleteMovie(movie.key)">
-                        <mat-icon style="color: #f44336;">delete</mat-icon>
-                        Delete
-                    </button>
-                    
-                </mat-menu>
-
-            </mat-grid-tile>
-
-        </mat-grid-list>
-       
-    </mat-card>
-
-    <br>
-
-</ng-container>
+</mat-menu>
 
 <br>
 
