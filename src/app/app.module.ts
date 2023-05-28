@@ -9,6 +9,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -33,8 +34,6 @@ import {
   LoginComponent,
   RegisterComponent
 } from './core/components/index';
-
-import { UserComponent } from './user/index';
 
 import { 
   AnimesForDesktopComponent,
@@ -153,6 +152,10 @@ import {
 
 import { MaterialElevationDirective } from './shared/directives/material-elevation.directive';
 
+import { BodyComponent } from './body/body.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -160,6 +163,7 @@ import { MaterialElevationDirective } from './shared/directives/material-elevati
     LayoutModule,
     FormsModule,
     DragDropModule,
+    OverlayModule,
     ReactiveFormsModule,
     PdfViewerModule,
     NgbModule,
@@ -176,7 +180,6 @@ import { MaterialElevationDirective } from './shared/directives/material-elevati
   ],
   declarations: [
     AppComponent,
-    UserComponent,
     RegisterComponent,
     LoginComponent,
     HomeComponent,
@@ -271,6 +274,10 @@ import { MaterialElevationDirective } from './shared/directives/material-elevati
     ToDoListForMobileComponent,
     TaskMobileComponent,
     TaskFormMobileComponent,
+
+    BodyComponent,
+    SidenavComponent,
+    SublevelMenuComponent,
 
     MaterialElevationDirective
   ],

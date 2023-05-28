@@ -9,10 +9,6 @@
   font-size: 20px;
 }
 
-::ng-deep .my-menu {
-  width: 100%;
-}
-
 .dialog-responsive {
   width: 40%;
 }
@@ -23,30 +19,12 @@
   }
 }
 
-.gridForLegend {
+.grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  font-size: initial;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
-.center-name-movie{
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.center-btn{
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-.movie-image {
-  width: 60%;
-  background-size: cover;
-  border-radius: 5%;
+.card-img-top {
+  height: 16rem;
 }

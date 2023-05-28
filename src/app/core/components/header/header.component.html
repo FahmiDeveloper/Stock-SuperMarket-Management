@@ -1,49 +1,128 @@
-<mat-toolbar color="primary" *ngIf="user && isConnected">
-  <span class="fill-remaining-space text-application" style="cursor: pointer;" routerLink="/home">Personal Informations</span>
+<div class="head" [ngClass]="getHeadClass()">
+  <div class="head-content">
+      <div class="head-content-left">
+          <div class="search-container">
+              <div *ngIf="!canShowSearchAsOverlay" class="normal-search">
+                  <input type="search" class="search text-application" name="" id="" placeholder="Search...">
+                  <i class="far fa-search search-icon"></i>
+              </div>
+              <div *ngIf="canShowSearchAsOverlay">
+                  <button (click)="isOpenOverlaySearch = !isOpenOverlaySearch" cdkOverlayOrigin #triggerSearch="cdkOverlayOrigin" class="search-menu-btn ripple">
+                      <i class="far fa-search search-icon"></i>
+                  </button>
+  
+                   <ng-template 
+                      cdkConnectedOverlay 
+                      [cdkConnectedOverlayOrigin]="triggerSearch" 
+                      [cdkConnectedOverlayHasBackdrop]="true" 
+                      (backdropClick)="isOpenOverlaySearch = false" 
+                      [cdkConnectedOverlayOpen]="isOpenOverlaySearch" let-c="close" let-d="dismiss">
+                      <div class="overlay overlay-search overlay-fall" cdkMenu>
+                          <input type="search" class="search" name="" id="" placeholder="Search...">
+                          <button class="search-btn">
+                              <i class="far fa-search search-icon"></i>
+                          </button>
+                      </div>
+                  </ng-template>
+                  
+              </div>
+          </div>
+      </div>
+      <div class="head-content-right">
+          <div class="head-menu">
+              <div class="head-menu-item">
+                  <button (click)="isOpenOverlayFlags = !isOpenOverlayFlags" cdkOverlayOrigin #triggerFlags="cdkOverlayOrigin" class="head-menu-item-btn ripple">
+                      <img [src]="'assets/flags/' + selectedLanguage.flag + '.jpg'" class="flag" alt="flag">
+                  </button>
 
-  <span class="fill-remaining-space" *ngIf="isMobile">
+                  <ng-template 
+                      cdkConnectedOverlay 
+                      [cdkConnectedOverlayOrigin]="triggerFlags" 
+                      [cdkConnectedOverlayHasBackdrop]="true" 
+                      (backdropClick)="isOpenOverlayFlags = false" 
+                      [cdkConnectedOverlayOpen]="isOpenOverlayFlags" let-c="close" let-d="dismiss">
+                      <div class="overlay overlay-language overlay-fall" cdkMenu>
+                          <ul>
+                              <li *ngFor="let lang of languages" cdkMenuItem>
+                                  <img [src]="'assets/flags/' + lang.flag + '.jpg'" alt="flag">
+                                  <span class="text-application">{{lang.language}}</span>
+                              </li>
+                          </ul>
+                      </div>
+                  </ng-template>
+              </div>
+              <div class="head-menu-item">
+                  <button class="head-menu-item-btn ripple">
+                      <i class="far fa-expand menu-icon"></i>
+                  </button>
+              </div>
+              <div class="head-menu-item">
+                  <button (click)="isOpenOverlayNotifs = !isOpenOverlayNotifs" cdkOverlayOrigin #triggerNotifs="cdkOverlayOrigin" class="head-menu-item-btn ripple">
+                      <i class="far fa-bell menu-icon"></i>
+                  </button>
 
-    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()" style="float: right;">
-      <mat-icon>menu</mat-icon>
-    </button>
+                  <ng-template 
+                      cdkConnectedOverlay 
+                      [cdkConnectedOverlayOrigin]="triggerNotifs" 
+                      [cdkConnectedOverlayHasBackdrop]="true" 
+                      (backdropClick)="isOpenOverlayNotifs = false" 
+                      [cdkConnectedOverlayOpen]="isOpenOverlayNotifs" let-c="close" let-d="dismiss">
+                      <div class="overlay overlay-notification overlay-fall" cdkMenu>
+                          <ul>
+                              <li class="notification-head-container text-application">
+                                  <div class="notification-head">Notification</div>
+                                  <span class="view-all-link">
+                                      <a>View All</a>
+                                  </span>
+                              </li>
+                              <li class="notification-message-container" *ngFor="let notification of notifications" cdkMenuItem>
+                                  <i [class]="notification.icon"></i>
+                                  <div class="text-application">
+                                      <div class="notification-subject">
+                                          {{notification.subject}}
+                                      </div>
+                                      <p class="notification-desc">
+                                          {{notification.description}}
+                                      </p>
+                                  </div>
+                              </li>
+                          </ul>
+                      </div>
+                  </ng-template>
+              </div>
+              <div class="head-menu-item">
+                  <button class="head-menu-item-btn ripple">
+                      <i class="far fa-comment-alt menu-icon"></i>
+                  </button>           
+              </div>
+          </div>
+          <div class="head-user-avatar-container">
+              <div class="head-user-avatar" (click)="isOpenOverlayUser = !isOpenOverlayUser" cdkOverlayOrigin #triggerUser="cdkOverlayOrigin">
+                  <img src="../../assets/user3.jpg" alt="user" class="user-avatar">
+                  <div class="circle-indicator pulse"></div>
+              </div>
 
-    <mat-menu #menu="matMenu" [overlapTrigger]="false" yPosition="above" xPosition="before">
-      <span (click)="menuTrigger.closeMenu()">
 
-        <button mat-menu-item>
-          <mat-icon>home</mat-icon>
-          <span routerLink="/home" class="text-application">Home</span>
-        </button>
 
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          <span (click)="logout()" class="text-application">Logout</span>
-        </button>
 
-      </span>
-    </mat-menu>
-  </span>
-
-  <span class="fill-remaining-space" *ngIf="!isMobile">
-
-    <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()" style="float: right;">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <mat-menu #menu="matMenu" [overlapTrigger]="false" yPosition="above" xPosition="before">
-      <span (click)="menuTrigger.closeMenu()">
-
-        <button mat-menu-item>
-          <mat-icon>home</mat-icon>
-          <span routerLink="/home" class="text-application">Home</span>
-        </button>
-
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          <span (click)="logout()" class="text-application">Logout</span>
-        </button>
-
-      </span>
-    </mat-menu>
-  </span>
-</mat-toolbar>
+              <ng-template 
+                  cdkConnectedOverlay 
+                  [cdkConnectedOverlayOrigin]="triggerUser" 
+                  [cdkConnectedOverlayHasBackdrop]="true" 
+                  (backdropClick)="isOpenOverlayUser = false" 
+                  [cdkConnectedOverlayOpen]="isOpenOverlayUser" let-c="close" let-d="dismiss">
+                  <div class="overlay overlay-user overlay-fall" cdkMenu>
+                      <ul>
+                          <li *ngFor="let item of userItems" cdkMenuItem (click)="item.label == 'Logout' ? logout() : ''">
+                              <a>
+                                  <i class="icon" [ngClass]="item.icon"></i>
+                                  <span class="text-application">{{item.label}}</span>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+              </ng-template>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -6,12 +6,11 @@ import { Subscription } from 'rxjs';
 
 import firebase from 'firebase';
 
-import { DeviceDetectorService } from 'ngx-device-detector';
-
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UsersListService } from 'src/app/shared/services/list-users.service';
 
 import { FirebaseUserModel } from 'src/app/shared/models/user.model';
+import { languages, notifications, userItems } from './header-dummy-data';
 
 @Component({
   selector: 'app-header',
@@ -21,28 +20,43 @@ import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 export class HeaderComponent implements OnInit, OnDestroy {
 
+  @Input() collapsed = false;
+  @Input() screenWidth = 0;
+
   isConnected:boolean;
   user: firebase.User;
   userName: string;
   subscriptipn: Subscription;
-  isMobile: boolean;
   allUsers: FirebaseUserModel[] = [];
 
+  canShowSearchAsOverlay = false;
+  isOpenOverlaySearch = false;
+  isOpenOverlayFlags = false;
+  isOpenOverlayNotifs = false;
+  isOpenOverlayUser = false;
+  selectedLanguage: any;
+
+  languages = languages;
+  notifications = notifications;
+  userItems = userItems;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkCanShowSearchAsOverlay(window.innerWidth);
+  }
 
   constructor(
     private afAuth: AngularFireAuth, 
     public authService: AuthService, 
     private router: Router,
-    private deviceService: DeviceDetectorService,
     public usersListService: UsersListService
-
   ) {}
 
   ngOnInit() {
     this.getUserData();
-    this.checkIfUserIsConnected();
-    this.isMobile = this.deviceService.isMobile();
     this.getAllUsers();
+    this.checkCanShowSearchAsOverlay(window.innerWidth);
+    this.selectedLanguage = this.languages[0];
   }
 
   getUserData() {
@@ -58,12 +72,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   getNameFromEmail(email) {
     this.userName = email.substring(0, email.lastIndexOf("@"));
-  }
-
-  checkIfUserIsConnected() {
-    this.authService.isConnected.subscribe(res=>{
-      this.isConnected=res;
-    })
   }
 
   getAllUsers() {
@@ -92,6 +100,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     connectedUserFromList = this.allUsers.find(user => user.email == email);
     connectedUserFromList.isConnected = false;
     this.usersListService.update(connectedUserFromList.key, connectedUserFromList);
+  }
+
+  getHeadClass(): string {
+    let styleClass = '';
+    if (this.collapsed && this.screenWidth > 768) {
+      styleClass = 'head-trimmed';
+    } else {
+      styleClass = 'head-md-screen';
+    }
+    return styleClass;
+  }
+
+  checkCanShowSearchAsOverlay(innerWidth: number): void {
+    if (innerWidth < 845) {
+      this.canShowSearchAsOverlay = true;
+    } else {
+      this.canShowSearchAsOverlay = false;
+    }
   }
 
   ngOnDestroy() {

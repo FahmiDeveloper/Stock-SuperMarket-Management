@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 
 import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
-import { UserComponent } from './user/user.component';
 import { HomeComponent } from './core/components/home/home.component';
 
 import { AnimesForDesktopComponent } from './animes/for-desktop/animes-for-desktop.component';
@@ -53,7 +52,6 @@ export const rootRouterConfig: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
   
-  { path: 'user', component: UserComponent,  resolve: { data: SharedResolver}},
   { path: 'home', component: HomeComponent,  resolve: { data: SharedResolver}},
 
   { path: 'animes-desktop', component: AnimesForDesktopComponent,  resolve: { data: SharedResolver}},
