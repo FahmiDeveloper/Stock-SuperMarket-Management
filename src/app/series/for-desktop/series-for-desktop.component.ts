@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import * as moment from 'moment';
 
 import { SerieDetailsWithSeasonsDesktopComponent } from './serie-details-with-seasons-desktop/serie-details-with-seasons-desktop.component';
@@ -36,13 +36,14 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
   serieName: string = '';
   statusId: number;
   sortByDesc: boolean = true;
-  isDesktop: boolean;
-  isTablet: boolean;
   optionSelected: number;
   dislike: boolean = false;
   nbrSeriesToCheckToday: number = 0;
-  defaultElevation = 2;
-  raisedElevation = 8;
+  itemsPerPage: number;
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
  
   subscriptionForGetAllSeries: Subscription;
   subscriptionForGetAllSeriesForSelect: Subscription;
@@ -60,15 +61,13 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    private deviceService: DeviceDetectorService,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar,
     private cdRef:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
+    this.itemsPerPage = window.innerWidth <= 1366 ? 15 : 16;
     this.getAllSeries();
     this.getAllSeriesForSelect();
   }
@@ -148,8 +147,6 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.serie = serieSelected;
     dialogRef.componentInstance.allSeries = this.allSeries;
     dialogRef.componentInstance.listSeasonsByParentSerieKey = this.listSeasonsByParentSerieKey;
-    dialogRef.componentInstance.isDesktop = this.isDesktop;
-    dialogRef.componentInstance.isTablet = this.isTablet;
   }
 
   newSerie() {
@@ -217,6 +214,22 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });
+  }
+
+  onRightClick(event: MouseEvent, serie: Serie) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {serie: serie};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

@@ -1,48 +1,52 @@
 import { INavbarData } from "./helper";
 
+export const navbarDataHome: INavbarData = 
+{
+    routeLink: 'home',
+    icon: 'fa fa-home',
+    label: 'Home'
+};
+
+export const navbarDataToDoList: INavbarData = 
+{
+    routeLink: 'https://to-do.live.com/tasks/inbox',
+    icon: 'fa fa-tasks',
+    label: 'ToDoList'
+};
+
 export const navbarData: INavbarData[] = [
-    {
-        routeLink: 'home',
-        icon: 'fa fa-home',
-        label: 'Home'
-    },
     {
         routeLink: 'movies-desktop',
         icon: 'fa fa-film',
         label: 'Movies'
     },
     {
-        routeLink: 'animes',
+        routeLink: 'animes-desktop',
         icon: 'fa fa-rocket',
         label: 'Animes'
     },
     {
-        routeLink: 'series',
+        routeLink: 'series-desktop',
         icon: 'fa fa-television',
         label: 'Series'
     },
     {
-        routeLink: 'notes',
+        routeLink: 'notes-desktop',
         icon: 'fa fa-sticky-note',
         label: 'Notes'
     },
     {
-        routeLink: 'clockings',
+        routeLink: 'clockings-desktop',
         icon: 'fa fa-clock-o',
         label: 'Clockings'
     },
     {
-        routeLink: 'to-do-list',
-        icon: 'fa fa-tasks',
-        label: 'ToDoList'
-    },
-    {
-        routeLink: 'expirations',
+        routeLink: 'expirations-desktop',
         icon: 'fa fa-calendar',
         label: 'Expirations'
     },
     {
-        routeLink: 'debts',
+        routeLink: 'debts-desktop',
         icon: 'fa fa-money',
         label: 'Debts'
     },
@@ -52,17 +56,17 @@ export const navbarData: INavbarData[] = [
         label: 'Files'
     },
     {
-        routeLink: 'passwords',
+        routeLink: 'passwords-desktop',
         icon: 'fa fa-unlock-alt',
         label: 'Passwords'
     },
     {
-        routeLink: 'medications',
+        routeLink: 'medications-desktop',
         icon: 'fa fa-plus-square',
         label: 'Medications'
     },
     {
-        routeLink: 'documents',
+        routeLink: 'documents-desktop',
         icon: 'fa fa-file-text-o',
         label: 'Documents'
     }

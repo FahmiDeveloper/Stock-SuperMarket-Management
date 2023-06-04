@@ -36,21 +36,27 @@ h2 {
       box-shadow: 0 .25rem .5rem #e6edef;
 
       .edit {
-          margin: auto 0 auto auto;
-          width: 20px;
-          height: 20px;
-          cursor: pointer;
+        margin: auto 0 auto auto;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
       }
 
       .bar {
-          width: 5px;
-          height: 45px;
-          border-radius: 15px;
-          margin-right: 15px;
+        width: 5px;
+        height: 45px;
+        border-radius: 15px;
+        margin-right: 15px;
 
-          &.completed {
-              background: rgb(238, 139, 9);
-          }
+        &.completed {
+            background: rgb(238, 139, 9);
+        }
+      }
+
+      .details {
+        .details-name {
+            font-weight: bold !important;
+        }
       }
   }
 
@@ -190,4 +196,89 @@ h2 {
       }
 
   }
+}
+
+.pulse-movie {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  top: -3px;
+  right: 8px;
+  background: #FF6D4A;
+  animation: animate-pulse 3s linear infinite;
+}
+
+.pulse-anime {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  top: 114px;
+  right: 8px;
+  background: #FF6D4A;
+  animation: animate-pulse 3s linear infinite;
+}
+
+.pulse-serie {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  top: 232px;
+  right: 8px;
+  background: #FF6D4A;
+  animation: animate-pulse 3s linear infinite;
+}
+
+.pulse-expiration {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  top: 232px;
+  right: 8px;
+  background: red;
+  animation: animate-pulse-expirartion 3s linear infinite;
+}
+
+.pulse-test {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: absolute;
+  top: -3px;
+  right: 8px;
+  background: #FF6D4A;
+  animation: animate-pulse 3s linear infinite;
+}
+
+@keyframes animate-pulse{
+  0%{
+      box-shadow: 0 0 0 0 rgba(255,109,74,0.7),  0 0 0 0 rgba(255,109,74,0.7);
+  }
+  40%{
+      box-shadow: 0 0 0 50px rgba(255,109,74,0.0),  0 0 0 0 rgba(255,109,74,0.7);
+  }
+  80%{
+      box-shadow: 0 0 0 50px rgba(255,109,74,0.0),  0 0 0 30px rgba(255,109,74,0);
+  }
+  100%{
+      box-shadow: 0 0 0 0 rgba(255,109,74,0.0),  0 0 0 30px rgba(255,109,74,0);
+  }   
+}
+
+@keyframes animate-pulse-expirartion{
+  0%{
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7),  0 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+  40%{
+      box-shadow: 0 0 0 50px rgba(255,109,74,0.0),  0 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+  80%{
+      box-shadow: 0 0 0 50px rgba(255,109,74,0.0),  0 0 0 30px rgba(255,109,74,0);
+  }
+  100%{
+      box-shadow: 0 0 0 0 rgba(255,109,74,0.0),  0 0 0 30px rgba(255,109,74,0);
+  }   
 }

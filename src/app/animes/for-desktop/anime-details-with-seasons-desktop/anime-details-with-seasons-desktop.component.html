@@ -1,6 +1,6 @@
 <div mat-dialog-title class="dialog-title" id="name">
-  <h2 *ngIf="listSeasonsByParentAnimeKey.length == 1" class="text-application">No seasons yet</h2>
-  <h2 *ngIf="listSeasonsByParentAnimeKey.length > 1" class="text-application">All seasons</h2> 
+  <h3 *ngIf="listSeasonsByParentAnimeKey.length == 1" class="text-application">No seasons yet</h3>
+  <h3 *ngIf="listSeasonsByParentAnimeKey.length > 1" class="text-application">All seasons</h3> 
   <button mat-icon-button aria-label="close dialog" mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -20,7 +20,7 @@
           </mat-grid-tile>
 
           <mat-grid-tile class="center-name-anime">
-            <h1 class="text-application" style="cursor: pointer;" (click)="copyText(anime.nameAnime)">{{ anime.nameAnime }}</h1>
+            <h3 class="text-application" style="cursor: pointer;" (click)="copyText(anime.nameAnime)">{{ anime.nameAnime }}</h3>
           </mat-grid-tile>
 
           <mat-grid-tile class="text-application">
@@ -28,22 +28,16 @@
             <div style="width:100%;">
 
               <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">
-                <div><dt>Year</dt></div>
+                <div><dt>Year/Type</dt></div>
                 <div></div>
-                <div>
+                <div style="width: 171%;">
                   <span *ngIf="anime.year">{{ anime.year }}</span>
                   <span *ngIf="!anime.year">?</span>
-                </div>
-              </div>
-
-              <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">
-                <div><dt>Type</dt></div>
-                <div></div>
-                <div>
+                  /
                   <span *ngIf="anime.type">{{ anime.type }}</span>
                   <span *ngIf="!anime.type">?</span>
                 </div>
-              </div>
+              </div>   
 
               <div *ngIf="!anime.notLiked && anime.type == 'TV'" class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">
                 <div><dt>Season</dt></div>

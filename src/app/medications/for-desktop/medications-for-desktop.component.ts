@@ -36,6 +36,8 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
   pictureFile: string = '';
   FileName: string = '';
   medicationName: string = '';
+  defaultElevation = 2;
+  raisedElevation = 8;
 
   subscriptionForGetAllMedications: Subscription;
   subscriptionForGetAllDiseases: Subscription;

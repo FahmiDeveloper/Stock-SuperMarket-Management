@@ -42,6 +42,9 @@ import { SeriesForDesktopComponent } from './series/for-desktop/series-for-deskt
 import { SeriesForTabletComponent } from './series/for-tablet/series-for-tablet.component';
 import { SeriesForMobileComponent } from './series/for-mobile/series-for-mobile.component';
 
+import { ToDoListForDesktopComponent } from './to-do-list/for-desktop/to-do-list-desktop.component';
+import { ToDoListForMobileComponent } from './to-do-list/for-mobile/to-do-list-mobile.component';
+
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
 
@@ -90,6 +93,9 @@ export const rootRouterConfig: Routes = [
 
   { path: 'series-desktop', component: SeriesForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'series-tablet', component: SeriesForTabletComponent,  resolve: { data: SharedResolver}},
-  { path: 'series-mobile', component: SeriesForMobileComponent,  resolve: { data: SharedResolver}}
+  { path: 'series-mobile', component: SeriesForMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'to-do-list-desktop', component: ToDoListForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'to-do-list-mobile', component: ToDoListForMobileComponent,  resolve: { data: SharedResolver}},
 
 ]; 
