@@ -1,5 +1,5 @@
 <div [ngClass]="getClass()" class="text-application">
-    <div class="col-left">
+    <div [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '55%': '65%'}">
         <div class="card welcome-card">
             <div class="card-head welcome-head-container">
                 <div class="col-left">
@@ -149,11 +149,9 @@
     </div>
     <div class="col-md-2">
         <div class="card text-application">
-            <div class="card-head">Total Debts</div>
+            <div class="card-head">Debts (In/Out)</div>
             <div class="card-body">
-                <span style="font-weight: bold !important;">In:</span>&nbsp;<span>{{ totalInDebts || '0DT' }} </span>
-                &nbsp;&nbsp;
-                <span style="font-weight: bold !important;">Out:</span>&nbsp;<span>{{ totalOutDebts || '0DT' }}</span> 
+                <span>{{ totalInDebts || '0DT' }}</span>/<span>{{ totalOutDebts || '0DT' }}</span> 
             </div>
         </div>
     </div>
