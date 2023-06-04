@@ -7,7 +7,7 @@
     <mat-horizontal-stepper [linear] = "isLinear" #stepper>
 
         <mat-step>
-            <ng-template matStepLabel>First data</ng-template>
+            <ng-template matStepLabel><span class="text-application">First data</span></ng-template>
 
             <mat-grid-list cols="2" rowHeight="50px" class="text-application" style="font-size: 20px;">
                 <mat-grid-tile>Rest money</mat-grid-tile>
@@ -36,13 +36,13 @@
 
             <br>
             <div>
-                <button mat-button (click)="close()">Cancel</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button (click)="close()"><span class="text-application">Cancel</span></button>
+                <button mat-button matStepperNext><span class="text-application">Next</span></button>
             </div>
         </mat-step>
 
         <mat-step>
-            <ng-template matStepLabel>Second data</ng-template>
+            <ng-template matStepLabel><span class="text-application">Second data</span></ng-template>
 
             <div class="row">
                 <div class="col-md-6">
@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-md-6">
                     <mat-form-field color="accent" class="text-application" style="width: 200px">
-                        <mat-select placeholder="Unit" [(ngModel)]="selectedUnit" name="selectedUnit" (selectionChange)="onSelectUnit()">
+                        <mat-select placeholder="Unit" [(ngModel)]="selectedUnit" name="selectedUnit" (selectionChange)="onSelectUnit()" class="text-application">
                             <mat-option *ngFor="let unit of units" [value]="unit.unitName">
                                 <span class="text-application">{{unit.unitName}}</span>
                             </mat-option>
@@ -105,13 +105,13 @@
              
             <br>
             <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperPrevious><span class="text-application">Back</span></button>
+                <button mat-button matStepperNext><span class="text-application">Next</span></button>
             </div>
         </mat-step>
 
         <mat-step *ngIf="debt.debtForPay || debt.debtToGet">
-            <ng-template matStepLabel>Third data</ng-template>
+            <ng-template matStepLabel><span class="text-application">Third data</span></ng-template>
 
             <mat-grid-list *ngIf="debt.debtForPay" cols="2" rowHeight="50px" class="text-application" style="font-size: 20px;">
                 <mat-grid-tile>Will pay this month</mat-grid-tile>
@@ -195,18 +195,18 @@
             
             <br>
             <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperPrevious><span class="text-application">Back</span></button>
+                <button mat-button matStepperNext><span class="text-application">Next</span></button>
             </div>
         </mat-step>
 
         <mat-step>
-           <ng-template matStepLabel>Done</ng-template>
-            Details taken
+           <ng-template matStepLabel><span class="text-application">Done</span></ng-template>
+           <span class="text-application">Details taken</span>
             <br>
            <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-button (click)="save()">Save</button>
+              <button mat-button matStepperPrevious><span class="text-application">Back</span></button>
+              <button mat-button (click)="save()"><span class="text-application">Save</span></button>
            </div>
         </mat-step>
 

@@ -24,7 +24,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Expiration>();
   dataSourceCopie = new MatTableDataSource<Expiration>();
-  displayedColumns: string[] = ['content', 'cost', 'date', 'diffdays', 'note', 'expiredPicture', 'star'];
+  displayedColumns: string[] = ['content', 'cost', 'start', 'end', 'duration', 'rest', 'note', 'star'];
 
   expirationsList: Expiration[] = [];
   pagedList: Expiration[]= [];
@@ -73,7 +73,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
 
       this.dataSource.data.forEach(expiration => {
         this.calculateDateDiff(expiration);
-        this.checkExpiredStatus(expiration);
         this.calculateRestDays(expiration);
       })
            
@@ -99,7 +98,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
 
       this.expirationsList.forEach(expiration => {
         this.calculateDateDiff(expiration);
-        this.checkExpiredStatus(expiration);
         this.calculateRestDays(expiration);
       })
            
@@ -124,14 +122,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
     expiration.duration = Math.abs(dateDiff.getUTCFullYear() - 1970) + "Y " + (dateDiff.getMonth()) + "M " + dateDiff.getDate() + "D";
   }
 
-  checkExpiredStatus(expiration: Expiration) {
-    let currentDate = new Date();
-    let composedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-    let dateExpiration = new Date(expiration.dateExpiration);
-
-    expiration.isExpired = (composedDate.getTime() > dateExpiration.getTime()) ? true : false ;
-  }
-
   calculateRestDays(expiration: Expiration) { 
     const now = new Date();
     const dateExpiration = (new Date(expiration.dateExpiration)).getTime();
@@ -147,7 +137,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
 
     expiration.restdays = years + "Y " + months + "M " + days + "D";
 
-    expiration.soonToExpire = (expiration.restdays == 0 + "Y " + 0 + "M " + 7 + "D") ? true : false;
+    expiration.isExpired = nowTime > dateExpiration || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D"  ? true : false ; 
   }
 
   newExpiration() {

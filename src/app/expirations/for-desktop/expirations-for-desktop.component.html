@@ -1,22 +1,24 @@
 <h1 class="titleTextInterface text-application">Expirations</h1>
 
 <div class="row">
-    <div class="col-md-4">
-        <mat-form-field class="widhtInput text-application">
+    <div class="col-md-2">
+        <mat-form-field class="text-application">
             <mat-label>Content</mat-label>
-            <input matInput type="text" name="content" (keyup)="isDesktop ? getAllExpirationsForDesktop() : getAllExpirationsForTablet()" [(ngModel)]="content"/>
+            <input  matInput type="text" name="content" (keyup)="isDesktop ? getAllExpirationsForDesktop() : getAllExpirationsForTablet()" [(ngModel)]="content"/>
         </mat-form-field>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-10">
         <button 
             type="button" 
             (click)="newExpiration()" 
             mat-mini-fab 
-            style="background: #2196F3;float: right;">
+            style="background: #263238;float: right;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
     </div>   
 </div>
+
+<br><br>
 
 <div [ngClass]="isDesktop ? 'mat-elevation-z8' : 'row'">
 
@@ -24,37 +26,44 @@
         <table mat-table [dataSource]="dataSource">
 
             <ng-container matColumnDef="content">
-                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 200px;">Content</th>
-                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;width: 200px;">{{ element.contentName }}</td>
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Content</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.contentName }}</td>
             </ng-container>
     
             <ng-container matColumnDef="cost">
-                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;  width: 150px;">Cost</th>
-                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;  width: 150px;">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Cost</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
                     <span *ngIf="element.cost">{{ element.cost }}</span>
                     <span *ngIf="!element.cost">-</span>
                 </td>
             </ng-container>
     
-            <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 150px;">Date</th>
-                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;width: 150px;">
-                    <div style="margin-top: 10px;margin-bottom: 10px;">
-                        Start:&nbsp;{{ element.dateStart | date:'dd/MM/yyyy' }}<br><br>
-                        Exp:&nbsp;{{ element.dateExpiration | date:'dd/MM/yyyy' }}
-                    </div>
+            <ng-container matColumnDef="start">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Start</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    {{ element.dateStart | date:'dd/MM/yyyy' }}
                 </td>
             </ng-container>
-    
-            <ng-container matColumnDef="diffdays">
-                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white; width: 300px;">Difference</th>
-                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center; width: 300px;">
-                    <div style="margin-top: 10px;margin-bottom: 10px;">
-                        Duration:&nbsp;{{ element.duration }}<br><br>
-                        <span *ngIf="element.isExpired" style="color: red;">Passed:&nbsp;{{ element.restdays }}</span>
-                        <span *ngIf="!element.isExpired && !element.soonToExpire" style="color: green;">Rest:&nbsp;{{ element.restdays }}</span>
-                        <span *ngIf="element.soonToExpire" style="color: #ff6900;">Rest:&nbsp;{{ element.restdays }}</span>
-                    </div>
+
+            <ng-container matColumnDef="end">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">End</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    {{ element.dateExpiration | date:'dd/MM/yyyy' }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="duration">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Duration</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    {{ element.duration }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rest">
+                <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Rest</th>
+                <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
+                    <span *ngIf="element.isExpired" style="color: red;">{{ element.restdays }}</span>
+                    <span *ngIf="!element.isExpired" style="color: green;">{{ element.restdays }}</span>
                 </td>
             </ng-container>
     
@@ -63,14 +72,6 @@
                 <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
                     <span *ngIf="element.note">{{ element.note }}</span>
                     <span *ngIf="!element.note">-</span>
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="expiredPicture">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element">
-                    <img *ngIf="element.isExpired && !element.soonToExpire"style="width: 100px;height: 100px;" src="/assets/gif/expired.gif"/>
-                    <img *ngIf="element.soonToExpire"style="width: 85px;height: 65px;" src="/assets/gif/soon-to-expire.gif"/>
                 </td>
             </ng-container>        
 
@@ -83,7 +84,7 @@
                 </td>
             </ng-container>
         
-            <tr mat-header-row style="background: #2196F3;" *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-header-row style="background: #263238;" *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
     
         </table>

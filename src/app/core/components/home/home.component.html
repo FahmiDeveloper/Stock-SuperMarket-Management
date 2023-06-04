@@ -1,7 +1,5 @@
-<h2>Dashboard</h2>
-
-<div [ngClass]="getClass()">
-    <div class="col-left">
+<div [ngClass]="getClass()" class="text-application">
+    <div [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '55%': '65%'}">
         <div class="card welcome-card">
             <div class="card-head welcome-head-container">
                 <div class="col-left">
@@ -42,28 +40,64 @@
     </div>
     <div class="col task-col">
         <div class="task">
-            <span class="bar completed"></span>
+            <span class="bar"></span>
             <div class="details">
-                <div>Completed</div>
-                <p>6 tasks</p>
+                <div class="details-name">Movies</div>
+                <p>{{nbrMoviesToCheckToday}} to check today</p>
             </div>
-            <i class="far fa-pen edit"></i>
+            <i class="fa fa-film edit"></i>
+            <div *ngIf="nbrMoviesToCheckToday > 0" class="pulse-movie"></div>
         </div>
         <div class="task">
-            <span class="bar active"></span>
+            <span class="bar"></span>
             <div class="details">
-                <div>Active</div>
-                <p>1 task</p>
+                <div class="details-name">Animes</div>
+                <p>{{nbrAnimesToCheckToday}} to check today</p>
             </div>
-            <i class="far fa-pen edit"></i>
+            <i class="fa fa-rocket edit"></i>
+            <div *ngIf="nbrAnimesToCheckToday > 0" class="pulse-anime"></div>
         </div>
         <div class="task">
-            <span class="bar new"></span>
+            <span class="bar"></span>
             <div class="details">
-                <div>Assigned</div>
-                <p>12 task</p>
+                <div class="details-name">Series</div>
+                <p>{{nbrSeriesToCheckToday}} to check today</p>
             </div>
-            <i class="far fa-pen edit"></i>
+            <i class="fa fa-television edit"></i>
+            <div *ngIf="nbrSeriesToCheckToday > 0" class="pulse-serie"></div>
+        </div>
+        <button>
+            <i class="far fa-plus"></i>
+            Create New Group
+        </button>
+    </div>
+    <div class="col task-col">
+        <div class="task">
+            <span class="bar"></span>
+            <div class="details">
+                <div><span class="details-name">Test in master</span> {{notesToTestInMasterList.length || 0}}</div>
+                <p><span class="details-name">Test in ERP</span> {{notesToTestInErpList.length || 0}}</p>
+            </div>
+            <i class="fa fa-sticky-note edit"></i>
+            <div *ngIf="notesToTestInMasterList.length > 0 || notesToTestInErpList.length > 0" class="pulse-test"></div>
+        </div>
+        <div class="task">
+            <span class="bar"></span>
+            <div class="details">
+                <div class="details-name">Clockings</div>
+                <p>to be delayed</p>
+            </div>
+            <i class="fa fa-clock-o edit"></i>
+        </div>
+        <div class="task">
+            <span class="bar"></span>
+            <div class="details">
+                <div class="details-name">Expirations</div>
+                <p>{{contentsExpiredList.length}} expired</p>
+            </div>
+            &nbsp;&nbsp;
+            <i class="fa fa-calendar edit"></i>
+            <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration"></div>
         </div>
         <button>
             <i class="far fa-plus"></i>
@@ -72,33 +106,104 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-head">Lorem ipsum - dashboard</div>
-    <div class="card-body">
-        Lorem ipsum dolor, sit?
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ducimus soluta, quasi aut ipsa non, ullam enim rem repudiandae, vitae provident animi. Inventore rerum, voluptas optio dignissimos blanditiis modi illo!
-
-        Lorem ipsum dolor, sit?
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ducimus soluta, quasi aut ipsa non, ullam enim rem repudiandae, vitae provident animi. Inventore rerum, voluptas optio dignissimos blanditiis modi illo!
-
-        Lorem ipsum dolor, sit?
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ducimus soluta, quasi aut ipsa non, ullam enim rem repudiandae, vitae provident animi. Inventore rerum, voluptas optio dignissimos blanditiis modi illo!
+<div class="row">
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Pocket</div>
+            <div class="card-body">
+                <span>{{restInPocket}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Wallet</div>
+            <div class="card-body">
+                <span>{{restInWallet}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Envelope</div>
+            <div class="card-body">
+                <span>{{restInEnvelope}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Box</div>
+            <div class="card-body">
+                <span>{{restInBox}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Poste Account</div>
+            <div class="card-body">
+                <span>{{restInPosteAccount}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Debts (In/Out)</div>
+            <div class="card-body">
+                <span>{{ totalInDebts || '0DT' }}</span>/<span>{{ totalOutDebts || '0DT' }}</span> 
+            </div>
+        </div>
     </div>
 </div>
 
-<br>
-<br>
-
-<div class="card">
-    <div class="card-head">Lorem ipsum - dashboard</div>
-    <div class="card-body">
-        Lorem ipsum dolor, sit?
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ducimus soluta, quasi aut ipsa non, ullam enim rem repudiandae, vitae provident animi. Inventore rerum, voluptas optio dignissimos blanditiis modi illo!
-
-        Lorem ipsum dolor, sit?
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ducimus soluta, quasi aut ipsa non, ullam enim rem repudiandae, vitae provident animi. Inventore rerum, voluptas optio dignissimos blanditiis modi illo!
-
-        Lorem ipsum dolor, sit?
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ducimus soluta, quasi aut ipsa non, ullam enim rem repudiandae, vitae provident animi. Inventore rerum, voluptas optio dignissimos blanditiis modi illo!
+<div class="row">
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Pay This Month</div>
+            <div class="card-body">
+                <span>{{totalInDebtsToPayThisMonth || '0DT'}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Pay Next Month</div>
+            <div class="card-body">
+                <span>{{totalInDebtsToPayNextMonth || '0DT'}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Pay Delayed</div>
+            <div class="card-body">
+                <span>{{totalInDebtsNotToPayForNow || '0DT'}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Get This Month</div>
+            <div class="card-body">
+                <span>{{totalOutDebtsToGetThisMonth || '0DT'}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Get Next Month</div>
+            <div class="card-body">
+                <span>{{totalOutDebtsToGetNextMonth || '0DT'}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-application">
+            <div class="card-head">Get Delayed</div>
+            <div class="card-body">
+                <span>{{totalOutDebtsNotToGetForNow || '0DT'}}</span>
+            </div>
+        </div>
     </div>
 </div>

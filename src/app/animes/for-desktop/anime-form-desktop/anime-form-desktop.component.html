@@ -7,7 +7,7 @@
   <form (ngSubmit)="save()" #f="ngForm">
 
     <mat-checkbox name="isFirst" [(ngModel)]="anime.isFirst" class="mat-checkbox-layout">
-      <span>First</span>
+      <span class="text-application">First</span>
     </mat-checkbox>
     
     <mat-form-field color="accent">
@@ -48,7 +48,7 @@
     </mat-form-field>
 
     <mat-checkbox *ngIf="anime.statusId && anime.statusId == 3" name="notLiked" [(ngModel)]="anime.notLiked" class="mat-checkbox-layout">
-      <span>Dislike</span>
+      <span class="text-application">Dislike</span>
     </mat-checkbox>
 
     <mat-form-field color="accent">
@@ -72,9 +72,10 @@
     </mat-form-field>
 
     <mat-form-field color="accent" *ngIf="anime.priority && anime.priority > 1">
-      <input type="text" placeholder="Parent film" matInput [matAutocomplete]="auto" (keyup)="filterByParentName($event.target.value)" name="parentAnimeName" [(ngModel)]="parentAnimeName">
+      <mat-placeholder class="text-application"><span>Parent film</span></mat-placeholder>
+      <input type="text" matInput [matAutocomplete]="auto" (keyup)="filterByParentName($event.target.value)" name="parentAnimeName" [(ngModel)]="parentAnimeName">
       <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let anime of seasonAnimesList" [value]="anime.key" (click)="getParentAnimeKey(anime.key)">
+          <mat-option *ngFor="let anime of seasonAnimesList" [value]="anime.key" (click)="getParentAnimeKey(anime.key)" class="text-application">
               {{anime.nameAnime}}
           </mat-option>
       </mat-autocomplete>         
@@ -90,7 +91,7 @@
       <textarea matInput #input type="text" [(ngModel)]="anime.note" name="note" rows="4" cols="40" class="text-application"></textarea>
     </mat-form-field>
 
-    <button type="button" mat-button (click)="fileInput.click()">Choose picture</button>
+    <button type="button" mat-button (click)="fileInput.click()" class="text-application">Choose picture</button>
     <input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
     <br *ngIf="progressValue"><br *ngIf="progressValue">
     <div *ngIf="progressValue | async as val" class="progress-background">

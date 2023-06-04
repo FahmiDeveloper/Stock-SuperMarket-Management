@@ -1,6 +1,6 @@
 <div mat-dialog-title class="dialog-title" id="name">
-  <h2 *ngIf="listSeasonsByParentSerieKey.length == 1" class="text-application">No seasons yet</h2>
-  <h2 *ngIf="listSeasonsByParentSerieKey.length > 1" class="text-application">All seasons</h2> 
+  <h3 *ngIf="listSeasonsByParentSerieKey.length == 1" class="text-application">No seasons yet</h3>
+  <h3 *ngIf="listSeasonsByParentSerieKey.length > 1" class="text-application">All seasons</h3> 
   <button mat-icon-button aria-label="close dialog" mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
@@ -20,7 +20,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile class="center-name-serie">
-          <h1 class="text-application" style="cursor: pointer;" (click)="copyText(serie.nameSerie)">{{ serie.nameSerie }}</h1>
+          <h3 class="text-application" style="cursor: pointer;" (click)="copyText(serie.nameSerie)">{{ serie.nameSerie }}</h3>
         </mat-grid-tile>
 
         <mat-grid-tile class="text-application">

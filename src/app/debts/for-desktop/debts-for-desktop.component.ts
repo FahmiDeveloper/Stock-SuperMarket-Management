@@ -28,7 +28,7 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Debt>();
   dataSourceCopie = new MatTableDataSource<Debt>();
-  displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'details', 'star'];
+  displayedColumns: string[] = ['debtor', 'creditor', 'debt', 'rest', 'date', 'place', 'status', 'note', 'star'];
   filteredDebtsByPlaceAndDebtForPay: Debt[];
   filteredDebtsByPlaceAndDebtToGet: Debt[];
 

@@ -1,7 +1,8 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -38,8 +39,11 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   optionSelected: number;
   dislike: boolean = false;
   nbrAnimesToCheckToday: number = 0;
-  defaultElevation = 2;
-  raisedElevation = 8;
+  itemsPerPage: number;
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
  
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForGetAllAnimesForSelect: Subscription;
@@ -63,6 +67,7 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.itemsPerPage = window.innerWidth <= 1366 ? 15 : 16;
     this.getAllAnimes();
     this.getAllAnimesForSelect();
   }
@@ -221,6 +226,22 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });
+  }
+
+  onRightClick(event: MouseEvent, anime: Anime) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {anime: anime};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

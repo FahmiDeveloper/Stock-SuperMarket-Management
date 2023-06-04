@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, HostListener, ViewEncapsulation } from '@angular/core';
-import { navbarData } from './nav-data';
+import { navbarDataHome, navbarDataToDoList, navbarData } from './nav-data';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { INavbarData, fadeInOut } from './helper';
 import { Router } from '@angular/router';
@@ -34,6 +34,8 @@ export class SidenavComponent implements OnInit {
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
   collapsed = false;
   screenWidth = 0;
+  navbarDataHome = navbarDataHome;
+  navbarDataToDoList = navbarDataToDoList;
   navData = navbarData;
   multiple: boolean = false;
 
@@ -49,6 +51,9 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+    this.navData.forEach(data => {
+
+    })
   }
 
   toggleCollapse(): void {

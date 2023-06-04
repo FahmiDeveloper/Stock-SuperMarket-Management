@@ -8,6 +8,63 @@
     </div>
     <div class="scrollwrap scrollwrap_delayed">
         <ul class="sidenav-nav">
+            <li class="sidenav-nav-item" [matTooltip]="navbarDataHome.label" matTooltipPosition="right" matTooltipClass="dataTooltip" [matTooltipDisabled]="collapsed == true">
+                <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="navbarDataHome.items && navbarDataHome.items.length > 0" [ngClass]="getActiveClass(navbarDataHome)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
+                    <i class="sidenav-link-icon" [class]="navbarDataHome.icon"></i>
+                    <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
+                        {{navbarDataHome.label}}
+                    </span>
+                    <i *ngIf="navbarDataHome.items && collapsed" class="menu-collapse-icon"
+                    [ngClass]="!navbarDataHome.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"></i>
+                </a>
+    
+                <a class="sidenav-nav-link"
+                    *ngIf="!navbarDataHome.items || (navbarDataHome.items && navbarDataHome.items.length === 0)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}" 
+                    [routerLink]="[navbarDataHome.routeLink]"
+                    (click)="shrinkItems(navbarDataHome)">
+                    <i class="sidenav-link-icon" [class]="navbarDataHome.icon"></i>
+                    <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
+                        {{navbarDataHome.label}}
+                    </span>
+                </a>
+                <div *ngIf="collapsed && navbarDataHome.items && navbarDataHome.items.length > 0">
+                    <app-sublevel-menu
+                      [data]="navbarDataHome"
+                      [collapsed]="collapsed"
+                      [multiple]="multiple"
+                      [expanded]="navbarDataHome.expanded">
+                    </app-sublevel-menu>
+                </div>
+            </li>
+            <li class="sidenav-nav-item" [matTooltip]="navbarDataToDoList.label" matTooltipPosition="right" matTooltipClass="dataTooltip" [matTooltipDisabled]="collapsed == true">
+                <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="navbarDataToDoList.items && navbarDataToDoList.items.length > 0" [ngClass]="getActiveClass(navbarDataToDoList)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
+                    <i class="sidenav-link-icon" [class]="navbarDataToDoList.icon"></i>
+                    <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
+                        {{navbarDataToDoList.label}}
+                    </span>
+                    <i *ngIf="navbarDataToDoList.items && collapsed" class="menu-collapse-icon"
+                    [ngClass]="!navbarDataToDoList.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"></i>
+                </a>
+    
+                <a class="sidenav-nav-link"
+                    *ngIf="!navbarDataToDoList.items || (navbarDataToDoList.items && navbarDataToDoList.items.length === 0)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}" 
+                    [href]="[navbarDataToDoList.routeLink]"
+                    target="_blank"                    
+                    (click)="shrinkItems(navbarDataToDoList)">
+                    <i class="sidenav-link-icon" [class]="navbarDataToDoList.icon"></i>
+                    <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
+                        {{navbarDataToDoList.label}}
+                    </span>
+                </a>
+                <div *ngIf="collapsed && navbarDataToDoList.items && navbarDataToDoList.items.length > 0">
+                    <app-sublevel-menu
+                      [data]="navbarDataToDoList"
+                      [collapsed]="collapsed"
+                      [multiple]="multiple"
+                      [expanded]="navbarDataToDoList.expanded">
+                    </app-sublevel-menu>
+                </div>
+            </li>
             <li class="sidenav-nav-item" *ngFor="let data of navData" [matTooltip]="data.label" matTooltipPosition="right" matTooltipClass="dataTooltip" [matTooltipDisabled]="collapsed == true">
                 <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="data.items && data.items.length > 0" [ngClass]="getActiveClass(data)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
                     <i class="sidenav-link-icon" [class]="data.icon"></i>

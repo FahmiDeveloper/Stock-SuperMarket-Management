@@ -3,8 +3,8 @@
 <br>
 
 <div class="row">
-    <div class="col-md-4">
-        <mat-form-field class="widhtInput text-application">
+    <div class="col-md-2">
+        <mat-form-field class="text-application">
             <mat-label>Medication Name</mat-label>
             <input matInput type="text" name="medicationName" (keyup)="getAllMedications()" [(ngModel)]="medicationName"/>
         </mat-form-field>
@@ -20,12 +20,12 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <button 
             type="button" 
             (click)="newMedication()" 
             mat-mini-fab 
-            style="background: #2196F3;float: right;">
+            style="background: #263238;float: right;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
     </div>     
@@ -33,94 +33,123 @@
 
 <br>
 
-<div class="row mt-4">
-    <div class="col-12">
-     
-        <div class="card" *ngFor="let medication of (medicationsList | paginate: { itemsPerPage: 6, currentPage: p })" style="margin-bottom: 20px !important;">
-            <div class="card-body">
-                <div class="row">
+<ng-container *ngFor="let medication of (medicationsList | paginate: { itemsPerPage: 6 , currentPage: p })">
+    
+    <mat-card appMaterialElevation [defaultElevation]="defaultElevation" raisedElevation="16">
 
-                    <div [ngClass]="isTablet ? 'col-md-3' : 'col-md-2'">
-                        <img *ngIf="medication.urlPicture" [src]="medication.urlPicture" class="medication-image" (click)="viewPicture(medication, showPicture)" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}">
-                        <img *ngIf="!medication.urlPicture" src="/assets/pictures/NoImageAvailable.png" class="medication-image">
+        <mat-grid-list cols="4" rowHeight="250px">
+
+            <mat-grid-tile>
+                <img *ngIf="medication.urlPicture" [src]="medication.urlPicture" class="medication-image" (click)="viewPicture(medication, showPicture)">
+                <img *ngIf="!medication.urlPicture" src="/assets/pictures/NoImageAvailable.png" class="medication-image">
+            </mat-grid-tile>
+
+            <mat-grid-tile class="center-name-medication">
+                <h3 class="text-application" style="cursor: pointer;" (click)="copyText(medication.medicationName)">{{ medication.medicationName }}</h3>
+            </mat-grid-tile>
+
+            <mat-grid-tile class="text-application">
+
+                <div style="width:100%;">
+
+                    <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 2em; margin-bottom: 2em;">
+                        <div><dt>For</dt></div>
+                        <div></div>
+                        <div>{{ medication.medicationFor }}</div>
                     </div>
 
-                    <div [ngClass]="isTablet ? 'col-md-3' : 'col-md-4'" class="dotted-border center-name-medication">
-                        <h1 class="text-application" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" (click)="copyText(medication.medicationName)">{{ medication.medicationName }}</h1>
-                    </div>
-
-                    <div class="col-md-4 dotted-border text-application">
-                        <div class="gridForLegend">
-                            <div><dt>For</dt></div>
-                            <div>{{ medication.medicationFor }}</div>
-                        </div>
-
-                        <br>
-
-                        <div class="gridForLegend">
-                            <div><dt>Price</dt></div>
-                            <div>
-                                <span *ngIf="medication.price">{{ medication.price }}</span>
-                                <span *ngIf="!medication.price">?</span>
-                            </div>
-                        </div>
-
-                        <br>
-
-                        <div class="gridForLegend">
-                            <div><dt>Utilisation</dt></div>
-                            <div>
-                                <mat-icon *ngIf="medication.utilisation" style="color: black;" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" (click)="viewUtilisation(medication.utilisation)">note</mat-icon>         
-                                <i *ngIf="!medication.utilisation" class="fa fa-minus-circle"></i>
-                            </div>
+                    <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 2em; margin-bottom: 2em;">
+                        <div><dt>Price</dt></div>
+                        <div></div>
+                        <div>
+                            <span *ngIf="medication.price">{{ medication.price }}</span>
+                            <span *ngIf="!medication.price">?</span>
                         </div>
                     </div>
 
-                    <div class="col-md-2 dotted-border">           
-                        <button 
-                            type="button"
-                            mat-button
-                            [matMenuTriggerFor]="menu" 
-                            class="style-button text-application center-btn">
-                            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-                            Actions
-                        </button>
-                        <mat-menu #menu="matMenu" class="my-menu" xPosition="before">                        
-                            <button
-                                type="button"
-                                mat-menu-item 
-                                (click)="editMedication(medication)"
-                                class="text-application">
-                                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                                <span>Edit</span>
-                            </button>
-                        
-                            <button
-                                *ngIf="medication.urlPicture"
-                                type="button"
-                                mat-menu-item 
-                                (click)="downloadPicture(medication)"
-                                class="text-application">
-                                <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
-                                <span>Download</span>
-                            </button>
+                    <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 2em; margin-bottom: 2em;">
+                        <div><dt>Utilisation</dt></div>
+                        <div></div>
+                        <div>
+                            <mat-icon *ngIf="medication.utilisation" style="color: black;" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" (click)="viewUtilisation(medication.utilisation)">note</mat-icon>         
+                            <i *ngIf="!medication.utilisation" class="fa fa-minus-circle"></i>
+                        </div>
+                    </div>
+
+                </div>          
+
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+
+                <button 
+                    type="button"
+                    mat-button
+                    [matMenuTriggerFor]="menu" 
+                    class="style-button text-application center-btn">
+                    <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
+                    Actions
+                </button>
+
+                <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
+
+                    <button
+                        type="button"
+                        mat-menu-item 
+                        (click)="editMedication(medication)"
+                        class="text-application">
+                        <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                
+                    <button
+                        *ngIf="medication.urlPicture"
+                        type="button"
+                        mat-menu-item 
+                        (click)="downloadPicture(medication)"
+                        class="text-application">
+                        <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
+                        <span>Download</span>
+                    </button>
+            
+                    <button
+                        type="button"
+                        mat-menu-item 
+                        (click)="deleteMedication(medication.key)"
+                        class="text-application">
+                        <mat-icon style="color: #f44336;">delete</mat-icon>
+                        <span>Delete</span>
+                    </button>      
                     
-                            <button
-                                type="button"
-                                mat-menu-item 
-                                (click)="deleteMedication(medication.key)"
-                                class="text-application">
-                                <mat-icon style="color: #f44336;">delete</mat-icon>
-                                <span>Delete</span>
-                            </button>                   
-                        </mat-menu>
-                    </div>
-                    
-                </div>        
-            </div>
-        </div>
-    </div>
-</div>
+                </mat-menu>
+
+            </mat-grid-tile>
+
+        </mat-grid-list>
+       
+    </mat-card>
+
+    <br>
+
+</ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <br>
 

@@ -29,8 +29,8 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   isDesktop: boolean;
 
   length: number = 0;
-  pageSize: number = 6;
-  pageSizeOptions: number[] = [6];
+  pageSize: number = 8;
+  pageSizeOptions: number[] = [8];
 
   subscriptionForGetAllPassword: Subscription;
 
@@ -63,7 +63,7 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
         this.passwordsList = passwords.sort((n1, n2) => n2.numRefPassword - n1.numRefPassword);
       }
 
-      this.pagedList = this.passwordsList.slice(0, 6);
+      this.pagedList = this.passwordsList.slice(0, 8);
       this.length = this.passwordsList.length;
            
     });

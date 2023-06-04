@@ -26,9 +26,6 @@ export class SerieDetailsWithSeasonsDesktopComponent implements OnInit {
   defaultElevation = 2;
   raisedElevation = 8;
 
-  isDesktop: boolean;
-  isTablet: boolean;
-
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'On hold'}, 
     {id: 2, status: 'Not yet downloaded'}, 
