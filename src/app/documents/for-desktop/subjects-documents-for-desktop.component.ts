@@ -120,13 +120,13 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   extractDocument(subjectDocuments: SubjectDocuments) {
-    const dialogRef = this.dialogService.open(DocumentsListForDesktopComponent, {width: '500px'});
+    const dialogRef = this.dialogService.open(DocumentsListForDesktopComponent, {width: '800px'});
     dialogRef.componentInstance.subjectDocuments = subjectDocuments;
     dialogRef.componentInstance.documentRef = 1;
   }
 
   renewalDocument(subjectDocuments: SubjectDocuments) {
-    const dialogRef = this.dialogService.open(DocumentsListForDesktopComponent, {width: '500px'});
+    const dialogRef = this.dialogService.open(DocumentsListForDesktopComponent, {width: '800px'});
     dialogRef.componentInstance.subjectDocuments = subjectDocuments;
     dialogRef.componentInstance.documentRef = 2;
   }

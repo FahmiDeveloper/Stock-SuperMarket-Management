@@ -24,6 +24,7 @@ export class NoteFormDesktopComponent implements OnInit {
   arraySubjectNotesForNewSubject: SubjectNotes[];
 
   defaultSubjectNotesId: number;
+  subjectNotesSelectedId: number;
 
   basePath = '/FilesNotes';
   task: AngularFireUploadTask;
@@ -40,6 +41,7 @@ export class NoteFormDesktopComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (!this.data.note.id) this.data.note.subjectNotesId = this.subjectNotesSelectedId;
     if (this.data.note.id) this.defaultSubjectNotesId = this.data.note.subjectNotesId;
   }
 

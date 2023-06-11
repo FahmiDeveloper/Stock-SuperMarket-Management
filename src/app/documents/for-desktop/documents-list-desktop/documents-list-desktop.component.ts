@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,20 +22,18 @@ import { SubjectDocuments } from 'src/app/shared/models/subject-document.model';
 export class DocumentsListForDesktopComponent implements OnInit, OnDestroy {
 
   documentsList: Document[] = [];
-  pagedList: Document[]= [];
   documentsListCopieForNewDocument: Document[] = [];
-
-  length: number = 0;
 
   subjectDocuments: SubjectDocuments = new SubjectDocuments();
 
+  length: number = 0;
   documentRef: number;
 
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
+
   subscriptionForGetAllDocuments: Subscription;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
 
   constructor(
     public documentService: DocumentService,
@@ -57,22 +54,13 @@ export class DocumentsListForDesktopComponent implements OnInit, OnDestroy {
  
       this.documentsList = documents
       .filter(document => (document.subjectDocumentsKey == this.subjectDocuments.key) && (document.documentRef == this.documentRef))
-      .sort((n1, n2) => n2.numRefDocument - n1.numRefDocument);
+      .sort((n1, n2) => n1.numRefDocument - n2.numRefDocument);
 
-      this.pagedList = this.documentsList.slice(0, 6);
-      this.length = this.documentsList.length;
+      this.documentsList.forEach(document => {
+        if (document.documentContent.length > 80) document.documentContentForTooltip = '...' + document.documentContent.substring(0, 80);
+      })
 
     });
-  }
-
-  OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.documentsList.slice(startIndex, endIndex);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newDocument() {
@@ -135,12 +123,20 @@ export class DocumentsListForDesktopComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewDocumentContent(contentDocumentContent: string) {
-    Swal.fire({
-      text: contentDocumentContent,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
-    });
+  onRightClick(event: MouseEvent, document: Document) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {document: document};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

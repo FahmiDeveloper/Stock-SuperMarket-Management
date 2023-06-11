@@ -1,15 +1,19 @@
 <div mat-dialog-title class="dialog-title" id="name">
+
     <h3 mat-dialog-title class="text-application">
         {{ subjectDocuments.SubjectDocumentsName }}
         (<span *ngIf="documentRef == 1">استخراج</span>
         <span *ngIf="documentRef == 2">تجديد</span>)
     </h3> 
+
     <button mat-icon-button aria-label="close dialog" mat-dialog-close>
       <mat-icon>close</mat-icon>
     </button>
+
 </div>
     
 <mat-dialog-content>
+
     <div class="row">
         <div class="col-md-6"></div>
         <div class="col-md-6">
@@ -17,75 +21,70 @@
                 type="button" 
                 (click)="newDocument()" 
                 mat-mini-fab 
-                style="background: #2196F3;float: right;">
+                style="background: #263238;float: right;">
                 <mat-icon style="color: white;">add</mat-icon>
             </button>
         </div>     
     </div>
 
     <br>
-    
-    <mat-nav-list class="nav-list">
-    
-        <mat-list-item *ngFor="let document of pagedList">
-    
-            <span class="text-application" style="font-size: x-large;line-height: 1.5em;" matLine (click)="copyText(document.documentContent)">{{ document.documentContent }}</span>
-    
-            <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{document:document}">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-    
-            <mat-divider style="color: black;"></mat-divider>
-    
-        </mat-list-item>
-    
-        <mat-menu #contextMenu="matMenu" xPosition="before">
-            <ng-template matMenuContent let-document="document">
-    
-                <button
-                    type="button"
-                    mat-menu-item 
-                    (click)="editDocument(document)"
-                    class="text-application">
-                    <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                    <span>Edit</span>
-                </button>
-    
-                <button
-                    *ngIf="document.documentContent"
-                    type="button"
-                    mat-menu-item 
-                    (click)="viewDocumentContent(document.documentContent)"
-                    class="text-application">
-                    <mat-icon style="color: black;">note</mat-icon>   
-                    <span>Note</span>
-                </button>
-    
-                <button
-                    type="button"
-                    mat-menu-item 
-                    (click)="deleteDocument(document.key)"
-                    class="text-application">
-                    <mat-icon style="color: #f44336;">delete</mat-icon>
-                    <span>Delete</span>
-                </button>  
-    
-            </ng-template>
-        </mat-menu>
-    
-    </mat-nav-list>
 
+    <div *ngIf="documentsList.length > 0" class="example-list">
+        <div class="example-box" *ngFor="let document of documentsList" (contextmenu)="onRightClick($event, document)">
+          
+            <span
+                *ngIf="document.documentContent.length < 80 || document.documentContent.length == 80" 
+                class="text-application" 
+                style="font-size: x-large;cursor: pointer;" 
+                (click)="copyText(document.documentContent)">
+                {{ document.documentContent }}
+            </span>
+            <span 
+                *ngIf="document.documentContent.length > 80" 
+                class="text-application" 
+                style="font-size: x-large;cursor: pointer;" 
+                (click)="copyText(document.documentContent)"
+                [matTooltip]="document.documentContent">
+                {{ document.documentContentForTooltip }}
+            </span>
+        </div>
+    </div>
+
+    <div 
+        style="visibility: hidden; position: fixed;" 
+        [style.left]="menuTopLeftPosition.x" 
+        [style.top]="menuTopLeftPosition.y" 
+        [matMenuTriggerFor]="rightMenu">
+    </div> 
+ 
+    <mat-menu #rightMenu="matMenu"> 
+
+        <ng-template matMenuContent let-document="document">
+
+            <button
+                type="button"
+                mat-menu-item 
+                (click)="editDocument(document)"
+                class="text-application">
+                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+                <span>Edit</span>
+            </button>
+
+            <button
+                type="button"
+                mat-menu-item 
+                (click)="deleteDocument(document.key)"
+                class="text-application">
+                <mat-icon style="color: #f44336;">delete</mat-icon>
+                <span>Delete</span>
+            </button>  
+
+        </ng-template> 
+
+    </mat-menu>
+  
     <div *ngIf="documentsList.length == 0" class="row justify-content-center no-results text-application">
         No results
     </div>
-    
-    <div class="row mat-paginator">
-        <mat-paginator 
-            [length]="length"
-            [pageSize]="6"
-            [pageSizeOptions]="[6]"
-            showFirstLastButtons
-            (page)="OnPageChange($event)">
-        </mat-paginator>
-    </div>
+
 </mat-dialog-content>

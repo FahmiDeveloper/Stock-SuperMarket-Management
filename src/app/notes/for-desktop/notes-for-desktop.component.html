@@ -87,16 +87,9 @@
 	</div>
 </div>
 
-<div 
-    *ngIf="subjectNotesSelectedId == 3"
-    cdkDropList
-	id="toTestInMaster"
-	#toTestInMasterList="cdkDropList"
-	[cdkDropListData]="notesToTestInMasterList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
+<div *ngIf="subjectNotesSelectedId == 3" class="example-list">
 	<p class="empty-label text-application" *ngIf="notesToTestInMasterList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToTestInMasterList" cdkDrag>
+	<div class="example-box" *ngFor="let note of notesToTestInMasterList">
         <note-desktop 
             style="width: 100%;" 
             [note]="note" 
@@ -117,16 +110,9 @@
 	</div>
 </div>
 
-<div 
-    *ngIf="subjectNotesSelectedId == 4"
-    cdkDropList
-	id="toTestInErp"
-	#toTestInErpList="cdkDropList"
-	[cdkDropListData]="notesToTestInErpList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
+<div *ngIf="subjectNotesSelectedId == 4" class="example-list">
 	<p class="empty-label text-application" *ngIf="notesToTestInErpList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToTestInErpList" cdkDrag>
+	<div class="example-box" *ngFor="let note of notesToTestInErpList">
         <note-desktop 
             style="width: 100%;" 
             [note]="note" 
@@ -147,16 +133,9 @@
 	</div>
 </div>
 
-<div 
-    *ngIf="subjectNotesSelectedId == 5"
-    cdkDropList
-	id="toTestInPersAppAfterBuild"
-	#toTestInPersAppAfterBuildList="cdkDropList"
-	[cdkDropListData]="notesToTestInPersAppAfterBuildList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
+<div *ngIf="subjectNotesSelectedId == 5" class="example-list">
 	<p class="empty-label text-application" *ngIf="notesToTestInPersAppAfterBuildList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToTestInPersAppAfterBuildList" cdkDrag>
+	<div class="example-box" *ngFor="let note of notesToTestInPersAppAfterBuildList">
         <note-desktop 
             style="width: 100%;" 
             [note]="note" 
