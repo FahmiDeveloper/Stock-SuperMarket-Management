@@ -4,4 +4,5 @@ export class Document {
   numRefDocument: number;
   subjectDocumentsKey: string;
   documentRef: number;
+  documentContentForTooltip: string;
 }

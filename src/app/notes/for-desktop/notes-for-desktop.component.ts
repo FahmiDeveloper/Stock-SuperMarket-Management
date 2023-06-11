@@ -78,47 +78,47 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
   getAllNotes() {
     this.toDoInErp.subscribe(resToDoInErp => {
       this.notesToDoInErpList = resToDoInErp;
-      this.notesToDoInErpList = this.notesToDoInErpList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToDoInErpList = this.notesToDoInErpList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.toDoInPersApp.subscribe(resToDoInPersApp => {
       this.notesToDoInPersAppList = resToDoInPersApp;
-      this.notesToDoInPersAppList = this.notesToDoInPersAppList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToDoInPersAppList = this.notesToDoInPersAppList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.toTestInMaster.subscribe(resToTestInMaster => {
       this.notesToTestInMasterList = resToTestInMaster;
-      this.notesToTestInMasterList = this.notesToTestInMasterList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToTestInMasterList = this.notesToTestInMasterList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.toTestInErp.subscribe(resToTestInErp => {
       this.notesToTestInErpList = resToTestInErp;
-      this.notesToTestInErpList = this.notesToTestInErpList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToTestInErpList = this.notesToTestInErpList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.toTestInPersAppAfterBuild.subscribe(resToTestInPersAppAfterBuild => {
       this.notesToTestInPersAppAfterBuildList = resToTestInPersAppAfterBuild;
-      this.notesToTestInPersAppAfterBuildList = this.notesToTestInPersAppAfterBuildList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToTestInPersAppAfterBuildList = this.notesToTestInPersAppAfterBuildList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.toFixAfterTestInMaster.subscribe(resToFixAfterTestInMaster => {
       this.notesToFixAfterTestInMasterList = resToFixAfterTestInMaster;
-      this.notesToFixAfterTestInMasterList = this.notesToFixAfterTestInMasterList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToFixAfterTestInMasterList = this.notesToFixAfterTestInMasterList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.toFixAfterTestInErp.subscribe(resToFixAfterTestInErp => {
       this.notesToFixAfterTestInErpList = resToFixAfterTestInErp;
-      this.notesToFixAfterTestInErpList = this.notesToFixAfterTestInErpList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToFixAfterTestInErpList = this.notesToFixAfterTestInErpList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.toFixAfterTestInPersAppAfterBuild.subscribe(resToFixAfterTestInPersAppAfterBuild => {
       this.notesToFixAfterTestInPersAppAfterBuildList = resToFixAfterTestInPersAppAfterBuild;
-      this.notesToFixAfterTestInPersAppAfterBuildList = this.notesToFixAfterTestInPersAppAfterBuildList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notesToFixAfterTestInPersAppAfterBuildList = this.notesToFixAfterTestInPersAppAfterBuildList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
 
     this.notifications.subscribe(resNotifications => {
       this.notificationsList = resNotifications;
-      this.notificationsList = this.notificationsList.sort((n1, n2) => n2.orderNo - n1.orderNo);
+      this.notificationsList = this.notificationsList.sort((n1, n2) => n1.orderNo - n2.orderNo);
     })
   }
 
@@ -181,6 +181,7 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
 
     dialogRef.componentInstance.arraySubjectNotes = this.subjectNotesList;
     dialogRef.componentInstance.arraySubjectNotesForNewSubject = this.arraySubjectNotesForNewSubject;
+    dialogRef.componentInstance.subjectNotesSelectedId = this.subjectNotesSelectedId;
 
     dialogRef.afterClosed().subscribe((result: NoteDialogResult|undefined) => {
       if (!result) {
