@@ -27,10 +27,10 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
 
   content: string = '';
   isDesktop: boolean;
-
   length: number = 0;
-  pageSize: number = 8;
-  pageSizeOptions: number[] = [8];
+  pageSize: number = 6;
+  pageSizeOptions: number[] = [6];
+  innerWidth: number;
 
   subscriptionForGetAllPassword: Subscription;
 
@@ -44,6 +44,7 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
     this.isDesktop = this.deviceService.isDesktop();
     this.getAllPasswords();
   }
@@ -63,7 +64,7 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
         this.passwordsList = passwords.sort((n1, n2) => n2.numRefPassword - n1.numRefPassword);
       }
 
-      this.pagedList = this.passwordsList.slice(0, 8);
+      this.pagedList = this.passwordsList.slice(0, 6);
       this.length = this.passwordsList.length;
            
     });
