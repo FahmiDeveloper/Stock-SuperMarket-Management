@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
 import Swal from 'sweetalert2';
@@ -17,7 +17,6 @@ import { SubjectDocuments } from 'src/app/shared/models/subject-document.model';
 export class SubjectDocumentsFormDesktopComponent implements OnInit {
 
   arraysubjectDocuments: SubjectDocuments[];
-  pagedListSubjectDocuments: SubjectDocuments[];
 
   subjectDocuments: SubjectDocuments = new SubjectDocuments();
   
@@ -25,13 +24,10 @@ export class SubjectDocumentsFormDesktopComponent implements OnInit {
 
   constructor(
     public subjectDocumentsService: SubjectDocumentsService,
-    public dialogRef: MatDialogRef<SubjectDocumentsFormDesktopComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SubjectDocuments[]
+    public dialogRef: MatDialogRef<SubjectDocumentsFormDesktopComponent>
   ) {}
 
-  ngOnInit() {
-    if (this.subjectDocuments.key) this.data = this.pagedListSubjectDocuments;
-  }
+  ngOnInit() {}
 
   save() {
     if (this.subjectDocuments.key) {
@@ -67,7 +63,7 @@ export class SubjectDocumentsFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
 }

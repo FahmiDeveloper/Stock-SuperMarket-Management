@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 import { AnimeService } from 'src/app/shared/services/anime.service';
@@ -14,16 +14,7 @@ import { Movie } from 'src/app/shared/models/movie.model';
 import { Anime } from 'src/app/shared/models/anime.model';
 import { Serie } from 'src/app/shared/models/serie.model';
 import { Expiration } from 'src/app/shared/models/expiration.model';
-import { Note } from 'src/app/shared/models/note.model';
 import { Debt } from 'src/app/shared/models/debt.model';
-
-const getObservable = (collection: AngularFirestoreCollection<Note>) => {
-  const subject = new BehaviorSubject<Note[]>([]);
-  collection.valueChanges({ idField: 'id' }).subscribe((val: Note[]) => {
-    subject.next(val);
-  });
-  return subject;
-};
 
 @Component({
   selector: 'app-home',
@@ -33,16 +24,12 @@ const getObservable = (collection: AngularFirestoreCollection<Note>) => {
 
 export class HomeComponent implements OnInit, OnDestroy {
 
-  toTestInMaster = getObservable(this.store.collection('toTestInMaster')) as Observable<Note[]>;
-  toTestInErp = getObservable(this.store.collection('toTestInErp')) as Observable<Note[]>;
-
   innerWidth: any;
   nbrMoviesToCheckToday: number = 0;
   nbrAnimesToCheckToday: number = 0;
   nbrSeriesToCheckToday: number = 0;
   contentsExpiredList: Expiration[] = [];
-  notesToTestInMasterList: Note[] = [];
-  notesToTestInErpList: Note[] = [];
+  contentsSoonToExpireList: Expiration[] = [];
 
   // debts variables
   totalInDebt: number= 0;
@@ -103,7 +90,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getAllAnimesToCheckToday();
     this.getAllSeriesToCheckToday();
     this.getAllContentsExpired();
-    this.getAllNotesForTestInMasterAndERP();
     this.getAllDebtsStatistics();
   }
 
@@ -167,18 +153,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (nowTime > dateExpiration || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D") {
           this.contentsExpiredList.push(expiration);
         }
+
+        var dateNow = moment(new Date(),'yyyy-MM-DD');
+        var dateExp = moment(expiration.dateExpiration);
+
+        if (dateExp.diff(dateNow, 'days') >= 1 && dateExp.diff(dateNow, 'days') <= 7) {
+          this.contentsSoonToExpireList.push(expiration);
+        }
       })        
     });
-  }
-
-  getAllNotesForTestInMasterAndERP() {
-    this.toTestInMaster.subscribe(resToTestInMaster => {
-      this.notesToTestInMasterList = resToTestInMaster;
-    })
-
-    this.toTestInErp.subscribe(resToTestInErp => {
-      this.notesToTestInErpList = resToTestInErp;
-    })
   }
 
   getAllDebtsStatistics() {

@@ -85,6 +85,18 @@
     </button>
 
     <button
+        *ngIf="anime.statusId == 1 && anime.type !== 'Movie' && anime.type !== 'Manga'"
+        mat-menu-item 
+        class="text-application">
+        Eps&nbsp;&nbsp;&nbsp;
+        <span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
+        <span *ngIf="!anime.currentEpisode">?</span>
+        /
+        <span *ngIf="anime.totalEpisodes">{{ anime.totalEpisodes }}</span>
+        <span *ngIf="!anime.totalEpisodes">?</span>
+    </button>
+
+    <button
         *ngIf="anime.haveSeasons" 
         mat-menu-item 
         (click)="showDetailsAnime(anime)"

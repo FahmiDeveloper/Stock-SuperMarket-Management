@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -28,9 +28,9 @@ import { FileUpload, TypesFiles } from '../shared/models/file-upload.model';
 export class FilesComponent implements OnInit, OnDestroy {
 
   linksList: Link[]= [];
-  pagedList: Link[]= [];
   arrayLinksForNewLink: Link[]= [];
-  length: number = 0;
+
+  p: number = 1;
 
   content: string = '';
   numContextFile: number;
@@ -40,9 +40,11 @@ export class FilesComponent implements OnInit, OnDestroy {
   angularContext: boolean = false;
   otherContext: boolean = false;
 
-  subscriptionForGetAllLinks: Subscription;
+  menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatMenuTrigger) matMenuTrigger: MatMenuTrigger;
+
+  subscriptionForGetAllLinks: Subscription;
 
   typesFiles: TypesFiles[] = [
     {id: 1, title: 'Pictures', type: 'Picture', icon: '/assets/pictures/picture-file.jpg'},
@@ -61,7 +63,8 @@ export class FilesComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -87,13 +90,13 @@ export class FilesComponent implements OnInit, OnDestroy {
       if (this.isMobile) {
         this.dialogService.open(contentLinks, configMobile);
       } else {
-        this.dialogService.open(contentLinks, {width: '500px'});
+        this.dialogService.open(contentLinks, {width: '800px'});
       }
     } else {
       if (this.isMobile) {
         this.dialogService.open(contentListFiles, configMobile);
       } else {
-        this.dialogService.open(contentListFiles, {width: '500px'});
+        this.dialogService.open(contentListFiles, {width: '800px'});
       }   
     } 
   }
@@ -118,19 +121,7 @@ export class FilesComponent implements OnInit, OnDestroy {
       } 
       else this.linksList = links.sort((n1, n2) => n2.numRefLink - n1.numRefLink);
       
-      this.pagedList = this.linksList.slice(0, 6);
-      this.length = this.linksList.length;
     });
-  }
-
-  OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.linksList.slice(startIndex, endIndex);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newLink() {
@@ -246,11 +237,42 @@ export class FilesComponent implements OnInit, OnDestroy {
     })
   }
 
-  viewLinkContent(linkContent: string) {
-    Swal.fire({
-      text: linkContent,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
+  onRightClick(event: MouseEvent, link: Link) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+     this.matMenuTrigger.menuData = {link: link};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
+  }
+  
+  copyText(coordinate: string){
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = coordinate;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
     });
   }
   

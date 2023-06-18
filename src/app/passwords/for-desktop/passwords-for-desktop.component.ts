@@ -22,15 +22,14 @@ import { Password } from 'src/app/shared/models/password.model';
 export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
 
   passwordsList: Password[] = [];
-  pagedList: Password[]= [];
   passwordsListCopie: Password[] = [];
+
+  p: number = 1;
 
   content: string = '';
   isDesktop: boolean;
-  length: number = 0;
-  pageSize: number = 6;
-  pageSizeOptions: number[] = [6];
   innerWidth: number;
+  itemsPerPage: number;
 
   subscriptionForGetAllPassword: Subscription;
 
@@ -45,6 +44,7 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
+    this.itemsPerPage = window.innerWidth <= 1366 ? 6 : 8;
     this.isDesktop = this.deviceService.isDesktop();
     this.getAllPasswords();
   }
@@ -63,20 +63,11 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
       else {
         this.passwordsList = passwords.sort((n1, n2) => n2.numRefPassword - n1.numRefPassword);
       }
-
-      this.pagedList = this.passwordsList.slice(0, 6);
-      this.length = this.passwordsList.length;
            
     });
   }
 
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.passwordsList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -92,11 +83,6 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, config);
     
     dialogRef.componentInstance.password = password;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });
   }
 
   deletePassword(passwordKey) {
