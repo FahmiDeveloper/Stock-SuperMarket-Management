@@ -34,6 +34,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   isDesktop: boolean;
   isTablet: boolean;
   content: string = '';
+  innerWidth: any;
 
   subscriptionForGetAllExpirations: Subscription;
 
@@ -48,6 +49,7 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
     this.isDesktop = this.deviceService.isDesktop();
     this.isTablet = this.deviceService.isTablet();
     if (this.isDesktop) {this.getAllExpirationsForDesktop();}
