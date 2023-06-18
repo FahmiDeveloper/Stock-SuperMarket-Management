@@ -45,6 +45,7 @@ export class UploadDetailsComponent implements OnChanges {
   headData: any;
   arrayBuffer: any;
   wordFile: File;
+  itemsPerPage: number;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -59,6 +60,7 @@ export class UploadDetailsComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
+    this.itemsPerPage = window.innerWidth <= 1366 ? 4 : 8;
     if (this.filteredFiles) {
       this.filteredFiles.forEach(element => {
         element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));

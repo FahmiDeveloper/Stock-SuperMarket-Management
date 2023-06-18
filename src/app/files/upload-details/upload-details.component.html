@@ -1,6 +1,6 @@
 <div *ngIf="filteredFiles?.length > 0" class="example-list">
 
-  <div class="example-box" *ngFor="let file of (filteredFiles | paginate: { itemsPerPage: 8 , currentPage: p })" (contextmenu)="onRightClick($event, file)">
+  <div class="example-box" *ngFor="let file of (filteredFiles | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (contextmenu)="onRightClick($event, file)">
 
     <span
       class="text-application add-three-dots"

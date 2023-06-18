@@ -26,7 +26,7 @@
             (refContextFile)="getRefContextFile($event)">
           </app-upload-form>
       </div>
-  </div><br>
+  </div>
   <div class="row">
       <div class="col-md-12">
           <app-upload-list 
@@ -118,7 +118,7 @@
 
       <div *ngIf="linksList?.length > 0" class="example-list">
 
-        <div class="example-box" *ngFor="let link of (linksList | paginate: { itemsPerPage: 8 , currentPage: p })" (contextmenu)="onRightClick($event, link)">
+        <div class="example-box" *ngFor="let link of (linksList | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (contextmenu)="onRightClick($event, link)">
  
           <span
             class="text-application add-three-dots"

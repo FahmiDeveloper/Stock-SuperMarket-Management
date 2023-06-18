@@ -39,6 +39,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   defaultArrayFiles: FileUpload[] = [];
   angularContext: boolean = false;
   otherContext: boolean = false;
+  itemsPerPage: number;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -68,6 +69,7 @@ export class FilesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.itemsPerPage = window.innerWidth <= 1366 ? 4 : 8;
     this.isMobile = this.deviceService.isMobile();
     if (this.isMobile) {document.body.scrollTop = document.documentElement.scrollTop = 0;}
   }
