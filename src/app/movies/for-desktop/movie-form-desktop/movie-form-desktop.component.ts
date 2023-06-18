@@ -1,11 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { MovieService } from 'src/app/shared/services/movie.service';
@@ -46,8 +45,7 @@ export class MovieFormDesktopComponent implements OnInit {
     private movieService: MovieService, 
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<MovieFormDesktopComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Movie[]
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {

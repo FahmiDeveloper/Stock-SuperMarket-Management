@@ -3,18 +3,13 @@
 <br>
 
 <div class="row">
-    <div class="col-md-6">
-        <mat-form-field class="text-application" style="width: 200px;">
-            <mat-label>Subject Note</mat-label>
-            <mat-select name="subjectNoteskey" class="text-application" [(ngModel)]="subjectNotesSelectedId" (selectionChange)="getAllNotes()">
-                <mat-option value=""></mat-option>
-                <mat-option *ngFor="let subjectNotes of subjectNotesList" [value]="subjectNotes.id">
-                    <span class="text-application">{{subjectNotes.subjectNotesName}}</span>
-                </mat-option>
-            </mat-select>
+    <div class="col-md-2">
+        <mat-form-field class="text-application">
+            <mat-label>Content</mat-label>
+            <input matInput type="text" name="content" (keyup)="getAllNotes()" [(ngModel)]="content"/>
         </mat-form-field>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-10">
         <button 
             type="button" 
             (click)="newNote()" 
@@ -22,256 +17,62 @@
             style="background: #263238;float: right;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
-    </div>     
+    </div>   
 </div>
 
 <br>
 
-<div 
-    *ngIf="subjectNotesSelectedId == 1"
-	cdkDropList
-	id="toDoInErp"
-	#toDoInErpList="cdkDropList"
-	[cdkDropListData]="notesToDoInErpList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToDoInErpList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToDoInErpList" cdkDrag>
-		<note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toDoInErp'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                                                       
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
+<div class="example-list">
+
+	<p class="empty-label text-application" *ngIf="notesList?.length === 0">Empty list</p>
+
+    <div class="example-box" *ngFor="let note of (notesList | paginate: { itemsPerPage: 8 , currentPage: p })">
+        <span class="text-application" style="cursor: pointer;">
+            <span style="font-size: x-large;" (click)="copyText(note.contentNote)">{{ note.contentNote }}</span>    
+        </span>
+          
+        <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{note:note}" style="float: right;">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        
+        <mat-menu #contextMenu="matMenu" xPosition="before">
+    
+            <ng-template matMenuContent let-note="note">
+            
+                <button
+                    type="button"
+                    mat-menu-item 
+                    (click)="editNote(note)"
+                    class="text-application">
+                    <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+
+                <button
+                    mat-menu-item 
+                    class="text-application"
+                    (click)="viewPath(note.path)">
+                    <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
+                    View
+                </button>
+            
+                <button
+                    type="button"
+                    mat-menu-item 
+                    (click)="deleteNote(note.key)"
+                    class="text-application">
+                    <mat-icon style="color: #f44336;">delete</mat-icon>
+                    <span>Delete</span>
+                </button>  
+            
+            </ng-template>
+    
+        </mat-menu>
+    </div>
 </div>
 
-<div 
-    *ngIf="subjectNotesSelectedId == 2"
-    cdkDropList
-	id="toDoInPersApp"
-	#toDoInPersAppList="cdkDropList"
-	[cdkDropListData]="notesToDoInPersAppList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToDoInPersAppList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToDoInPersAppList" cdkDrag>
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toDoInPersApp'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                                                        
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
-</div>
+<br>
 
-<div *ngIf="subjectNotesSelectedId == 3" class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToTestInMasterList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToTestInMasterList">
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toTestInMaster'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                                                         
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
-</div>
-
-<div *ngIf="subjectNotesSelectedId == 4" class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToTestInErpList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToTestInErpList">
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toTestInErp'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                                                        
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
-</div>
-
-<div *ngIf="subjectNotesSelectedId == 5" class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToTestInPersAppAfterBuildList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToTestInPersAppAfterBuildList">
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toTestInPersAppAfterBuild'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                                                      
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
-</div>
-
-<div 
-    *ngIf="subjectNotesSelectedId == 6"
-    cdkDropList
-	id="toFixAfterTestInMaster"
-	#toFixAfterTestInMaster="cdkDropList"
-	[cdkDropListData]="notesToFixAfterTestInMasterList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToFixAfterTestInMasterList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToFixAfterTestInMasterList" cdkDrag>
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toFixAfterTestInMaster'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                                                  
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
-</div>
-
-<div 
-    *ngIf="subjectNotesSelectedId == 7"
-    cdkDropList
-	id="toFixAfterTestInErp"
-	#toFixAfterTestInErp="cdkDropList"
-	[cdkDropListData]="notesToFixAfterTestInErpList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToFixAfterTestInErpList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToFixAfterTestInErpList" cdkDrag>
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toFixAfterTestInErp'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                                          
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
-</div>
-
-<div 
-    *ngIf="subjectNotesSelectedId == 8"
-    cdkDropList
-	id="toFixAfterTestInPersAppAfterBuild"
-	#toFixAfterTestInPersAppAfterBuild="cdkDropList"
-	[cdkDropListData]="notesToFixAfterTestInPersAppAfterBuildList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
-	<p class="empty-label text-application" *ngIf="notesToFixAfterTestInPersAppAfterBuildList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notesToFixAfterTestInPersAppAfterBuildList" cdkDrag>
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'toFixAfterTestInPersAppAfterBuild'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                                                                      
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
-</div>
-
-<div 
-    *ngIf="subjectNotesSelectedId == 9"
-    cdkDropList
-	id="notifications"
-	#notifications="cdkDropList"
-	[cdkDropListData]="notificationsList"
-	(cdkDropListDropped)="drop($event)"
-	class="example-list">
-	<p class="empty-label text-application" *ngIf="notificationsList?.length === 0">Empty list</p>
-	<div class="example-box" *ngFor="let note of notificationsList" cdkDrag>
-        <note-desktop 
-            style="width: 100%;" 
-            [note]="note" 
-            [currentList]="'notifications'"
-            [notesToDoInErpList]="notesToDoInErpList"
-            [notesToDoInPersAppList]="notesToDoInPersAppList"
-            [notesToTestInMasterList]="notesToTestInMasterList"
-            [notesToTestInErpList]="notesToTestInErpList"
-            [notesToTestInPersAppAfterBuildList]="notesToTestInPersAppAfterBuildList"
-            [notesToFixAfterTestInMasterList]="notesToFixAfterTestInMasterList"
-            [notesToFixAfterTestInErpList]="notesToFixAfterTestInErpList"
-            [notesToFixAfterTestInPersAppAfterBuildList]="notesToFixAfterTestInPersAppAfterBuildList"
-            [notificationsList]="notificationsList"                                                                              
-            [subjectNotesList]="subjectNotesList"
-            [arraySubjectNotesForNewSubject]="arraySubjectNotesForNewSubject"
-            [isTablet]="isTablet">
-        </note-desktop>
-	</div>
+<div *ngIf="notesList.length !== 0" class="pagination">
+    <pagination-controls (pageChange)="p = $event;OnPageChange($event)"></pagination-controls>
 </div>

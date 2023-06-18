@@ -26,13 +26,14 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
 
   subjectdocumentsList: SubjectDocuments[] = [];
   subjectDocumentsListForSelect: SubjectDocuments[] = [];
-  pagedListSubjectDocuments: SubjectDocuments[] = [];
   arraysubjectDocuments: SubjectDocuments[] = [];
 
-  length: number = 0;
+  p: number = 1;
 
   subjectDocumentSelectedKey: string = '';
   isDesktop: boolean;
+  innerWidth: number;
+  itemsPerPage: number;
 
   subscriptionForGetAllSubjectDocuments: Subscription;
   subscriptionForGetAllDocuments: Subscription;
@@ -49,6 +50,8 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
+    this.itemsPerPage = window.innerWidth <= 1366 ? 6 : 8;
     this.isDesktop = this.deviceService.isDesktop();
     this.getAllSubjectsDocuments();
   }
@@ -73,9 +76,6 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
       this.subjectdocumentsList.forEach(subject => {
         this.getDocumentsForeachSubject(subject);
       })
-
-      this.pagedListSubjectDocuments = this.isDesktop ? this.subjectdocumentsList.slice(0, 9) : this.subjectdocumentsList.slice(0, 8);
-      this.length = this.subjectdocumentsList.length;
            
     });
   }
@@ -91,12 +91,6 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedListSubjectDocuments = this.subjectdocumentsList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -112,11 +106,6 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(SubjectDocumentsFormDesktopComponent, config); 
        
     dialogRef.componentInstance.subjectDocuments = subjectDocuments;
-    dialogRef.componentInstance.pagedListSubjectDocuments = this.pagedListSubjectDocuments;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedListSubjectDocuments = res;
-    });
   }
 
   extractDocument(subjectDocuments: SubjectDocuments) {

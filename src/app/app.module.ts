@@ -116,7 +116,6 @@ import {
 import { 
   NotesForDesktopComponent,
   NoteFormDesktopComponent,
-  NoteDesktopComponent,
   NotesForMobileComponent,
   NoteFormMobileComponent,
   NoteMobileComponent
@@ -248,7 +247,6 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
 
     NotesForDesktopComponent,
     NoteFormDesktopComponent,
-    NoteDesktopComponent,
     NotesForMobileComponent,
     NoteFormMobileComponent,
     NoteMobileComponent,

@@ -1,7 +1,29 @@
 
-<span>
-  <span class="text-application" style="font-size: x-large;">{{ note.contentNote }}</span><br *ngIf="note.remark">
-  <span class="text-application" style="font-size: large;" *ngIf="note.remark">{{ note.remark }}</span>
+<span class="text-application" style="cursor: pointer;">
+
+  <span style="font-size: x-large;">
+    <span
+      *ngIf="note.contentNote.length < 150 || note.contentNote.length == 150" 
+      (click)="copyText(note.contentNote)">
+      {{ note.contentNote }}
+    </span>
+    <span 
+      *ngIf="note.contentNote.length > 150" 
+      (click)="copyText(note.contentNote)"
+      [matTooltip]="note.contentNote">
+      {{ note.contentNoteForTooltip }}
+    </span>
+  </span>
+
+  <br *ngIf="note.remark">
+
+  <span
+    *ngIf="note.remark"
+    style="font-size: large;" 
+    (click)="copyText(note.remark)">
+    {{ note.remark }}
+  </span>
+
 </span>
 
 <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{note:note}" style="float: right;">

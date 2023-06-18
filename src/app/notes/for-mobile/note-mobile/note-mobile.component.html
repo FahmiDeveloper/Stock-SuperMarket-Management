@@ -1,7 +1,6 @@
 
 <span>
-  <span class="text-application" style="font-size: x-large;">{{ note.contentNote }}</span><br *ngIf="note.remark">
-  <span class="text-application" style="font-size: large;" *ngIf="note.remark">{{ note.remark }}</span>
+  <span class="text-application" style="font-size: x-large;">{{ note.contentNote }}</span>
 </span>
 
 <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{note:note}" style="float: right;">

@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 
@@ -45,8 +45,7 @@ export class MedicationFormDesktopComponent implements OnInit {
     public medicationService: MedicationService,
     public diseaseService: DiseaseService,
     private fireStorage: AngularFireStorage,
-    public dialogRef: MatDialogRef<MedicationFormDesktopComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Medication[]
+    public dialogRef: MatDialogRef<MedicationFormDesktopComponent>
   ) {}
 
   ngOnInit() {

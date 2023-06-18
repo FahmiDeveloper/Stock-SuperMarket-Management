@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
 import Swal from 'sweetalert2';
@@ -17,7 +17,6 @@ import { Document } from 'src/app/shared/models/document.model';
 export class DocumentFormDesktopComponent implements OnInit {
 
   arrayDocuments: Document[];
-  pagedList: Document[];
 
   document: Document = new Document();
 
@@ -29,13 +28,11 @@ export class DocumentFormDesktopComponent implements OnInit {
 
   constructor(
     public documentService: DocumentService,
-    public dialogRef: MatDialogRef<DocumentFormDesktopComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Document[]
+    public dialogRef: MatDialogRef<DocumentFormDesktopComponent>
   ) {}
 
   ngOnInit() {
     if (this.document.key) {
-      this.data = this.pagedList;
       this.documentRefSelected = this.document.documentRef;
     }
   }
@@ -77,7 +74,7 @@ export class DocumentFormDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
 }

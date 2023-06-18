@@ -26,7 +26,7 @@
             (refContextFile)="getRefContextFile($event)">
           </app-upload-form>
       </div>
-  </div><br>
+  </div>
   <div class="row">
       <div class="col-md-12">
           <app-upload-list 
@@ -86,26 +86,26 @@
         type="button"  
         (click)="newLink()" 
         mat-mini-fab
-        style="background: #2196F3 !important;float: right;margin-top: 7px">
+        style="background: #263238 !important;float: right;margin-top: 7px">
         <mat-icon style="color: white;">add</mat-icon>
       </button>
     </div> 
   </div>
 
   <div class="row" *ngIf="!isMobile">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <mat-form-field class="text-application">
         <mat-label>Content</mat-label>
         <input matInput (input)="getAllLinks()" type="text" [(ngModel)]="content"/>
       </mat-form-field>      
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
       <button 
         *ngIf="angularContext || otherContext"
         type="button"  
         (click)="newLink()" 
         mat-mini-fab
-        style="background: #2196F3 !important;float: right;margin-top: 7px">
+        style="background: #263238 !important;float: right;margin-top: 7px">
         <mat-icon style="color: white;">add</mat-icon>
       </button>
     </div>
@@ -116,88 +116,83 @@
   <div class="row">   
     <div class="col-md-12">
 
-      <mat-nav-list class="nav-list">
-    
-        <mat-list-item *ngFor="let link of pagedList">
+      <div *ngIf="linksList?.length > 0" class="example-list">
+
+        <div class="example-box" *ngFor="let link of (linksList | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (contextmenu)="onRightClick($event, link)">
+ 
+          <span
+            class="text-application add-three-dots"
+            style="font-size: x-large;cursor: pointer;" 
+            (click)="copyText(link.content)"
+            [matTooltip]="link.content.length > 60 ? link.content : ''">
+            {{ link.content }}
+          </span>    
       
-          <span class="text-application" style="font-size: x-large;line-height: 1.5em;" matLine>{{ link.content }}</span>
+        </div>
       
-          <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{link:link}">
-            <mat-icon>more_vert</mat-icon>
+      </div>
+      
+      <div 
+        style="visibility: hidden; position: fixed;" 
+        [style.left]="menuTopLeftPosition.x" 
+        [style.top]="menuTopLeftPosition.y" 
+        [matMenuTriggerFor]="rightMenu">
+      </div> 
+      
+      <mat-menu #rightMenu="matMenu"> 
+      
+        <ng-template matMenuContent let-link="link">
+      
+          <button
+            type="button"
+            mat-menu-item
+            (click)="editLink(link)"
+            class="text-application">
+            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+            <span>Edit</span>
           </button>
-      
-          <mat-divider style="color: black;"></mat-divider>
-      
-        </mat-list-item>
-      
-        <mat-menu #contextMenu="matMenu" xPosition="before">
-            <ng-template matMenuContent let-link="link">
-      
-              <button
-                type="button"
-                mat-menu-item
-                (click)="editLink(link)"
-                class="text-application">
-                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                <span>Edit</span>
-              </button>
   
-            <button
-              type="button"
-              *ngIf="link.path"  
-              mat-menu-item
-              class="text-application">
-              <mat-icon style="color: #283593;">link</mat-icon>
-              <a href="{{ link.path }}" target="_blank" style="text-decoration: none;">
-                <span style="color: black !important;">Follow</span>
-              </a>  
-            </button>
-      
-            <button
-              *ngIf="link.content"
-              type="button"
-              mat-menu-item 
-              (click)="viewLinkContent(link.content)"
-              class="text-application">
-              <mat-icon style="color: black;">note</mat-icon>   
-              <span>Link Content</span>
-            </button>
+          <button
+            type="button"
+            *ngIf="link.path"  
+            mat-menu-item
+            class="text-application">
+            <mat-icon style="color: #283593;">link</mat-icon>
+            <a href="{{ link.path }}" target="_blank" style="text-decoration: none;">
+              <span style="color: black !important;">Follow</span>
+            </a>  
+          </button>
 
-            <button 
-              type="button" 
-              mat-menu-item
-              (click)="deleteLink(link.key)" 
-              class="text-application">
-              <mat-icon style="color: #f44336;" aria-label="Delete">delete</mat-icon>
-              <span>Delete</span>
-            </button>
+          <button 
+            type="button" 
+            mat-menu-item
+            (click)="deleteLink(link.key)" 
+            class="text-application">
+            <mat-icon style="color: #f44336;" aria-label="Delete">delete</mat-icon>
+            <span>Delete</span>
+          </button>
 
-            <button 
-              type="button"
-              mat-menu-item
-              (click)="shareLink(link)"
-              class="text-application">
-              <mat-icon style="color: #ff4081;">share</mat-icon>
-              <span>Share</span>                        
-            </button>
-          
-            </ng-template>
-        </mat-menu>
+          <button 
+            type="button"
+            mat-menu-item
+            (click)="shareLink(link)"
+            class="text-application">
+            <mat-icon style="color: #ff4081;">share</mat-icon>
+            <span>Share</span>                        
+          </button> 
       
-      </mat-nav-list>
+        </ng-template> 
+      
+      </mat-menu>
+      
+      <br>
+      
+      <div *ngIf="linksList?.length !== 0" class="pagination">
+          <pagination-controls (pageChange)="p = $event;"></pagination-controls>
+      </div>
       
       <div *ngIf="linksList.length == 0" class="row justify-content-center no-results text-application">
         No results
-      </div>
-      
-      <div class="row mat-paginator">
-        <mat-paginator 
-          [length]="length"
-          [pageSize]="6"
-          [pageSizeOptions]="[6]"
-          showFirstLastButtons
-          (page)="OnPageChange($event)">
-        </mat-paginator>
       </div>
 
     </div>

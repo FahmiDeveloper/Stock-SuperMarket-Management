@@ -85,6 +85,18 @@
     </button>
 
     <button
+        *ngIf="serie.statusId == 1"
+        mat-menu-item 
+        class="text-application">
+        Eps&nbsp;&nbsp;&nbsp;
+        <span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
+        <span *ngIf="!serie.currentEpisode">?</span>
+        /
+        <span *ngIf="serie.totalEpisodes">{{ serie.totalEpisodes }}</span>
+        <span *ngIf="!serie.totalEpisodes">?</span>
+    </button>
+
+    <button
         *ngIf="!statusId && serie.season && serie.season == 1" 
         mat-menu-item 
         (click)="showDetailsSerie(serie)"

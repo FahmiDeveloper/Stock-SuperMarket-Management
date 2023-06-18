@@ -13,6 +13,7 @@ import { ExpirationFormDesktopComponent } from './expiration-form-desktop/expira
 import { ExpirationService } from 'src/app/shared/services/expiration.service';
 
 import { Expiration } from 'src/app/shared/models/expiration.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'expirations-for-desktop',
@@ -137,7 +138,18 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
 
     expiration.restdays = years + "Y " + months + "M " + days + "D";
 
-    expiration.isExpired = nowTime > dateExpiration || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D"  ? true : false ; 
+    expiration.isExpired = nowTime > dateExpiration || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D"  ? true : false ;
+    if (expiration.isExpired == false)
+    {
+      this.checkSoonToExpire(expiration);
+    }
+  }
+
+  checkSoonToExpire(expiration: Expiration) {
+    var dateNow = moment(new Date(),'yyyy-MM-DD');
+    var dateExp = moment(expiration.dateExpiration);
+
+    expiration.soonToExpire = dateExp.diff(dateNow, 'days') >= 1 && dateExp.diff(dateNow, 'days') <= 7  ? true : false ; 
   }
 
   newExpiration() {

@@ -75,25 +75,25 @@
         <div class="task">
             <span class="bar"></span>
             <div class="details">
-                <div><span class="details-name">Test in master</span> {{notesToTestInMasterList.length || 0}}</div>
-                <p><span class="details-name">Test in ERP</span> {{notesToTestInErpList.length || 0}}</p>
+                <div><span class="details-name">Find content</span></div>
+                <p><span class="details-name">May be add users</span></p>
             </div>
             <i class="fa fa-sticky-note edit"></i>
-            <div *ngIf="notesToTestInMasterList.length > 0 || notesToTestInErpList.length > 0" class="pulse-test"></div>
+            <!-- <div class="pulse-test"></div> -->
         </div>
         <div class="task">
             <span class="bar"></span>
             <div class="details">
                 <div class="details-name">Clockings</div>
-                <p>to be delayed</p>
+                <p>Work to be delayed</p>
             </div>
             <i class="fa fa-clock-o edit"></i>
         </div>
         <div class="task">
             <span class="bar"></span>
             <div class="details">
-                <div class="details-name">Expirations</div>
-                <p>{{contentsExpiredList.length}} expired</p>
+                <div><span class="details-name">Soon to expire</span>&nbsp;&nbsp;{{contentsSoonToExpireList.length}}</div>
+                <p><span class="details-name">Expired</span>&nbsp;&nbsp;{{contentsExpiredList.length}}</p>
             </div>
             &nbsp;&nbsp;
             <i class="fa fa-calendar edit"></i>

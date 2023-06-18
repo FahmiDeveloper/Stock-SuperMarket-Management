@@ -1,7 +1,8 @@
 import { Component, Input, OnChanges, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -27,19 +28,14 @@ export class UploadDetailsComponent implements OnChanges {
   @Input() filteredFiles: any[];
   @Input() isMobile: boolean;
 
-  pagedList: any[]= [];
-  length: number = 0;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  p: number = 1;
 
   urlFile: string;
   pictureFile: string;
   FileName: string;
-
   $zipFiles: Observable<ZipFile[]>;
   isLoading: boolean;
   blobForDownload: Blob;
-
   srcExtractedImage: any;
   fileExtractedName: string = '';
   contentTxtFile: string = '';
@@ -49,32 +45,27 @@ export class UploadDetailsComponent implements OnChanges {
   headData: any;
   arrayBuffer: any;
   wordFile: File;
+  itemsPerPage: number;
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
 
   constructor(
     private uploadService: FileUploadService,
     protected ngNavigatorShareService: NgNavigatorShareService,
     private sanitizer : DomSanitizer,
-    public dialogService: MatDialog
+    public dialogService: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges) {
+    this.itemsPerPage = window.innerWidth <= 1366 ? 4 : 8;
     if (this.filteredFiles) {
       this.filteredFiles.forEach(element => {
         element.fileNameWithoutType = element.name.substring(0, element.name.lastIndexOf("."));
       })
-      this.pagedList = this.filteredFiles.slice(0, 6);
-      this.length = this.filteredFiles.length;
     }
-  }
-
-  OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.filteredFiles.slice(startIndex, endIndex);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   viewOtherFileUpload(fileUpload: FileUpload, showFile) {
@@ -421,12 +412,43 @@ export class UploadDetailsComponent implements OnChanges {
     })
   }
 
-  viewFileName(fileName: string) {
-    Swal.fire({
-      text: fileName,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
-    });
+  onRightClick(event: MouseEvent, file: FileUpload) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {file: file};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
   
+  copyText(coordinate: string){
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = coordinate;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
 }

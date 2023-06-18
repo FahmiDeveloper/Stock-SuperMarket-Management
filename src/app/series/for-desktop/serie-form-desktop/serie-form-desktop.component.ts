@@ -46,8 +46,7 @@ export class SerieFormDesktopComponent implements OnInit {
     private serieService: SerieService, 
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<SerieFormDesktopComponent>,
-    public dialogService: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: Serie[]
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {

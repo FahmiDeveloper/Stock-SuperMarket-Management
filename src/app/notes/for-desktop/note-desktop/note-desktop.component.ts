@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -12,6 +12,7 @@ import { NoteService } from 'src/app/shared/services/note.service';
 import { Note } from 'src/app/shared/models/note.model';
 import { SubjectNotes } from 'src/app/shared/models/subject-note.model';
 import { NoteDialogResult } from 'src/app/shared/models/note-dialog-result';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'note-desktop',
@@ -19,7 +20,7 @@ import { NoteDialogResult } from 'src/app/shared/models/note-dialog-result';
   styleUrls: ['./note-desktop.scss']
 })
 
-export class NoteDesktopComponent {
+export class NoteDesktopComponent implements OnChanges{
 
   @Input() note: Note | null = null;
   @Input() currentList: string | null = null;
@@ -34,7 +35,6 @@ export class NoteDesktopComponent {
   @Input() notificationsList: Note[];  
   @Input() subjectNotesList: SubjectNotes[];
   @Input() arraySubjectNotesForNewSubject: SubjectNotes[];
-
   @Input() isTablet: boolean;
 
   pictureFile: string;
@@ -44,8 +44,13 @@ export class NoteDesktopComponent {
   constructor(
     public noteService: NoteService,
     public dialogService: MatDialog,
-    private store: AngularFirestore
+    private store: AngularFirestore,
+    private snackBar: MatSnackBar
   ) {}
+
+  ngOnChanges(changes: import("@angular/core").SimpleChanges) {
+    if (this.note.contentNote.length > 150) this.note.contentNoteForTooltip = this.note.contentNote.substring(0, 150) + '...';
+  }
 
   editNote(note: Note) {
     let firstSubjectNoteId = note.subjectNotesId;
@@ -227,6 +232,29 @@ export class NoteDesktopComponent {
       text: contentNoteOrRemark,
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
+    });
+  }
+
+  copyText(text: string){
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = text;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
     });
   }
 
