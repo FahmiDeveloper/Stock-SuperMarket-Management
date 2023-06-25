@@ -7,7 +7,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { ExpirationFormMobileComponent } from './expiration-form-mobile/expiration-form-mobile.component';
+import { ExpirationFormForMobileComponent } from './expiration-form-for-mobile/expiration-form-for-mobile.component';
 
 import { ExpirationService } from 'src/app/shared/services/expiration.service';
 
@@ -113,7 +113,7 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
       width: '98vw',
       maxWidth: '100vw'
     }
-    const dialogRef = this.dialogService.open(ExpirationFormMobileComponent, config);
+    const dialogRef = this.dialogService.open(ExpirationFormForMobileComponent, config);
 
     dialogRef.componentInstance.arrayExpirations = this.dataSourceCopie.data;
   }
@@ -124,7 +124,7 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
       width: '98vw',
       maxWidth: '100vw'
     }
-    const dialogRef = this.dialogService.open(ExpirationFormMobileComponent, config);
+    const dialogRef = this.dialogService.open(ExpirationFormForMobileComponent, config);
     
     dialogRef.componentInstance.expiration = expiration;
     dialogRef.componentInstance.dataSource = this.dataSource.data;

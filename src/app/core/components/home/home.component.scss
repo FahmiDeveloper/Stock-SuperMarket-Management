@@ -209,7 +209,7 @@ h2 {
   animation: animate-pulse 3s linear infinite;
 }
 
-.pulse-anime {
+.pulse-anime-desktop {
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -220,7 +220,18 @@ h2 {
   animation: animate-pulse 3s linear infinite;
 }
 
-.pulse-serie {
+.pulse-anime-tablet {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    position: absolute;
+    top: -3px;
+    right: 8px;
+    background: #FF6D4A;
+    animation: animate-pulse 3s linear infinite;
+  }
+
+.pulse-serie-desktop {
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -231,7 +242,18 @@ h2 {
   animation: animate-pulse 3s linear infinite;
 }
 
-.pulse-expiration {
+.pulse-serie-tablet {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    position: absolute;
+    top: -6px;
+    right: 8px;
+    background: #FF6D4A;
+    animation: animate-pulse 3s linear infinite;
+  }
+
+.pulse-expiration-desktop {
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -241,6 +263,17 @@ h2 {
   background: red;
   animation: animate-pulse-expirartion 3s linear infinite;
 }
+
+.pulse-expiration-tablet {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    position: absolute;
+    top: -9px;
+    right: 8px;
+    background: red;
+    animation: animate-pulse-expirartion 3s linear infinite;
+  }
 
 .pulse-test {
   width: 15px;

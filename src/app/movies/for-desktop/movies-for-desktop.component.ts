@@ -35,7 +35,6 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
 
   movieName: string = '';
   statusId: number;
-  sortByDesc: boolean = true;
   optionSelected: number;
   dislike: boolean = false;
   nbrMoviesToCheckToday: number = 0;

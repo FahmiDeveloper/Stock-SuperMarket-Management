@@ -72,7 +72,7 @@
   <ng-template matMenuContent let-anime="anime">
 
     <button
-        *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
+        *ngIf="!anime.haveSeasons" 
         mat-menu-item 
         class="text-application">
         Status&nbsp;&nbsp;
@@ -85,10 +85,10 @@
     </button>
 
     <button
-        *ngIf="anime.statusId == 1 && anime.type !== 'Movie' && anime.type !== 'Manga'"
+        *ngIf="!anime.haveSeasons && !anime.notLiked && anime.type !== 'Movie' && anime.type !== 'Manga' && anime.statusId !== 3"
         mat-menu-item 
         class="text-application">
-        Eps&nbsp;&nbsp;&nbsp;
+        Eps&nbsp;&nbsp;&nbsp;&nbsp;
         <span *ngIf="anime.currentEpisode">{{ anime.currentEpisode }}</span>
         <span *ngIf="!anime.currentEpisode">?</span>
         /

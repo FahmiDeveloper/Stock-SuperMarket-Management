@@ -8,8 +8,9 @@ import { AnimesForDesktopComponent } from './animes/for-desktop/animes-for-deskt
 import { AnimesForTabletComponent } from './animes/for-tablet/animes-for-tablet.component';
 import { AnimesForMobileComponent } from './animes/for-mobile/animes-for-mobile.component';
 
-import { ClockingsForMobileComponent } from './clockings/for-mobile/clockings-for-mobile.component';
 import { ClockingsForDesktopComponent } from './clockings/for-desktop/clockings-for-desktop.component';
+import { ClockingsForTabletComponent } from './clockings/for-tablet/clockings-for-tablet.component';
+import { ClockingsForMobileComponent } from './clockings/for-mobile/clockings-for-mobile.component';
 
 import { DebtsForDesktopComponent } from './debts/for-desktop/debts-for-desktop.component';
 import { DebtsForMobileComponent } from './debts/for-mobile/debts-for-mobile.component';
@@ -17,8 +18,9 @@ import { DebtsForMobileComponent } from './debts/for-mobile/debts-for-mobile.com
 import { SubjectDocumentsForDesktopComponent } from './documents/for-desktop/subjects-documents-for-desktop.component';
 import { SubjectsDocumentsForMobileComponent } from './documents/for-mobile/subjects-documents-for-mobile.component';
 
-import { ExpirationsForMobileComponent } from './expirations/for-mobile/expirations-for-mobile.component';
 import { ExpirationsForDesktopComponent } from './expirations/for-desktop/expirations-for-desktop.component';
+import { ExpirationsForTabletComponent } from './expirations/for-tablet/expirations-for-tablet.component';
+import { ExpirationsForMobileComponent } from './expirations/for-mobile/expirations-for-mobile.component';
 
 import { FilesComponent } from './files/files.component';
 
@@ -61,8 +63,9 @@ export const rootRouterConfig: Routes = [
   { path: 'animes-tablet', component: AnimesForTabletComponent,  resolve: { data: SharedResolver}},
   { path: 'animes-mobile', component: AnimesForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'clockings-desktop', component: ClockingsForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'clockings-mobile', component: ClockingsForMobileComponent,  resolve: { data: SharedResolver}},
+  { path: 'clockings-for-desktop', component: ClockingsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'clockings-for-tablet', component: ClockingsForTabletComponent,  resolve: { data: SharedResolver}},
+  { path: 'clockings-for-mobile', component: ClockingsForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'debts-desktop', component: DebtsForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'debts-mobile', component: DebtsForMobileComponent,  resolve: { data: SharedResolver}},
@@ -70,8 +73,9 @@ export const rootRouterConfig: Routes = [
   { path: 'documents-desktop', component: SubjectDocumentsForDesktopComponent,  resolve: { data: SharedResolver}},
   { path: 'documents-mobile', component: SubjectsDocumentsForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'expirations-desktop', component: ExpirationsForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'expirations-mobile', component: ExpirationsForMobileComponent,  resolve: { data: SharedResolver}},
+  { path: 'expirations-for-desktop', component: ExpirationsForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'expirations-for-tablet', component: ExpirationsForTabletComponent,  resolve: { data: SharedResolver}},
+  { path: 'expirations-for-mobile', component: ExpirationsForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'files', component: FilesComponent,  resolve: { data: SharedResolver}},
 

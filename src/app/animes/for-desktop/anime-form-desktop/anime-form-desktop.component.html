@@ -12,12 +12,12 @@
     
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Name</span></mat-placeholder>
-      <input matInput #input type="text" [(ngModel)]="anime.nameAnime" name="nameAnime" class="text-application" required>
+      <input matInput type="text" [(ngModel)]="anime.nameAnime" name="nameAnime" class="text-application" required>
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="anime.year" name="year" class="text-application">
+      <input matInput type="tel" [(ngModel)]="anime.year" name="year" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
@@ -44,7 +44,7 @@
 
     <mat-form-field *ngIf="anime.statusId && anime.statusId == 1" color="accent">
       <mat-placeholder class="text-application"><span>Check</span></mat-placeholder>
-      <input matInput #input type="date" [(ngModel)]="anime.checkDate" name="checkDate" class="text-application">
+      <input matInput type="date" [(ngModel)]="anime.checkDate" name="checkDate" class="text-application">
     </mat-form-field>
 
     <mat-checkbox *ngIf="anime.statusId && anime.statusId == 3" name="notLiked" [(ngModel)]="anime.notLiked" class="mat-checkbox-layout">
@@ -53,50 +53,50 @@
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Season</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="anime.season" name="season" class="text-application">
+      <input matInput type="tel" [(ngModel)]="anime.season" name="season" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Priority</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="anime.priority" name="priority" class="text-application">
+      <input matInput type="tel" [(ngModel)]="anime.priority" name="priority" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Current episode</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="anime.currentEpisode" name="currentEpisode" class="text-application">
+      <input matInput type="tel" [(ngModel)]="anime.currentEpisode" name="currentEpisode" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Total episodes</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="anime.totalEpisodes" name="totalEpisodes" class="text-application">
+      <input matInput type="tel" [(ngModel)]="anime.totalEpisodes" name="totalEpisodes" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent" *ngIf="anime.priority && anime.priority > 1">
       <mat-placeholder class="text-application"><span>Parent film</span></mat-placeholder>
-      <input type="text" matInput [matAutocomplete]="auto" (keyup)="filterByParentName($event.target.value)" name="parentAnimeName" [(ngModel)]="parentAnimeName">
+      <input type="text" class="text-application" matInput [matAutocomplete]="auto" (keyup)="filterByParentName($event.target.value)" name="parentAnimeName" [(ngModel)]="parentAnimeName">
       <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let anime of seasonAnimesList" [value]="anime.key" (click)="getParentAnimeKey(anime.key)" class="text-application">
-              {{anime.nameAnime}}
-          </mat-option>
+        <mat-option *ngFor="let anime of seasonAnimesList" [value]="anime.key" (click)="getParentAnimeKey(anime.key)">
+          <span class="text-application">{{anime.nameAnime}}</span>
+        </mat-option>
       </mat-autocomplete>         
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Path</span></mat-placeholder>
-      <input matInput #input type="text" [(ngModel)]="anime.path" name="path" class="text-application">
+      <input matInput type="text" [(ngModel)]="anime.path" name="path" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Note</span></mat-placeholder>
-      <textarea matInput #input type="text" [(ngModel)]="anime.note" name="note" rows="4" cols="40" class="text-application"></textarea>
+      <textarea matInput type="text" [(ngModel)]="anime.note" name="note" rows="4" cols="40" class="text-application"></textarea>
     </mat-form-field>
 
     <button type="button" mat-button (click)="fileInput.click()" class="text-application">Choose picture</button>
     <input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
     <br *ngIf="progressValue"><br *ngIf="progressValue">
     <div *ngIf="progressValue | async as val" class="progress-background">
-        <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
-        <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
+      <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
+      <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
     </div>
 
     <br *ngIf="progressValue">

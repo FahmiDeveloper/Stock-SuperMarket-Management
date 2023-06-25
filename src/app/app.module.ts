@@ -49,9 +49,11 @@ import {
 
 import { 
   ClockingsForDesktopComponent,
-  ClockingFormDesktopComponent,
+  ClockingFormForDesktopComponent,
+  ClockingsForTabletComponent,
+  ClockingFormForTabletComponent,
   ClockingsForMobileComponent,
-  ClockingFormMobileComponent,
+  ClockingFormForMobileComponent
 } from './clockings/index';
 
 import { 
@@ -74,9 +76,11 @@ import {
 
 import { 
   ExpirationsForDesktopComponent,
-  ExpirationFormDesktopComponent,
+  ExpirationFormForDesktopComponent,
+  ExpirationsForTabletComponent,
+  ExpirationFormForTabletComponent,
   ExpirationsForMobileComponent,
-  ExpirationFormMobileComponent,
+  ExpirationFormForMobileComponent
 } from './expirations/index';
 
 import { 
@@ -196,9 +200,11 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
     AnimeDetailsWithSeasonsMobileComponent,
 
     ClockingsForDesktopComponent,
-    ClockingFormDesktopComponent,
+    ClockingFormForDesktopComponent,
+    ClockingsForTabletComponent,
+    ClockingFormForTabletComponent,
     ClockingsForMobileComponent,
-    ClockingFormMobileComponent,
+    ClockingFormForMobileComponent,
 
     DebtsForDesktopComponent,
     DebtFormDesktopComponent,
@@ -215,9 +221,11 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
     DocumentFormMobileComponent,
 
     ExpirationsForDesktopComponent,
-    ExpirationFormDesktopComponent,
+    ExpirationFormForDesktopComponent,
+    ExpirationsForTabletComponent,
+    ExpirationFormForTabletComponent,
     ExpirationsForMobileComponent,
-    ExpirationFormMobileComponent,
+    ExpirationFormForMobileComponent,
 
     FilesComponent,
     UploadFormComponent,

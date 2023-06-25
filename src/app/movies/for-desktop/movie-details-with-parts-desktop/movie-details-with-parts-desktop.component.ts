@@ -43,11 +43,6 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
 
   ngOnInit() {}
 
-  showDetailsMovie(moviePartSelected: Movie, elem: HTMLElement) {
-    this.movie = moviePartSelected;
-    elem.scrollIntoView();
-  }
-
   editMovie(movie?: Movie) {
     const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '500px'});
     dialogRef.componentInstance.movie = movie;

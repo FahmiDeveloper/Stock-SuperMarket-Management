@@ -4,11 +4,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { ClockingFormDesktopComponent } from './clocking-form-desktop/clocking-form-desktop.component';
+import { ClockingFormForDesktopComponent } from './clocking-form-for-desktop/clocking-form-for-desktop.component';
 
 import { ClockingService } from 'src/app/shared/services/clocking.service';
 
@@ -29,13 +28,10 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
   clockingsList: Clocking[] = [];
   pagedList: Clocking[]= [];
-  allClockingsForDesktop: Clocking[]= [];
-  allClockingsForTablet: Clocking[]= [];
+  allClockings: Clocking[]= [];
 
   length: number = 0;
 
-  isDesktop: boolean;
-  isTablet: boolean;
   currentMonthAndYear: string;
   totalClockingLate: number = 0;
   minutePartList: number[] = [];
@@ -84,33 +80,29 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
   
   constructor(
     public clockingService: ClockingService,
-    public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
     const d = new Date();
     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
     this.currentMonthAndYearForVacation = months[d.getMonth()] + ' ' + d.getFullYear();
     if ((months[d.getMonth()] == 'October') || (months[d.getMonth()] == 'November') || (months[d.getMonth()] == 'December')) {this.monthSelected = String(d.getMonth()+ 1);}
     else {this.monthSelected = '0' + String(d.getMonth()+ 1);}
 
-    if (this.isDesktop) {this.getAllClockingsForDesktop();}
-    else {this.getAllClockingsForTablet();} 
+    this.getAllClockings();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  getAllClockingsForDesktop() {
+  getAllClockings() {
     this.subscriptionForGetAllClockings = this.clockingService
     .getAll()
     .subscribe((clockings: Clocking[]) => {
 
-      this.allClockingsForDesktop = clockings;
+      this.allClockings = clockings;
 
       this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
@@ -151,7 +143,7 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
         .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
       }
 
-      if (this.monthSelected == '05' && new Date(this.dataSource.data[0].dateClocking).getDate() == 31) {
+      if (this.monthSelected == '05' && this.dataSource.data[0] && new Date(this.dataSource.data[0].dateClocking).getDate() == 31) {
         this.showDeleteAllClockingsButtton = true;
       }
       else {
@@ -179,86 +171,6 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
       
       if (this.dataSource.data.length > 0) {
         this.dataSource.data.forEach(clocking => {
-          this.getDayFromDateClocking(clocking);
-        })
-      }
-
-    });
-  }
-
-  getAllClockingsForTablet() {
-    this.subscriptionForGetAllClockings = this.clockingService
-    .getAll()
-    .subscribe((clockings: Clocking[]) => {
-
-      this.allClockingsForTablet = clockings;
-
-      this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
-
-      this.dataSourceCopieForCalculTotalClockingLate.data = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
-      this.currentMonth = this.monthsList.find(month => month.monthNbr == this.monthSelected).monthName;
-
-
-      if (this.subjectSelectedId == 1) {
-        this.clockingsList = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 2) {
-        this.clockingsList = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 3) {
-        this.clockingsList = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 4) {
-        this.clockingsList = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 5) {
-        this.clockingsList = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected && clocking.timeClocking && clocking.timeClocking > '08:00' ))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else {
-        this.clockingsList = clockings
-        .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
-      }
-
-      if (this.monthSelected == '05' && new Date(this.clockingsList[0].dateClocking).getDate() == 31) {
-        this.showDeleteAllClockingsButtton = true;
-      }
-      else {
-        this.showDeleteAllClockingsButtton = false;
-      }
-
-      this.pagedList = this.clockingsList.slice(0, 6);
-      this.length = this.clockingsList.length;
-
-      if ((this.monthSelected == String(new Date().getMonth()+ 1)) || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {
-        this.showVacationLimitDays = true;
-        let lastClockingByCurrentMonth = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
-        if (lastClockingByCurrentMonth) this.vacationLimitDays = lastClockingByCurrentMonth.restVacationDays;
-      } 
-      else {this.showVacationLimitDays = false;}
-   
-      this.minutePartList = [];
-      if (this.dataSourceCopieForCalculTotalClockingLate.data.length > 0) {
-        this.dataSourceCopieForCalculTotalClockingLate.data.forEach(clocking => {
-            this.calculTotalClockingLate(clocking.timeClocking);
-        })
-      } else {
-        this.totalClockingLate = 0;
-        this.totalClockingLateByHoursMinute = '0 Min';
-      }
-      
-      if (this.clockingsList.length > 0) {
-        this.clockingsList.forEach(clocking => {
           this.getDayFromDateClocking(clocking);
         })
       }
@@ -303,7 +215,7 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
   newClocking() {  
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(ClockingFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(ClockingFormForDesktopComponent, config);
 
     dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
@@ -313,7 +225,7 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
   editClocking(clocking?: Clocking) {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(ClockingFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(ClockingFormForDesktopComponent, config);
     
     dialogRef.componentInstance.clocking = clocking;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
@@ -371,16 +283,9 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
         });
         this.isLoading = true;
 
-        if (this.isDesktop) {
-          this.allClockingsForDesktop.forEach(clockingForDesktop => {
-            this.clockingService.delete(clockingForDesktop.key);
-          });
-        }
-        else {
-          this.allClockingsForTablet.forEach(clockingForTablet => {
-            this.clockingService.delete(clockingForTablet.key);
-          });
-        }
+        this.allClockings.forEach(clockingForDesktop => {
+          this.clockingService.delete(clockingForDesktop.key);
+        });
 
         setTimeout(() => {
           this.isLoading = false;

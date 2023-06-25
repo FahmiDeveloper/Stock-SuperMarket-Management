@@ -23,12 +23,30 @@ export class MovieDetailsWithPartsTabletComponent implements OnInit {
 
   movie: Movie = new Movie();
 
+  orientation: string = '';
+  currMonthName: string;
+
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'On hold'}, 
     {id: 2, status: 'Not yet downloaded'}, 
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not yet watched'},
     {id: 5, status: 'Will be looked for'}
+  ];
+
+  monthsList = [
+    { monthNbr: 1, monthName: 'January'},
+    { monthNbr: 2, monthName: 'February'},
+    { monthNbr: 3, monthName: 'March'},
+    { monthNbr: 4, monthName: 'April'},
+    { monthNbr: 5, monthName: 'May'},
+    { monthNbr: 6, monthName: 'June'},
+    { monthNbr: 7, monthName: 'July'},
+    { monthNbr: 8, monthName: 'August'},
+    { monthNbr: 9, monthName: 'September'},
+    { monthNbr: 10, monthName: 'October'},
+    { monthNbr: 11, monthName: 'November'},
+    { monthNbr: 12, monthName: 'December'}
   ];
 
   constructor(
@@ -38,11 +56,23 @@ export class MovieDetailsWithPartsTabletComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if(window.innerHeight > window.innerWidth){
+      this.orientation = 'Portrait';    
+    } else {
+      this.orientation = 'Landscape';
+    }
 
-  showDetailsMovie(moviePartSelected: Movie, elem: HTMLElement) {
-    this.movie = moviePartSelected;
-    elem.scrollIntoView();
+    window.matchMedia("(orientation: portrait)").addEventListener("change", e => {
+      const portrait = e.matches;
+  
+      if (portrait) {
+        this.orientation = 'Portrait';
+      } else {
+        this.orientation = 'Landscape';
+      }
+
+    });
   }
 
   editMovie(movie?: Movie) {
@@ -106,6 +136,18 @@ export class MovieDetailsWithPartsTabletComponent implements OnInit {
   viewNote(movieNote: string) {
     Swal.fire({
       text: movieNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
+  }
+
+  viewCheckDate(movieCheckDate: string) {
+    this.currMonthName = '';
+    var d = new Date(movieCheckDate);
+    this.currMonthName = this.monthsList.find(month => month.monthNbr == d.getMonth()+1).monthName;
+    var datestring = d.getDate()  + " " + this.currMonthName + " " + d.getFullYear();
+    Swal.fire({
+      text: datestring,
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });

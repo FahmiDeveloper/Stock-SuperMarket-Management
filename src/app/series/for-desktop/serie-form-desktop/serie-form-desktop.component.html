@@ -12,12 +12,12 @@
     
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Name</span></mat-placeholder>
-      <input matInput #input type="text" [(ngModel)]="serie.nameSerie" name="nameSerie" class="text-application" required>
+      <input matInput type="text" [(ngModel)]="serie.nameSerie" name="nameSerie" class="text-application" required>
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="serie.year" name="year" class="text-application">
+      <input matInput type="tel" [(ngModel)]="serie.year" name="year" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
@@ -32,7 +32,7 @@
 
     <mat-form-field *ngIf="serie.statusId && serie.statusId == 1" color="accent">
       <mat-placeholder class="text-application"><span>Check</span></mat-placeholder>
-      <input matInput #input type="date" [(ngModel)]="serie.checkDate" name="checkDate" class="text-application">
+      <input matInput type="date" [(ngModel)]="serie.checkDate" name="checkDate" class="text-application">
     </mat-form-field>
 
     <mat-checkbox *ngIf="serie.statusId && serie.statusId == 3" name="notLiked" [(ngModel)]="serie.notLiked" class="mat-checkbox-layout">
@@ -41,42 +41,42 @@
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Season</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="serie.season" name="season" class="text-application">
+      <input matInput type="tel" [(ngModel)]="serie.season" name="season" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Priority</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="serie.priority" name="priority" class="text-application">
+      <input matInput type="tel" [(ngModel)]="serie.priority" name="priority" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Current episode</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="serie.currentEpisode" name="currentEpisode" class="text-application">
+      <input matInput type="tel" [(ngModel)]="serie.currentEpisode" name="currentEpisode" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Total episodes</span></mat-placeholder>
-      <input matInput #input type="number" [(ngModel)]="serie.totalEpisodes" name="totalEpisodes" class="text-application">
+      <input matInput type="tel" [(ngModel)]="serie.totalEpisodes" name="totalEpisodes" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent" *ngIf="serie.season && serie.season > 1">
       <mat-placeholder class="text-application"><span>Parent Serie</span></mat-placeholder>
       <input type="text" matInput [matAutocomplete]="auto" (keyup)="filterByParentName($event.target.value)" name="parentSerieName" [(ngModel)]="parentSerieName" class="text-application">
       <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let serie of seasonSeriesList" [value]="serie.key" (click)="getParentSerieKey(serie.key)" class="text-application">
-              {{serie.nameSerie}}
-          </mat-option>
+        <mat-option *ngFor="let serie of seasonSeriesList" [value]="serie.key" (click)="getParentSerieKey(serie.key)" class="text-application">
+          <span class="text-application">{{serie.nameSerie}}</span>
+        </mat-option>
       </mat-autocomplete>         
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Path</span></mat-placeholder>
-      <input matInput #input type="text" [(ngModel)]="serie.path" name="path" class="text-application">
+      <input matInput type="text" [(ngModel)]="serie.path" name="path" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Note</span></mat-placeholder>
-      <textarea matInput #input type="text" [(ngModel)]="serie.note" name="note" rows="4" cols="40" class="text-application"></textarea>
+      <textarea matInput type="text" [(ngModel)]="serie.note" name="note" rows="4" cols="40" class="text-application"></textarea>
     </mat-form-field>
 
     <button type="button" mat-button (click)="fileInput.click()" class="text-application">Choose picture</button>
