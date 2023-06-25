@@ -7,7 +7,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { ClockingFormMobileComponent } from './clocking-form-mobile/clocking-form-mobile.component';
+import { ClockingFormForMobileComponent } from './clocking-form-for-mobile/clocking-form-for-mobile.component';
 
 import { ClockingService } from 'src/app/shared/services/clocking.service';
 
@@ -208,7 +208,7 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
       width: '98vw',
       maxWidth: '100vw'
     }
-    const dialogRef = this.dialogService.open(ClockingFormMobileComponent, config);
+    const dialogRef = this.dialogService.open(ClockingFormForMobileComponent, config);
 
     dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
@@ -222,7 +222,7 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
       width: '98vw',
       maxWidth: '100vw'
     }
-    const dialogRef = this.dialogService.open(ClockingFormMobileComponent, config);
+    const dialogRef = this.dialogService.open(ClockingFormForMobileComponent, config);
 
     dialogRef.componentInstance.clocking = clocking;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;

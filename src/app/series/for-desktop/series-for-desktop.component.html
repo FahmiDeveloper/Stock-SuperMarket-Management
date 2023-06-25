@@ -85,10 +85,10 @@
     </button>
 
     <button
-        *ngIf="serie.statusId == 1"
+        *ngIf="serie.statusId !== 3 && !serie.notLiked && !serie.season"
         mat-menu-item 
         class="text-application">
-        Eps&nbsp;&nbsp;&nbsp;
+        Eps&nbsp;&nbsp;&nbsp;&nbsp;
         <span *ngIf="serie.currentEpisode">{{ serie.currentEpisode }}</span>
         <span *ngIf="!serie.currentEpisode">?</span>
         /

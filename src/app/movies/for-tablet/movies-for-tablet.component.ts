@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import * as moment from 'moment';
 
 import { MovieDetailsWithPartsTabletComponent } from './movie-details-with-parts-tablet/movie-details-with-parts-tablet.component';
@@ -35,10 +35,15 @@ export class MoviesForTabletComponent implements OnInit, OnDestroy {
 
   movieName: string = '';
   statusId: number;
-  sortByDesc: boolean = true;
   optionSelected: number;
   dislike: boolean = false;
   nbrMoviesToCheckToday: number = 0;
+  orientation: string = '';
+  itemsPerPage: number;
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForGetAllMoviesForSelect: Subscription;
@@ -49,20 +54,38 @@ export class MoviesForTabletComponent implements OnInit, OnDestroy {
     {id: 3, status: 'Watched'}, 
     {id: 4, status: 'Downloaded but not yet watched'},
     {id: 5, status: 'Will be looked for'}
-  ]; 
+  ];
 
   constructor(
     private movieService: MovieService, 
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
-    private deviceService: DeviceDetectorService,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar,
     private cdRef:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    if(window.innerHeight > window.innerWidth){
+      this.orientation = 'Portrait';    
+    } else {
+      this.orientation = 'Landscape';
+    }
+
+    this.itemsPerPage = this.orientation == 'Portrait' ? 9 : 10 ;
+
+    window.matchMedia("(orientation: portrait)").addEventListener("change", e => {
+      const portrait = e.matches;
+  
+      if (portrait) {
+        this.orientation = 'Portrait';
+      } else {
+        this.orientation = 'Landscape';
+      }
+
+      this.itemsPerPage = this.orientation == 'Portrait' ? 9 : 10 ;
+    });
     this.getAllMovies();
     this.getAllMoviesForSelect();
   }
@@ -201,12 +224,20 @@ export class MoviesForTabletComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewNote(movieNote: string) {
-    Swal.fire({
-      text: movieNote,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
-    });
+  openMenuTrigger(event: MouseEvent, movie: Movie) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {movie: movie};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
   
   ngOnDestroy() {

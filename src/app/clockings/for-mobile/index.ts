@@ -1,2 +1,2 @@
 export * from './clockings-for-mobile.component';
-export * from './clocking-form-mobile/index';
+export * from './clocking-form-for-mobile/index';

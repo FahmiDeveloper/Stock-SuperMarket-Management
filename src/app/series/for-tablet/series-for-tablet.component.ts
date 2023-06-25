@@ -1,7 +1,8 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -34,10 +35,15 @@ export class SeriesForTabletComponent implements OnInit, OnDestroy {
 
   serieName: string = '';
   statusId: number;
-  sortByDesc: boolean = true;
   optionSelected: number;
   dislike: boolean = false;
   nbrSeriesToCheckToday: number = 0;
+  orientation: string = '';
+  itemsPerPage: number;
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
  
   subscriptionForGetAllSeries: Subscription;
   subscriptionForGetAllSeriesForSelect: Subscription;
@@ -61,6 +67,25 @@ export class SeriesForTabletComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    if(window.innerHeight > window.innerWidth){
+      this.orientation = 'Portrait';    
+    } else {
+      this.orientation = 'Landscape';
+    }
+
+    this.itemsPerPage = this.orientation == 'Portrait' ? 9 : 10 ;
+
+    window.matchMedia("(orientation: portrait)").addEventListener("change", e => {
+      const portrait = e.matches;
+  
+      if (portrait) {
+        this.orientation = 'Portrait';
+      } else {
+        this.orientation = 'Landscape';
+      }
+
+      this.itemsPerPage = this.orientation == 'Portrait' ? 9 : 10 ;
+    });
     this.getAllSeries();
     this.getAllSeriesForSelect();
   }
@@ -201,12 +226,20 @@ export class SeriesForTabletComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewNote(serieNote: string) {
-    Swal.fire({
-      text: serieNote,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
-    });
+  openMenuTrigger(event: MouseEvent, serie: Serie) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {serie: serie};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

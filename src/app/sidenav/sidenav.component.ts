@@ -1,8 +1,11 @@
 import { Component, OnInit, Output, EventEmitter, HostListener, ViewEncapsulation } from '@angular/core';
-import { navbarDataHome, navbarDataToDoList, navbarData } from './nav-data';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { INavbarData, fadeInOut } from './helper';
 import { Router } from '@angular/router';
+
+import { DeviceDetectorService } from 'ngx-device-detector';
+
+import { INavbarData, fadeInOut } from './helper';
+import { navbarDataHome, navbarDataToDoList, navbarDataForDesktop, navbarDataForTablet } from './nav-data';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -36,8 +39,12 @@ export class SidenavComponent implements OnInit {
   screenWidth = 0;
   navbarDataHome = navbarDataHome;
   navbarDataToDoList = navbarDataToDoList;
-  navData = navbarData;
+  navDataForDesktop = navbarDataForDesktop;
+  navDataToShow: INavbarData [] = [];
+  navDataForTablet = navbarDataForTablet;
   multiple: boolean = false;
+  isDesktop: boolean;
+  isTablet: boolean;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -47,13 +54,12 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, private deviceService: DeviceDetectorService) {}
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
-    this.navData.forEach(data => {
-
-    })
+    this.isDesktop = this.deviceService.isDesktop();
+    this.isTablet = this.deviceService.isTablet();
   }
 
   toggleCollapse(): void {
@@ -77,12 +83,29 @@ export class SidenavComponent implements OnInit {
 
   shrinkItems(item: INavbarData): void {
     if (!this.multiple) {
-      for (let modelItem of this.navData) {
-        if (item !== modelItem && modelItem.expanded) {
-          modelItem.expanded = false;
+      if (this.isDesktop) {
+        for (let modelItem of this.navDataForDesktop) {
+          if (item !== modelItem && modelItem.expanded) {
+            modelItem.expanded = false;
+          }
+        }
+      } else {
+        for (let modelItem of this.navDataForTablet) {
+          if (item !== modelItem && modelItem.expanded) {
+            modelItem.expanded = false;
+          }
         }
       }
     }
+  }
+
+  getItems() {
+    if (this.isDesktop) {
+      this.navDataToShow = this.navDataForDesktop;
+    } else {
+      this.navDataToShow = this.navDataForTablet;
+    }
+    return this.navDataToShow;
   }
 
 }

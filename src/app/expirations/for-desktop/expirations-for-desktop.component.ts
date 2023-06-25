@@ -4,11 +4,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { ExpirationFormDesktopComponent } from './expiration-form-desktop/expiration-form-desktop.component';
+import { ExpirationFormForDesktopComponent } from './expiration-form-for-desktop/expiration-form-for-desktop.component';
 
 import { ExpirationService } from 'src/app/shared/services/expiration.service';
 
@@ -31,8 +30,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
   pagedList: Expiration[]= [];
   length: number = 0;
 
-  isDesktop: boolean;
-  isTablet: boolean;
   content: string = '';
   innerWidth: any;
 
@@ -44,23 +41,19 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
     
   constructor(
     public expirationService: ExpirationService,
-    public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
-    if (this.isDesktop) {this.getAllExpirationsForDesktop();}
-    else {this.getAllExpirationsForTablet();}
+    this.getAllExpirations();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  getAllExpirationsForDesktop() {
+  getAllExpirations() {
     this.subscriptionForGetAllExpirations = this.expirationService
     .getAll()
     .subscribe((expirations: Expiration[]) => {
@@ -75,31 +68,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
       else {this.dataSource.data = expirations.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());}
 
       this.dataSource.data.forEach(expiration => {
-        this.calculateDateDiff(expiration);
-        this.calculateRestDays(expiration);
-      })
-           
-    });
-  }
-
-  getAllExpirationsForTablet() {
-    this.subscriptionForGetAllExpirations = this.expirationService
-    .getAll()
-    .subscribe((expirations: Expiration[]) => {
-
-      this.dataSourceCopie.data = expirations.sort((n1, n2) => n2.numRefExpiration - n1.numRefExpiration);
-
-      if (this.content) {
-        this.expirationsList = expirations.filter(expiration => expiration.contentName.toLowerCase().includes(this.content.toLowerCase()));
-        this.expirationsList = this.expirationsList.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());
-      }
-
-      else {this.expirationsList = expirations.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());}
-
-      this.pagedList = this.expirationsList.slice(0, 6);
-      this.length = this.expirationsList.length;
-
-      this.expirationsList.forEach(expiration => {
         this.calculateDateDiff(expiration);
         this.calculateRestDays(expiration);
       })
@@ -156,14 +124,14 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
 
   newExpiration() {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(ExpirationFormForDesktopComponent, config);
 
     dialogRef.componentInstance.arrayExpirations = this.dataSourceCopie.data;
   }
 
   editExpiration(expiration?: Expiration) {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(ExpirationFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(ExpirationFormForDesktopComponent, config);
     
     dialogRef.componentInstance.expiration = expiration;
     dialogRef.componentInstance.pagedList = this.pagedList;

@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -24,7 +24,11 @@ import { Debt } from 'src/app/shared/models/debt.model';
 
 export class HomeComponent implements OnInit, OnDestroy {
 
+  isDesktop: boolean;
+  isTablet: boolean;
   innerWidth: any;
+  orientation: string = '';
+  
   nbrMoviesToCheckToday: number = 0;
   nbrAnimesToCheckToday: number = 0;
   nbrSeriesToCheckToday: number = 0;
@@ -81,11 +85,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     private serieService: SerieService,
     public expirationService: ExpirationService,
     private debtService: DebtService,
-    private store: AngularFirestore
+    private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit(): void {
+    this.isDesktop = this.deviceService.isDesktop();
+    this.isTablet = this.deviceService.isTablet();
     this.innerWidth = window.innerWidth;
+
+    if(window.innerHeight > window.innerWidth){
+      this.orientation = 'Portrait';    
+    } else {
+      this.orientation = 'Landscape';
+    }
+  
+    window.matchMedia("(orientation: portrait)").addEventListener("change", e => {
+      const portrait = e.matches;
+  
+      if (portrait) {
+        this.orientation = 'Portrait';
+      } else {
+        this.orientation = 'Landscape';
+      }
+    });    
+
     this.getAllMoviesToCheckToday();
     this.getAllAnimesToCheckToday();
     this.getAllSeriesToCheckToday();
