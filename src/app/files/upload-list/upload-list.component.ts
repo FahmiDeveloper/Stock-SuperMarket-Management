@@ -14,6 +14,8 @@ import { FileUpload } from 'src/app/shared/models/file-upload.model';
 
 export class UploadListComponent implements OnChanges {
 
+  @Input() isDesktop: boolean;
+  @Input() isTablet: boolean;
   @Input() isMobile: boolean;
   @Input() typeFileId: number;
   @Input() numContextFile: number;

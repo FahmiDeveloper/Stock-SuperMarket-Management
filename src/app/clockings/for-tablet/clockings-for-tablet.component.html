@@ -95,7 +95,7 @@
 
 <div class="row">
 
-    <div *ngFor="let clocking of pagedList" class="mx-auto my-3 col-md-4">
+    <div *ngFor="let clocking of (clockingsList | paginate: { itemsPerPage: 6 , currentPage: p })" class="mx-auto my-3 col-md-4">
 
         <mat-card class="text-application example-card-tablet">
 
@@ -181,18 +181,14 @@
 
 </div>
 
-<div *ngIf="clockingsList.length == 0" class="row justify-content-center no-results text-application">
-    No results
+<br *ngIf="clockingsList.length !== 0">
+
+<div *ngIf="clockingsList.length !== 0" class="pagination">
+    <pagination-controls (pageChange)="p = $event;OnPageChange($event)"></pagination-controls>
 </div>
 
-<div *ngIf="clockingsList.length !== 0" class="row mat-paginator">
-    <mat-paginator 
-        [length]="length"
-        [pageSize]="6"
-        [pageSizeOptions]="[6]"
-        showFirstLastButtons
-        (page)="OnPageChange($event)">
-    </mat-paginator>
+<div *ngIf="clockingsList.length == 0" class="row justify-content-center no-results text-application">
+    No results
 </div>
 
 <mat-menu #contextMenu="matMenu" xPosition="before">

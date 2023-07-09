@@ -115,7 +115,7 @@ export class AnimesForDesktopComponent implements OnInit, OnDestroy {
             if (this.dislike) this.dislike = false;
             this.animesList = animes.filter(anime => anime.statusId == this.statusId);
           }     
-          this.animesList = this.statusId == 2 ? this.animesList.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime) : this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);            
+          this.animesList = this.statusId == 3 ? this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime) : this.animesList.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime);            
         }
       }
       

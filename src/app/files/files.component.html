@@ -1,6 +1,6 @@
 <h1 class="titleTextInterface text-application">Files</h1>
 
-<mat-grid-list [cols]="isMobile ? '2' : '4'" #grid rowHeight="315px" gutterSize="15px">
+<mat-grid-list [cols]="isDesktop || (isTablet && orientation == 'Landscape') ? '4' : isTablet && orientation == 'Portrait' ? '3' : '2'" #grid rowHeight="315px" gutterSize="15px">
   <mat-grid-tile *ngFor="let typeFile of typesFiles">
     <mat-card class="settings-card" style="cursor: pointer;border: 1px solid;">
       <mat-card-title class="text-application">{{ typeFile.title }}</mat-card-title>
@@ -29,7 +29,9 @@
   </div>
   <div class="row">
       <div class="col-md-12">
-          <app-upload-list 
+          <app-upload-list
+            [isDesktop]="isDesktop"
+            [isTablet]="isTablet" 
             [isMobile]="isMobile" 
             [typeFileId]="typeFile.id" 
             [numContextFile]="numContextFile" 
@@ -118,17 +120,35 @@
 
       <div *ngIf="linksList?.length > 0" class="example-list">
 
-        <div class="example-box" *ngFor="let link of (linksList | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (contextmenu)="onRightClick($event, link)">
+        <ng-container *ngIf="isDesktop">
+
+          <div class="example-box" *ngFor="let link of (linksList | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (contextmenu)="onRightClick($event, link)">
  
-          <span
-            class="text-application add-three-dots"
-            style="font-size: x-large;cursor: pointer;" 
-            (click)="copyText(link.content)"
-            [matTooltip]="link.content.length > 60 ? link.content : ''">
-            {{ link.content }}
-          </span>    
-      
-        </div>
+            <span
+              class="text-application add-three-dots"
+              style="font-size: x-large;cursor: pointer;" 
+              (click)="copyText(link)"
+              [matTooltip]="link.content.length > 60 ? link.content : ''">
+              {{ link.content }}
+            </span>    
+        
+          </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="isTablet">
+
+          <div class="example-box" *ngFor="let link of (linksList | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (click)="openMenuTrigger($event, link)">
+ 
+            <span
+              class="text-application add-three-dots"
+              style="font-size: x-large;">
+              {{ link.content }}
+            </span>    
+        
+          </div>
+          
+        </ng-container>
       
       </div>
       
@@ -164,15 +184,6 @@
           </button>
 
           <button 
-            type="button" 
-            mat-menu-item
-            (click)="deleteLink(link.key)" 
-            class="text-application">
-            <mat-icon style="color: #f44336;" aria-label="Delete">delete</mat-icon>
-            <span>Delete</span>
-          </button>
-
-          <button 
             type="button"
             mat-menu-item
             (click)="shareLink(link)"
@@ -180,6 +191,25 @@
             <mat-icon style="color: #ff4081;">share</mat-icon>
             <span>Share</span>                        
           </button> 
+
+          <button
+            *ngIf="isTablet"
+            type="button"
+            mat-menu-item
+            (click)="copyText(link)"
+            class="text-application">
+            <mat-icon style="color: black;">file_copy</mat-icon>
+            <span>Copy</span>                        
+          </button>
+
+          <button 
+            type="button" 
+            mat-menu-item
+            (click)="deleteLink(link.key)" 
+            class="text-application">
+            <mat-icon style="color: #f44336;" aria-label="Delete">delete</mat-icon>
+            <span>Delete</span>
+          </button>
       
         </ng-template> 
       

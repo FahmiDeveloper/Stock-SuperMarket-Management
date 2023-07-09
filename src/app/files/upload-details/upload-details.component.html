@@ -1,16 +1,34 @@
 <div *ngIf="filteredFiles?.length > 0" class="example-list">
+  
+  <ng-container *ngIf="isDesktop">
 
-  <div class="example-box" *ngFor="let file of (filteredFiles | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (contextmenu)="onRightClick($event, file)">
+    <div class="example-box" *ngFor="let file of (filteredFiles | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (contextmenu)="onRightClick($event, file)">
 
-    <span
-      class="text-application add-three-dots"
-      style="font-size: x-large;cursor: pointer;" 
-      (click)="copyText(file.fileNameWithoutType)"
-      [matTooltip]="file.fileNameWithoutType.length > 65 ? file.fileNameWithoutType : ''">
-      {{ file.fileNameWithoutType }}
-    </span>    
+      <span
+        class="text-application add-three-dots"
+        style="font-size: x-large;cursor: pointer;" 
+        (click)="copyText(file)"
+        [matTooltip]="file.fileNameWithoutType.length > 65 ? file.fileNameWithoutType : ''">
+        {{ file.fileNameWithoutType }}
+      </span>    
+  
+    </div>
 
-  </div>
+  </ng-container>
+
+  <ng-container *ngIf="isTablet">
+
+    <div class="example-box" *ngFor="let file of (filteredFiles | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (click)="openMenuTrigger($event, file)">
+
+      <span
+        class="text-application add-three-dots"
+        style="font-size: x-large;cursor: pointer;">
+        {{ file.fileNameWithoutType }}
+      </span>    
+  
+    </div>
+
+  </ng-container>
 
 </div>
 
@@ -65,15 +83,6 @@
     </button>
 
     <button
-      type="button"
-      mat-menu-item
-      (click)="deleteFile(file)" 
-      class="text-application">
-      <mat-icon style="color: #f44336;">delete</mat-icon>
-      <span>Delete</span>
-    </button>
-
-    <button
       *ngIf="isMobile && (checkIsImage(file.name) || isTxt(file.name)  || isPdf(file.name))"
       type="button"
       mat-menu-item 
@@ -81,7 +90,26 @@
       class="text-application">
       <mat-icon style="color: #ff4081;">share</mat-icon>
       <span>Share</span>             
-    </button>  
+    </button> 
+
+    <button
+      *ngIf="isTablet"
+      type="button"
+      mat-menu-item 
+      (click)="copyText(file)"
+      class="text-application">
+      <mat-icon style="color: black;">file_copy</mat-icon>
+      <span>Copy</span>                 
+    </button> 
+
+    <button
+      type="button"
+      mat-menu-item
+      (click)="deleteFile(file)" 
+      class="text-application">
+      <mat-icon style="color: #f44336;">delete</mat-icon>
+      <span>Delete</span>
+    </button> 
 
   </ng-template> 
 
@@ -143,24 +171,32 @@
     </button>
   </div>
 
-  <div *ngIf="isLoading">
-    <mat-spinner [ngStyle]="{'margin-left': isMobile ? '110px' : '350px', 'margin-top': isMobile ? '150px' : '250px'}"></mat-spinner><br>
+  <div *ngIf="isLoading" class="center">
     <h4 class="text-application" style="text-align: center;">Extract files in progress...</h4>
   </div>
 
   <div *ngIf="!isLoading">
+
     <span *ngFor="let file of $zipFiles | async" class="text-application">
+
       <span *ngIf="file.fileName">
+
         {{file.fileName}}
+
         <span style="font-size: 14px;color:blue;">({{file.date | date: 'dd/MM/yyyy'}})</span>
+
         <br>
+
         <button
           type="button"
           mat-icon-button
           color="accent"
           (click)="viewFileFromZip(file, showContentFilesFromZip)">
           <i class="fa fa-eye" aria-hidden="true"></i>
-        </button>&nbsp;
+        </button>
+        
+        &nbsp;
+
         <button
           type="button"
           mat-icon-button
@@ -168,9 +204,13 @@
           (click)="saveFileFromZip(file)">
           <i class="fa fa-download" aria-hidden="true"></i>
         </button> 
+
       </span>
+
       <br *ngIf="file.fileName">
+
       <mat-divider *ngIf="file.fileName"></mat-divider>
+
     </span>
   </div>
   
@@ -186,75 +226,75 @@
   </div>
 
 
-    <img *ngIf="checkIsImage(fileExtractedName)" [src]='srcExtractedImage' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
+  <img *ngIf="checkIsImage(fileExtractedName)" [src]='srcExtractedImage' [ngClass]="isMobile ? 'pictureFileMobile' : 'pictureFile'">
 
-    <pre 
-      *ngIf="isTxt(fileExtractedName)"
-      style="font-weight: bold;">
-      {{contentTxtFile}}
-    </pre>
+  <pre 
+    *ngIf="isTxt(fileExtractedName)"
+    style="font-weight: bold;">
+    {{contentTxtFile}}
+  </pre>
 
-    <pdf-viewer
-      *ngIf="isPdf(fileExtractedName)"
-      [src]="contentPdfFile"      
-      [rotation]="0"
-      [original-size]="false"
-      [show-all]="true"
-      [fit-to-page]="false"
-      [zoom]="1"
-      [zoom-scale]="'page-width'"
-      [stick-to-page]="false"
-      [render-text]="true"
-      [external-link-target]="'blank'"
-      [autoresize]="true"
-      [show-borders]="false"
-      style="width: 100%; height: 600px;">
-    </pdf-viewer>
+  <pdf-viewer
+    *ngIf="isPdf(fileExtractedName)"
+    [src]="contentPdfFile"      
+    [rotation]="0"
+    [original-size]="false"
+    [show-all]="true"
+    [fit-to-page]="false"
+    [zoom]="1"
+    [zoom-scale]="'page-width'"
+    [stick-to-page]="false"
+    [render-text]="true"
+    [external-link-target]="'blank'"
+    [autoresize]="true"
+    [show-borders]="false"
+    style="width: 100%; height: 600px;">
+  </pdf-viewer>
 
-    <div *ngIf="isExcel(fileExtractedName) && isMobile" class="scroll">
-      <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
-        <thead #header>
-          <tr>
-            <th style="background-color:#d9d9d9;"></th>
-            <th *ngFor="let headValue of headData">
-              {{headValue}}
-            </th>
-          </tr>
-        </thead>
-        <tbody #container>
-          <tr *ngFor="let row of data; let e =index">
-            <td style="background-color:#d9d9d9;">{{e+1}}</td>
-            <td *ngFor="let val of headData; let i =index">
-              {{row[i] || ' '}} 
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div *ngIf="isExcel(fileExtractedName) && isMobile" class="scroll">
+    <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
+      <thead #header>
+        <tr>
+          <th style="background-color:#d9d9d9;"></th>
+          <th *ngFor="let headValue of headData">
+            {{headValue}}
+          </th>
+        </tr>
+      </thead>
+      <tbody #container>
+        <tr *ngFor="let row of data; let e =index">
+          <td style="background-color:#d9d9d9;">{{e+1}}</td>
+          <td *ngFor="let val of headData; let i =index">
+            {{row[i] || ' '}} 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div *ngIf="isExcel(fileExtractedName) && !isMobile">
-      <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
-        <thead #header>
-          <tr>
-            <th style="background-color:#d9d9d9;"></th>
-            <th *ngFor="let headValue of headData">
-              {{headValue}}
-            </th>
-          </tr>
-        </thead>
-        <tbody #container>
-          <tr *ngFor="let row of data; let e =index">
-            <td style="background-color:#d9d9d9;">{{e+1}}</td>
-            <td *ngFor="let val of headData; let i =index">
-              {{row[i] || ' '}} 
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div *ngIf="isExcel(fileExtractedName) && !isMobile">
+    <table *ngIf="isExcel(fileExtractedName)" id="TheTable" class="ExcelTable2007">
+      <thead #header>
+        <tr>
+          <th style="background-color:#d9d9d9;"></th>
+          <th *ngFor="let headValue of headData">
+            {{headValue}}
+          </th>
+        </tr>
+      </thead>
+      <tbody #container>
+        <tr *ngFor="let row of data; let e =index">
+          <td style="background-color:#d9d9d9;">{{e+1}}</td>
+          <td *ngFor="let val of headData; let i =index">
+            {{row[i] || ' '}} 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div *ngIf="isWord(fileExtractedName) && isMobile" id="contentWord" class="scroll"></div>
+  <div *ngIf="isWord(fileExtractedName) && isMobile" id="contentWord" class="scroll"></div>
 
-    <div *ngIf="isWord(fileExtractedName) && !isMobile" id="contentWord"></div>
+  <div *ngIf="isWord(fileExtractedName) && !isMobile" id="contentWord"></div>
 
 </ng-template>

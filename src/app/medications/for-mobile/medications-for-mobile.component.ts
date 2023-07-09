@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as fileSaver from 'file-saver';
 
-import { MedicationFormMobileComponent } from './medication-form-mobile/medication-form-mobile.component';
+import { MedicationFormForMobileComponent } from './medication-form-for-mobile/medication-form-for-mobile.component';
 
 import { MedicationService } from 'src/app/shared/services/medication.service';
 import { DiseaseService } from 'src/app/shared/services/disease.service';
@@ -98,7 +98,7 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
       width: '98vw',
       maxWidth: '100vw'
     }
-    const dialogRef = this.dialogService.open(MedicationFormMobileComponent, config);
+    const dialogRef = this.dialogService.open(MedicationFormForMobileComponent, config);
 
     dialogRef.componentInstance.arrayMedications = this.medicationsListCopieForNewMedication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
@@ -110,7 +110,7 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
       width: '98vw',
       maxWidth: '100vw'
     }
-    const dialogRef = this.dialogService.open(MedicationFormMobileComponent, config);
+    const dialogRef = this.dialogService.open(MedicationFormForMobileComponent, config);
     
     dialogRef.componentInstance.medication = medication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;

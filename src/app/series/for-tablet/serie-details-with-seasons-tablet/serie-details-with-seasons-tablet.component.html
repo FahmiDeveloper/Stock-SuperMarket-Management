@@ -15,8 +15,8 @@
       <mat-grid-list cols="3" rowHeight="250px">
 
         <mat-grid-tile>
-          <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image" [ngStyle]="{'width': orientation == 'Portrait' ? '90%': '70%'}" (click)="openMenuTrigger($event, serie)">
-          <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image" [ngStyle]="{'width': orientation == 'Portrait' ? '90%': '70%'}" (click)="openMenuTrigger($event, serie)">
+          <img *ngIf="serie.imageUrl" [src]="serie.imageUrl" class="serie-image" [ngStyle]="{'width': orientation == 'Portrait' ? '70%': '60%'}" (click)="openMenuTrigger($event, serie)">
+          <img *ngIf="!serie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="serie-image" [ngStyle]="{'width': orientation == 'Portrait' ? '70%': '60%'}" (click)="openMenuTrigger($event, serie)">
         </mat-grid-tile>
 
         <mat-grid-tile class="center-name-serie">

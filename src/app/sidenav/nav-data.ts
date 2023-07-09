@@ -16,22 +16,22 @@ export const navbarDataToDoList: INavbarData =
 
 export const navbarDataForDesktop: INavbarData[] = [
     {
-        routeLink: 'movies-desktop',
+        routeLink: 'movies-for-desktop',
         icon: 'fa fa-film',
         label: 'Movies'
     },
     {
-        routeLink: 'animes-desktop',
+        routeLink: 'animes-for-desktop',
         icon: 'fa fa-rocket',
         label: 'Animes'
     },
     {
-        routeLink: 'series-desktop',
+        routeLink: 'series-for-desktop',
         icon: 'fa fa-television',
         label: 'Series'
     },
     {
-        routeLink: 'notes-desktop',
+        routeLink: 'notes-for-desktop',
         icon: 'fa fa-sticky-note',
         label: 'Notes'
     },
@@ -46,7 +46,7 @@ export const navbarDataForDesktop: INavbarData[] = [
         label: 'Expirations'
     },
     {
-        routeLink: 'debts-desktop',
+        routeLink: 'debts-for-desktop',
         icon: 'fa fa-money',
         label: 'Debts'
     },
@@ -56,17 +56,17 @@ export const navbarDataForDesktop: INavbarData[] = [
         label: 'Files'
     },
     {
-        routeLink: 'passwords-desktop',
+        routeLink: 'passwords-for-desktop',
         icon: 'fa fa-unlock-alt',
         label: 'Passwords'
     },
     {
-        routeLink: 'medications-desktop',
+        routeLink: 'medications-for-desktop',
         icon: 'fa fa-plus-square',
         label: 'Medications'
     },
     {
-        routeLink: 'documents-desktop',
+        routeLink: 'documents-for-desktop',
         icon: 'fa fa-file-text-o',
         label: 'Documents'
     }
@@ -74,22 +74,22 @@ export const navbarDataForDesktop: INavbarData[] = [
 
 export const navbarDataForTablet: INavbarData[] = [
     {
-        routeLink: 'movies-tablet',
+        routeLink: 'movies-for-tablet',
         icon: 'fa fa-film',
         label: 'Movies'
     },
     {
-        routeLink: 'animes-tablet',
+        routeLink: 'animes-for-tablet',
         icon: 'fa fa-rocket',
         label: 'Animes'
     },
     {
-        routeLink: 'series-tablet',
+        routeLink: 'series-for-tablet',
         icon: 'fa fa-television',
         label: 'Series'
     },
     {
-        routeLink: 'notes-desktop',
+        routeLink: 'notes-for-desktop',
         icon: 'fa fa-sticky-note',
         label: 'Notes'
     },
@@ -104,7 +104,7 @@ export const navbarDataForTablet: INavbarData[] = [
         label: 'Expirations'
     },
     {
-        routeLink: 'debts-desktop',
+        routeLink: 'debts-for-tablet',
         icon: 'fa fa-money',
         label: 'Debts'
     },
@@ -114,17 +114,17 @@ export const navbarDataForTablet: INavbarData[] = [
         label: 'Files'
     },
     {
-        routeLink: 'passwords-desktop',
+        routeLink: 'passwords-for-tablet',
         icon: 'fa fa-unlock-alt',
         label: 'Passwords'
     },
     {
-        routeLink: 'medications-desktop',
+        routeLink: 'medications-for-tablet',
         icon: 'fa fa-plus-square',
         label: 'Medications'
     },
     {
-        routeLink: 'documents-desktop',
+        routeLink: 'documents-for-tablet',
         icon: 'fa fa-file-text-o',
         label: 'Documents'
     }

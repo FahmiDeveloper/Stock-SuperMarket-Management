@@ -23,109 +23,80 @@
 
 <br>
 
-<div class="mat-elevation-z8">
+<table class="table">
+    <thead style="background: #263238;color: white;">
+      <tr class="text-application text-center">
+        <th scope="col">Content</th>
+        <th scope="col">Cost</th>
+        <th scope="col">Start</th>
+        <th scope="col">End</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Rest</th>
+        <th scope="col" [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '15rem': '30rem'}">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let expiration of (expirationsList | paginate: { itemsPerPage: 8 , currentPage: p })" class="text-application text-center" (contextmenu)="onRightClick($event, expiration)" style="background-color: white;">
+        <td>{{ expiration.contentName }}</td>
+        <td>
+            <span *ngIf="expiration.cost">{{ expiration.cost }}</span>
+            <span *ngIf="!expiration.cost">-</span>
+        </td>
+        <td>{{ expiration.dateStart | date:'dd/MM/yyyy' }}</td>
+        <td>{{ expiration.dateExpiration | date:'dd/MM/yyyy' }}</td>
+        <td>{{ expiration.duration }}</td>
+        <td>
+            <span *ngIf="expiration.isExpired" style="color: red;">{{ expiration.restdays }}</span>
+            <span *ngIf="!expiration.isExpired && expiration.soonToExpire" style="color: #ff6900;">{{ expiration.restdays }}</span>
+            <span *ngIf="!expiration.isExpired && !expiration.soonToExpire" style="color: green;">{{ expiration.restdays }}</span> 
+        </td>
+        <td [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '15rem': '30rem'}">
+            <span *ngIf="expiration.note">{{ expiration.note }}</span>
+            <span *ngIf="!expiration.note">-</span>
+        </td>
+      </tr>
+    </tbody>
+</table>
 
-    <table mat-table [dataSource]="dataSource">
+<br *ngIf="expirationsList.length !== 0">
 
-        <ng-container matColumnDef="content">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Content</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">{{ element.contentName }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="cost">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Cost</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.cost">{{ element.cost }}</span>
-                <span *ngIf="!element.cost">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="start">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Start</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                {{ element.dateStart | date:'dd/MM/yyyy' }}
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="end">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">End</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                {{ element.dateExpiration | date:'dd/MM/yyyy' }}
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="duration">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Duration</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                {{ element.duration }}
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="rest">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Rest</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.isExpired" style="color: red;">{{ element.restdays }}</span>
-                <span *ngIf="!element.isExpired && element.soonToExpire" style="color: #ff6900;">{{ element.restdays }}</span>
-                <span *ngIf="!element.isExpired && !element.soonToExpire" style="color: green;">{{ element.restdays }}</span>               
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="note">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;width: 30rem;" [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '15rem': '30rem'}">Note</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.note">{{ element.note }}</span>
-                <span *ngIf="!element.note">-</span>
-            </td>
-        </ng-container>        
-
-        <ng-container matColumnDef="star">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element"> 
-                <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{element:element}">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-    
-        <tr mat-header-row style="background: #263238;" *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    </table>
-
-    <div *ngIf="dataSource.data.length == 0" class="row justify-content-center no-results text-application">
-        No results
-    </div>
-
-    <mat-paginator
-        [pageSize]="8 "
-        [pageSizeOptions]="[8]"
-        showFirstLastButtons>
-    </mat-paginator>
-    
+<div *ngIf="expirationsList.length !== 0" class="pagination">
+    <pagination-controls (pageChange)="p = $event;OnPageChange($event)"></pagination-controls>
 </div>
 
-<mat-menu #contextMenu="matMenu" xPosition="before">
+<div *ngIf="expirationsList.length == 0" class="row justify-content-center no-results text-application">
+    No results
+</div>
 
-	<ng-template matMenuContent let-expiration="element">
+<div 
+    style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu">
+</div> 
+ 
+<mat-menu #rightMenu="matMenu"> 
 
-        <button
-            type="button"
-            mat-menu-item 
-            (click)="editExpiration(expiration)"
-            class="text-application">
-            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-            <span>Edit</span>
-        </button>
+  <ng-template matMenuContent let-expiration="expiration">
 
-        <button
-            type="button"
-            mat-menu-item 
-            (click)="deleteExpiration(expiration.key)"
-            class="text-application">
-            <mat-icon style="color: #f44336;">delete</mat-icon>
-            <span>Delete</span>
-        </button>  
+    <button
+        type="button"
+        mat-menu-item 
+        (click)="editExpiration(expiration)"
+        class="text-application">
+        <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+        <span>Edit</span>
+    </button>
 
-	</ng-template>
+    <button
+        type="button"
+        mat-menu-item 
+        (click)="deleteExpiration(expiration.key)"
+        class="text-application">
+        <mat-icon style="color: #f44336;">delete</mat-icon>
+        <span>Delete</span>
+    </button>  
+
+  </ng-template>
 
 </mat-menu>

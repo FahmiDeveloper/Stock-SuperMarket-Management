@@ -56,10 +56,6 @@ export class DocumentsListForDesktopComponent implements OnInit, OnDestroy {
       .filter(document => (document.subjectDocumentsKey == this.subjectDocuments.key) && (document.documentRef == this.documentRef))
       .sort((n1, n2) => n1.numRefDocument - n2.numRefDocument);
 
-      this.documentsList.forEach(document => {
-        if (document.documentContent.length > 80) document.documentContentForTooltip = '...' + document.documentContent.substring(0, 80);
-      })
-
     });
   }
 

@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
@@ -21,16 +20,12 @@ import { Clocking, MonthsList, SubjectList } from 'src/app/shared/models/clockin
 
 export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
-  dataSource = new MatTableDataSource<Clocking>();
-  dataSourceCopieForNewClocking = new MatTableDataSource<Clocking>();
-  dataSourceCopieForCalculTotalClockingLate = new MatTableDataSource<Clocking>();
-  displayedColumns: string[] = ['date', 'day','time', 'clockingNbr', 'note', 'star'];
-
   clockingsList: Clocking[] = [];
-  pagedList: Clocking[]= [];
   allClockings: Clocking[]= [];
+  clockingsListCopieForNewClocking: Clocking[] = []
+  clockingsListCopieForCalculTotalClockingLate: Clocking[] = []
 
-  length: number = 0;
+  p: number = 1;
 
   currentMonthAndYear: string;
   totalClockingLate: number = 0;
@@ -47,13 +42,13 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   showDeleteAllClockingsButtton: boolean;
 
-  modalRefLodaing: any
+  modalRefLodaing: any;
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
 
   subscriptionForGetAllClockings: Subscription;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   
   monthsList: MonthsList[] = [
     { monthNbr: '06', monthName: 'June'},
@@ -93,10 +88,6 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     this.getAllClockings();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   getAllClockings() {
     this.subscriptionForGetAllClockings = this.clockingService
     .getAll()
@@ -104,46 +95,46 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
 
       this.allClockings = clockings;
 
-      this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      this.clockingsListCopieForNewClocking = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
-      this.dataSourceCopieForCalculTotalClockingLate.data = clockings
+      this.clockingsListCopieForCalculTotalClockingLate = clockings
       .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
       .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
       this.currentMonth = this.monthsList.find(month => month.monthNbr == this.monthSelected).monthName;
 
       if (this.subjectSelectedId == 1) {
-        this.dataSource.data = clockings
+        this.clockingsList = clockings
         .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 2) {
-        this.dataSource.data = clockings
+        this.clockingsList = clockings
         .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 3) {
-        this.dataSource.data = clockings
+        this.clockingsList = clockings
         .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 4) {
-        this.dataSource.data = clockings
+        this.clockingsList = clockings
         .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else if (this.subjectSelectedId == 5) {
-        this.dataSource.data = clockings
+        this.clockingsList = clockings
         .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected && clocking.timeClocking && clocking.timeClocking > '08:00' ))
         .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
       }
       else {
-        this.dataSource.data = 
-        clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
+        this.clockingsList = clockings
+        .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
         .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
       }
 
-      if (this.monthSelected == '05' && this.dataSource.data[0] && new Date(this.dataSource.data[0].dateClocking).getDate() == 31) {
+      if (this.monthSelected == '05' && this.clockingsList[0] && new Date(this.clockingsList[0].dateClocking).getDate() == 31) {
         this.showDeleteAllClockingsButtton = true;
       }
       else {
@@ -160,8 +151,8 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
       else {this.showVacationLimitDays = false;}
    
       this.minutePartList = [];
-      if (this.dataSourceCopieForCalculTotalClockingLate.data.length > 0) {
-        this.dataSourceCopieForCalculTotalClockingLate.data.forEach(clocking => {
+      if (this.clockingsListCopieForCalculTotalClockingLate.length > 0) {
+        this.clockingsListCopieForCalculTotalClockingLate.forEach(clocking => {
             this.calculTotalClockingLate(clocking.timeClocking);
         })
       } else {
@@ -169,8 +160,8 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
         this.totalClockingLateByHoursMinute = '0 Min';
       }
       
-      if (this.dataSource.data.length > 0) {
-        this.dataSource.data.forEach(clocking => {
+      if (this.clockingsList.length > 0) {
+        this.clockingsList.forEach(clocking => {
           this.getDayFromDateClocking(clocking);
         })
       }
@@ -179,12 +170,6 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
   }
 
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.clockingsList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -217,7 +202,7 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
     const dialogRef = this.dialogService.open(ClockingFormForDesktopComponent, config);
 
-    dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
+    dialogRef.componentInstance.arrayClockings = this.clockingsListCopieForNewClocking;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
     dialogRef.componentInstance.monthSelected = this.monthSelected
@@ -231,11 +216,6 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
     dialogRef.componentInstance.monthSelected = this.monthSelected;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });
   }
 
   deleteClocking(clockingKey) {
@@ -299,6 +279,22 @@ export class ClockingsForDesktopComponent implements OnInit, OnDestroy {
         }, 20000);
       }
     })
+  }
+
+  onRightClick(event: MouseEvent, clocking: Clocking) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {clocking: clocking};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

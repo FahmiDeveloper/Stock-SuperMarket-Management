@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { DebtFormMobileComponent } from './debt-form-mobile/debt-form-mobile.component';
+import { DebtFormForMobileComponent } from './debt-form-for-mobile/debt-form-for-mobile.component';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DebtService } from 'src/app/shared/services/debt.service';
@@ -589,7 +589,7 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
   }
 
   newDebt() {
-    const dialogRef = this.dialogService.open(DebtFormMobileComponent, {
+    const dialogRef = this.dialogService.open(DebtFormForMobileComponent, {
       width: '98vw',
       height:'75vh',
       maxWidth: '100vw'
@@ -599,7 +599,7 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
   }
 
   editDebt(debt?: Debt) {
-    const dialogRef = this.dialogService.open(DebtFormMobileComponent, {
+    const dialogRef = this.dialogService.open(DebtFormForMobileComponent, {
       width: '98vw',
       height:'75vh',
       maxWidth: '100vw'

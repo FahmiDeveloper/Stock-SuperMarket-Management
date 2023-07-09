@@ -4,10 +4,9 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription } from 'rxjs';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import Swal from 'sweetalert2';
 
-import { PasswordFormDesktopComponent } from './password-form-desktop/password-form-desktop.component';
+import { PasswordFormForDesktopComponent } from './password-form-for-desktop/password-form-for-desktop.component';
 
 import { PasswordService } from 'src/app/shared/services/password.service';
 
@@ -27,7 +26,6 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   p: number = 1;
 
   content: string = '';
-  isDesktop: boolean;
   innerWidth: number;
   itemsPerPage: number;
 
@@ -38,14 +36,12 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   constructor(
     public passwordService: PasswordService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.itemsPerPage = window.innerWidth <= 1366 ? 6 : 8;
-    this.isDesktop = this.deviceService.isDesktop();
     this.getAllPasswords();
   }
 
@@ -73,14 +69,14 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
 
   newPassword() {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(PasswordFormForDesktopComponent, config);
 
     dialogRef.componentInstance.arrayPasswords = this.passwordsListCopie;
   }
 
   editPassword(password?: Password) {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(PasswordFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(PasswordFormForDesktopComponent, config);
     
     dialogRef.componentInstance.password = password;
   }

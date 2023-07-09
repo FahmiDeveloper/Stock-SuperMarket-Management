@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
@@ -22,22 +21,17 @@ import * as moment from 'moment';
 
 export class ExpirationsForTabletComponent implements OnInit, OnDestroy {
 
-  dataSource = new MatTableDataSource<Expiration>();
-  dataSourceCopie = new MatTableDataSource<Expiration>();
-  displayedColumns: string[] = ['content', 'cost', 'start', 'end', 'duration', 'rest', 'note', 'star'];
-
   expirationsList: Expiration[] = [];
-  pagedList: Expiration[]= [];
-  length: number = 0;
+  expirationsListCopie: Expiration[] = [];
+
+  p: number = 1;
 
   content: string = '';
   innerWidth: any;
 
-  subscriptionForGetAllExpirations: Subscription;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+
+  subscriptionForGetAllExpirations: Subscription;
     
   constructor(
     public expirationService: ExpirationService,
@@ -49,26 +43,21 @@ export class ExpirationsForTabletComponent implements OnInit, OnDestroy {
     this.getAllExpirations();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   getAllExpirations() {
     this.subscriptionForGetAllExpirations = this.expirationService
     .getAll()
     .subscribe((expirations: Expiration[]) => {
 
-      this.dataSourceCopie.data = expirations.sort((n1, n2) => n2.numRefExpiration - n1.numRefExpiration);
+      this.expirationsListCopie = expirations.sort((n1, n2) => n2.numRefExpiration - n1.numRefExpiration);
 
       if (this.content) {
         this.expirationsList = expirations.filter(expiration => expiration.contentName.toLowerCase().includes(this.content.toLowerCase()));
         this.expirationsList = this.expirationsList.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());
       }
 
-      else {this.expirationsList = expirations.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());}
-
-      this.pagedList = this.expirationsList.slice(0, 6);
-      this.length = this.expirationsList.length;
+      else {
+        this.expirationsList = expirations.sort((n1, n2) => new Date(n1.dateExpiration).getTime() - new Date(n2.dateExpiration).getTime());
+      }
 
       this.expirationsList.forEach(expiration => {
         this.calculateDateDiff(expiration);
@@ -79,12 +68,6 @@ export class ExpirationsForTabletComponent implements OnInit, OnDestroy {
   }
 
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.expirationsList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -129,7 +112,7 @@ export class ExpirationsForTabletComponent implements OnInit, OnDestroy {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
     const dialogRef = this.dialogService.open(ExpirationFormForTabletComponent, config);
 
-    dialogRef.componentInstance.arrayExpirations = this.dataSourceCopie.data;
+    dialogRef.componentInstance.arrayExpirations = this.expirationsListCopie;
   }
 
   editExpiration(expiration?: Expiration) {
@@ -137,11 +120,6 @@ export class ExpirationsForTabletComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(ExpirationFormForTabletComponent, config);
     
     dialogRef.componentInstance.expiration = expiration;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });
   }
 
   deleteExpiration(expirationKey) {

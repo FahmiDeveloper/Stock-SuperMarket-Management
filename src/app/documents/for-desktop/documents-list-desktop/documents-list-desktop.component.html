@@ -33,20 +33,12 @@
         <div class="example-box" *ngFor="let document of documentsList" (contextmenu)="onRightClick($event, document)">
           
             <span
-                *ngIf="document.documentContent.length < 80 || document.documentContent.length == 80" 
                 class="text-application" 
-                style="font-size: x-large;cursor: pointer;" 
+                style="font-size: x-large;cursor: pointer;text-align: right;" 
                 (click)="copyText(document.documentContent)">
                 {{ document.documentContent }}
             </span>
-            <span 
-                *ngIf="document.documentContent.length > 80" 
-                class="text-application" 
-                style="font-size: x-large;cursor: pointer;" 
-                (click)="copyText(document.documentContent)"
-                [matTooltip]="document.documentContent">
-                {{ document.documentContentForTooltip }}
-            </span>
+            
         </div>
     </div>
 

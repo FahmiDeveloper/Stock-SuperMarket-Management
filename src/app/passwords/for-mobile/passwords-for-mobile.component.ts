@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { PasswordFormMobileComponent } from './password-form-mobile/password-form-mobile.component';
+import { PasswordFormForMobileComponent } from './password-form-for-mobile/password-form-for-mobile.component';
 
 import { PasswordService } from 'src/app/shared/services/password.service';
 
@@ -76,7 +76,7 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
   }
 
   newPassword() {
-    const dialogRef = this.dialogService.open(PasswordFormMobileComponent, {
+    const dialogRef = this.dialogService.open(PasswordFormForMobileComponent, {
       width: '98vw',
       height:'71vh',
       maxWidth: '100vw', 
@@ -86,7 +86,7 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
   }
 
   editPassword(password?: Password) {
-    const dialogRef = this.dialogService.open(PasswordFormMobileComponent, {
+    const dialogRef = this.dialogService.open(PasswordFormForMobileComponent, {
       width: '98vw',
       height:'70vh',
       maxWidth: '100vw'

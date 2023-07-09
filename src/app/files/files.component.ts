@@ -35,11 +35,14 @@ export class FilesComponent implements OnInit, OnDestroy {
   content: string = '';
   numContextFile: number;
   typeFile: TypesFiles;
+  isDesktop: boolean;
+  isTablet: boolean;
   isMobile: boolean;
   defaultArrayFiles: FileUpload[] = [];
   angularContext: boolean = false;
   otherContext: boolean = false;
   itemsPerPage: number;
+  orientation: string = '';
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -70,7 +73,26 @@ export class FilesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.itemsPerPage = window.innerWidth <= 1366 ? 4 : 8;
+    this.isDesktop = this.deviceService.isDesktop();
+    this.isTablet = this.deviceService.isTablet();
     this.isMobile = this.deviceService.isMobile();
+
+    if(window.innerHeight > window.innerWidth){
+      this.orientation = 'Portrait';    
+    } else {
+      this.orientation = 'Landscape';
+    }
+
+    window.matchMedia("(orientation: portrait)").addEventListener("change", e => {
+      const portrait = e.matches;
+  
+      if (portrait) {
+        this.orientation = 'Portrait';
+      } else {
+        this.orientation = 'Landscape';
+      }
+    });
+
     if (this.isMobile) {document.body.scrollTop = document.documentElement.scrollTop = 0;}
   }
 
@@ -254,14 +276,30 @@ export class FilesComponent implements OnInit, OnDestroy {
     // we open the menu 
     this.matMenuTrigger.openMenu(); 
   }
+
+  openMenuTrigger(event: MouseEvent, link: Link) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+     this.matMenuTrigger.menuData = {link: link};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
+  }
   
-  copyText(coordinate: string){
+  copyText(link: Link){
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = coordinate;
+    selBox.value = link.content;
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();

@@ -26,6 +26,8 @@ import { FileUpload, ZipFile } from 'src/app/shared/models/file-upload.model';
 export class UploadDetailsComponent implements OnChanges {
 
   @Input() filteredFiles: any[];
+  @Input() isDesktop: boolean;
+  @Input() isTablet: boolean;
   @Input() isMobile: boolean;
 
   p: number = 1;
@@ -73,15 +75,23 @@ export class UploadDetailsComponent implements OnChanges {
     this.FileName = fileUpload.name;
 
     if (this.isMobile) {
-       this.dialogService.open(showFile, {
+      this.dialogService.open(showFile, {
         width: '98vw',
         height:'81vh',
         maxWidth: '100vw'
       });
-    } else {
+    } 
+    else if (this.isTablet) {
+      this.dialogService.open(showFile, {
+        width: '80vw',
+        height:'85vh',
+        maxWidth: '100vw'
+      });
+    } 
+    else {
       this.dialogService.open(showFile, {
         width: '60vw',
-        height:'95vh',
+        height:'85vh',
         maxWidth: '100vw'
       });
     }
@@ -93,17 +103,25 @@ export class UploadDetailsComponent implements OnChanges {
 
     if (this.isMobile) {
       this.dialogService.open(showPicture, {
-       width: '98vw',
-       height:'81vh',
-       maxWidth: '100vw'
-     });
-   } else {
-     this.dialogService.open(showPicture, {
-       width: '40vw',
-       height:'85vh',
-       maxWidth: '100vw'
-     });
-   }
+        width: '98vw',
+        height:'81vh',
+        maxWidth: '100vw'
+      });
+    } 
+    else if (this.isTablet) {
+      this.dialogService.open(showPicture, {
+        width: '75vw',
+        height:'70vh',
+        maxWidth: '100vw'
+      });
+    } 
+    else {
+      this.dialogService.open(showPicture, {
+        width: '40vw',
+        height:'85vh',
+        maxWidth: '100vw'
+      });
+    }
   }
 
   showZipFile(fileUpload: FileUpload, viewZipFile) {
@@ -128,19 +146,29 @@ export class UploadDetailsComponent implements OnChanges {
           element.fileName = element.name.substring(n + 1);
         })        
       })
+
       if (this.isMobile) {
         this.dialogService.open(viewZipFile, {
-         width: '98vw',
-         height:'81vh',
-         maxWidth: '100vw'
-       });
-     } else {
-      this.dialogService.open(viewZipFile, {
-        width: '45vw',
-        height:'85vh',
-        maxWidth: '100vw'
-      });
-     }
+          width: '98vw',
+          height:'81vh',
+          maxWidth: '100vw'
+        });
+      } 
+      else if (this.isTablet) {
+        this.dialogService.open(viewZipFile, {
+          width: '80vw',
+          height:'85vh',
+          maxWidth: '100vw'
+        });
+      } 
+      else {
+        this.dialogService.open(viewZipFile, {
+          width: '45vw',
+          height:'85vh',
+          maxWidth: '100vw'
+        });
+      }
+
     });
     setTimeout(() => this.isLoading = false, 5000); 
   }
@@ -427,14 +455,30 @@ export class UploadDetailsComponent implements OnChanges {
     // we open the menu 
     this.matMenuTrigger.openMenu(); 
   }
+
+  openMenuTrigger(event: MouseEvent, file: FileUpload) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {file: file};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
+  }
   
-  copyText(coordinate: string){
+  copyText(file: FileUpload){
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = coordinate;
+    selBox.value = file.fileNameWithoutType;
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();
