@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
 import * as moment from 'moment';
@@ -18,7 +18,6 @@ import { Clocking, SubjectList } from 'src/app/shared/models/clocking.model';
 export class ClockingFormForDesktopComponent implements OnInit {
 
   arrayClockings: Clocking[];
-  pagedList: Clocking[];
 
   clocking: Clocking = new Clocking();
 
@@ -39,8 +38,7 @@ export class ClockingFormForDesktopComponent implements OnInit {
 
   constructor(
     public clockingService: ClockingService, 
-    public dialogRef: MatDialogRef<ClockingFormForDesktopComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Clocking[]
+    public dialogRef: MatDialogRef<ClockingFormForDesktopComponent>
   ) {}
 
   ngOnInit() {
@@ -54,7 +52,6 @@ export class ClockingFormForDesktopComponent implements OnInit {
       else if (this.clocking.takeOneHour == true) this.selectedSubjectId = 3;
       else if (this.clocking.workHalfDay == true) this.selectedSubjectId = 4;
       else this.selectedSubjectId = null;
-      this.data = this.pagedList;
     }
     if (this.monthSelected == String(new Date().getMonth()+ 1)  || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {this.showVacationLimitDays = true;} 
     else {this.showVacationLimitDays = false;}
@@ -125,7 +122,7 @@ export class ClockingFormForDesktopComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
   selectSubject() {

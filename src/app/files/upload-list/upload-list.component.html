@@ -16,11 +16,17 @@
 <br>
 
 <div class="row">
+
     <div class="col-md-12" *ngIf="!isMobile">
-        <app-upload-details [filteredFiles]='filteredFiles'></app-upload-details>
+        <app-upload-details 
+            [filteredFiles]='filteredFiles'
+            [isDesktop]="isDesktop"
+            [isTablet]="isTablet">
+        </app-upload-details>
     </div>
     
     <div class="col-md-4" *ngIf="isMobile">
         <app-upload-details [filteredFiles]='filteredFiles' [isMobile]="isMobile"></app-upload-details>
     </div>
+    
 </div>

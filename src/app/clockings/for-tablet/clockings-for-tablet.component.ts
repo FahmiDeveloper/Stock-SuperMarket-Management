@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
@@ -21,16 +20,12 @@ import { Clocking, MonthsList, SubjectList } from 'src/app/shared/models/clockin
 
 export class ClockingsForTabletComponent implements OnInit, OnDestroy {
 
-  dataSource = new MatTableDataSource<Clocking>();
-  dataSourceCopieForNewClocking = new MatTableDataSource<Clocking>();
-  dataSourceCopieForCalculTotalClockingLate = new MatTableDataSource<Clocking>();
-  displayedColumns: string[] = ['date', 'day','time', 'clockingNbr', 'note', 'star'];
-
   clockingsList: Clocking[] = [];
-  pagedList: Clocking[]= [];
   allClockings: Clocking[]= [];
+  clockingsListCopieForNewClocking: Clocking[] = []
+  clockingsListCopieForCalculTotalClockingLate: Clocking[] = []
 
-  length: number = 0;
+  p: number = 1;
 
   currentMonthAndYear: string;
   totalClockingLate: number = 0;
@@ -47,13 +42,11 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   showDeleteAllClockingsButtton: boolean;
 
-  modalRefLodaing: any
-
-  subscriptionForGetAllClockings: Subscription;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  modalRefLodaing: any;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
+
+  subscriptionForGetAllClockings: Subscription;
   
   monthsList: MonthsList[] = [
     { monthNbr: '06', monthName: 'June'},
@@ -93,10 +86,6 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
     this.getAllClockings();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   getAllClockings() {
     this.subscriptionForGetAllClockings = this.clockingService
     .getAll()
@@ -104,11 +93,13 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
 
       this.allClockings = clockings;
 
-      this.dataSourceCopieForNewClocking.data = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      this.clockingsListCopieForNewClocking = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
 
-      this.dataSourceCopieForCalculTotalClockingLate.data = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+      this.clockingsListCopieForCalculTotalClockingLate = clockings
+      .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
+      .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+
       this.currentMonth = this.monthsList.find(month => month.monthNbr == this.monthSelected).monthName;
-
 
       if (this.subjectSelectedId == 1) {
         this.clockingsList = clockings
@@ -148,9 +139,6 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
         this.showDeleteAllClockingsButtton = false;
       }
 
-      this.pagedList = this.clockingsList.slice(0, 6);
-      this.length = this.clockingsList.length;
-
       if ((this.monthSelected == String(new Date().getMonth()+ 1)) || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {
         this.showVacationLimitDays = true;
         let lastClockingByCurrentMonth = clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected).sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
@@ -159,8 +147,8 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
       else {this.showVacationLimitDays = false;}
    
       this.minutePartList = [];
-      if (this.dataSourceCopieForCalculTotalClockingLate.data.length > 0) {
-        this.dataSourceCopieForCalculTotalClockingLate.data.forEach(clocking => {
+      if (this.clockingsListCopieForCalculTotalClockingLate.length > 0) {
+        this.clockingsListCopieForCalculTotalClockingLate.forEach(clocking => {
             this.calculTotalClockingLate(clocking.timeClocking);
         })
       } else {
@@ -178,12 +166,6 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
   }
 
   OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.clockingsList.slice(startIndex, endIndex);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
@@ -216,7 +198,7 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
     const dialogRef = this.dialogService.open(ClockingFormForTabletComponent, config);
 
-    dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
+    dialogRef.componentInstance.arrayClockings = this.clockingsListCopieForNewClocking;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
     dialogRef.componentInstance.monthSelected = this.monthSelected
@@ -230,11 +212,6 @@ export class ClockingsForTabletComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
     dialogRef.componentInstance.monthSelected = this.monthSelected;
-    dialogRef.componentInstance.pagedList = this.pagedList;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.pagedList = res;
-    });
   }
 
   deleteClocking(clockingKey) {

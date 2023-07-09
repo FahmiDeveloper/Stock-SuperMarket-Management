@@ -1,8 +1,7 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { NoteFormMobileComponent } from './note-form-mobile/note-form-mobile.component';
@@ -10,17 +9,8 @@ import { NoteFormMobileComponent } from './note-form-mobile/note-form-mobile.com
 import { NoteService } from 'src/app/shared/services/note.service';
 
 import { Note } from 'src/app/shared/models/note.model';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { NoteDialogResult } from 'src/app/shared/models/note-dialog-result';
-
-const getObservable = (collection: AngularFirestoreCollection<Note>) => {
-  const subject = new BehaviorSubject<Note[]>([]);
-  collection.valueChanges({ idField: 'id' }).subscribe((val: Note[]) => {
-    subject.next(val);
-  });
-  return subject;
-};
+import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'notes-for-mobile',
@@ -30,91 +20,120 @@ const getObservable = (collection: AngularFirestoreCollection<Note>) => {
 
 export class NotesForMobileComponent implements OnInit, OnDestroy {
 
-  toDoInErp = getObservable(this.store.collection('toDoInErp')) as Observable<Note[]>;
-  toDoInPersApp = getObservable(this.store.collection('toDoInPersApp')) as Observable<Note[]>;
-  toTestInMaster = getObservable(this.store.collection('toTestInMaster')) as Observable<Note[]>;
-  toTestInErp = getObservable(this.store.collection('toTestInErp')) as Observable<Note[]>;
-  toTestInPersAppAfterBuild = getObservable(this.store.collection('toTestInPersAppAfterBuild')) as Observable<Note[]>;
-  toFixAfterTestInMaster = getObservable(this.store.collection('toFixAfterTestInMaster')) as Observable<Note[]>;
-  toFixAfterTestInErp = getObservable(this.store.collection('toFixAfterTestInErp')) as Observable<Note[]>;
-  toFixAfterTestInPersAppAfterBuild = getObservable(this.store.collection('toFixAfterTestInPersAppAfterBuild')) as Observable<Note[]>;
-  notifications = getObservable(this.store.collection('notifications')) as Observable<Note[]>;
+  notesList: Note[] = [];
+  notesListCopie: Note[] = [];
 
-  notesToDoInErpList: Note[] = [];
-  notesToDoInPersAppList: Note[] = [];
-  notesToTestInMasterList: Note[] = [];
-  notesToTestInErpList: Note[] = [];
-  notesToTestInPersAppAfterBuildList: Note[] = [];
-  notesToFixAfterTestInMasterList: Note[] = [];
-  notesToFixAfterTestInErpList: Note[] = [];
-  notesToFixAfterTestInPersAppAfterBuildList: Note[] = [];
-  notificationsList: Note[] = [];
+  p: number = 1;
+  content: string = '';
 
-
-  subjectNotesSelectedId: number = 1;
-  allowDragTask: boolean = false;
-
-  subscriptionForGetAllSubjectNotes: Subscription;
+  subscriptionForGetAllNotes: Subscription;
+  subscriptionForGetAllNotesForAdd: Subscription;
   
   constructor(
     public noteService: NoteService,
     public dialogService: MatDialog,
-    private store: AngularFirestore
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.getAllNotes();
+    this.getAllNotesForAdd();
   }
 
   getAllNotes() {
-  
-  }
+    this.subscriptionForGetAllNotes = this.noteService
+    .getAll()
+    .subscribe((notes: Note[]) => {
 
-
-
-
-  newNote() {
-    let config: MatDialogConfig = {
-      panelClass: "dialog-responsive",
-      width: '98vw',
-      maxWidth: '100vw',
-      data: {
-        note: {},
-      }
-    }
-    const dialogRef = this.dialogService.open(NoteFormMobileComponent, config);
-
-
-    dialogRef.afterClosed().subscribe((result: NoteDialogResult|undefined) => {
-      if (!result) {
-        return;
-      }
-
-      Swal.fire(
-        'New note added successfully',
-        '',
-        'success'
-      )   
+      if (this.content) {
+        this.notesList = notes.filter(note => note.contentNote.toLowerCase().includes(this.content.toLowerCase()));
+        this.notesList = this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
+      }  
+      else {
+        this.notesList = notes.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
+      }    
+           
     });
   }
 
-  @HostListener("window:scroll", ["$event"])
-  onWindowScroll() {
-    //In chrome and some browser scroll is given to body tag
-    let pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
-    let max = document.documentElement.scrollHeight;
-    // pos/max will give you the distance between scroll bottom and and bottom of screen in percentage.
-    if(pos < max ) {
-      this.allowDragTask = false;
-    }
+  getAllNotesForAdd() {
+    this.subscriptionForGetAllNotesForAdd = this.noteService
+    .getAll()
+    .subscribe((notesForAdd: Note[]) => {
+
+      this.notesListCopie = notesForAdd.sort((n1, n2) => n2.numRefNote - n1.numRefNote); 
+           
+    });
   }
 
-  allowDrag(allowDragTask: boolean) {
-    this.allowDragTask = allowDragTask;
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
+  newNote() {
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(NoteFormMobileComponent, config);
+
+    dialogRef.componentInstance.arrayNotes = this.notesListCopie;
+  }
+
+  editNote(note?: Note) {
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(NoteFormMobileComponent, config);
+    
+    dialogRef.componentInstance.note = note;
+  }
+
+  deleteNote(noteKey) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Delete this content note!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        this.noteService.delete(noteKey);
+        Swal.fire(
+          'Note has been deleted successfully',
+          '',
+          'success'
+        )
+      }
+    })
+  }
+
+  copyText(text: string){
+    let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = text;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.showSnackbarTopPosition();
+  }
+
+  showSnackbarTopPosition() {
+    this.snackBar.open('Text copied', 'Done', {
+      duration: 2000,
+      verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
+      horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
+
+  viewPath(path: string) {
+    window.open(path);
   }
 
   ngOnDestroy() {
-    this.subscriptionForGetAllSubjectNotes.unsubscribe()
+    this.subscriptionForGetAllNotes.unsubscribe();
+    this.subscriptionForGetAllNotesForAdd.unsubscribe()
   }
 
 }

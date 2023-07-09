@@ -3,12 +3,11 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as fileSaver from 'file-saver';
 
-import { MedicationFormDesktopComponent } from './medication-form-desktop/medication-form-desktop.component';
+import { MedicationFormForDesktopComponent } from './medication-form-for-desktop/medication-form-for-desktop.component';
 
 import { MedicationService } from 'src/app/shared/services/medication.service';
 import { DiseaseService } from 'src/app/shared/services/disease.service';
@@ -30,8 +29,6 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
 
   p: number = 1;
 
-  isDesktop: boolean;
-  isTablet: boolean;
   diseaseSelectedId: number;
   pictureFile: string = '';
   FileName: string = '';
@@ -46,14 +43,10 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     public diseaseService: DiseaseService,
     public medicationService: MedicationService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
-
     this.getAllMedications();
     this.getAllDiseases();
   }
@@ -96,7 +89,7 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
 
   newMedication() {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(MedicationFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(MedicationFormForDesktopComponent, config);
 
     dialogRef.componentInstance.arrayMedications = this.medicationsListCopieForNewMedication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
@@ -104,7 +97,7 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
 
   editMedication(medication?: Medication) {
     let config: MatDialogConfig = {panelClass: "dialog-responsive"}
-    const dialogRef = this.dialogService.open(MedicationFormDesktopComponent, config);
+    const dialogRef = this.dialogService.open(MedicationFormForDesktopComponent, config);
     
     dialogRef.componentInstance.medication = medication;
     dialogRef.componentInstance.arrayDiseases = this.diseaseList;
@@ -134,18 +127,11 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
     this.pictureFile = medication.urlPicture;
     this.FileName = medication.fileName.substring(0, medication.fileName.lastIndexOf("."));
 
-    if (this.isTablet) {
-      this.dialogService.open(showPicture, {
-        height: '80%',
-        width: '100%'
-      });
-    } else {
-      this.dialogService.open(showPicture, {
-        width: '40vw',
-        height:'85vh',
-        maxWidth: '100vw'
-      });
-    }   
+    this.dialogService.open(showPicture, {
+      width: '40vw',
+      height:'85vh',
+      maxWidth: '100vw'
+    });
   }
 
   downloadPicture(medication: Medication) {
@@ -189,6 +175,14 @@ export class MedicationsForDesktopComponent implements OnInit, OnDestroy {
   viewUtilisation(utilisation: string) {
     Swal.fire({
       text: utilisation,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
+  }
+
+  viewMedicationFor(medicationFor: string) {
+    Swal.fire({
+      text: medicationFor,
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });

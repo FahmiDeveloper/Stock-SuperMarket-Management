@@ -1,14 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl, Validators } from '@angular/forms';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
 
 import { NoteService } from 'src/app/shared/services/note.service';
 
-import { NoteDialogData } from 'src/app/shared/models/note-dialog-data';
+import { Note } from 'src/app/shared/models/note.model';
 
 @Component({
   selector: 'note-form-mobile',
@@ -18,35 +15,47 @@ import { NoteDialogData } from 'src/app/shared/models/note-dialog-data';
 
 export class NoteFormMobileComponent implements OnInit {
 
+  arrayNotes: Note[];
 
-  defaultSubjectNotesId: number;
-
-  basePath = '/FilesNotes';
-  task: AngularFireUploadTask;
-  progressValue: Observable<number>;
+  note: Note = new Note();
   
-  formControl = new FormControl('', [Validators.required]);
-
   constructor(
     public noteService: NoteService,
-    private fireStorage: AngularFireStorage,
-    public dialogRef: MatDialogRef<NoteFormMobileComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: NoteDialogData
+    public dialogRef: MatDialogRef<NoteFormMobileComponent>
   ) {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
   
+  save() {
+    if (this.note.key) {
 
-  getErrorMessage() {
-    return this.formControl.hasError('required') ? 'Required field' :'';
+      this.noteService.update(this.note.key, this.note);
+
+      Swal.fire(
+        'Note data has been updated successfully',
+        '',
+        'success'
+      )
+
+    } else {
+
+      if (this.arrayNotes[0] && this.arrayNotes[0].numRefNote) this.note.numRefNote = this.arrayNotes[0].numRefNote + 1;
+      else this.note.numRefNote = 1;
+
+      this.noteService.create(this.note);
+
+      Swal.fire(
+      'New note added successfully',
+      '',
+      'success'
+      )
+
+    }
+    this.close();
   }
 
   close() {
     this.dialogRef.close();
   }
-
-
 
 }

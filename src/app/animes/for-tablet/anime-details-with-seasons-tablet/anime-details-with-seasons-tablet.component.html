@@ -15,8 +15,8 @@
       <mat-grid-list cols="3" rowHeight="250px">
 
         <mat-grid-tile>
-          <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'width': orientation == 'Portrait' ? '90%': '70%'}" (click)="openMenuTrigger($event, anime)">
-          <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'width': orientation == 'Portrait' ? '90%': '70%'}" (click)="openMenuTrigger($event, anime)">
+          <img *ngIf="anime.imageUrl" [src]="anime.imageUrl" class="anime-image" [ngStyle]="{'width': orientation == 'Portrait' ? '70%': '60%'}" (click)="openMenuTrigger($event, anime)">
+          <img *ngIf="!anime.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="anime-image" [ngStyle]="{'width': orientation == 'Portrait' ? '70%': '60%'}" (click)="openMenuTrigger($event, anime)">
         </mat-grid-tile>
 
         <mat-grid-tile class="center-name-anime">

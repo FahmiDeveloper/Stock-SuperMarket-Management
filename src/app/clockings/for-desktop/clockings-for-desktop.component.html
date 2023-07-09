@@ -76,93 +76,78 @@
 
 <br>
 
-<div class="mat-elevation-z8">
+<br>
 
-    <table mat-table [dataSource]="dataSource">
+<table class="table">
+    <thead style="background: #263238;color: white;">
+      <tr class="text-application text-center">
+        <th scope="col">Date</th>
+        <th scope="col">Day</th>
+        <th scope="col">Time</th>
+        <th scope="col">Clockings Nbr</th>
+        <th scope="col">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let clocking of (clockingsList | paginate: { itemsPerPage: 8 , currentPage: p })" class="text-application text-center" (contextmenu)="onRightClick($event, clocking)" style="background-color: white;">
+        <td>{{ clocking.dateClocking | date:'dd/MM/yyyy' }}</td>
+        <td>{{ clocking.day }}</td>
+        <td>
+            <span *ngIf="clocking.timeClocking">{{ clocking.timeClocking }}</span>
+            <span *ngIf="!clocking.timeClocking">-</span>
+        </td>
+        <td>
+            <span *ngIf="clocking.clockingNbr">{{ clocking.clockingNbr }}</span>
+            <span *ngIf="!clocking.clockingNbr">-</span>
+        </td>
+        <td>
+            <span *ngIf="clocking.note">{{ clocking.note }}</span>
+            <span *ngIf="!clocking.note">-</span>
+        </td>
+      </tr>
+    </tbody>
+</table>
 
-        <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Date</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;width: 200px;">{{ element.dateClocking | date:'dd/MM/yyyy' }}</td>
-        </ng-container>
+<br *ngIf="clockingsList.length !== 0">
 
-        <ng-container matColumnDef="day">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Day</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;width: 200px;">{{ element.day }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="time">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Time</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center; width: 200px;">
-                <span *ngIf="element.timeClocking">{{ element.timeClocking }}</span>
-                <span *ngIf="!element.timeClocking">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="clockingNbr">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Clockings Nbr</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;  width: 200px;">
-                <span *ngIf="element.clockingNbr">{{ element.clockingNbr }}</span>
-                <span *ngIf="!element.clockingNbr">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="note">
-            <th mat-header-cell *matHeaderCellDef class="text-application" style="color: white;">Note</th>
-            <td mat-cell *matCellDef="let element" class="text-application" style="text-align: center;">
-                <span *ngIf="element.note">{{ element.note }}</span>
-                <span *ngIf="!element.note">-</span>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="star">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let element"> 
-                <button mat-icon-button [matMenuTriggerFor]="contextMenu" [matMenuTriggerData]="{element:element}">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-            </td>
-        </ng-container>
-    
-        <tr mat-header-row style="background: #263238;" *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row style="border-bottom: 1px solid black;" *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    </table>
-
-    <div *ngIf="dataSource.data.length == 0" class="row justify-content-center no-results text-application">
-        No results
-    </div>
-
-    <mat-paginator
-        [pageSize]="8 "
-        [pageSizeOptions]="[8]"
-        showFirstLastButtons>
-    </mat-paginator>
-
+<div *ngIf="clockingsList.length !== 0" class="pagination">
+    <pagination-controls (pageChange)="p = $event;OnPageChange($event)"></pagination-controls>
 </div>
 
-<mat-menu #contextMenu="matMenu" xPosition="before">
+<div *ngIf="clockingsList.length == 0" class="row justify-content-center no-results text-application">
+    No results
+</div>
 
-	<ng-template matMenuContent let-clocking="element">
+<div 
+    style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu">
+</div> 
+ 
+<mat-menu #rightMenu="matMenu"> 
 
-        <button
-            type="button"
-            mat-menu-item 
-            (click)="editClocking(clocking)"
-            class="text-application">
-            <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-            <span>Edit</span>
-        </button>
+  <ng-template matMenuContent let-clocking="clocking">
 
-        <button
-            type="button"
-            mat-menu-item 
-            (click)="deleteClocking(clocking.key)"
-            class="text-application">
-            <mat-icon style="color: #f44336;">delete</mat-icon>
-            <span>Delete</span>
-        </button>  
+    <button
+        type="button"
+        mat-menu-item 
+        (click)="editClocking(clocking)"
+        class="text-application">
+        <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+        <span>Edit</span>
+    </button>
 
-	</ng-template>
+    <button
+        type="button"
+        mat-menu-item 
+        (click)="deleteClocking(clocking.key)"
+        class="text-application">
+        <mat-icon style="color: #f44336;">delete</mat-icon>
+        <span>Delete</span>
+    </button>
+
+  </ng-template>
 
 </mat-menu>
 

@@ -58,9 +58,11 @@ import {
 
 import { 
   DebtsForDesktopComponent,
-  DebtFormDesktopComponent,
+  DebtFormForDesktopComponent,
+  DebtsForTabletComponent,
+  DebtFormForTabletComponent,
   DebtsForMobileComponent,
-  DebtFormMobileComponent
+  DebtFormForMobileComponent
 } from './debts/index';
 
 import { 
@@ -68,6 +70,10 @@ import {
   SubjectDocumentsFormDesktopComponent,
   DocumentsListForDesktopComponent,
   DocumentFormDesktopComponent,
+  SubjectDocumentsForTabletComponent,
+  SubjectDocumentsFormTabletComponent,
+  DocumentsListForTabletComponent,
+  DocumentFormTabletComponent,
   SubjectsDocumentsForMobileComponent,
   SubjectDocumentsFormMobileComponent,
   DocumentsListForMobileComponent,
@@ -100,9 +106,11 @@ import {
 
 import { 
   MedicationsForDesktopComponent,
-  MedicationFormDesktopComponent,
+  MedicationFormForDesktopComponent,
+  MedicationsForTabletComponent,
+  MedicationFormForTabletComponent,
   MedicationsForMobileComponent,
-  MedicationFormMobileComponent
+  MedicationFormForMobileComponent
 } from './medications/index';
 
 import { 
@@ -121,15 +129,16 @@ import {
   NotesForDesktopComponent,
   NoteFormDesktopComponent,
   NotesForMobileComponent,
-  NoteFormMobileComponent,
-  NoteMobileComponent
+  NoteFormMobileComponent
 } from './notes/index';
 
 import { 
   PasswordsForDesktopComponent,
-  PasswordFormDesktopComponent,
+  PasswordFormForDesktopComponent,
+  PasswordsForTabletComponent,
+  PasswordFormForTabletComponent,
   PasswordsForMobileComponent,
-  PasswordFormMobileComponent,
+  PasswordFormForMobileComponent,
 } from './passwords/index';
 
 import { 
@@ -207,14 +216,20 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
     ClockingFormForMobileComponent,
 
     DebtsForDesktopComponent,
-    DebtFormDesktopComponent,
+    DebtFormForDesktopComponent,
+    DebtsForTabletComponent,
+    DebtFormForTabletComponent,
     DebtsForMobileComponent,
-    DebtFormMobileComponent,
+    DebtFormForMobileComponent,
 
     SubjectDocumentsForDesktopComponent,
     SubjectDocumentsFormDesktopComponent,
     DocumentsListForDesktopComponent,
     DocumentFormDesktopComponent,
+    SubjectDocumentsForTabletComponent,
+    SubjectDocumentsFormTabletComponent,
+    DocumentsListForTabletComponent,
+    DocumentFormTabletComponent,
     SubjectsDocumentsForMobileComponent,
     SubjectDocumentsFormMobileComponent,
     DocumentsListForMobileComponent,
@@ -239,9 +254,11 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
     ModalPrivilegeMobileComponent,
 
     MedicationsForDesktopComponent,
-    MedicationFormDesktopComponent,
+    MedicationFormForDesktopComponent,
+    MedicationsForTabletComponent,
+    MedicationFormForTabletComponent,
     MedicationsForMobileComponent,
-    MedicationFormMobileComponent,
+    MedicationFormForMobileComponent,
 
     MoviesForDesktopComponent,
     MovieFormDesktopComponent,
@@ -257,12 +274,13 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
     NoteFormDesktopComponent,
     NotesForMobileComponent,
     NoteFormMobileComponent,
-    NoteMobileComponent,
 
     PasswordsForDesktopComponent,
-    PasswordFormDesktopComponent,
+    PasswordFormForDesktopComponent,
+    PasswordsForTabletComponent,
+    PasswordFormForTabletComponent,
     PasswordsForMobileComponent,
-    PasswordFormMobileComponent,
+    PasswordFormForMobileComponent,
 
     SeriesForDesktopComponent,
     SerieFormDesktopComponent,

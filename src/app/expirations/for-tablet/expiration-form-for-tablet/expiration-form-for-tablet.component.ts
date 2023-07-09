@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 
 import * as moment from 'moment';
@@ -19,7 +19,6 @@ import { Unit } from 'src/app/shared/models/debt.model';
 export class ExpirationFormForTabletComponent implements OnInit {
 
   arrayExpirations: Expiration[];
-  pagedList: Expiration[];
 
   expiration: Expiration = new Expiration();
 
@@ -36,16 +35,12 @@ export class ExpirationFormForTabletComponent implements OnInit {
 
   constructor(
     public expirationService: ExpirationService, 
-    public dialogRef: MatDialogRef<ExpirationFormForTabletComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Expiration[]
+    public dialogRef: MatDialogRef<ExpirationFormForTabletComponent>
   ) {}
 
   ngOnInit() {
     if (!this.expiration.key) {
       this.expiration.dateStart = moment().format('YYYY-MM-DD');
-    }
-    if (this.expiration.key) {
-      this.data = this.pagedList;
     }
   }
 
@@ -81,7 +76,7 @@ export class ExpirationFormForTabletComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close(this.data);
+    this.dialogRef.close();
   }
 
   onSelectUnit() {

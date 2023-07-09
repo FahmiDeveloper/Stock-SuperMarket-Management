@@ -31,7 +31,6 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
   p: number = 1;
 
   subjectDocumentSelectedKey: string = '';
-  isDesktop: boolean;
   innerWidth: number;
   itemsPerPage: number;
 
@@ -45,14 +44,12 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
   constructor(
     public subjectDocumentsService: SubjectDocumentsService,
     public documentService: DocumentService,
-    public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService
+    public dialogService: MatDialog
   ) {}
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    this.itemsPerPage = window.innerWidth <= 1366 ? 6 : 8;
-    this.isDesktop = this.deviceService.isDesktop();
+    this.itemsPerPage = window.innerWidth <= 1366 ? 6 : 12;
     this.getAllSubjectsDocuments();
   }
 
