@@ -1,7 +1,9 @@
 <h1 class="titleTextInterface text-application">Debts</h1>
 
 <div class="row">
+
     <div class="col-md-4">
+
         <mat-form-field class="text-application" style="width: 250px;">
             <mat-label>Place</mat-label>
 			<mat-select name="placeId" [(ngModel)]="placeId" (selectionChange)="getAllDebts()">
@@ -11,11 +13,13 @@
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
+
     </div>
 
     <div class="col-md-2"></div>
 
     <div class="col-md-2">
+
         <button 
             mat-flat-button 
             (click)="showRest(contentRestMoneyForeachPlace)" 
@@ -23,9 +27,11 @@
             style="position: absolute;top: 50%;transform: translateY(-50%);background: #263238;color: white;">
             Rest
         </button>
+
     </div>
 
     <div class="col-md-1">
+
         <button 
             *ngIf="debtsList.length && debtsList.length > 1 && placeId" [hidden]="placeId == 5"
             mat-flat-button 
@@ -35,9 +41,11 @@
             style="position: absolute;top: 50%;transform: translateY(-50%);">
             Delete all
         </button>
+
     </div>
 
     <div class="col-md-3">
+
         <button
             type="button" 
             (click)="newDebt()" 
@@ -120,7 +128,9 @@
     <mat-grid-list cols="8" rowHeight="3:1" style="font-size: 20px;">
         
         <mat-grid-tile></mat-grid-tile>
+
         <mat-grid-tile>الدين المسال</mat-grid-tile>
+
         <mat-grid-tile>
             <mat-checkbox 
                 name="getOutDebt" 
@@ -128,9 +138,13 @@
                 (ngModelChange)="showOutDebt()">
             </mat-checkbox>
         </mat-grid-tile>
+
         <mat-grid-tile></mat-grid-tile>
+
         <mat-grid-tile></mat-grid-tile>
+
         <mat-grid-tile>الدين المتخلد</mat-grid-tile>
+
         <mat-grid-tile>
             <mat-checkbox 
                 name="getInDebt" 
@@ -138,6 +152,7 @@
                 (ngModelChange)="showInDebt()">
             </mat-checkbox>
         </mat-grid-tile>
+
         <mat-grid-tile></mat-grid-tile>
         
     </mat-grid-list>
@@ -145,10 +160,15 @@
     <br *ngIf="getInDebt || getOutDebt">
 
     <div class="row text-application" *ngIf="getInDebt || getOutDebt">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
+
+        <div [ngClass]="(innerWidth < 1366 || innerWidth == 1366) ? 'col-md-3' : 'col-md-4'"></div>
+
+        <div [ngClass]="(innerWidth < 1366 || innerWidth == 1366) ? 'col-md-6' : 'col-md-4'">
+
             <mat-card class="text-application">
+
                 <mat-grid-list cols="2" rowHeight="4:1">
+
                     <mat-grid-tile>
                         <span style="font-size: 20px;">
                             <span *ngIf="getInDebt">
@@ -161,10 +181,11 @@
                             </span>  
                         </span>    
                     </mat-grid-tile>
+
                     <mat-grid-tile><span style="font-size: 20px;">المجموع</span></mat-grid-tile>
 
                     <mat-grid-tile>
-                        <mat-form-field  [ngStyle]="{'width': isTablet ? '148px': ''}">
+                        <mat-form-field>
                             <mat-select *ngIf="getInDebt" name="statusInDebtId" [(ngModel)]="statusInDebtId" (selectionChange)="getTotalInDebtsByStatus()" class="text-application">
                                 <mat-option value=""></mat-option>
                                 <mat-option *ngFor="let statusInDebt of statusInDebts" [value]="statusInDebt.id">
@@ -180,10 +201,11 @@
                             </mat-select>
                         </mat-form-field>
                     </mat-grid-tile>
+
                     <mat-grid-tile><span style="font-size: 20px;">وقت الدفع</span></mat-grid-tile>
 
                     <mat-grid-tile>
-                        <mat-form-field  [ngStyle]="{'width': isTablet ? '148px': ''}">
+                        <mat-form-field>
                             <mat-select *ngIf="getInDebt" name="creditorName" [(ngModel)]="creditorName" (selectionChange)="getTotalInDebtsByCreditor()" class="text-application">
                                 <mat-option value=""></mat-option>
                                 <mat-option *ngFor="let creditor of creditors" [value]="creditor">
@@ -199,6 +221,7 @@
                             </mat-select>
                         </mat-form-field>
                     </mat-grid-tile>
+
                     <mat-grid-tile>
                         <span *ngIf="getInDebt" style="font-size: 20px;">الدائنين</span>
                         <span *ngIf="getOutDebt" style="font-size: 20px;">المدينين</span>
@@ -214,14 +237,20 @@
                             <span *ngIf="!totalOutDebtsByDebtor">0DT</span>
                         </span>     
                     </mat-grid-tile>
+
                     <mat-grid-tile *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
                         <span style="font-size: 20px;">الدين</span>
                     </mat-grid-tile>
+
                   </mat-grid-list>
             </mat-card>
+
         </div>
-        <div class="col-md-4"></div>
+
+        <div [ngClass]="(innerWidth < 1366 || innerWidth == 1366) ? 'col-md-3' : 'col-md-4'"></div>
+
     </div>
+
 </div>
 
 <div *ngIf="placeId == 6">
@@ -238,6 +267,7 @@
 <br>
 
 <table class="table">
+
     <thead style="background: #263238;color: white;">
       <tr class="text-application text-center">
         <th scope="col">Debtor</th>
@@ -250,26 +280,34 @@
         <th scope="col" [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '15rem': '30rem'}">Note</th>
       </tr>
     </thead>
+
     <tbody>
       <tr *ngFor="let debt of (debtsList | paginate: { itemsPerPage: 8 , currentPage: p })" class="text-application text-center" (contextmenu)="onRightClick($event, debt)" style="background-color: white;">
+
         <td>
             <span *ngIf="debt.debtor">{{ debt.debtor }}</span>
             <span *ngIf="!debt.debtor">-</span>
         </td>
+
         <td>
             <span *ngIf="debt.creditor">{{ debt.creditor }}</span>
             <span *ngIf="!debt.creditor">-</span>
         </td>
+
         <td>
             <span *ngIf="debt.financialDebt">{{ debt.financialDebt }}</span>
             <span *ngIf="!debt.financialDebt">-</span>
         </td>
+
         <td>
             <span *ngIf="debt.restMoney">{{ debt.restMoney }}</span>
             <span *ngIf="!debt.restMoney">-</span>
         </td>
+
         <td>{{ debt.date | date:'dd/MM/yyyy' }}</td>
+
         <td>{{ debt.place }}</td>
+
         <td>
             <span *ngIf="debt.placeId === 5">
                 <span *ngIf="debt.toPayThisMonth">Pay this month</span>
@@ -281,9 +319,13 @@
             </span>
             <span *ngIf="debt.placeId !== 5">-</span>
         </td>
+
         <td [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '15rem': '30rem'}">{{ debt.note }}</td>
+
       </tr>
+
     </tbody>
+    
 </table>
 
 <br *ngIf="debtsList.length !== 0">
