@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { DeviceDetectorService } from 'ngx-device-detector';
+
 import { AuthService } from './shared/services/auth.service';
 import { UserService } from './shared/services/user.service';
 
@@ -20,10 +22,12 @@ export class AppComponent {
   isSideNavCollapsed = false;
   screenWidth = 0;
   isConnected:boolean;
+  isMobile:boolean;
 
   constructor(
     public authService:AuthService,
     public userService:UserService,
+    private deviceService: DeviceDetectorService,
     router: Router
   ){
     this.authService.isConnected.subscribe(res=>{
@@ -44,6 +48,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    this.isMobile = this.deviceService.isMobile();
     this.checkIfUserIsConnected();
   }
 

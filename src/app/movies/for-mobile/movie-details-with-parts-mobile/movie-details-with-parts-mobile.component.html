@@ -1,25 +1,67 @@
 <div mat-dialog-title class="dialog-title" id="name">
+
   <h2 *ngIf="listPartsByParentFilmKey.length == 1" class="text-application">No parts yet</h2>
+
   <h2 *ngIf="listPartsByParentFilmKey.length > 1" class="text-application">All parts</h2>
+
   <button mat-icon-button aria-label="close dialog" mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
+
 </div>
   
 <mat-dialog-content>
 
-  <div class="card" *ngFor="let movie of listPartsByParentFilmKey" style="margin-bottom: 20px !important;">
+  <div class="grid">
 
-    <div class="card" style="flex-direction: row;border: white;">
-      <img *ngIf="movie.imageUrl" [src]="movie.imageUrl">
-      <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png">
-  
-      <h3 class="text-application center-name-movie" (click)="copyText(movie.nameMovie)" style="font-weight: 600;width: 60%;">{{ movie.nameMovie }}</h3>
-    </div>
+    <div class="card" *ngFor="let movie of listPartsByParentFilmKey">
 
-    <div class="card-body">
-        
-      <div class="card-block text-application">
+      <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" class="card-img-top img-fluid" (click)="openMenuTrigger($event, movie)">
+
+      <img *ngIf="!movie.imageUrl" src="/assets/pictures/NoImageAvailable.png" class="card-img-top img-fluid" (click)="openMenuTrigger($event, movie)">
+
+      <div class="card-body align-items-center d-flex justify-content-center text-center text-application">
+
+        <h5 class="card-title" style="cursor: pointer;" (click)="copyText(movie.nameMovie)">
+          {{ movie.nameMovie }}
+        </h5>
+
+      </div>  
+
+    </div>  
+
+  </div>
+
+  <div 
+    style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu">
+  </div> 
+ 
+  <mat-menu #rightMenu="matMenu"> 
+
+    <ng-template matMenuContent let-movie="movie">
+
+      <button
+        mat-menu-item 
+        class="text-application">
+        <div class="gridForLegend">
+          <div><dt>State</dt></div>
+          <div>
+            <mat-icon *ngIf="movie.statusId == 1" style="color:goldenrod;">access_time</mat-icon>
+            <mat-icon *ngIf="movie.statusId == 2" style="color: red;">file_download</mat-icon>
+            <mat-icon *ngIf="movie.statusId == 3 && !movie.notLiked" style="color: green;">remove_red_eye</mat-icon>
+            <mat-icon *ngIf="movie.statusId == 4" style="color: red;">remove_red_eye</mat-icon>
+            <mat-icon *ngIf="movie.statusId == 5" style="color:#07609b;">search</mat-icon>
+            <mat-icon *ngIf="movie.notLiked" style="color: red;">thumb_down_alt</mat-icon>
+          </div>
+        </div>
+      </button>
+
+      <button
+        mat-menu-item 
+        class="text-application">
         <div class="gridForLegend">
           <div><dt>Year</dt></div>
           <div>
@@ -27,40 +69,34 @@
             <span *ngIf="!movie.year">?</span>
           </div>
         </div>
+      </button>
 
-        <br>
-
+      <button
+        *ngIf="movie.statusId == 1"
+        mat-menu-item 
+        class="text-application">
         <div class="gridForLegend">
-          <div><dt>Status</dt></div>
-          <div>
-            <i *ngIf="movie.statusId == 1" class="fa fa-spinner fa-spin" style="color:goldenrod;"></i>
-            <i *ngIf="movie.statusId == 2" class="fa fa-download" style="color: red;"></i>
-            <i *ngIf="movie.statusId == 3 && !movie.notLiked" class="fa fa-eye" style="color: green;"></i>
-            <i *ngIf="movie.statusId == 4" class="fa fa-eye" style="color: red;"></i>
-            <i *ngIf="movie.statusId == 5" class="fa fa-search" style="color:#07609b;"></i>
-            <i *ngIf="movie.notLiked" class="fa fa-thumbs-down" style="color: red;"></i>
-          </div>
-        </div>
-
-        <br>
-
-        <div *ngIf="movie.statusId == 1" class="gridForLegend">
-          <div><dt>Check</dt></div>
+          <div><dt>Date</dt></div>
           <div>
             <span *ngIf="movie.checkDate">{{ movie.checkDate | date: 'dd/MM/yyyy' }}</span>
             <span *ngIf="!movie.checkDate">?</span>
           </div>
         </div>
+      </button>
 
-        <br *ngIf="movie.statusId == 1">
-
-        <div *ngIf="movie.part" class="gridForLegend">
+      <button
+        *ngIf="movie.part"
+        mat-menu-item 
+        class="text-application">
+        <div class="gridForLegend">
           <div><dt>Part</dt></div>
           <div>{{ movie.part }}</div>
         </div>
+      </button>
 
-        <br *ngIf="movie.part">
-
+      <button
+        mat-menu-item 
+        class="text-application">
         <div class="gridForLegend">
           <div><dt>Note</dt></div>
           <div>
@@ -68,75 +104,74 @@
             <i *ngIf="!movie.note" class="fa fa-minus-circle"></i>
           </div>
         </div>
-      </div>
-
-      <br>
-          
-      <button 
-        type="button"
-        mat-button
-        [matMenuTriggerFor]="menu" 
-        class="style-button text-application center-btn">
-        <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-        Actions
       </button>
-      <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
 
-        <button
-          mat-menu-item 
-          class="text-application"
-          (click)="editMovie(movie)">
+      <button
+        mat-menu-item 
+        class="text-application"
+        (click)="editMovie(movie)">   
+        <div [ngClass]="movie.checkDate ? 'align-items-center d-flex justify-content-center text-center' : ''">
           <mat-icon style="color: #9C27B0">edit</mat-icon>
           Edit
-        </button>
-        
-        <button
-          *ngIf="movie.statusId == 1 && movie.path" 
-          mat-menu-item 
-          class="text-application"
-          (click)="followLink(movie.path)">
+        </div> 
+      </button>
+
+      <button
+        *ngIf="movie.statusId == 1 && movie.path" 
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)">  
+        <div [ngClass]="movie.checkDate ? 'align-items-center d-flex justify-content-center text-center' : ''">
           <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
           Check
-        </button>
+        </div> 
+      </button>
 
-        <button
-          *ngIf="movie.statusId == 2 && movie.path" 
-          mat-menu-item 
-          class="text-application"
-          (click)="followLink(movie.path)">
+      <button
+        *ngIf="movie.statusId == 2 && movie.path" 
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)">    
+        <div [ngClass]="movie.checkDate ? 'align-items-center d-flex justify-content-center text-center' : ''">
           <mat-icon style="color: green">cloud_download</mat-icon>
           Download
-        </button>
+        </div> 
+      </button>
 
-        <button
-          *ngIf="movie.statusId == 4 && movie.path"  
-          mat-menu-item 
-          class="text-application"
-          (click)="followLink(movie.path)">
+      <button
+        *ngIf="movie.statusId == 4 && movie.path"  
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)"> 
+        <div [ngClass]="movie.checkDate ? 'align-items-center d-flex justify-content-center text-center' : ''">
           <mat-icon style="color: #3f51b5">remove_red_eye</mat-icon>
           Watch
-        </button>
+        </div> 
+      </button>
 
-        <button
-          *ngIf="movie.statusId == 5 && movie.path" 
-          mat-menu-item 
-          class="text-application"
-          (click)="followLink(movie.path)">
+      <button
+        *ngIf="movie.statusId == 5 && movie.path" 
+        mat-menu-item 
+        class="text-application"
+        (click)="followLink(movie.path)">  
+        <div [ngClass]="movie.checkDate ? 'align-items-center d-flex justify-content-center text-center' : ''">
           <mat-icon style="color: #0e8999">search</mat-icon>
           Search
-        </button>
+        </div> 
+      </button>
 
-        <button
-          mat-menu-item 
-          class="text-application"
-          (click)="deleteMovie(movie.key)">
+      <button
+        mat-menu-item 
+        class="text-application"
+        (click)="deleteMovie(movie.key)">
+        <div [ngClass]="movie.checkDate ? 'align-items-center d-flex justify-content-center text-center' : ''">
           <mat-icon style="color: #f44336;">delete</mat-icon>
           Delete
-        </button>
+        </div>  
+      </button>
 
-      </mat-menu>
-      
-    </div>
-  </div>
+    </ng-template> 
+
+  </mat-menu>
 
 </mat-dialog-content>

@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -38,6 +38,10 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
   optionSelected: number;
   dislike: boolean = false;
   nbrAnimesToCheckToday: number = 0;
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
 
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForGetAllAnimesForSelect: Subscription;
@@ -86,7 +90,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
             }
             else {
               this.animesList = animes.filter(anime => anime.statusId == this.statusId && anime.checkDate && anime.checkDate == moment().format('YYYY-MM-DD') &&
-              (!anime.currentEpisode || (anime.currentEpisode && !anime.totalEpisodes) || (anime.currentEpisode && anime.currentEpisode && anime.currentEpisode < anime.totalEpisodes)));
+              (!anime.currentEpisode || (anime.currentEpisode && !anime.totalEpisodes) || (anime.currentEpisode && anime.totalEpisodes && anime.currentEpisode < anime.totalEpisodes)));
             }       
           }
           else  {
@@ -139,8 +143,8 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     }
   }
 
-  OnPageChange(event: PageEvent){
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  OnPageChange(elem: HTMLElement){
+    elem.scrollIntoView();
   }
 
   showDetailsAnime(animeSelected: Anime) {
@@ -232,6 +236,22 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });
+  }
+
+  openMenuTrigger(event: MouseEvent, anime: Anime) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {anime: anime};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {
