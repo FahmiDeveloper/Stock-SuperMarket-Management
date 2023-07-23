@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import Swal from 'sweetalert2';
 
@@ -9,7 +10,6 @@ import { SerieFormMobileComponent } from '../serie-form-mobile/serie-form-mobile
 import { SerieService } from 'src/app/shared/services/serie.service';
 
 import { Serie, StatusSeries } from 'src/app/shared/models/serie.model';
-
 @Component({
   selector: 'serie-details-with-seasons-mobile',
   templateUrl: './serie-details-with-seasons-mobile.component.html',
@@ -22,6 +22,10 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
   allSeries: Serie[];
 
   serie: Serie = new Serie();
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'On hold'}, 
@@ -117,6 +121,22 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
 
   followLink(path: string) {
     window.open(path);
+  }
+
+  openMenuTrigger(event: MouseEvent, serie: Serie) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {serie: serie};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   close() {

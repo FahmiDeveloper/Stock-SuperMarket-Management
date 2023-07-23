@@ -25,6 +25,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 
 @NgModule({
   imports: [
@@ -52,7 +54,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatChipsModule,
     DragDropModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSidenavModule
   ],
   declarations: [],
   exports: [
@@ -80,7 +83,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatToolbarModule,
     DragDropModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSidenavModule
   ]
 })
 

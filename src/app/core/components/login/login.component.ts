@@ -3,10 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { UsersListService } from 'src/app/shared/services/list-users.service';
+
+import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -68,7 +69,6 @@ export class LoginComponent implements OnInit{
     connectedUserFromList.isConnected = true;
     this.usersListService.update(connectedUserFromList.key, connectedUserFromList);
   }
-
 
   onSuccess(){
     this.router.navigate(['/home']);

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import Swal from 'sweetalert2';
 
@@ -23,6 +24,10 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
 
   movie: Movie = new Movie();
 
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
+
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'On hold'}, 
     {id: 2, status: 'Not yet downloaded'}, 
@@ -39,11 +44,6 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
-
-  showDetailsMovie(moviePartSelected: Movie, elem: HTMLElement) {
-    this.movie = moviePartSelected;
-    elem.scrollIntoView();
-  }
 
   editMovie(movie?: Movie) {
     const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
@@ -117,6 +117,22 @@ export class MovieDetailsWithPartsMobileComponent implements OnInit {
 
   followLink(path: string) {
     window.open(path);
+  }
+
+  openMenuTrigger(event: MouseEvent, movie: Movie) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {movie: movie};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   close() {

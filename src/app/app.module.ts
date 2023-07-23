@@ -167,6 +167,7 @@ import { MaterialElevationDirective } from './shared/directives/material-elevati
 import { BodyComponent } from './body/body.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
+import { AppMobileComponent } from './app-mobile/app-mobile.component';
 
 @NgModule({
   imports: [
@@ -192,6 +193,7 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
   ],
   declarations: [
     AppComponent,
+    AppMobileComponent,
     RegisterComponent,
     LoginComponent,
     HomeComponent,
