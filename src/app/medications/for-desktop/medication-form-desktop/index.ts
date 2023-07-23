@@ -1,1 +1,0 @@
-export * from './medication-form-desktop.component';

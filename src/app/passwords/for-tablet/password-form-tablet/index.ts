@@ -1,1 +1,0 @@
-export * from './password-form-tablet.component';
