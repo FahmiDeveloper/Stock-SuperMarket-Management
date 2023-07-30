@@ -19,6 +19,7 @@
         </mat-form-field>
     </div>
     <div class="col-md-2">
+
         <ng-container *ngIf="statusId">
             <mat-form-field class="widthInput" *ngIf="statusId == 1">
                 <mat-select [(ngModel)]="optionSelected" name="optionSelected" class="text-application" (selectionChange)="getAllMovies()">
@@ -31,7 +32,12 @@
             <mat-checkbox *ngIf="statusId == 3" name="dislike" [(ngModel)]="dislike" (ngModelChange)="getAllMovies()" class="mat-checkbox-layout" style="margin-top: 10%;">
                 <span class="text-application">Dislike</span>
             </mat-checkbox>
-        </ng-container> 
+        </ng-container>
+
+        <ng-container *ngIf="!statusId">
+            <mat-checkbox (change)="getAllMovies()" [(ngModel)]="showMoviesNotChecked" class="text-application" style="margin-top: 1.3rem;">Not check ({{nbrMoviesNotChecked}})</mat-checkbox>
+        </ng-container>
+
     </div>
     <div class="col-md-2"></div>
     <div class="col-md-2">

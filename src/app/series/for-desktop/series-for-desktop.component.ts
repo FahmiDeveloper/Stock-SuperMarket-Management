@@ -39,6 +39,8 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
   optionSelected: number;
   dislike: boolean = false;
   nbrSeriesToCheckToday: number = 0;
+  nbrSeriesNotChecked: number = 0;
+  showSeriesNotChecked: boolean = false;
   itemsPerPage: number;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -47,6 +49,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
  
   subscriptionForGetAllSeries: Subscription;
   subscriptionForGetAllSeriesForSelect: Subscription;
+  subscriptionForGetAllSeriesNotChecked: Subscription;
 
   statusSeries: StatusSeries[] = [
     {id: 1, status: 'On hold'}, 
@@ -70,6 +73,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     this.itemsPerPage = window.innerWidth <= 1366 ? 15 : 16;
     this.getAllSeries();
     this.getAllSeriesForSelect();
+    this.getAllSeriesNotChecked();
   }
 
   getAllSeries() {
@@ -85,6 +89,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
       }
 
       else if (this.statusId) {
+        if (this.showSeriesNotChecked) this.showSeriesNotChecked = false;
         if (this.statusId == 1) {
           if (this.dislike) this.dislike = false;
           if (this.optionSelected) {
@@ -93,7 +98,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
             }
             else {
               this.seriesList = series.filter(serie => serie.statusId == this.statusId && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
-              (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.totalEpisodes && serie.currentEpisode < serie.totalEpisodes)));
+              (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.totalEpisodes && (serie.currentEpisode < serie.totalEpisodes))));
             }      
           }
           else  {
@@ -119,6 +124,11 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
         }
       }
 
+      else if (this.showSeriesNotChecked) {
+        this.seriesList = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate < moment().format('YYYY-MM-DD'));
+        this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      }
+
       else this.seriesList = series.filter(serie => serie.isFirst == true).sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
 
     });
@@ -130,6 +140,15 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     .subscribe((series: Serie[]) => {
       this.nbrSeriesToCheckToday = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
       (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.currentEpisode && serie.currentEpisode < serie.totalEpisodes))).length;
+      this.cdRef.detectChanges();
+    })
+  }
+
+  getAllSeriesNotChecked() {
+    this.subscriptionForGetAllSeriesNotChecked = this.serieService
+    .getAll()
+    .subscribe((series: Serie[]) => {
+      this.nbrSeriesNotChecked = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate < moment().format('YYYY-MM-DD')).length;
       this.cdRef.detectChanges();
     })
   }
@@ -208,14 +227,6 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewNote(serieNote: string) {
-    Swal.fire({
-      text: serieNote,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
-    });
-  }
-
   onRightClick(event: MouseEvent, serie: Serie) { 
     // preventDefault avoids to show the visualization of the right-click menu of the browser 
     event.preventDefault(); 
@@ -235,6 +246,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllSeries.unsubscribe();
     this.subscriptionForGetAllSeriesForSelect.unsubscribe();
+    this.subscriptionForGetAllSeriesNotChecked.unsubscribe();
   }
   
 }

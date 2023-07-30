@@ -89,7 +89,7 @@ export const navbarDataForTablet: INavbarData[] = [
         label: 'Series'
     },
     {
-        routeLink: 'notes-for-desktop',
+        routeLink: 'notes-for-tablet',
         icon: 'fa fa-sticky-note',
         label: 'Notes'
     },

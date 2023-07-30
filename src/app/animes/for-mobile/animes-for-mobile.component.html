@@ -13,7 +13,7 @@
             type="button" 
             (click)="newAnime()" 
             mat-mini-fab 
-            style="background: #2196F3;float: right;margin-top: 7px;">
+            style="background: #004a9f;float: right;margin-top: 7px;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
 
@@ -53,6 +53,18 @@
 
         </ng-container> 
 
+    </div>
+
+</div>
+
+<br>
+
+<div class="row" *ngIf="!animeName && !statusId">
+
+    <div class="col-md-4">
+        <mat-checkbox (change)="getAllAnimes()" [(ngModel)]="showAnimesNotChecked" class="text-application">
+            Not check ({{nbrAnimesNotChecked}})
+        </mat-checkbox>
     </div>
 
 </div>
@@ -123,7 +135,7 @@
         </button>
 
         <button
-            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
+            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons) || showAnimesNotChecked" 
             mat-menu-item 
             class="text-application"
             (click)="editAnime(anime)">
@@ -132,7 +144,7 @@
         </button>
 
         <button
-            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)) && anime.statusId == 1 && anime.path" 
+            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons) || showAnimesNotChecked) && anime.statusId == 1 && anime.path" 
             mat-menu-item 
             class="text-application"
             (click)="followLink(anime.path)">
@@ -141,7 +153,7 @@
         </button>
 
         <button
-            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)) && anime.statusId == 2 && anime.path" 
+            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons) || showAnimesNotChecked) && anime.statusId == 2 && anime.path" 
             mat-menu-item 
             class="text-application"
             (click)="followLink(anime.path)">
@@ -150,7 +162,7 @@
         </button>
 
         <button
-            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)) && anime.statusId == 4 && anime.path" 
+            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons) || showAnimesNotChecked) && anime.statusId == 4 && anime.path" 
             mat-menu-item 
             class="text-application"
             (click)="followLink(anime.path)">
@@ -159,7 +171,7 @@
         </button>
 
         <button
-            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)) && anime.statusId == 5 && anime.path" 
+            *ngIf="((!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons) || showAnimesNotChecked) && anime.statusId == 5 && anime.path" 
             mat-menu-item 
             class="text-application"
             (click)="followLink(anime.path)">
@@ -168,7 +180,7 @@
         </button>
 
         <button
-            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons)" 
+            *ngIf="(!anime.parentAnimeKey && !anime.haveSeasons) || (statusId && !anime.haveSeasons) || showAnimesNotChecked" 
             mat-menu-item 
             class="text-application"
             (click)="deleteAnime(anime.key)">

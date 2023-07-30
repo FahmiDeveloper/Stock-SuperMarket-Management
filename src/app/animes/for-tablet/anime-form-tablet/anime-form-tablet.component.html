@@ -17,7 +17,7 @@
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="anime.year" name="year" class="text-application">
+      <input matInput type="number" [(ngModel)]="anime.year" name="year" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
@@ -53,22 +53,22 @@
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Season</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="anime.season" name="season" class="text-application">
+      <input matInput type="number" [(ngModel)]="anime.season" name="season" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Priority</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="anime.priority" name="priority" class="text-application">
+      <input matInput type="number" [(ngModel)]="anime.priority" name="priority" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Current episode</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="anime.currentEpisode" name="currentEpisode" class="text-application">
+      <input matInput type="number" [(ngModel)]="anime.currentEpisode" name="currentEpisode" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Total episodes</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="anime.totalEpisodes" name="totalEpisodes" class="text-application">
+      <input matInput type="number" [(ngModel)]="anime.totalEpisodes" name="totalEpisodes" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent" *ngIf="anime.priority && anime.priority > 1">

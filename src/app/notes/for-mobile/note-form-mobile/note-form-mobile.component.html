@@ -10,7 +10,14 @@
     <form (ngSubmit)="save()" #f="ngForm">
 
       <mat-form-field color="accent">
-        <mat-placeholder class="text-application"><span>Note</span></mat-placeholder>
+        <mat-placeholder class="text-application"><span>Keyword</span></mat-placeholder>
+        <input matInput #input type="text" [(ngModel)]="note.keyword" name="keyword" class="text-application" required>
+      </mat-form-field>
+
+      <br>
+
+      <mat-form-field color="accent">
+        <mat-placeholder class="text-application"><span>Content</span></mat-placeholder>
         <input matInput #input type="text" [(ngModel)]="note.contentNote" name="contentNote" class="text-application" required>
       </mat-form-field>
 

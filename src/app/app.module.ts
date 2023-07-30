@@ -128,6 +128,8 @@ import {
 import { 
   NotesForDesktopComponent,
   NoteFormDesktopComponent,
+  NotesForTabletComponent,
+  NoteFormForTabletComponent,
   NotesForMobileComponent,
   NoteFormMobileComponent
 } from './notes/index';
@@ -274,6 +276,8 @@ import { AppMobileComponent } from './app-mobile/app-mobile.component';
 
     NotesForDesktopComponent,
     NoteFormDesktopComponent,
+    NotesForTabletComponent,
+    NoteFormForTabletComponent,
     NotesForMobileComponent,
     NoteFormMobileComponent,
 

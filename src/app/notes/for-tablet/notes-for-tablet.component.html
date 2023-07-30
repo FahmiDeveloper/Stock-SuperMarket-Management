@@ -4,14 +4,14 @@
 
 <div class="row">
 
-    <div class="col-md-2">
+    <div class="col-md-4">
         <mat-form-field class="text-application" style="margin-top: 0.3rem;">
             <mat-label>Content</mat-label>
             <input matInput type="text" name="content" (keyup)="getAllNotes()" [(ngModel)]="content"/>
         </mat-form-field>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-4">
         <mat-form-field class="text-application">
             <mat-label>Keyword</mat-label>
             <mat-select name="keywordSelected" class="text-application" [(ngModel)]="keywordSelected" (selectionChange)="getAllNotes()">
@@ -23,7 +23,7 @@
         </mat-form-field>
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-4">
         <button 
             type="button" 
             (click)="newNote()" 
@@ -41,7 +41,7 @@
 
 	<p class="empty-label text-application" *ngIf="notesList?.length === 0">Empty list</p>
 
-    <div class="example-box" *ngFor="let note of (notesList | paginate: { itemsPerPage: 8 , currentPage: p })" (contextmenu)="onRightClick($event, note)">
+    <div class="example-box" *ngFor="let note of (notesList | paginate: { itemsPerPage: 8 , currentPage: p })" (click)="openMenuTrigger($event, note)">
         <span class="text-application">
             <span style="font-size: x-large;">
                 {{ note.contentNote }}

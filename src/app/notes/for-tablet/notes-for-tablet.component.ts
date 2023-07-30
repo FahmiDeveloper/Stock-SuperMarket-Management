@@ -1,24 +1,25 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PageEvent } from '@angular/material/paginator';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
-import { NoteFormMobileComponent } from './note-form-mobile/note-form-mobile.component';
+import { NoteFormForTabletComponent } from './note-form-for-tablet/note-form-for-tablet.component';
 
 import { NoteService } from 'src/app/shared/services/note.service';
 
 import { Note } from 'src/app/shared/models/note.model';
 
 @Component({
-  selector: 'notes-for-mobile',
-  templateUrl: './notes-for-mobile.component.html',
-  styleUrls: ['./notes-for-mobile.scss']
+  selector: 'notes-for-tablet',
+  templateUrl: './notes-for-tablet.component.html',
+  styleUrls: ['./notes-for-tablet.scss']
 })
 
-export class NotesForMobileComponent implements OnInit, OnDestroy {
+export class NotesForTabletComponent implements OnInit, OnDestroy {
 
   notesList: Note[] = [];
   notesListCopie: Note[] = [];
@@ -35,7 +36,7 @@ export class NotesForMobileComponent implements OnInit, OnDestroy {
   subscriptionForGetAllNotes: Subscription;
   subscriptionForGetAllNotesForAdd: Subscription;
   subscriptionForGetAllKeywordsNotes: Subscription;
-  
+
   constructor(
     public noteService: NoteService,
     public dialogService: MatDialog,
@@ -95,26 +96,21 @@ export class NotesForMobileComponent implements OnInit, OnDestroy {
     });
   }
 
-  OnPageChange(elem: HTMLElement){
-    elem.scrollIntoView();
+  OnPageChange(event: PageEvent){
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   newNote() {
-    const dialogRef = this.dialogService.open(NoteFormMobileComponent, {
-      width: '98vw',
-      height:'45vh',
-      maxWidth: '100vw', 
-      data: {note: {}}
-    });
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(NoteFormForTabletComponent, config);
+
     dialogRef.componentInstance.arrayNotes = this.notesListCopie;
   }
 
   editNote(note?: Note) {
-    const dialogRef = this.dialogService.open(NoteFormMobileComponent, {
-      width: '98vw',
-      height:'45vh',
-      maxWidth: '100vw'
-    });
+    let config: MatDialogConfig = {panelClass: "dialog-responsive"}
+    const dialogRef = this.dialogService.open(NoteFormForTabletComponent, config);
+    
     dialogRef.componentInstance.note = note;
   }
 

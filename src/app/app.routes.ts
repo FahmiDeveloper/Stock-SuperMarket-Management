@@ -38,6 +38,7 @@ import { MoviesForTabletComponent } from './movies/for-tablet/movies-for-tablet.
 import { MoviesForMobileComponent } from './movies/for-mobile/movies-for-mobile.component';
 
 import { NotesForDesktopComponent } from './notes/for-desktop/notes-for-desktop.component';
+import { NotesForTabletComponent } from './notes/for-tablet/notes-for-tablet.component';
 import { NotesForMobileComponent } from './notes/for-mobile/notes-for-mobile.component';
 
 import { PasswordsForDesktopComponent } from './passwords/for-desktop/passwords-for-desktop.component';
@@ -97,6 +98,7 @@ export const rootRouterConfig: Routes = [
   { path: 'movies-for-mobile', component: MoviesForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'notes-for-desktop', component: NotesForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'notes-for-tablet', component: NotesForTabletComponent,  resolve: { data: SharedResolver}},
   { path: 'notes-for-mobile', component: NotesForMobileComponent,  resolve: { data: SharedResolver}},
 
   { path: 'passwords-for-desktop', component: PasswordsForDesktopComponent,  resolve: { data: SharedResolver}},
