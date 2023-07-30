@@ -13,7 +13,7 @@
             type="button" 
             (click)="newMovie()" 
             mat-mini-fab 
-            style="background: #2196F3;float: right;margin-top: 7px;">
+            style="background: #004a9f;float: right;margin-top: 7px;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
 
@@ -49,10 +49,22 @@
     
             <mat-checkbox *ngIf="statusId == 3" name="dislike" [(ngModel)]="dislike" (ngModelChange)="getAllMovies()" class="mat-checkbox-layout" style="margin-top: 4%;margin-left: 9%;">
                 <span class="text-application">Dislike</span>
-            </mat-checkbox>
+            </mat-checkbox>   
 
         </ng-container> 
 
+    </div>
+
+</div>
+
+<br>
+
+<div class="row" *ngIf="!movieName && !statusId">
+
+    <div class="col-md-4">
+        <mat-checkbox (change)="getAllMovies()" [(ngModel)]="showMoviesNotChecked" class="text-application">
+            Not check ({{nbrMoviesNotChecked}})
+        </mat-checkbox>
     </div>
 
 </div>

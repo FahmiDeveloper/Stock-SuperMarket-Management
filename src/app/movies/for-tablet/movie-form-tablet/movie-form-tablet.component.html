@@ -17,7 +17,7 @@
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Year</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="movie.year" name="year" class="text-application">
+      <input matInput type="number" [(ngModel)]="movie.year" name="year" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
@@ -41,12 +41,12 @@
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Part</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="movie.part" name="part" class="text-application">
+      <input matInput type="number" [(ngModel)]="movie.part" name="part" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Priority</span></mat-placeholder>
-      <input matInput type="tel" [(ngModel)]="movie.priority" name="priority" class="text-application">
+      <input matInput type="number" [(ngModel)]="movie.priority" name="priority" class="text-application">
     </mat-form-field>
 
     <mat-form-field color="accent" *ngIf="movie.part && movie.part > 1">

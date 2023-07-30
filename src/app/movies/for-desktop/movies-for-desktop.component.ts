@@ -38,6 +38,8 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
   optionSelected: number;
   dislike: boolean = false;
   nbrMoviesToCheckToday: number = 0;
+  nbrMoviesNotChecked: number = 0;
+  showMoviesNotChecked: boolean = false;
   itemsPerPage: number;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -46,6 +48,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForGetAllMoviesForSelect: Subscription;
+  subscriptionForGetAllMoviesNotChecked: Subscription;
 
   statusMovies: StatusMovies[] = [
     {id: 1, status: 'On hold'}, 
@@ -69,6 +72,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     this.itemsPerPage = window.innerWidth <= 1366 ? 15 : 16;
     this.getAllMovies();
     this.getAllMoviesForSelect();
+    this.getAllMoviesNotChecked();
   }
 
   getAllMovies() {    
@@ -84,6 +88,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
       }
 
       else if (this.statusId) {
+        if (this.showMoviesNotChecked) this.showMoviesNotChecked = false;
         if (this.statusId == 1) {
           if (this.dislike) this.dislike = false;
           if (this.optionSelected) {
@@ -116,6 +121,11 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
           this.moviesList = this.statusId == 3 ? this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie) : this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);            
         }
       }
+
+      else if (this.showMoviesNotChecked) {
+        this.moviesList = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate < moment().format('YYYY-MM-DD'));
+        this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      }
       
       else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
 
@@ -127,6 +137,15 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe((movies: Movie[]) => {
       this.nbrMoviesToCheckToday = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD')).length;
+      this.cdRef.detectChanges();
+    })
+  }
+
+  getAllMoviesNotChecked() {
+    this.subscriptionForGetAllMoviesNotChecked = this.movieService
+    .getAll()
+    .subscribe((movies: Movie[]) => {
+      this.nbrMoviesNotChecked = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate < moment().format('YYYY-MM-DD')).length;
       this.cdRef.detectChanges();
     })
   }
@@ -232,6 +251,7 @@ export class MoviesForDesktopComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllMovies.unsubscribe();
     this.subscriptionForGetAllMoviesForSelect.unsubscribe();
+    this.subscriptionForGetAllMoviesNotChecked.unsubscribe();
   }
 
 }

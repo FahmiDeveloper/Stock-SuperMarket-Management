@@ -14,7 +14,7 @@
             (click)="newSerie()" 
             mat-mini-fab 
             color="primary" 
-            style="background: #2196F3;float: right;margin-top: 7px;">
+            style="background: #004a9f;float: right;margin-top: 7px;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
 
@@ -54,6 +54,18 @@
 
         </ng-container> 
 
+    </div>
+
+</div>
+
+<br>
+
+<div class="row" *ngIf="!serieName && !statusId">
+
+    <div class="col-md-4">
+        <mat-checkbox (change)="getAllSeries()" [(ngModel)]="showSeriesNotChecked" class="text-application">
+            Not check ({{nbrSeriesNotChecked}})
+        </mat-checkbox>
     </div>
 
 </div>
@@ -103,7 +115,7 @@
         </button>
 
         <button
-            *ngIf="serie.statusId !== 3 && !serie.notLiked && !serie.season"
+            *ngIf="serie.statusId !== 3 && (serie.currentEpisode || serie.totalEpisodes)"
             mat-menu-item 
             class="text-application">
             Eps&nbsp;&nbsp;&nbsp;&nbsp;

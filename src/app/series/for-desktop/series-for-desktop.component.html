@@ -19,6 +19,7 @@
 		</mat-form-field>
     </div>
     <div class="col-md-2">
+
         <ng-container *ngIf="statusId">
             <mat-form-field class="widthInput" *ngIf="statusId == 1">
                 <mat-select [(ngModel)]="optionSelected" name="optionSelected" class="text-application" (selectionChange)="getAllSeries()">
@@ -32,6 +33,11 @@
                 <span class="text-application">Dislike</span>
             </mat-checkbox>
         </ng-container> 
+
+        <ng-container *ngIf="!statusId">
+            <mat-checkbox (change)="getAllSeries()" [(ngModel)]="showSeriesNotChecked" class="text-application" style="margin-top: 1.3rem;">Not check ({{nbrSeriesNotChecked}})</mat-checkbox>
+        </ng-container>
+
     </div>
     <div class="col-md-2"></div>
     <div class="col-md-2">
@@ -85,7 +91,7 @@
     </button>
 
     <button
-        *ngIf="serie.statusId !== 3 && !serie.notLiked && !serie.season"
+        *ngIf="serie.statusId !== 3 && (serie.currentEpisode || serie.totalEpisodes)"
         mat-menu-item 
         class="text-application">
         Eps&nbsp;&nbsp;&nbsp;&nbsp;

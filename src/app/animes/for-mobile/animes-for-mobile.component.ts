@@ -38,6 +38,8 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
   optionSelected: number;
   dislike: boolean = false;
   nbrAnimesToCheckToday: number = 0;
+  nbrAnimesNotChecked: number = 0;
+  showAnimesNotChecked: boolean = false;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -45,6 +47,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllAnimes: Subscription;
   subscriptionForGetAllAnimesForSelect: Subscription;
+  subscriptionForGetAllAnimesNotChecked: Subscription;
 
   statusAnimes: StatusAnimes[] = [
     {id: 1, status: 'On hold'}, 
@@ -67,6 +70,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
   ngOnInit() { 
     this.getAllAnimes();
     this.getAllAnimesForSelect();
+    this.getAllAnimesNotChecked();
   }
 
   getAllAnimes() {
@@ -82,6 +86,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
       }
 
       else if (this.statusId) {
+        if (this.showAnimesNotChecked) this.showAnimesNotChecked = false;
         if (this.statusId == 1) {
           if (this.dislike) this.dislike = false;
           if (this.optionSelected) {
@@ -115,6 +120,11 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
           this.animesList = this.statusId == 2 ? this.animesList.sort((n1, n2) => n1.numRefAnime - n2.numRefAnime) : this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);            
         }
       }
+
+      else if (this.showAnimesNotChecked) {
+        this.animesList = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate < moment().format('YYYY-MM-DD'));
+        this.animesList = this.animesList.sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      }
       
       else this.animesList = animes.filter(anime => anime.isFirst == true).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
@@ -131,6 +141,15 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
     .subscribe((animes: Anime[]) => {
       this.nbrAnimesToCheckToday = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate == moment().format('YYYY-MM-DD') &&
       (!anime.currentEpisode || (anime.currentEpisode && !anime.totalEpisodes) || (anime.currentEpisode && anime.currentEpisode && anime.currentEpisode < anime.totalEpisodes))).length;
+      this.cdRef.detectChanges();
+    })
+  }
+
+  getAllAnimesNotChecked() {
+    this.subscriptionForGetAllAnimesNotChecked = this.animeService
+    .getAll()
+    .subscribe((animes: Anime[]) => {
+      this.nbrAnimesNotChecked = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate < moment().format('YYYY-MM-DD')).length;
       this.cdRef.detectChanges();
     })
   }
@@ -257,6 +276,7 @@ export class AnimesForMobileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptionForGetAllAnimes.unsubscribe();
     this.subscriptionForGetAllAnimesForSelect.unsubscribe();
+    this.subscriptionForGetAllAnimesNotChecked.unsubscribe();
   }
 
 }

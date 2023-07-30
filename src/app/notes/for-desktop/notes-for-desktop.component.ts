@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageEvent } from '@angular/material/paginator';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
@@ -27,9 +28,16 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
   p: number = 1;
   content: string = '';
   isTablet: boolean;
+  keywordSelected: string;
+  keywordsList: string[] = [];
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
 
   subscriptionForGetAllNotes: Subscription;
   subscriptionForGetAllNotesForAdd: Subscription;
+  subscriptionForGetAllKeywordsNotes: Subscription;
 
   constructor(
     public noteService: NoteService,
@@ -40,8 +48,24 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isTablet = this.deviceService.isTablet();
+    this.getAllKeywordsNotes();
     this.getAllNotes();
     this.getAllNotesForAdd();
+  }
+
+  getAllKeywordsNotes() {
+    this.subscriptionForGetAllKeywordsNotes = this.noteService
+    .getAll()
+    .subscribe((notes: Note[]) => {
+
+      this.keywordsList = [];
+         
+      notes.forEach(note => {
+        if (!this.keywordsList.includes(note.keyword)) {
+          this.keywordsList.push(note.keyword);
+        }
+      })
+    });
   }
 
   getAllNotes() {
@@ -50,13 +74,19 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
     .subscribe((notes: Note[]) => {
 
       if (this.content) {
-        this.notesList = notes.filter(note => note.contentNote.toLowerCase().includes(this.content.toLowerCase()));
+        this.notesList = notes.filter(note => note.keyword.toLowerCase().includes(this.content.toLowerCase()));
         this.notesList = this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
-      }  
+      }
+      
+      else if (this.keywordSelected) {
+        this.notesList = notes.filter(note => note.keyword == this.keywordSelected);
+        this.notesList = this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
+      }
+
       else {
-        this.notesList = notes.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
+        this.notesList = notes.sort((n1, n2) => n2.numRefNote - n1.numRefNote);
       }    
-           
+
     });
   }
 
@@ -133,6 +163,22 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
 
   viewPath(path: string) {
     window.open(path);
+  }
+
+  onRightClick(event: MouseEvent, note: Note) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {note: note};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {
