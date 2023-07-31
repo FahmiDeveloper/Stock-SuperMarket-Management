@@ -39,7 +39,7 @@
                 </div>
               </div>   
 
-              <div *ngIf="!anime.notLiked && anime.type == 'TV'" class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">
+              <div *ngIf="!anime.notLiked && anime.type !== 'Movie' && anime.type !== 'Manga'" class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">
                 <div><dt>Season</dt></div>
                 <div></div>
                 <div>

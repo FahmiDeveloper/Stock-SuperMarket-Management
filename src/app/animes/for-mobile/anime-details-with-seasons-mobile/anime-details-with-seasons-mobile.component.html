@@ -80,6 +80,7 @@
       </button>
 
       <button
+        *ngIf="!anime.notLiked && anime.type !== 'Movie' && anime.type !== 'Manga'"
         mat-menu-item 
         class="text-application">
         <div class="gridForLegend">
