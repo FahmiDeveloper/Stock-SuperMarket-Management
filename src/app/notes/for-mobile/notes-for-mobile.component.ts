@@ -102,7 +102,7 @@ export class NotesForMobileComponent implements OnInit, OnDestroy {
   newNote() {
     const dialogRef = this.dialogService.open(NoteFormMobileComponent, {
       width: '98vw',
-      height:'45vh',
+      height:'55vh',
       maxWidth: '100vw', 
       data: {note: {}}
     });
@@ -112,7 +112,7 @@ export class NotesForMobileComponent implements OnInit, OnDestroy {
   editNote(note?: Note) {
     const dialogRef = this.dialogService.open(NoteFormMobileComponent, {
       width: '98vw',
-      height:'45vh',
+      height:'55vh',
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.note = note;
