@@ -117,7 +117,7 @@ export class SeriesForMobileComponent implements OnInit, OnDestroy {
             if (this.dislike) this.dislike = false;
             this.seriesList = series.filter(serie => serie.statusId == this.statusId);
           }    
-          this.seriesList = this.statusId == 2 ? this.seriesList.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie) : this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);       
+          this.seriesList = this.statusId == 3 ? this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie) : this.seriesList.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);       
         }
       }
 

@@ -1,7 +1,7 @@
 <!-- Desktop -->
 
 <div *ngIf="isDesktop" [ngClass]="getClass()" class="text-application">
-    <div [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '55%': '65%'}">
+    <div [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '50%': '65%'}">
         <div class="card welcome-card">
             <div class="card-head welcome-head-container">
                 <div class="col-left">
@@ -45,66 +45,73 @@
             <span class="bar"></span>
             <div class="details">
                 <div class="details-name">Movies</div>
-                <p>{{nbrMoviesToCheckToday}} to check today</p>
+                <p>{{nbrMoviesToCheckToday}} to check today<br>{{nbrMoviesNotChecked}} not checked</p>
             </div>
             <i class="fa fa-film edit"></i>
-            <div *ngIf="nbrMoviesToCheckToday > 0" class="pulse-movie"></div>
+            <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
         </div>
         <div class="task">
             <span class="bar"></span>
             <div class="details">
                 <div class="details-name">Animes</div>
-                <p>{{nbrAnimesToCheckToday}} to check today</p>
+                <p>{{nbrAnimesToCheckToday}} to check today<br>{{nbrAnimesNotChecked}} not checked</p>
             </div>
             <i class="fa fa-rocket edit"></i>
-            <div *ngIf="nbrAnimesToCheckToday > 0" class="pulse-anime-desktop"></div>
+            <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-desktop"></div>
         </div>
         <div class="task">
             <span class="bar"></span>
             <div class="details">
                 <div class="details-name">Series</div>
-                <p>{{nbrSeriesToCheckToday}} to check today</p>
+                <p>{{nbrSeriesToCheckToday}} to check today<br>{{nbrSeriesNotChecked}} not checked</p>
             </div>
             <i class="fa fa-television edit"></i>
-            <div *ngIf="nbrSeriesToCheckToday > 0" class="pulse-serie-desktop"></div>
+            <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-desktop"></div>
         </div>
-        <button>
-            <i class="far fa-plus"></i>
-            Create New Group
-        </button>
     </div>
     <div class="col task-col">
         <div class="task">
             <span class="bar"></span>
             <div class="details">
-                <div><span class="details-name">Find content</span></div>
-                <p><span class="details-name">May be add users</span></p>
-            </div>
-            <i class="fa fa-sticky-note edit"></i>
-            <!-- <div class="pulse-test"></div> -->
-        </div>
-        <div class="task">
-            <span class="bar"></span>
-            <div class="details">
-                <div class="details-name">Clockings</div>
-                <p>Work delayed</p>
+                <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
+                <p>
+                    Tot late:&nbsp;
+                    <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                    <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                    <br>
+                    Rest vac:&nbsp;
+                    <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
+                    <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
+                    day(s)
+                </p>
             </div>
             <i class="fa fa-clock-o edit"></i>
         </div>
         <div class="task">
             <span class="bar"></span>
             <div class="details">
-                <div><span class="details-name">Soon to expire</span>&nbsp;&nbsp;{{contentsSoonToExpireList.length}}</div>
-                <p><span class="details-name">Expired</span>&nbsp;&nbsp;{{contentsExpiredList.length}}</p>
+                <div class="details-name">Expirations</div>
+                <p>
+                    Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
+                    <br>
+                    Expired:&nbsp;{{contentsExpiredList.length}}
+                </p>
             </div>
             &nbsp;&nbsp;
             <i class="fa fa-calendar edit"></i>
             <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-desktop"></div>
         </div>
-        <button>
-            <i class="far fa-plus"></i>
-            Create New Group
-        </button>
+        <div class="task">
+            <span class="bar"></span>
+            <div class="details">
+                <div class="details-name">Find content</div>
+                <p>
+                    May be add users
+                    <br>
+                    Or other thing
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -267,21 +274,23 @@
                     <span class="bar"></span>
                     <div class="details">
                         <div class="details-name">Movies</div>
-                        <p>{{nbrMoviesToCheckToday}} to check today</p>
+                        <p>{{nbrMoviesToCheckToday}} to check today<br>{{nbrMoviesNotChecked}} not checked</p>
                     </div>
                     <i class="fa fa-film edit"></i>
-                    <div *ngIf="nbrMoviesToCheckToday > 0" class="pulse-movie"></div>
+                    <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="task">
                     <span class="bar"></span>
                     <div class="details">
-                        <div><span class="details-name">Find content</span></div>
-                        <p><span class="details-name">May be add users</span></p>
+                        <div class="details-name">Find content</div>
+                        <p>
+                            May be add users
+                            <br>
+                            Or other thing
+                        </p>
                     </div>
-                    <i class="fa fa-sticky-note edit"></i>
-                    <!-- <div class="pulse-test"></div> -->
                 </div>
             </div>
         </div>
@@ -292,18 +301,27 @@
                     <span class="bar"></span>
                     <div class="details">
                         <div class="details-name">Animes</div>
-                        <p>{{nbrAnimesToCheckToday}} to check today</p>
+                        <p>{{nbrAnimesToCheckToday}} to check today<br>{{nbrAnimesNotChecked}} not checked</p>
                     </div>
                     <i class="fa fa-rocket edit"></i>
-                    <div *ngIf="nbrAnimesToCheckToday > 0" class="pulse-anime-tablet"></div>
+                    <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-tablet"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="task">
                     <span class="bar"></span>
                     <div class="details">
-                        <div class="details-name">Clockings</div>
-                        <p>Work delayed</p>
+                        <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
+                        <p>
+                            Tot late:&nbsp;
+                            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                            <br>
+                            Rest vac:&nbsp;
+                            <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
+                            <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
+                            day(s)
+                        </p>
                     </div>
                     <i class="fa fa-clock-o edit"></i>
                 </div>
@@ -316,18 +334,22 @@
                     <span class="bar"></span>
                     <div class="details">
                         <div class="details-name">Series</div>
-                        <p>{{nbrSeriesToCheckToday}} to check today</p>
+                        <p>{{nbrSeriesToCheckToday}} to check today<br>{{nbrSeriesNotChecked}} not checked</p>
                     </div>
                     <i class="fa fa-television edit"></i>
-                    <div *ngIf="nbrSeriesToCheckToday > 0" class="pulse-serie-tablet"></div>
+                    <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-tablet"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="task">
                     <span class="bar"></span>
                     <div class="details">
-                        <div><span class="details-name">Soon to expire</span>&nbsp;&nbsp;{{contentsSoonToExpireList.length}}</div>
-                        <p><span class="details-name">Expired</span>&nbsp;&nbsp;{{contentsExpiredList.length}}</p>
+                        <div class="details-name">Expirations</div>
+                        <p>
+                            Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
+                            <br>
+                            Expired:&nbsp;{{contentsExpiredList.length}}
+                        </p>
                     </div>
                     &nbsp;&nbsp;
                     <i class="fa fa-calendar edit"></i>
@@ -467,7 +489,7 @@
 <div *ngIf="isTablet && orientation == 'Landscape'" [ngClass]="getClass()" class="text-application">
 
     <div>
-        <div class="card welcome-card" style="height: 22.3rem;">
+        <div class="card welcome-card">
             <div class="card-head welcome-head-container">
                 <div class="col-left">
                     <div>Welcome Back!</div>
@@ -513,19 +535,26 @@
                     <span class="bar"></span>
                     <div class="details">
                         <div class="details-name">Movies&nbsp;<i class="fa fa-film edit"></i></div>
-                        <p>{{nbrMoviesToCheckToday}} check today</p>
+                        <p>{{nbrMoviesToCheckToday}} check today<br>{{nbrMoviesNotChecked}} not checked</p>
                     </div>
-                    <div *ngIf="nbrMoviesToCheckToday > 0" class="pulse-movie"></div>
+                    <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="task">
                     <span class="bar"></span>
                     <div class="details">
-                        <div><span class="details-name">content</span>&nbsp;<i class="fa fa-sticky-note edit"></i></div>
-                        <p>To add</p>
+                        <div class="details-name">{{ currentMonth }}&nbsp;{{ currentYear }}&nbsp;<i class="fa fa-clock-o edit"></i></div>
+                        <p>
+                            Late:&nbsp;
+                            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                            <br>
+                            Rest vac:&nbsp;
+                            <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
+                            <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
+                        </p>
                     </div>
-                    <!-- <div class="pulse-test"></div> -->
                 </div>
             </div>
         </div>
@@ -536,20 +565,25 @@
                     <span class="bar"></span>
                     <div class="details">
                         <div class="details-name">Animes&nbsp;<i class="fa fa-rocket edit"></i></div>
-                        <p>{{nbrAnimesToCheckToday}} check today</p>
+                        <p>{{nbrAnimesToCheckToday}} check today<br>{{nbrAnimesNotChecked}} not checked</p>
                     </div>
-                    <div *ngIf="nbrAnimesToCheckToday > 0" class="pulse-anime-tablet"></div>
+                    <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-tablet"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="task">
                     <span class="bar"></span>
                     <div class="details">
-                        <div class="details-name">Clockings&nbsp;<i class="fa fa-clock-o edit"></i></div>
-                        <p>Work delayed</p>
-                    </div>
+                        <div class="details-name">Expirations&nbsp;<i class="fa fa-calendar edit"></i></div>
+                        <p>
+                            Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
+                            <br>
+                            Expired:&nbsp;{{contentsExpiredList.length}}
+                        </p>
+                    </div>                    
+                    <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-tablet"></div>
                 </div>
-            </div>       
+            </div>
         </div>
 
         <div class="row">
@@ -558,19 +592,22 @@
                     <span class="bar"></span>
                     <div class="details">
                         <div class="details-name">Series&nbsp;<i class="fa fa-television edit"></i></div>
-                        <p>{{nbrSeriesToCheckToday}} to check today</p>
-                    </div>               
-                    <div *ngIf="nbrSeriesToCheckToday > 0" class="pulse-serie-tablet"></div>
+                        <p>{{nbrSeriesToCheckToday}} check today<br>{{nbrSeriesNotChecked}} not checked</p>
+                    </div>
+                    <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-tablet"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="task">
                     <span class="bar"></span>
                     <div class="details">
-                        <div><span class="details-name">To expire</span>&nbsp;&nbsp;{{contentsSoonToExpireList.length}}</div>
-                        <p><span class="details-name">Expired</span>&nbsp;&nbsp;{{contentsExpiredList.length}}</p>
+                        <div class="details-name">Find content</div>
+                        <p>
+                            Add users
+                            <br>
+                            Or other thing
+                        </p>
                     </div>
-                    <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-tablet"></div>
                 </div>
             </div>
         </div>

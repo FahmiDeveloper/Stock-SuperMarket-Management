@@ -30,7 +30,7 @@ export class SubjectsDocumentsForMobileComponent implements OnInit, OnDestroy {
 
   length: number = 0;
 
-  subjectDocumentSelectedKey: string = '';
+  subjectDocumentSelectedKey: string;
 
   subscriptionForGetAllSubjectDocuments: Subscription;
   subscriptionForGetAllDocuments: Subscription;

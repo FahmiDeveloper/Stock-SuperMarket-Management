@@ -12,7 +12,7 @@
 <ng-template #contentListFiles>
 
   <div mat-dialog-title class="dialog-title">
-    <h2 class="text-application">{{ typeFile.type }} files</h2>
+    <h4 class="text-application">{{ typeFile.type }} files</h4>
     <button mat-icon-button aria-label="close dialog" mat-dialog-close>
       <mat-icon>close</mat-icon>
     </button>
@@ -45,8 +45,8 @@
 <ng-template #contentLinks>
 
   <div mat-dialog-title class="dialog-title">
-    <h2 *ngIf="!clickShowLinks" class="text-application">{{ typeFile.type }} files</h2>
-    <h2 *ngIf="clickShowLinks" class="text-application">{{ typeFile.type }} links</h2>
+    <h4 *ngIf="!clickShowLinks" class="text-application">{{ typeFile.type }} files</h4>
+    <h4 *ngIf="clickShowLinks" class="text-application">{{ typeFile.type }} links</h4>
     <button mat-icon-button aria-label="close dialog" mat-dialog-close>
       <mat-icon>close</mat-icon>
     </button>
@@ -88,7 +88,7 @@
         type="button"  
         (click)="newLink()" 
         mat-mini-fab
-        style="background: #263238 !important;float: right;margin-top: 7px">
+        style="background: #004a9f !important;float: right;margin-top: 7px">
         <mat-icon style="color: white;">add</mat-icon>
       </button>
     </div> 
@@ -107,7 +107,7 @@
         type="button"  
         (click)="newLink()" 
         mat-mini-fab
-        style="background: #263238 !important;float: right;margin-top: 7px">
+        style="background: #004a9f !important;float: right;margin-top: 7px">
         <mat-icon style="color: white;">add</mat-icon>
       </button>
     </div>
@@ -136,7 +136,7 @@
 
         </ng-container>
 
-        <ng-container *ngIf="isTablet">
+        <ng-container *ngIf="isTablet || isMobile">
 
           <div class="example-box" *ngFor="let link of (linksList | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (click)="openMenuTrigger($event, link)">
  
@@ -161,8 +161,17 @@
       
       <mat-menu #rightMenu="matMenu"> 
       
-        <ng-template matMenuContent let-link="link">
+        <ng-template matMenuContent let-link="link"> 
       
+          <button
+            type="button"
+            mat-menu-item
+            (click)="viewContentLink(link.content)"
+            class="text-application">
+            <mat-icon style="color: #283593;">remove_red_eye</mat-icon>
+            <span>Content</span>
+          </button>
+
           <button
             type="button"
             mat-menu-item
@@ -216,9 +225,9 @@
       </mat-menu>
       
       <br>
-      
+
       <div *ngIf="linksList?.length !== 0" class="pagination">
-          <pagination-controls (pageChange)="p = $event;"></pagination-controls>
+        <pagination-controls (pageChange)="p = $event;" responsive="true"></pagination-controls>
       </div>
       
       <div *ngIf="linksList.length == 0" class="row justify-content-center no-results text-application">

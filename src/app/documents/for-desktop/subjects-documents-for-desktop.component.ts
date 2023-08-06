@@ -5,7 +5,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { SubjectDocumentsFormDesktopComponent } from './subject-documents-form-desktop/subject-documents-form-desktop.component';
 import { DocumentsListForDesktopComponent } from './documents-list-desktop/documents-list-desktop.component';

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -65,14 +65,8 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
     });
   }
 
-  OnPageChange(event: PageEvent){
-    let startIndex = event.pageIndex * event.pageSize;
-    let endIndex = startIndex + event.pageSize;
-    if(endIndex > this.length){
-      endIndex = this.length;
-    }
-    this.pagedList = this.passwordsList.slice(startIndex, endIndex);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  OnPageChange(elem: HTMLElement){
+    elem.scrollIntoView();
   }
 
   newPassword() {

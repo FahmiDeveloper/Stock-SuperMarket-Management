@@ -1,4 +1,4 @@
-<h1 class="titleTextInterface text-application">Medications</h1>
+<h1 #target class="titleTextInterface text-application">Medications</h1>
 
 <div class="row">
     <div class="col-md-4">
@@ -10,7 +10,7 @@
             type="button" 
             (click)="newMedication()" 
             mat-mini-fab
-            style="background: #2196F3;float: right;margin-top: 7px;">
+            style="background: #004a9f;float: right;margin-top: 7px;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
     </div> 
@@ -30,27 +30,32 @@
     </div>
 </div>
 
-<div class="card" *ngFor="let medication of (medicationsList | paginate: { itemsPerPage: 6, currentPage: p })" style="margin-bottom: 20px !important;">
+<div class="grid">
 
-    <div class="card" style="flex-direction: row;border: white;">
-        <img *ngIf="medication.urlPicture" [src]="medication.urlPicture" class="medication-image" (click)="viewPicture(medication, showPicture)">
-        <img *ngIf="!medication.urlPicture" src="/assets/pictures/NoImageAvailable.png" class="medication-image">
-  
-      <h3 class="text-application center-name-medication" (click)="copyText(medication.medicationName)" style="font-weight: 600;width: 60%;">{{ medication.medicationName }}</h3>
-    </div>
+	<div class="card" *ngFor="let medication of (medicationsList | paginate: { itemsPerPage: 6 , currentPage: p })">
 
-    <div class="card-body">
-        
+        <img *ngIf="medication.urlPicture" [src]="medication.urlPicture" class="card-img-top img-fluid" (click)="openMenuTrigger($event, medication)">
+
+        <img *ngIf="!medication.urlPicture" src="/assets/pictures/NoImageAvailable.png" class="card-img-top img-fluid" (click)="openMenuTrigger($event, medication)">
+
+        <div class="card-body align-items-center d-flex justify-content-center text-center text-application">
+
+            <h5 class="card-title" style="cursor: pointer;" (click)="copyText(medication.medicationName)">
+                {{ medication.medicationName }}
+            </h5>
+
+        </div> 
+
         <div class="card-block text-application">
             <div class="gridForLegend">
-                <div><dt>For</dt></div>
+                <div><dt style="margin-left: 1rem;">For</dt></div>
                 <div>{{ medication.medicationFor }}</div>
             </div>
 
             <br>
 
             <div class="gridForLegend">
-                <div><dt>Price</dt></div>
+                <div><dt style="margin-left: 1rem;">Price</dt></div>
                 <div>
                     <span *ngIf="medication.price">{{ medication.price }}</span>
                     <span *ngIf="!medication.price">?</span>
@@ -60,7 +65,7 @@
             <br>
 
             <div class="gridForLegend">
-                <div><dt>Utilisation</dt></div>
+                <div><dt style="margin-left: 1rem;">Utilisation</dt></div>
                 <div>
                     <mat-icon *ngIf="medication.utilisation" style="color: black;" [ngStyle]="{'cursor': isDesktop ? 'pointer': ''}" (click)="viewUtilisation(medication.utilisation)">note</mat-icon>         
                     <i *ngIf="!medication.utilisation" class="fa fa-minus-circle"></i>
@@ -68,70 +73,59 @@
             </div>
         </div>
 
-        <br>
+	</div>
 
-        <button 
-            type="button"
-            mat-button
-            [matMenuTriggerFor]="menu" 
-            class="style-button text-application center-btn">
-            <mat-icon style="color: #07609b">calendar_view_day</mat-icon>
-            Actions
-        </button>
-        <mat-menu #menu="matMenu" class="my-menu" xPosition="before">                        
-            <button
-                type="button"
-                mat-menu-item 
-                (click)="editMedication(medication)"
-                class="text-application">
-                <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
-                <span>Edit</span>
-            </button>
-        
-            <button
-                *ngIf="medication.urlPicture"
-                type="button"
-                mat-menu-item 
-                (click)="downloadPicture(medication)"
-                class="text-application">
-                <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
-                <span>Download</span>
-            </button>
-    
-            <button
-                type="button"
-                mat-menu-item 
-                (click)="deleteMedication(medication.key)"
-                class="text-application">
-                <mat-icon style="color: #f44336;">delete</mat-icon>
-                <span>Delete</span>
-            </button>                   
-        </mat-menu>
-      
-    </div>
 </div>
+
+<div 
+  style="visibility: hidden; position: fixed;" 
+  [style.left]="menuTopLeftPosition.x" 
+  [style.top]="menuTopLeftPosition.y" 
+  [matMenuTriggerFor]="rightMenu">
+</div> 
+ 
+<mat-menu #rightMenu="matMenu"> 
+
+  <ng-template matMenuContent let-medication="medication">
+
+    <button
+        type="button"
+        mat-menu-item 
+        (click)="editMedication(medication)"
+        class="text-application">
+        <mat-icon style="color: #9C27B0" aria-label="Edit">edit</mat-icon>
+        <span>Edit</span>
+    </button>
+
+    <button
+        *ngIf="medication.urlPicture"
+        type="button"
+        mat-menu-item 
+        (click)="downloadPicture(medication)"
+        class="text-application">
+        <mat-icon style="color: #2E7D32;">cloud_download</mat-icon>
+        <span>Download</span>
+    </button>
+
+    <button
+        type="button"
+        mat-menu-item 
+        (click)="deleteMedication(medication.key)"
+        class="text-application">
+        <mat-icon style="color: #f44336;">delete</mat-icon>
+        <span>Delete</span>
+    </button>
+
+  </ng-template>
+
+</mat-menu>
 
 <br>
 
 <div *ngIf="medicationsList.length !== 0" class="pagination">
-    <pagination-controls (pageChange)="p = $event;OnPageChange($event)" responsive="true"></pagination-controls>
+    <pagination-controls (pageChange)="p = $event;OnPageChange(target)" responsive="true"></pagination-controls>
 </div>
 
 <div *ngIf="medicationsList.length == 0" class="row justify-content-center no-results text-application">
     No results
 </div>
-
-<ng-template #showPicture>
-   
-    <div mat-dialog-title class="dialog-title">
-        <h2 class="text-application">{{ FileName }}</h2>
-        <button mat-icon-button aria-label="close dialog" mat-dialog-close>
-            <mat-icon>close</mat-icon>
-        </button>
-    </div>
-  
-    <div class="row">
-      <img *ngIf="pictureFile" [src]='pictureFile' class="pictureFileMobile">
-    </div>       
-  
-</ng-template>

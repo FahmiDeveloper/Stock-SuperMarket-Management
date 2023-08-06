@@ -144,14 +144,6 @@ export class ExpirationsForDesktopComponent implements OnInit, OnDestroy {
     })
   }
 
-  viewNote(expirationNote: string) {
-    Swal.fire({
-      text: expirationNote,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
-    });
-  }
-
   onRightClick(event: MouseEvent, expiration: Expiration) { 
     // preventDefault avoids to show the visualization of the right-click menu of the browser 
     event.preventDefault(); 

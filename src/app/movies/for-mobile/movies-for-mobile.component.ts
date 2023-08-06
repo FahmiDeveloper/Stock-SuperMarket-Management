@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -117,7 +116,7 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
             if (this.dislike) this.dislike = false;
             this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
           }     
-          this.moviesList = this.statusId == 2 ? this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie) : this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);            
+          this.moviesList = this.statusId == 3 ? this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie) : this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);            
         }
       }
 

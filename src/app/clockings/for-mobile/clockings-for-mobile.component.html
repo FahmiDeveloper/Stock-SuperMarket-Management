@@ -1,4 +1,4 @@
-<h1 class="titleTextInterface text-application">Clockings</h1>
+<h1 #target class="titleTextInterface text-application">Clockings</h1>
 
 <div class="row">
     <div class="col-md-12">
@@ -16,7 +16,7 @@
             (click)="newClocking()" 
             mat-mini-fab 
             color="primary" 
-            style="background: #2196F3;float: right;margin-top: 7px;">
+            style="background: #004a9f;float: right;margin-top: 7px;">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
     </div> 
@@ -161,7 +161,7 @@
             [pageSizeOptions]="[8]"
             showFirstLastButtons 
             aria-label="Select page of periodic elements"
-            (page)="OnPageChange($event)">
+            (page)="OnPageChange(target)">
         </mat-paginator>
     </div>
 </div>

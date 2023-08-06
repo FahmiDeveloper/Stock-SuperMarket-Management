@@ -9,12 +9,14 @@ import { MovieService } from 'src/app/shared/services/movie.service';
 import { SerieService } from 'src/app/shared/services/serie.service';
 import { ExpirationService } from 'src/app/shared/services/expiration.service';
 import { DebtService } from 'src/app/shared/services/debt.service';
+import { ClockingService } from 'src/app/shared/services/clocking.service';
 
 import { Movie } from 'src/app/shared/models/movie.model';
 import { Anime } from 'src/app/shared/models/anime.model';
 import { Serie } from 'src/app/shared/models/serie.model';
 import { Expiration } from 'src/app/shared/models/expiration.model';
 import { Debt } from 'src/app/shared/models/debt.model';
+import { Clocking } from 'src/app/shared/models/clocking.model';
 
 @Component({
   selector: 'app-home',
@@ -30,10 +32,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   orientation: string = '';
   
   nbrMoviesToCheckToday: number = 0;
+  nbrMoviesNotChecked: number = 0;
+
   nbrAnimesToCheckToday: number = 0;
+  nbrAnimesNotChecked: number = 0;
+
   nbrSeriesToCheckToday: number = 0;
+  nbrSeriesNotChecked: number = 0;
+
   contentsExpiredList: Expiration[] = [];
   contentsSoonToExpireList: Expiration[] = [];
+
+  currentMonth: string = '';
+  currentYear: number;
+  sumClockingLate: number;
+  monthForCalculTotalClockingLateAndRestVac: string = '';
+  clockingsListForCalculTotalClockingLate: Clocking[] = []
+  minutePartList: number[] = [];
+  totalClockingLate: number = 0;
+  totalClockingLateByHoursMinute: string = '';
+  vacationLimitDays: number = 0;
 
   // debts variables
   totalInDebt: number= 0;
@@ -74,10 +92,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   defaultTotalInDebtsNotToGetForNow: number;
 
   subscriptionForGetAllMoviesToCheckToday: Subscription;
+  subscriptionForGetAllMoviesNotChecked: Subscription;
+
   subscriptionForGetAllAnimesToCheckToday: Subscription;
+  subscriptionForGetAllAnimesNotChecked: Subscription;
+
   subscriptionForGetAllSeriesToCheckToday: Subscription;
+  subscriptionForGetAllSeriesNotChecked: Subscription;
+
   subscriptionForGetAllContentsExpired: Subscription;
+
   subscriptionForGetAllDebts: Subscription;
+
+  subscriptionForGetAllClockings: Subscription;
 
   constructor(
     private movieService: MovieService,
@@ -85,6 +112,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private serieService: SerieService,
     public expirationService: ExpirationService,
     private debtService: DebtService,
+    public clockingService: ClockingService,
     private deviceService: DeviceDetectorService
   ) {}
 
@@ -107,13 +135,31 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         this.orientation = 'Landscape';
       }
-    });    
+    });
+    
+    const d = new Date();
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    this.currentMonth = months[d.getMonth()];
+    this.currentYear = d.getFullYear();
+
+    if ((months[d.getMonth()] == 'October') || (months[d.getMonth()] == 'November') || (months[d.getMonth()] == 'December')) 
+    {this.monthForCalculTotalClockingLateAndRestVac  = String(d.getMonth()+ 1);}
+    else {this.monthForCalculTotalClockingLateAndRestVac  = '0' + String(d.getMonth()+ 1);}
 
     this.getAllMoviesToCheckToday();
+    this.getAllMoviesNotChecked();
+
     this.getAllAnimesToCheckToday();
+    this.getAllAnimesNotChecked();
+
     this.getAllSeriesToCheckToday();
+    this.getAllSeriesNotChecked();
+
     this.getAllContentsExpired();
+
     this.getAllDebtsStatistics();
+
+    this.getAllClockings();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -133,6 +179,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
+  getAllMoviesNotChecked() {
+    this.subscriptionForGetAllMoviesNotChecked = this.movieService
+    .getAll()
+    .subscribe((movies: Movie[]) => {
+      this.nbrMoviesNotChecked = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate < moment().format('YYYY-MM-DD')).length;
+    })
+  }
+
   getAllAnimesToCheckToday() {
     this.subscriptionForGetAllAnimesToCheckToday = this.animeService
     .getAll()
@@ -142,12 +196,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
+  getAllAnimesNotChecked() {
+    this.subscriptionForGetAllAnimesNotChecked = this.animeService
+    .getAll()
+    .subscribe((animes: Anime[]) => {
+      this.nbrAnimesNotChecked = animes.filter(anime => anime.statusId == 1 && anime.checkDate && anime.checkDate < moment().format('YYYY-MM-DD')).length;
+    })
+  }
+
   getAllSeriesToCheckToday() {
     this.subscriptionForGetAllSeriesToCheckToday = this.serieService
     .getAll()
     .subscribe((series: Serie[]) => {
       this.nbrSeriesToCheckToday = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
       (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.currentEpisode && serie.currentEpisode < serie.totalEpisodes))).length;
+    })
+  }
+
+  getAllSeriesNotChecked() {
+    this.subscriptionForGetAllSeriesNotChecked = this.serieService
+    .getAll()
+    .subscribe((series: Serie[]) => {
+      this.nbrSeriesNotChecked = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate < moment().format('YYYY-MM-DD')).length;
     })
   }
 
@@ -623,10 +693,57 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  getAllClockings() {
+    this.subscriptionForGetAllClockings = this.clockingService
+    .getAll()
+    .subscribe((clockings: Clocking[]) => {
+
+      this.clockingsListForCalculTotalClockingLate = clockings
+      .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthForCalculTotalClockingLateAndRestVac)
+      .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
+   
+      this.minutePartList = [];
+      if (this.clockingsListForCalculTotalClockingLate.length > 0) {
+        this.clockingsListForCalculTotalClockingLate.forEach(clocking => {
+            this.calculTotalClockingLate(clocking.timeClocking);
+        })
+      } else {
+        this.totalClockingLate = 0;
+        this.totalClockingLateByHoursMinute = '0 Min';
+      }
+
+      let lastClockingByCurrentMonth = clockings
+      .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthForCalculTotalClockingLateAndRestVac)
+      .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
+      if (lastClockingByCurrentMonth) this.vacationLimitDays = lastClockingByCurrentMonth.restVacationDays;
+
+    });
+  }
+
+  calculTotalClockingLate(timeClocking: string) {
+    let composedFinancialDebt: string[] = [];
+    if (timeClocking && timeClocking > '08:00') {
+      composedFinancialDebt = timeClocking.split(':');
+    } else {
+      composedFinancialDebt[1] = '0';
+    }  
+    this.minutePartList.push(Number(composedFinancialDebt[1]))
+    this.sumClockingLate = this.minutePartList.reduce((accumulator, current) => {return accumulator + current;}, 0);
+    if (this.sumClockingLate < 60) {this.totalClockingLate = this.sumClockingLate;}
+    else {
+      let hours = Math.floor(this.sumClockingLate / 60);
+      let minutes = this.sumClockingLate - (hours * 60);
+      this.totalClockingLateByHoursMinute = hours +"H "+ minutes +"Min";
+    }
+  }
+
   ngOnDestroy() {
     this.subscriptionForGetAllMoviesToCheckToday.unsubscribe();
+    this.subscriptionForGetAllMoviesNotChecked.unsubscribe();
     this.subscriptionForGetAllAnimesToCheckToday.unsubscribe();
+    this.subscriptionForGetAllAnimesNotChecked.unsubscribe();
     this.subscriptionForGetAllSeriesToCheckToday.unsubscribe();
+    this.subscriptionForGetAllSeriesNotChecked.unsubscribe();
     this.subscriptionForGetAllContentsExpired.unsubscribe();
     this.subscriptionForGetAllDebts.unsubscribe();
   }

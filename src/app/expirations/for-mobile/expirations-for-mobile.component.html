@@ -1,4 +1,4 @@
-<h1 class="titleTextInterface text-application">Expirations</h1>
+<h1 #target class="titleTextInterface text-application">Expirations</h1>
 
 <div class="row">
     <div class="col-md-12">
@@ -11,7 +11,7 @@
             (click)="newExpiration()" 
             mat-mini-fab 
             color="primary" 
-            style="background: #2196F3;float: right;margin-top: 7px">
+            style="background: #004a9f;float: right;margin-top: 7px">
             <mat-icon style="color: white;">add</mat-icon>
         </button>
     </div> 
@@ -23,25 +23,12 @@
     <div class="example-table-container">
         <table mat-table [dataSource]="dataSource">
 
-            <ng-container matColumnDef="expiredPicture">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-grid-list *ngIf="(element.isExpired && !element.soonToExpire) || element.soonToExpire" cols="12" rowHeight="70px">
-                        <mat-grid-tile colspan="3">
-                            <img *ngIf="element.isExpired && !element.soonToExpire" src="/assets/gif/expired.gif" class="style-picture"/>
-                            <img *ngIf="element.soonToExpire" src="/assets/gif/soon-to-expire.gif" class="style-picture"/>
-                        </mat-grid-tile>
-                        <mat-grid-tile colspan="9"></mat-grid-tile>
-                    </mat-grid-list>
-                </td>
-            </ng-container>
-
             <ng-container matColumnDef="content">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
                     <mat-grid-list cols="12">
                         <mat-grid-tile colspan="3"><div>Content:</div></mat-grid-tile>
-                        <mat-grid-tile colspan="9"><div style="margin-left: 8px;">{{ element.contentName }}</div></mat-grid-tile>
+                        <mat-grid-tile colspan="9"><div style="margin-left: 17px;">{{ element.contentName }}</div></mat-grid-tile>
                     </mat-grid-list>
                 </td>
             </ng-container>
@@ -116,10 +103,12 @@
             <ng-container matColumnDef="note">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-grid-list cols="12">
+                    <mat-grid-list cols="12" rowHeight="25px">
                         <mat-grid-tile colspan="3"><div>Note:</div></mat-grid-tile>
                         <mat-grid-tile colspan="9">
-                            <div *ngIf="element.note" style="margin-left: 8px;">{{ element.note }}</div>
+                            <div *ngIf="element.note" style="margin-left: 8px;">
+                                <mat-icon style="color: #ff4081;margin-right: 195px;" (click)="viewNote(element.note)">remove_red_eye</mat-icon>                            
+                            </div>
                             <div *ngIf="!element.note" style="margin-left: 8px;">-</div>
                         </mat-grid-tile>
                     </mat-grid-list>
@@ -148,7 +137,7 @@
             [pageSizeOptions]="[8]"
             showFirstLastButtons 
             aria-label="Select page of periodic elements"
-            (page)="OnPageChange($event)">
+            (page)="OnPageChange(target)">
         </mat-paginator>
     </div>
 </div>

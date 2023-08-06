@@ -16,7 +16,7 @@
 
   </ng-container>
 
-  <ng-container *ngIf="isTablet">
+  <ng-container *ngIf="isTablet || isMobile">
 
     <div class="example-box" *ngFor="let file of (filteredFiles | paginate: { itemsPerPage: itemsPerPage , currentPage: p })" (click)="openMenuTrigger($event, file)">
 
@@ -118,7 +118,7 @@
 <br>
 
 <div *ngIf="filteredFiles?.length !== 0" class="pagination">
-    <pagination-controls (pageChange)="p = $event;"></pagination-controls>
+  <pagination-controls (pageChange)="p = $event;" responsive="true"></pagination-controls>
 </div>
 
 <div *ngIf="filteredFiles?.length == 0" class="row justify-content-center no-results text-application">
