@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -30,12 +29,13 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
 
   p: number = 1;
 
-  isDesktop: boolean;
-  isTablet: boolean;
   diseaseSelectedId: number;
-  pictureFile: string = '';
   FileName: string = '';
   medicationName: string = '';
+
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
 
   subscriptionForGetAllMedications: Subscription;
   subscriptionForGetAllDiseases: Subscription;
@@ -44,14 +44,10 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     public diseaseService: DiseaseService,
     public medicationService: MedicationService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
-    this.isDesktop = this.deviceService.isDesktop();
-    this.isTablet = this.deviceService.isTablet();
-
     this.getAllMedications();
     this.getAllDiseases();
   }
@@ -88,8 +84,8 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     });
   }
 
-  OnPageChange(event: PageEvent){
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  OnPageChange(elem: HTMLElement){
+    elem.scrollIntoView();
   }
 
   newMedication() {
@@ -136,37 +132,11 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     })
   }
 
-  viewPicture(medication: Medication, showPicture) {
-    this.pictureFile = medication.urlPicture;
-    this.FileName = medication.fileName.substring(0, medication.fileName.lastIndexOf("."));
-
-    this.dialogService.open(showPicture, {
-      width: '98vw',
-      height:'75vh',
-      maxWidth: '100vw'
-    });
-  }
-
   downloadPicture(medication: Medication) {
     fetch(medication.urlPicture)
     .then(res => res.blob()) // Gets the response and returns it as a blob
     .then(blob => {
       fileSaver.saveAs(blob, medication.fileName.substring(0, medication.fileName.lastIndexOf(".")));
-    });
-  }
-
-  checkIsImage(urlFile: string): boolean {
-    let imageExtentions = ['.jpeg', '.jpg', '.png', '.gif']; // Array of image extention
-    if (urlFile.includes(imageExtentions[0]) || urlFile.includes(imageExtentions[1]) || urlFile.includes(imageExtentions[2]) || urlFile.includes(imageExtentions[3]))
-    return true;
-    else return false;
-  }
-
-  viewMedicationNameOrUtilisation(contentMedicationNameOrUtilisation: string) {
-    Swal.fire({
-      text: contentMedicationNameOrUtilisation,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Close'
     });
   }
 
@@ -199,6 +169,22 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });
+  }
+
+  openMenuTrigger(event: MouseEvent, medication: Medication) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {medication: medication};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

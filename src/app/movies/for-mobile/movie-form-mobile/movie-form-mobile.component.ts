@@ -5,7 +5,6 @@ import { FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
-import * as moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { MovieService } from 'src/app/shared/services/movie.service';

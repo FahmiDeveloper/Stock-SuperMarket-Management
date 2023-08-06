@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 import { ExpirationFormForMobileComponent } from './expiration-form-for-mobile/expiration-form-for-mobile.component';
 
@@ -23,7 +24,7 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Expiration>();
   dataSourceCopie = new MatTableDataSource<Expiration>();
-  displayedColumns: string[] = ['expiredPicture', 'content', 'cost', 'start','expiration', 'duration', 'rest', 'note', 'star'];
+  displayedColumns: string[] = ['content', 'cost', 'start','expiration', 'duration', 'rest', 'note', 'star'];
 
   content: string = '';
 
@@ -62,15 +63,14 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
 
       this.dataSource.data.forEach(expiration => {
         this.calculateDateDiff(expiration);
-        this.checkExpiredStatus(expiration);
         this.calculateRestDays(expiration);
       })
            
     });
   }
 
-  OnPageChange(event: PageEvent){
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  OnPageChange(elem: HTMLElement){
+    elem.scrollIntoView();
   }
 
   calculateDateDiff(expiration: Expiration) {
@@ -79,14 +79,6 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
     var dateDiff = new Date(dateExpiration - dateStart);
 
     expiration.duration = Math.abs(dateDiff.getUTCFullYear() - 1970) + "Y " + (dateDiff.getMonth()) + "M " + dateDiff.getDate() + "D";
-  }
-
-  checkExpiredStatus(expiration: Expiration) {
-    let currentDate = new Date();
-    let composedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-    let dateExpiration = new Date(expiration.dateExpiration);
-
-    expiration.isExpired = (composedDate.getTime() > dateExpiration.getTime()) ? true : false ;
   }
 
   calculateRestDays(expiration: Expiration) { 
@@ -104,7 +96,18 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
 
     expiration.restdays = years + "Y " + months + "M " + days + "D";
 
-    expiration.soonToExpire = (expiration.restdays == 0 + "Y " + 0 + "M " + 7 + "D") ? true : false;
+    expiration.isExpired = nowTime > dateExpiration || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D"  ? true : false ;
+    if (expiration.isExpired == false)
+    {
+      this.checkSoonToExpire(expiration);
+    }
+  }
+
+  checkSoonToExpire(expiration: Expiration) {
+    var dateNow = moment(new Date(),'yyyy-MM-DD');
+    var dateExp = moment(expiration.dateExpiration);
+
+    expiration.soonToExpire = dateExp.diff(dateNow, 'days') >= 1 && dateExp.diff(dateNow, 'days') <= 7  ? true : false ; 
   }
 
   newExpiration() {
@@ -152,6 +155,14 @@ export class ExpirationsForMobileComponent implements OnInit, OnDestroy {
         )
       }
     })
+  }
+
+  viewNote(expirationNote: string) {
+    Swal.fire({
+      text: expirationNote,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   ngOnDestroy() {

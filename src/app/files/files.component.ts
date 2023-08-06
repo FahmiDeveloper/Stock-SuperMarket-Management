@@ -54,7 +54,7 @@ export class FilesComponent implements OnInit, OnDestroy {
     {id: 1, title: 'Pictures', type: 'Picture', icon: '/assets/pictures/picture-file.jpg'},
     {id: 2, title: 'Pdf', type: 'Pdf', icon: '/assets/pictures/pdf-file.jpg'},
     {id: 3, title: 'Excel', type: 'Excel', icon: '/assets/pictures/excel-file.png'}, 
-    {id: 4, title: 'Text doc', type: 'Text document', icon: '/assets/pictures/txt-file.PNG'},
+    {id: 4, title: 'Text doc', type: 'Text doc', icon: '/assets/pictures/txt-file.PNG'},
     {id: 5, title: 'Zip', type: 'Zip', icon: '/assets/pictures/zip-file.PNG'},
     {id: 6, title: 'Links', type: 'Links', icon: '/assets/pictures/links.png'},
     {id: 7, title: 'Word', type: 'Word', icon: '/assets/pictures/word-file.jpg'}
@@ -314,6 +314,14 @@ export class FilesComponent implements OnInit, OnDestroy {
       verticalPosition: "bottom", // Allowed values are  'top' | 'bottom'
       horizontalPosition: "center" // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right'
     });
+  }
+
+  viewContentLink(linkContent: string) {
+    Swal.fire({
+      text: linkContent,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    }).then();
   }
   
 }

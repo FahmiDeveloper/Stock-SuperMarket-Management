@@ -3,10 +3,10 @@
     <h3 *ngIf="debt.key" mat-dialog-title class="text-application">Edit debt</h3>
 </div>
 
-<br>
-
 <div class="row">
+
     <div class="col-md-12">
+        
         <form (ngSubmit)="save()" #f="ngForm">
 
             <mat-grid-list cols="2" rowHeight="4:1" style="font-size: 20px;">
@@ -37,12 +37,12 @@
             <br>
 
             <div *ngIf="debt.isRestMoney || debt.debtForPay || debt.debtToGet">
-                <mat-form-field color="accent" style="width: 305px;">
+                <mat-form-field color="accent">
                     <input matInput #input type="date" placeholder="Date" [(ngModel)]="debt.date" name="date">
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field color="accent" style="width: 305px;">
+                <mat-form-field color="accent">
                     <mat-select placeholder="Place" [(ngModel)]="debt.placeId" name="placeId" [required]="debt.isRestMoney">
                         <mat-option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id" [hidden]="placeMoney.id == 5 && debt.isRestMoney">
                             {{placeMoney.place}}
@@ -51,17 +51,17 @@
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field color="accent" *ngIf="debt.isRestMoney" style="width: 305px;">
+                <mat-form-field color="accent" *ngIf="debt.isRestMoney">
                     <input matInput #input type="text" placeholder="Rest Money" [(ngModel)]="debt.restMoney" name="restMoney" required>
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field color="accent" *ngIf="debt.debtForPay || debt.debtToGet" style="width: 305px;">
+                <mat-form-field color="accent" *ngIf="debt.debtForPay || debt.debtToGet">
                     <input matInput #input type="text" placeholder="Debt" [(ngModel)]="debt.financialDebt" name="financialDebt" required>
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field color="accent" style="width: 305px;">
+                <mat-form-field color="accent">
                     <mat-select placeholder="Unit" [(ngModel)]="selectedUnit" name="selectedUnit" (selectionChange)="onSelectUnit()">
                         <mat-option *ngFor="let unit of units" [value]="unit.unitName">
                             {{unit.unitName}}
@@ -69,12 +69,12 @@
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field color="accent" *ngIf="debt.debtForPay" style="width: 305px;">
+                <mat-form-field color="accent" *ngIf="debt.debtForPay">
                     <input matInput #input type="text" placeholder="Creditor" [(ngModel)]="debt.creditor" name="creditor" required>
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field color="accent" *ngIf="debt.debtToGet" style="width: 305px;">
+                <mat-form-field color="accent" *ngIf="debt.debtToGet">
                     <input matInput #input type="text" placeholder="Debtor" [(ngModel)]="debt.debtor" name="debtor" required>
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
@@ -163,7 +163,7 @@
                     </mat-grid-list>
                 </div>
 
-                <mat-form-field color="accent" style="width: 305px;">
+                <mat-form-field color="accent">
                     <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="debt.note" name="note" rows="4" cols="80" required></textarea>
                 </mat-form-field>
             </div>

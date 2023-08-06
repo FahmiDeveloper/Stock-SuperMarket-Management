@@ -12,7 +12,7 @@
         <input matInput #input type="text" [(ngModel)]="medication.medicationName" name="medicationName" class="text-application" required>
       </mat-form-field>
   
-      <mat-form-field color="accent" class="text-application" style="width: 190px;">
+      <mat-form-field color="accent" class="text-application" style="width: 180px;">
         <mat-select placeholder="Disease" name="diseaseSelectedId" class="text-application" [(ngModel)]="diseaseSelected" required>
           <mat-option value=""></mat-option>
           <mat-option *ngFor="let disease of arrayDiseases" [value]="disease">
