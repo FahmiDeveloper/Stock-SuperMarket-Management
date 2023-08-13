@@ -39,13 +39,10 @@
                 </div>
               </div>   
 
-              <div *ngIf="!anime.notLiked && anime.type !== 'Movie' && anime.type !== 'Manga'" class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">
+              <div *ngIf="anime.season && !anime.notLiked && anime.type !== 'Movie' && anime.type !== 'Manga'" class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">
                 <div><dt>Season</dt></div>
                 <div></div>
-                <div>
-                  <span *ngIf="anime.season && !anime.notLiked">{{ anime.season }}</span>
-                  <span *ngIf="!anime.season && !anime.notLiked">?</span> 
-                </div>
+                <div>{{ anime.season }}</div>
               </div>
 
               <div class="gridForLegend" style="width:70%; height:100%; margin: auto; margin-top: 1em; margin-bottom: 1em;">

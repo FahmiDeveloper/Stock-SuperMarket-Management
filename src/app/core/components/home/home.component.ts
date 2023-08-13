@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isDesktop: boolean;
   isTablet: boolean;
+  isMobile: boolean;
+
   innerWidth: any;
   orientation: string = '';
   
@@ -119,6 +121,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isDesktop = this.deviceService.isDesktop();
     this.isTablet = this.deviceService.isTablet();
+    this.isMobile = this.deviceService.isMobile();
+    
     this.innerWidth = window.innerWidth;
 
     if(window.innerHeight > window.innerWidth){

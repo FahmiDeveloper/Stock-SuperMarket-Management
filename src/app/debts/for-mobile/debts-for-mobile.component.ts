@@ -552,7 +552,7 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
       if (result.value) {
         this.modalRefLodaing = this.dialogService.open(contentLoading, {
           width: '98vw',
-          height:'40vh',
+          height:'50vh',
           maxWidth: '100vw'
         });
 
