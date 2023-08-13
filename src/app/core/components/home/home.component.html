@@ -3,7 +3,7 @@
 <div *ngIf="isDesktop" [ngClass]="getClass()" class="text-application">
     <div [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '50%': '65%'}">
         <div class="card welcome-card">
-            <div class="card-head welcome-head-container">
+            <div class="card-head welcome-head-container" style="height: 15.6rem;">
                 <div class="col-left">
                     <div>Welcome Back!</div>
                     <p>Angular Dashboard</p>
@@ -230,13 +230,13 @@
 <div *ngIf="isTablet && orientation == 'Portrait'" [ngClass]="getClass()" class="text-application">
     <div>
         <div class="card welcome-card">
-            <div class="card-head welcome-head-container">
+            <div class="card-head welcome-head-container" style="height: 15.6rem;">
                 <div class="col-left">
                     <div>Welcome Back!</div>
                     <p>Angular Dashboard</p>
                 </div>
                 <div class="col-right">
-                    <img [src]="'assets/profile-bg-3.png'" alt="">
+                    <img [src]="'assets/profile-bg-3.png'" alt="" style="width: 115%;">
                 </div>
             </div>
             <div class="card-body welcome-body-container">
@@ -490,13 +490,13 @@
 
     <div>
         <div class="card welcome-card">
-            <div class="card-head welcome-head-container">
+            <div class="card-head welcome-head-container" style="height: 15.6rem;">
                 <div class="col-left">
                     <div>Welcome Back!</div>
                     <p>Angular Dashboard</p>
                 </div>
                 <div class="col-right">
-                    <img [src]="'assets/profile-bg-3.png'" alt="">
+                    <img [src]="'assets/profile-bg-3.png'" alt="" style="width: 122%;">
                 </div>
             </div>
             <div class="card-body welcome-body-container">
@@ -715,6 +715,247 @@
             <div class="card-head">Get Delayed</div>
             <div class="card-body">
                 <span>{{totalOutDebtsNotToGetForNow || '0DT'}}</span> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- Mobile and portrait or landscape-->
+
+<div *ngIf="isMobile && (orientation == 'Portrait' || orientation == 'Landscape')" [ngClass]="getClass()" class="text-application">
+    <div>
+        <div class="card welcome-card">
+            <div class="card-head welcome-head-container">
+                <div class="col-left">
+                    <div>Welcome Back!</div>
+                    <p>Angular Dashboard</p>
+                </div>
+                <div class="col-right">
+                    <img [src]="'assets/profile-bg-3.png'" alt="" style="width: 135%;">
+                </div>
+            </div>
+            <div class="card-body welcome-body-container">
+                <div class="col-left">
+                    <div class="avatar">
+                        <img [src]="'assets/user3.png'" alt="">
+                    </div>
+                    <div class="name">John Doe</div>
+                    <p>Web Developer</p>
+                </div>
+                <div class="col-right">
+                    <div class="performance-container">
+                        <div class="performance">
+                            <div>Performance</div>
+                            <div>80%</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+                    <div class="view-profile">
+                        <button>
+                            View profile
+                            <i class="far fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col task-col">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="task">
+                    <span class="bar"></span>
+                    <div class="details">
+                        <div class="details-name">Movies</div>
+                        <p>{{nbrMoviesToCheckToday}} to check today<br>{{nbrMoviesNotChecked}} not checked</p>
+                    </div>
+                    <i class="fa fa-film edit"></i>
+                    <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="task">
+                    <span class="bar"></span>
+                    <div class="details">
+                        <div class="details-name">Animes</div>
+                        <p>{{nbrAnimesToCheckToday}} to check today<br>{{nbrAnimesNotChecked}} not checked</p>
+                    </div>
+                    <i class="fa fa-rocket edit"></i>
+                    <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-tablet"></div>
+                </div>       
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="task">
+                    <span class="bar"></span>
+                    <div class="details">
+                        <div class="details-name">Series</div>
+                        <p>{{nbrSeriesToCheckToday}} to check today<br>{{nbrSeriesNotChecked}} not checked</p>
+                    </div>
+                    <i class="fa fa-television edit"></i>
+                    <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-tablet"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="task">
+                    <span class="bar"></span>
+                    <div class="details">
+                        <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
+                        <p>
+                            Tot late:&nbsp;
+                            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                            <br>
+                            Rest vac:&nbsp;
+                            <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
+                            <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
+                            day(s)
+                        </p>
+                    </div>
+                    <i class="fa fa-clock-o edit"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="task">
+                    <span class="bar"></span>
+                    <div class="details">
+                        <div class="details-name">Expirations</div>
+                        <p>
+                            Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
+                            <br>
+                            Expired:&nbsp;{{contentsExpiredList.length}}
+                        </p>
+                    </div>
+                    &nbsp;&nbsp;
+                    <i class="fa fa-calendar edit"></i>
+                    <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-tablet"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="task">
+                    <span class="bar"></span>
+                    <div class="details">
+                        <div class="details-name">Find content</div>
+                        <p>
+                            May be add users
+                            <br>
+                            Or other thing
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Pocket</span>&nbsp;&nbsp;{{restInPocket}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Wallet</span>&nbsp;&nbsp;{{restInWallet}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Envelope</span>&nbsp;&nbsp;{{restInEnvelope}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Box</span>&nbsp;&nbsp;{{restInBox}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Poste Account</span>&nbsp;&nbsp;{{restInPosteAccount}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Debts (In/Out)</span>&nbsp;&nbsp;<span>{{ totalInDebts || '0DT' }}</span>/<span>{{ totalOutDebts || '0DT' }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row"><div class="col-md-12"><h4>Pay</h4></div></div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">This Month</span>&nbsp;&nbsp;{{totalInDebtsToPayThisMonth || '0DT'}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Next Month</span>&nbsp;&nbsp;{{totalInDebtsToPayNextMonth || '0DT'}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Delayed</span>&nbsp;&nbsp;{{totalInDebtsNotToPayForNow || '0DT'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row"><div class="col-md-12"><h4>Get</h4></div></div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">This Month</span>&nbsp;&nbsp;{{totalOutDebtsToGetThisMonth || '0DT'}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Next Month</span>&nbsp;&nbsp;{{totalOutDebtsToGetNextMonth || '0DT'}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="task">
+                    <div class="details">
+                        <div><span class="details-name">Delayed</span>&nbsp;&nbsp;{{totalOutDebtsNotToGetForNow || '0DT'}}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

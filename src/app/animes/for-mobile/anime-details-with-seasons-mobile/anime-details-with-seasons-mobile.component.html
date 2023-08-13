@@ -80,15 +80,12 @@
       </button>
 
       <button
-        *ngIf="!anime.notLiked && anime.type !== 'Movie' && anime.type !== 'Manga'"
+        *ngIf="anime.season && !anime.notLiked && anime.type !== 'Movie' && anime.type !== 'Manga'"
         mat-menu-item 
         class="text-application">
         <div class="gridForLegend">
           <div><dt>Seas</dt></div>
-          <div>
-            <span *ngIf="anime.season && !anime.notLiked">{{ anime.season }}</span>
-            <span *ngIf="!anime.season && !anime.notLiked">?</span> 
-          </div>
+           <div>{{ anime.season }}</div>
         </div>
       </button>
 

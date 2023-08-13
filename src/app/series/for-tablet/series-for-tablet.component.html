@@ -90,7 +90,7 @@
         </button>
 
         <button
-            *ngIf="serie.statusId !== 3 && (serie.currentEpisode || serie.totalEpisodes)"
+            *ngIf="(!statusId && !serie.season && serie.statusId !== 3) || (statusId && statusId !== 3) || showSeriesNotChecked"
             mat-menu-item 
             class="text-application">
             Eps&nbsp;&nbsp;&nbsp;&nbsp;
