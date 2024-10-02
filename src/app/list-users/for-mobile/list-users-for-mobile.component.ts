@@ -23,7 +23,7 @@ export class ListUsersForMobileComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<FirebaseUserModel>();
   displayedColumns: string[] = ['picture', 'name', 'email', 'password', 'connected' , 'star'];
 
-  queryEmail: string = '';
+  queryEmail = '';
 
   subscriptionForGetAllUsers: Subscription;
 

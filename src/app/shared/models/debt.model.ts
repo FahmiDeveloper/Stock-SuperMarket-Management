@@ -12,6 +12,7 @@ export class Debt {
   place: string;
   isRestMoney: boolean;
   numRefDebt: number;
+  envelopeId: number;
 
   // used in debts module
   debtForPay: boolean;
@@ -39,7 +40,7 @@ export class Debt {
   firstPartComposedFinancialOutDebtByDebtor:string;
   secondPartComposedFinancialOutDebtByDebtor:string;
 
-  // used for To Pay statistics in home
+  // used to Pay statistics in home
   debtWithConvertToPayThisMonth:string;
   firstPartComposedDebtWithConvertToPayThisMonth:string;
   secondPartComposedDebtWithConvertToPayThisMonth:string;
@@ -53,7 +54,7 @@ export class Debt {
   secondPartComposedDebtWithConvertNotToPayForNow:string;
 
 
-  // used for To get statistics in home
+  // used to get statistics in home
   debtWithConvertToGetThisMonth:string;
   firstPartComposedDebtWithConvertToGetThisMonth:string;
   secondPartComposedDebtWithConvertToGetThisMonth:string;
@@ -98,4 +99,9 @@ export interface StatusInDebts{
 
 export interface Unit {
   unitName: string
+}
+
+export interface EnvelopesList {
+  id: number,
+  envelopeFor: string
 }

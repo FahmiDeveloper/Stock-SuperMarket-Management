@@ -2,13 +2,13 @@
 
 <div class="row">
 
-    <div class="col-md-4">
+    <div class="col-md-3">
 
-        <mat-form-field class="text-application" style="width: 250px;">
-            <mat-label>Place</mat-label>
-			<mat-select name="placeId" [(ngModel)]="placeId" (selectionChange)="getAllDebts()">
+        <mat-form-field class="text-application" style="width: 200px;">
+            <mat-placeholder>Place</mat-placeholder>
+			<mat-select class="text-application" name="placeId" [(ngModel)]="placeId" (selectionChange)="getAllDebts()">
                 <mat-option value=""></mat-option>
-				<mat-option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
+				<mat-option class="text-application" *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id">
                     {{placeMoney.place}}
 				</mat-option>
 			</mat-select>
@@ -16,11 +16,20 @@
 
     </div>
 
-    <div class="col-md-2"></div>
+    <div class="col-md-3">
+        <mat-form-field *ngIf="placeId == 3" color="accent" class="text-application" style="width: 200px">
+            <mat-select placeholder="Envelope for" class="text-application" [(ngModel)]="envelopeId" name="envelopeId" (selectionChange)="getAllDebts()">
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let envelope of envelopesList" [value]="envelope.id">
+                    <span class="text-application">{{envelope.envelopeFor}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
 
     <div class="col-md-2">
 
-        <button 
+        <button
             mat-flat-button 
             (click)="showRest(contentRestMoneyForeachPlace)" 
             class="text-application"
@@ -84,8 +93,8 @@
     <mat-grid-list cols="6" rowHeight="5:1" style="font-size: 20px;">
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile class="text-application">Pocket</mat-grid-tile>
         <mat-grid-tile class="text-application" style="color: #dc3545;">{{ restInPocket }}</mat-grid-tile>
-        <mat-grid-tile>: الجيب</mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
@@ -95,8 +104,8 @@
     <mat-grid-list cols="6" rowHeight="5:1" style="font-size: 20px;">
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile class="text-application">Wallet</mat-grid-tile>
         <mat-grid-tile class="text-application" style="color: #dc3545;">{{ restInWallet }}</mat-grid-tile>
-        <mat-grid-tile>: المحفظة</mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
@@ -106,8 +115,35 @@
     <mat-grid-list cols="6" rowHeight="5:1" style="font-size: 20px;">
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
-        <mat-grid-tile class="text-application" style="color: #dc3545;">{{ restInEnvelope }}</mat-grid-tile>
-        <mat-grid-tile>: الظرف</mat-grid-tile>
+        <mat-grid-tile class="text-application">
+            <span *ngIf="!envelopeId">Envelopes</span>
+            <span *ngIf="envelopeId">
+                <span *ngIf="envelopeId == 1">Taxi</span>
+                <span *ngIf="envelopeId == 2">Internet</span>
+                <span *ngIf="envelopeId == 3">Water/Elec</span>
+                <span *ngIf="envelopeId == 4">Bein sports</span>
+                <span *ngIf="envelopeId == 5">Home Location</span>
+                <span *ngIf="envelopeId == 6">Home Supplies</span>
+            </span>        
+        </mat-grid-tile>
+        <mat-grid-tile class="text-application">
+            <button
+                *ngIf="!envelopeId"
+                mat-flat-button 
+                (click)="showRestEnvelope(contentRestMoneyForeachEnve)" 
+                class="text-application"
+                style="position: absolute;top: 50%;transform: translateY(-50%);background: #263238;color: white;">
+                Content
+            </button>
+            <span *ngIf="envelopeId" style="color: #dc3545;">
+                <span *ngIf="envelopeId == 1">{{ restInEnvTaxi }}</span>
+                <span *ngIf="envelopeId == 2">{{ restInEnvInternet }}</span>
+                <span *ngIf="envelopeId == 3">{{ restInEnvWaterElec }}</span>
+                <span *ngIf="envelopeId == 4">{{ restInEnvBeinSports }}</span>
+                <span *ngIf="envelopeId == 5">{{ restInEnvHomeLoc }}</span>
+                <span *ngIf="envelopeId == 6">{{ restInEnvHomeSupp }}</span>
+            </span>  
+        </mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
@@ -117,33 +153,19 @@
     <mat-grid-list cols="6" rowHeight="5:1" style="font-size: 20px;">
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile class="text-application">Box</mat-grid-tile>
         <mat-grid-tile class="text-application" style="color: #dc3545;">{{ restInBox }}</mat-grid-tile>
-        <mat-grid-tile>: الصندوق</mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
 </div>
 
 <div *ngIf="placeId == 5">
-    <mat-grid-list cols="8" rowHeight="3:1" style="font-size: 20px;">
+    <mat-grid-list cols="12" rowHeight="3:1" style="font-size: 20px;">
         
         <mat-grid-tile></mat-grid-tile>
-
-        <mat-grid-tile>الدين المسال</mat-grid-tile>
-
-        <mat-grid-tile>
-            <mat-checkbox 
-                name="getOutDebt" 
-                [(ngModel)]="getOutDebt" 
-                (ngModelChange)="showOutDebt()">
-            </mat-checkbox>
-        </mat-grid-tile>
-
         <mat-grid-tile></mat-grid-tile>
-
         <mat-grid-tile></mat-grid-tile>
-
-        <mat-grid-tile>الدين المتخلد</mat-grid-tile>
 
         <mat-grid-tile>
             <mat-checkbox 
@@ -153,6 +175,24 @@
             </mat-checkbox>
         </mat-grid-tile>
 
+        <mat-grid-tile>Debt in</mat-grid-tile>    
+
+        <mat-grid-tile></mat-grid-tile>
+
+        <mat-grid-tile></mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-checkbox 
+                name="getOutDebt" 
+                [(ngModel)]="getOutDebt" 
+                (ngModelChange)="showOutDebt()">
+            </mat-checkbox>
+        </mat-grid-tile>
+
+        <mat-grid-tile>Debt out</mat-grid-tile>
+
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         
     </mat-grid-list>
@@ -169,6 +209,8 @@
 
                 <mat-grid-list cols="2" rowHeight="4:1">
 
+                    <mat-grid-tile><span style="font-size: 20px;">Total</span></mat-grid-tile>
+
                     <mat-grid-tile>
                         <span style="font-size: 20px;">
                             <span *ngIf="getInDebt">
@@ -182,7 +224,7 @@
                         </span>    
                     </mat-grid-tile>
 
-                    <mat-grid-tile><span style="font-size: 20px;">المجموع</span></mat-grid-tile>
+                    <mat-grid-tile><span style="font-size: 20px;">Pay time</span></mat-grid-tile>
 
                     <mat-grid-tile>
                         <mat-form-field>
@@ -202,7 +244,10 @@
                         </mat-form-field>
                     </mat-grid-tile>
 
-                    <mat-grid-tile><span style="font-size: 20px;">وقت الدفع</span></mat-grid-tile>
+                    <mat-grid-tile>
+                        <span *ngIf="getInDebt" style="font-size: 20px;">Creditors</span>
+                        <span *ngIf="getOutDebt" style="font-size: 20px;">Debtors</span>
+                    </mat-grid-tile>
 
                     <mat-grid-tile>
                         <mat-form-field>
@@ -222,9 +267,8 @@
                         </mat-form-field>
                     </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <span *ngIf="getInDebt" style="font-size: 20px;">الدائنين</span>
-                        <span *ngIf="getOutDebt" style="font-size: 20px;">المدينين</span>
+                    <mat-grid-tile *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
+                        <span style="font-size: 20px;">Debt</span>
                     </mat-grid-tile>
 
                     <mat-grid-tile *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
@@ -236,10 +280,6 @@
                             <span *ngIf="totalOutDebtsByDebtor">{{ totalOutDebtsByDebtor }}</span>
                             <span *ngIf="!totalOutDebtsByDebtor">0DT</span>
                         </span>     
-                    </mat-grid-tile>
-
-                    <mat-grid-tile *ngIf="statusInDebtId || statusOutDebtId || creditorName || debtorName">
-                        <span style="font-size: 20px;">الدين</span>
                     </mat-grid-tile>
 
                   </mat-grid-list>
@@ -257,8 +297,8 @@
     <mat-grid-list cols="6" rowHeight="5:1" style="font-size: 20px;">
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile class="text-application">Poste account</mat-grid-tile>
         <mat-grid-tile class="text-application" style="color: #dc3545;">{{ restInPosteAccount }}</mat-grid-tile>
-        <mat-grid-tile>: الحساب البريدي</mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
@@ -270,12 +310,12 @@
 
     <thead style="background: #263238;color: white;">
       <tr class="text-application text-center">
+        <th scope="col">Date</th>
+        <th scope="col">Place</th>
+        <th scope="col">Rest</th>
         <th scope="col">Debtor</th>
         <th scope="col">Creditor</th>
         <th scope="col">Debt</th>
-        <th scope="col">Rest</th>
-        <th scope="col">Date</th>
-        <th scope="col">Place</th>
         <th scope="col">Status</th>
         <th scope="col" [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '15rem': '30rem'}">Note</th>
       </tr>
@@ -283,6 +323,27 @@
 
     <tbody>
       <tr *ngFor="let debt of (debtsList | paginate: { itemsPerPage: 8 , currentPage: p })" class="text-application text-center" (contextmenu)="onRightClick($event, debt)" style="background-color: white;">
+
+        <td>{{ debt.date | date:'dd/MM/yyyy' }}</td>
+
+        <td>
+            {{ debt.place }}
+            <ng-container *ngIf="debt.placeId == 3">
+                (
+                <span *ngIf="debt.envelopeId == 1">Taxi</span>
+                <span *ngIf="debt.envelopeId == 2">Internet</span>
+                <span *ngIf="debt.envelopeId == 3">Water/Elec</span>
+                <span *ngIf="debt.envelopeId == 4">Bein sports</span>
+                <span *ngIf="debt.envelopeId == 5">Home Location</span>
+                <span *ngIf="debt.envelopeId == 6">Home Supplies</span>
+                )
+            </ng-container>
+        </td>
+
+        <td>
+            <span *ngIf="debt.restMoney">{{ debt.restMoney }}</span>
+            <span *ngIf="!debt.restMoney">-</span>
+        </td>
 
         <td>
             <span *ngIf="debt.debtor">{{ debt.debtor }}</span>
@@ -297,16 +358,7 @@
         <td>
             <span *ngIf="debt.financialDebt">{{ debt.financialDebt }}</span>
             <span *ngIf="!debt.financialDebt">-</span>
-        </td>
-
-        <td>
-            <span *ngIf="debt.restMoney">{{ debt.restMoney }}</span>
-            <span *ngIf="!debt.restMoney">-</span>
-        </td>
-
-        <td>{{ debt.date | date:'dd/MM/yyyy' }}</td>
-
-        <td>{{ debt.place }}</td>
+        </td>  
 
         <td>
             <span *ngIf="debt.placeId === 5">
@@ -380,8 +432,8 @@
     </div>
 
     <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
+        <mat-grid-tile>Pocket</mat-grid-tile>
         <mat-grid-tile>{{ restInPocket }}</mat-grid-tile>
-        <mat-grid-tile>: الجيب</mat-grid-tile>
     </mat-grid-list>
     
     <br>
@@ -389,8 +441,8 @@
     <br>
     
     <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
+        <mat-grid-tile>Wallet</mat-grid-tile>
         <mat-grid-tile>{{ restInWallet }}</mat-grid-tile>
-        <mat-grid-tile>: المحفظة</mat-grid-tile>
     </mat-grid-list>
 
     <br>
@@ -398,17 +450,17 @@
     <br>
     
     <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
-        <mat-grid-tile>{{ restInEnvelope }}</mat-grid-tile>
-        <mat-grid-tile>: الظرف</mat-grid-tile>
-    </mat-grid-list>
-
-    <br>
-    <mat-divider></mat-divider>
-    <br>
-    
-    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
+        <mat-grid-tile>Box</mat-grid-tile>
         <mat-grid-tile>{{ restInBox }}</mat-grid-tile>
-        <mat-grid-tile>: الصندوق</mat-grid-tile>
+    </mat-grid-list>
+
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">    
+        <mat-grid-tile>Poste account</mat-grid-tile>
+        <mat-grid-tile>{{ restInPosteAccount }}</mat-grid-tile>
     </mat-grid-list>
 
     <br>
@@ -416,8 +468,77 @@
     <br>
     
     <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
-        <mat-grid-tile>{{ restInPosteAccount }}</mat-grid-tile>
-        <mat-grid-tile>: الحساب البريدي</mat-grid-tile>
+        <mat-grid-tile>Envelopes</mat-grid-tile>
+        <mat-grid-tile>
+            <button 
+                mat-flat-button 
+                (click)="showRestEnvelope(contentRestMoneyForeachEnve)" 
+                class="text-application"
+                style="position: absolute;top: 50%;transform: translateY(-50%);background: #263238;color: white;">
+                Content
+            </button>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+</ng-template>
+
+<ng-template #contentRestMoneyForeachEnve>
+
+    <div mat-dialog-title class="dialog-title">
+        <h3 class="text-application">Content Money</h3>
+        <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+          <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
+        <mat-grid-tile>Taxi</mat-grid-tile>
+        <mat-grid-tile>{{ restInEnvTaxi }}</mat-grid-tile>
+    </mat-grid-list>
+    
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
+        <mat-grid-tile>Internet</mat-grid-tile>
+        <mat-grid-tile>{{ restInEnvInternet }}</mat-grid-tile>
+    </mat-grid-list>
+
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">
+        <mat-grid-tile>Water/Elec</mat-grid-tile>
+        <mat-grid-tile>{{ restInEnvWaterElec }}</mat-grid-tile>
+    </mat-grid-list>
+
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">    
+        <mat-grid-tile>Bein sports</mat-grid-tile>
+        <mat-grid-tile>{{ restInEnvBeinSports }}</mat-grid-tile>
+    </mat-grid-list>
+
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">    
+        <mat-grid-tile>Home Location</mat-grid-tile>
+        <mat-grid-tile>{{ restInEnvHomeLoc }}</mat-grid-tile>
+    </mat-grid-list>
+
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    
+    <mat-grid-list cols="2" rowHeight="4:1" class="text-application" style="font-size: 20px;">    
+        <mat-grid-tile>Home Supplies</mat-grid-tile>
+        <mat-grid-tile>{{ restInEnvHomeSupp }}</mat-grid-tile>
     </mat-grid-list>
 
 </ng-template>

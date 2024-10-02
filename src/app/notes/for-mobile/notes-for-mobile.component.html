@@ -2,9 +2,15 @@
 
 <div class="row">
     <div class="col-md-12">
-        <mat-form-field class="text-application" style="width: 200px;">
-            <mat-label>Content</mat-label>
-            <input matInput type="text" name="content" (keyup)="getAllNotes()" [(ngModel)]="content"/>
+        <mat-form-field style="width: 200px;">
+            <mat-label>Keyword</mat-label>
+            <mat-select name="keywordSelected" class="text-application" [(ngModel)]="keywordSelected" (openedChange)="onSelectOpened($event)" (selectionChange)="getAllNotes()">
+                <input #searchInput class="input-search text-application" matInput type="text" name="keywordForSearch" (keyup)="filterOptions()" [(ngModel)]="keywordForSearch"/>
+                <mat-option value=""></mat-option>
+                <mat-option *ngFor="let keyword of keywordsList" [value]="keyword">
+                    <span class="text-application">{{keyword}}</span>
+                </mat-option>
+            </mat-select>
         </mat-form-field>
         <button 
             type="button" 
@@ -14,24 +20,6 @@
             <mat-icon style="color: white;">add</mat-icon>
         </button>
     </div>
-</div>
-
-<div class="row">
-
-    <div class="col-md-4">
-
-        <mat-form-field style="width: 200px;">
-            <mat-label>Keyword</mat-label>
-            <mat-select name="keywordSelected" class="text-application" [(ngModel)]="keywordSelected" (selectionChange)="getAllNotes()">
-                <mat-option value=""></mat-option>
-                <mat-option *ngFor="let keyword of keywordsList" [value]="keyword">
-                    <span class="text-application">{{keyword}}</span>
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-    </div>
-
 </div>
 
 <br>
@@ -103,5 +91,5 @@
 <br>
 
 <div *ngIf="notesList.length !== 0" class="pagination">
-    <pagination-controls (pageChange)="p = $event;OnPageChange(target)"></pagination-controls>
+    <pagination-controls (pageChange)="p = $event;OnPageChange(target)" responsive="true"></pagination-controls>
 </div>

@@ -19,8 +19,8 @@ import { FirebaseUserModel } from 'src/app/shared/models/user.model';
 export class RegisterComponent implements OnInit, OnDestroy {
 
   registerForm: FormGroup;
-  errorMessage: string = '';
-  successMessage: string = '';
+  errorMessage = '';
+  successMessage = '';
 
   isMobile: boolean;
   hide = true;

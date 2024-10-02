@@ -27,24 +27,24 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
   raisedElevation = 8;
 
   statusMovies: StatusMovies[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private movieService: MovieService, 
+    private movieService: MovieService,
     public dialogRef: MatDialogRef<MovieDetailsWithPartsDesktopComponent>,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   editMovie(movie?: Movie) {
-    const dialogRef = this.dialogService.open(MovieFormDesktopComponent, {width: '500px'});
+    const dialogRef = this.dialogService.open(MovieFormDesktopComponent, { width: '500px' });
     dialogRef.componentInstance.movie = movie;
     dialogRef.componentInstance.allMovies = this.allMovies;
   }
@@ -61,7 +61,7 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
       if (result.value) {
         this.movieService.delete(movieId);
         this.listPartsByParentFilmKey.forEach((movie, index) => {
-          if(movie.key === movieId) this.listPartsByParentFilmKey.splice(index,1);
+          if (movie.key === movieId) this.listPartsByParentFilmKey.splice(index, 1);
         });
         if (this.listPartsByParentFilmKey.length == 0) {
           this.dialogRef.close();
@@ -77,8 +77,8 @@ export class MovieDetailsWithPartsDesktopComponent implements OnInit {
       }
     })
   }
-  
-  copyText(text: string){
+
+  copyText(text: string) {
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

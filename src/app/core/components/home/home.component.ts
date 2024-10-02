@@ -17,6 +17,8 @@ import { Serie } from 'src/app/shared/models/serie.model';
 import { Expiration } from 'src/app/shared/models/expiration.model';
 import { Debt } from 'src/app/shared/models/debt.model';
 import { Clocking } from 'src/app/shared/models/clocking.model';
+import { NotificationService } from 'src/app/notification.service';
+import { MessagingService } from 'src/app/messaging.service';
 
 @Component({
   selector: 'app-home',
@@ -31,45 +33,51 @@ export class HomeComponent implements OnInit, OnDestroy {
   isMobile: boolean;
 
   innerWidth: any;
-  orientation: string = '';
+  orientation = '';
   
-  nbrMoviesToCheckToday: number = 0;
-  nbrMoviesNotChecked: number = 0;
+  nbrMoviesToCheckToday = 0;
+  nbrMoviesNotChecked = 0;
 
-  nbrAnimesToCheckToday: number = 0;
-  nbrAnimesNotChecked: number = 0;
+  nbrAnimesToCheckToday = 0;
+  nbrAnimesNotChecked = 0;
 
-  nbrSeriesToCheckToday: number = 0;
-  nbrSeriesNotChecked: number = 0;
+  nbrSeriesToCheckToday = 0;
+  nbrSeriesNotChecked = 0;
 
   contentsExpiredList: Expiration[] = [];
   contentsSoonToExpireList: Expiration[] = [];
 
-  currentMonth: string = '';
+  currentMonth = '';
   currentYear: number;
   sumClockingLate: number;
-  monthForCalculTotalClockingLateAndRestVac: string = '';
+  monthForCalculTotalClockingLateAndRestVac = '';
   clockingsListForCalculTotalClockingLate: Clocking[] = []
   minutePartList: number[] = [];
-  totalClockingLate: number = 0;
-  totalClockingLateByHoursMinute: string = '';
-  vacationLimitDays: number = 0;
+  totalClockingLate = 0;
+  totalClockingLateByHoursMinute = '';
+  vacationLimitDays = 0;
 
   // debts variables
-  totalInDebt: number= 0;
-  totalOutDebt: number= 0;
+  totalInDebt = 0;
+  totalOutDebt = 0;
   allDebts: Debt[] = [];
-  totalInDebts: string = "";
+  totalInDebts = '';
   defaultTotalInDebts: number;
   customTotalInDebts: number;
-  totalOutDebts: string = "";
+  totalOutDebts = '';
   defaultTotalOutDebts: number;
   customTotalOutDebts: number;
-  restInPocket: string = "";
-  restInWallet: string = "";
-  restInEnvelope: string = "";
-  restInBox: string = "";
-  restInPosteAccount: string = "";
+  restInPocket = '';
+  restInWallet = '';
+  restInEnvelope = '';
+  restInBox = '';
+  restInPosteAccount = '';
+  restInEnvTaxi = '';
+  restInEnvInternet = '';
+  restInEnvWaterElec = '';
+  restInEnvBeinSports = '';
+  restInEnvHomeLoc = '';
+  restInEnvHomeSupp = '';
   totalInDebtsByByTimeToPay: string;
   customTotalInDebtsByTimeToPay: number;
   defaultTotalInDebtsByTimeToPay: number;
@@ -108,6 +116,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllClockings: Subscription;
 
+  message;
+  token: string | null = null;
+
   constructor(
     private movieService: MovieService,
     private animeService: AnimeService,
@@ -115,10 +126,26 @@ export class HomeComponent implements OnInit, OnDestroy {
     public expirationService: ExpirationService,
     private debtService: DebtService,
     public clockingService: ClockingService,
+    // private notificationService: NotificationService,
+    // private messagingService: MessagingService,
     private deviceService: DeviceDetectorService
   ) {}
 
   ngOnInit(): void {
+    // this.messagingService.requestPermission();
+    // this.messagingService.receiveMessage();
+    // this.messagingService.currentMessage.subscribe((msg) => {
+    //   this.message = msg;
+    // });
+    // this.messagingService.requestPermission().subscribe(
+    //   (token) => {
+    //     this.token = token;
+    //     this.sendNotification();
+    //   },
+    //   (error) => {
+    //     console.error('Permission denied or error: ', error);
+    //   }
+    // );
     this.isDesktop = this.deviceService.isDesktop();
     this.isTablet = this.deviceService.isTablet();
     this.isMobile = this.deviceService.isMobile();
@@ -231,19 +258,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     .subscribe((expirations: Expiration[]) => {
 
       this.contentsExpiredList = [];
+      const nowTime = new Date();
 
       expirations.forEach(expiration => {
-        const now = new Date();
-        const dateExpiration = (new Date(expiration.dateExpiration)).getTime();
-        const nowTime = now.getTime();
+        const dateExpiration = new Date(expiration.dateExpiration);
+    
+        const diff = Math.abs(dateExpiration.getTime() - nowTime.getTime());
 
-        const diff = Math.abs(dateExpiration - nowTime);
+        let diffInDays  = Math.round(diff / (1000 * 60 * 60  * 24));
 
-        let diffEnDays  = Math.round(diff / (1000 * 60 * 60  * 24));
-
-        var years = Math.floor(diffEnDays / 365);
-        var months = Math.floor(diffEnDays % 365 / 30);
-        var days = Math.floor(diffEnDays % 365 % 30);
+        var years = Math.floor(diffInDays / 365);
+        var months = Math.floor(diffInDays % 365 / 30);
+        var days = Math.floor(diffInDays % 365 % 30);
 
         expiration.restdays = years + "Y " + months + "M " + days + "D";
 
@@ -251,12 +277,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.contentsExpiredList.push(expiration);
         }
 
-        var dateNow = moment(new Date(),'yyyy-MM-DD');
-        var dateExp = moment(expiration.dateExpiration);
-
-        if (dateExp.diff(dateNow, 'days') >= 1 && dateExp.diff(dateNow, 'days') <= 7) {
+        if (nowTime < dateExpiration && years == 0 && months == 0 && days >= 1 && days <= 7) {
           this.contentsSoonToExpireList.push(expiration);
         }
+
       })        
     });
   }
@@ -267,6 +291,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     .subscribe(debts => {
       this.allDebts = debts;
       this.getRestMoneyForeachPlace();
+      this.getRestMoneyForeachEnvelope();
       this.getTotalIntDebts();
       this.getTotalOutDebts();
       this.getTotalInDebtsToPayThisMonth();
@@ -281,19 +306,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   getRestMoneyForeachPlace() {
     let debtForRestInPocket = this.allDebts.filter(debt => debt.placeId == 1).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInWallet = this.allDebts.filter(debt => debt.placeId == 2).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
-    let debtForRestInEnvelope = this.allDebts.filter(debt => debt.placeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInBox = this.allDebts.filter(debt => debt.placeId == 4).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInPosteAccount = this.allDebts.filter(debt => debt.placeId == 6).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
 
     this.restInPocket = debtForRestInPocket ? debtForRestInPocket.restMoney : '0DT';
-
     this.restInWallet = debtForRestInWallet ? debtForRestInWallet.restMoney : '0DT';
-
-    this.restInEnvelope = debtForRestInEnvelope ? debtForRestInEnvelope.restMoney : '0DT';
-
     this.restInBox = debtForRestInBox ? debtForRestInBox.restMoney : '0DT';
-
     this.restInPosteAccount = debtForRestInPosteAccount ? debtForRestInPosteAccount.restMoney : '0DT';
+  }
+
+  getRestMoneyForeachEnvelope() {
+    let debtForRestInEnvTaxi = this.allDebts.filter(debt => debt.placeId == 3 && debt.envelopeId == 1).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvInternet = this.allDebts.filter(debt => debt.placeId == 3 && debt.envelopeId == 2).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvWaterElec = this.allDebts.filter(debt => debt.placeId == 3 && debt.envelopeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvBeinSports = this.allDebts.filter(debt => debt.placeId == 3 && debt.envelopeId == 4).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvHomeLoc = this.allDebts.filter(debt => debt.placeId == 3 && debt.envelopeId == 5).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvHomeSupp = this.allDebts.filter(debt => debt.placeId == 3 && debt.envelopeId == 6).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+
+    this.restInEnvTaxi = debtForRestInEnvTaxi ? debtForRestInEnvTaxi.restMoney : '0DT';
+    this.restInEnvInternet = debtForRestInEnvInternet ? debtForRestInEnvInternet.restMoney : '0DT';
+    this.restInEnvWaterElec = debtForRestInEnvWaterElec ? debtForRestInEnvWaterElec.restMoney : '0DT';
+    this.restInEnvBeinSports = debtForRestInEnvBeinSports ? debtForRestInEnvBeinSports.restMoney : '0DT';
+    this.restInEnvHomeLoc = debtForRestInEnvHomeLoc ? debtForRestInEnvHomeLoc.restMoney : '0DT';
+    this.restInEnvHomeSupp = debtForRestInEnvHomeSupp ? debtForRestInEnvHomeSupp.restMoney : '0DT';
   }
 
   getTotalIntDebts() { 
@@ -740,6 +775,25 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.totalClockingLateByHoursMinute = hours +"H "+ minutes +"Min";
     }
   }
+
+  // sendNotification() {
+  //   if (this.token) {
+  //     this.notificationService.sendNotification(
+  //       this.token,
+  //       'Notification Title',
+  //       'This is the notification body'
+  //     ).subscribe(
+  //       (response) => {
+  //         console.log('Notification sent successfully: ', response);
+  //       },
+  //       (error) => {
+  //         console.error('Error sending notification: ', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('User token not found!');
+  //   }
+  // }
 
   ngOnDestroy() {
     this.subscriptionForGetAllMoviesToCheckToday.unsubscribe();

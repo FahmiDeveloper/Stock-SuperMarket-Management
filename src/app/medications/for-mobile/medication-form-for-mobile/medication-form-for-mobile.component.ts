@@ -28,7 +28,7 @@ export class MedicationFormForMobileComponent implements OnInit {
   medication: Medication = new Medication();
   diseaseSelected: Disease = new Disease();
 
-  selectedUnit:string;
+  selectedUnit: string;
 
   basePath = '/PicturesMedications';
   task: AngularFireUploadTask;

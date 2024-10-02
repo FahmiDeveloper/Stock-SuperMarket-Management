@@ -30,19 +30,19 @@ export class FilesComponent implements OnInit, OnDestroy {
   linksList: Link[]= [];
   arrayLinksForNewLink: Link[]= [];
 
-  p: number = 1;
+  p = 1;
 
-  content: string = '';
+  content = '';
   numContextFile: number;
   typeFile: TypesFiles;
   isDesktop: boolean;
   isTablet: boolean;
   isMobile: boolean;
   defaultArrayFiles: FileUpload[] = [];
-  angularContext: boolean = false;
-  otherContext: boolean = false;
+  angularContext = false;
+  otherContext = false;
   itemsPerPage: number;
-  orientation: string = '';
+  orientation = '';
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 

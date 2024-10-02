@@ -23,7 +23,7 @@ export class ListUsersForDesktopComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<FirebaseUserModel>();
   displayedColumns: string[] = ['picture','details', 'movies', 'animes', 'series', 'files', 'debts', 'star'];
-  queryEmail: string = '';
+  queryEmail = '';
 
   subscriptionForGetAllUsers: Subscription;
 

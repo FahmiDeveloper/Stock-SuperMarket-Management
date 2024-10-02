@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit{
 
   allUsers: FirebaseUserModel[] = [];
   loginForm: FormGroup;
-  errorMessage: string = '';
+  errorMessage = '';
 
   isMobile: boolean;
   hide = true;

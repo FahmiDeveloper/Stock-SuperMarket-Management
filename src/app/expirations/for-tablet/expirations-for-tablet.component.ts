@@ -24,9 +24,9 @@ export class ExpirationsForTabletComponent implements OnInit, OnDestroy {
   expirationsList: Expiration[] = [];
   expirationsListCopie: Expiration[] = [];
 
-  p: number = 1;
+  p = 1;
 
-  content: string = '';
+  content = '';
   innerWidth: any;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
@@ -79,33 +79,31 @@ export class ExpirationsForTabletComponent implements OnInit, OnDestroy {
     expiration.duration = Math.abs(dateDiff.getUTCFullYear() - 1970) + "Y " + (dateDiff.getMonth()) + "M " + dateDiff.getDate() + "D";
   }
 
-  calculateRestDays(expiration: Expiration) { 
-    const now = new Date();
-    const dateExpiration = (new Date(expiration.dateExpiration)).getTime();
-    const nowTime = now.getTime();
+  calculateRestDays(expiration: Expiration) {
+    const nowTime = new Date();
+    const dateExpiration = new Date(expiration.dateExpiration);
 
-    const diff = Math.abs(dateExpiration - nowTime);
+    const diff = Math.abs(dateExpiration.getTime() - nowTime.getTime());
 
-    let diffEnDays  = Math.round(diff / (1000 * 60 * 60  * 24));
+    let diffInDays  = Math.round(diff / (1000 * 60 * 60  * 24));
 
-    var years = Math.floor(diffEnDays / 365);
-    var months = Math.floor(diffEnDays % 365 / 30);
-    var days = Math.floor(diffEnDays % 365 % 30);
+    var years = Math.floor(diffInDays / 365);
+    var months = Math.floor(diffInDays % 365 / 30);
+    var days = Math.floor(diffInDays % 365 % 30);
 
     expiration.restdays = years + "Y " + months + "M " + days + "D";
 
-    expiration.isExpired = nowTime > dateExpiration || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D"  ? true : false ;
-    if (expiration.isExpired == false)
-    {
-      this.checkSoonToExpire(expiration);
-    }
-  }
-
-  checkSoonToExpire(expiration: Expiration) {
-    var dateNow = moment(new Date(),'yyyy-MM-DD');
-    var dateExp = moment(expiration.dateExpiration);
-
-    expiration.soonToExpire = dateExp.diff(dateNow, 'days') >= 1 && dateExp.diff(dateNow, 'days') <= 7  ? true : false ; 
+    if (years == 0 && months == 0) {
+      if (nowTime == dateExpiration || nowTime > dateExpiration) {  
+        expiration.isExpired = true;
+      }else {
+        expiration.isExpired = false;
+        expiration.soonToExpire = days >= 1 && days <= 7  ? true : false ;      
+      }
+    } else if (years !== 0 || months !== 0) {
+      expiration.isExpired = false;
+      expiration.soonToExpire = false ;      
+    }   
   }
 
   newExpiration() {

@@ -24,10 +24,10 @@ export class PasswordsForMobileComponent implements OnInit, OnDestroy {
   pagedList: Password[]= [];
   passwordsListCopie: Password[] = [];
 
-  content: string = '';
+  content = '';
   
-  length: number = 0;
-  pageSize: number = 6;
+  length = 0;
+  pageSize = 6;
   pageSizeOptions: number[] = [6];
 
   subscriptionForGetAllPassword: Subscription;

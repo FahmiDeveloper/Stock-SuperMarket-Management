@@ -26,7 +26,7 @@ export class DocumentsListForDesktopComponent implements OnInit, OnDestroy {
 
   subjectDocuments: SubjectDocuments = new SubjectDocuments();
 
-  length: number = 0;
+  length = 0;
   documentRef: number;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 

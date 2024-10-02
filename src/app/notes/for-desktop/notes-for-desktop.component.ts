@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageEvent } from '@angular/material/paginator';
 import { MatMenuTrigger } from '@angular/material/menu';
 
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import * as Prism from 'prismjs';
 
 import { NoteFormDesktopComponent } from './note-form-desktop/note-form-desktop.component';
 
@@ -20,20 +20,26 @@ import { Note } from 'src/app/shared/models/note.model';
   styleUrls: ['./notes-for-desktop.scss']
 })
 
-export class NotesForDesktopComponent implements OnInit, OnDestroy {
+export class NotesForDesktopComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   notesList: Note[] = [];
   notesListCopie: Note[] = [];
 
-  p: number = 1;
-  content: string = '';
+  p = 1;
+  keywordForSearch = '';
   isTablet: boolean;
-  keywordSelected: string;
+  keywordSelected = '';
+  contentCode = '';
   keywordsList: string[] = [];
+  keywordsListCopie: string[] = [];
+  keywordsListCopieForForm: string[] = [];
+  codeUsedContentList: string[] = [];
+  showCodeUsed = false;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
+  @ViewChild('searchInput') inputElement!: ElementRef;
 
   subscriptionForGetAllNotes: Subscription;
   subscriptionForGetAllNotesForAdd: Subscription;
@@ -42,15 +48,17 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
   constructor(
     public noteService: NoteService,
     public dialogService: MatDialog,
-    private deviceService: DeviceDetectorService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
-    this.isTablet = this.deviceService.isTablet();
     this.getAllKeywordsNotes();
     this.getAllNotes();
     this.getAllNotesForAdd();
+  }
+
+  ngAfterViewChecked() {
+    Prism.highlightAll();
   }
 
   getAllKeywordsNotes() {
@@ -59,34 +67,45 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
     .subscribe((notes: Note[]) => {
 
       this.keywordsList = [];
+      this.keywordsListCopie = [];
+      this.keywordsListCopieForForm = [];
          
       notes.forEach(note => {
         if (!this.keywordsList.includes(note.keyword)) {
           this.keywordsList.push(note.keyword);
+          this.keywordsListCopie.push(note.keyword);
+          this.keywordsListCopieForForm.push(note.keyword);
         }
       })
     });
   }
 
   getAllNotes() {
+
     this.subscriptionForGetAllNotes = this.noteService
     .getAll()
     .subscribe((notes: Note[]) => {
 
-      if (this.content) {
-        this.notesList = notes.filter(note => note.keyword.toLowerCase().includes(this.content.toLowerCase()));
-        this.notesList = this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
+      if (this.showCodeUsed) {
+        if (this.contentCode) {
+          this.notesList = notes.filter(note => note.keyword == 'Code used' && note.contentCode.toLowerCase().includes(this.contentCode.toLowerCase()));
+        }
+        else {
+          this.notesList = notes.filter(note => note.keyword == 'Code used');
+        }
       }
       
       else if (this.keywordSelected) {
-        this.notesList = notes.filter(note => note.keyword == this.keywordSelected);
-        this.notesList = this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
+        this.notesList = notes.filter(note => note.keyword !== 'Code used' && note.keyword == this.keywordSelected);
       }
 
       else {
-        this.notesList = notes.sort((n1, n2) => n2.numRefNote - n1.numRefNote);
-      }    
+        if (this.contentCode) this.contentCode = '';
+        this.notesList = notes.filter(note => note.keyword !== 'Code used').sort((n1, n2) => n2.numRefNote - n1.numRefNote);
+      }
 
+      this.notesList = this.showCodeUsed || this.keywordSelected ? this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote) : this.notesList.sort((n1, n2) => n2.numRefNote - n1.numRefNote);
+      
     });
   }
 
@@ -109,6 +128,7 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(NoteFormDesktopComponent, config);
 
     dialogRef.componentInstance.arrayNotes = this.notesListCopie;
+    dialogRef.componentInstance.keywordsListCopieForForm = this.keywordsListCopieForForm;
   }
 
   editNote(note?: Note) {
@@ -116,6 +136,7 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(NoteFormDesktopComponent, config);
     
     dialogRef.componentInstance.note = note;
+    dialogRef.componentInstance.keywordsListCopieForForm = this.keywordsListCopieForForm;
   }
 
   deleteNote(noteKey) {
@@ -179,6 +200,37 @@ export class NotesForDesktopComponent implements OnInit, OnDestroy {
 
     // we open the menu 
     this.matMenuTrigger.openMenu(); 
+  }
+
+  filterOptions() {
+    this.keywordsList = [];
+    if (this.keywordForSearch) {
+      this.keywordsList = this.keywordsListCopie.filter(keyword => keyword.toLowerCase().includes(this.keywordForSearch.toLowerCase()));
+    } else {
+      this.keywordsList = this.keywordsListCopie;
+      if (this.keywordSelected) this.keywordSelected = '';
+      this.getAllNotes();
+    }
+  }
+
+  onSelectOpened(isOpened: boolean) {
+    if (isOpened) {
+      setTimeout(() => {
+        this.inputElement.nativeElement.focus();
+      });
+    }
+  }
+
+  showContentCodeList(contentCodeList) {
+    this.dialogService.open(contentCodeList, {width: '1000px'});
+
+    this.codeUsedContentList = [];
+    
+    this.notesList.forEach(note => {
+      if (!this.codeUsedContentList.includes(note.contentCode)) {
+        this.codeUsedContentList.push(note.contentCode);
+      }
+    });
   }
 
   ngOnDestroy() {

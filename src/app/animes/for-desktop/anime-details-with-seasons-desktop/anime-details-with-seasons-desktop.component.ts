@@ -27,21 +27,21 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
   raisedElevation = 8;
 
   statusAnimes: StatusAnimes[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private animeService: AnimeService, 
+    private animeService: AnimeService,
     public dialogRef: MatDialogRef<AnimeDetailsWithSeasonsDesktopComponent>,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   showDetailsAnime(animeSeasonSelected: Anime, elem: HTMLElement) {
     this.anime = animeSeasonSelected;
@@ -49,7 +49,7 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
   }
 
   editAnime(anime?: Anime) {
-    const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, {width: '500px'});
+    const dialogRef = this.dialogService.open(AnimeFormDesktopComponent, { width: '500px' });
     dialogRef.componentInstance.anime = anime;
     dialogRef.componentInstance.allAnimes = this.allAnimes;
   }
@@ -66,7 +66,7 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
       if (result.value) {
         this.animeService.delete(animeKey);
         this.listSeasonsByParentAnimeKey.forEach((anime, index) => {
-          if(anime.key === animeKey) this.listSeasonsByParentAnimeKey.splice(index,1);
+          if (anime.key === animeKey) this.listSeasonsByParentAnimeKey.splice(index, 1);
         });
         if (this.listSeasonsByParentAnimeKey.length == 0) {
           this.dialogRef.close();
@@ -82,8 +82,8 @@ export class AnimeDetailsWithSeasonsDesktopComponent implements OnInit {
       }
     })
   }
-  
-  copyText(text: string){
+
+  copyText(text: string) {
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

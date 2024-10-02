@@ -31,43 +31,43 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
   allSeries: Serie[] = [];
   listSeasonsByParentSerieKey: Serie[] = [];
 
-  p: number = 1;
+  p = 1;
 
-  serieName: string = '';
+  serieName = '';
   statusId: number;
-  sortByDesc: boolean = true;
+  sortByDesc = true;
   optionSelected: number;
-  dislike: boolean = false;
-  nbrSeriesToCheckToday: number = 0;
-  nbrSeriesNotChecked: number = 0;
-  showSeriesNotChecked: boolean = false;
+  dislike = false;
+  nbrSeriesToCheckToday = 0;
+  nbrSeriesNotChecked = 0;
+  showSeriesNotChecked = false;
   itemsPerPage: number;
 
-  menuTopLeftPosition =  {x: '0', y: '0'} 
+  menuTopLeftPosition = { x: '0', y: '0' }
 
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
- 
+  @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger: MatMenuTrigger;
+
   subscriptionForGetAllSeries: Subscription;
   subscriptionForGetAllSeriesForSelect: Subscription;
   subscriptionForGetAllSeriesNotChecked: Subscription;
 
   statusSeries: StatusSeries[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'},
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private serieService: SerieService, 
+    private serieService: SerieService,
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar,
-    private cdRef:ChangeDetectorRef
-  ) {}
+    private cdRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.itemsPerPage = window.innerWidth <= 1366 ? 15 : 16;
@@ -78,104 +78,104 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
 
   getAllSeries() {
     this.subscriptionForGetAllSeries = this.serieService
-    .getAll()
-    .subscribe((series: Serie[]) => {
-      this.seriesListCopie = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-      this.allSeries = series;
+      .getAll()
+      .subscribe((series: Serie[]) => {
+        this.seriesListCopie = series.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+        this.allSeries = series;
 
-      if (this.serieName) {
-        this.seriesList = series.filter(serie => (serie.nameSerie.toLowerCase().includes(this.serieName.toLowerCase())) && (serie.isFirst == true));
-        this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-      }
+        if (this.serieName) {
+          this.seriesList = series.filter(serie => (serie.nameSerie.toLowerCase().includes(this.serieName.toLowerCase())) && (serie.isFirst == true));
+          this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+        }
 
-      else if (this.statusId) {
-        if (this.showSeriesNotChecked) this.showSeriesNotChecked = false;
-        if (this.statusId == 1) {
-          if (this.dislike) this.dislike = false;
-          if (this.optionSelected) {
-            if (this.optionSelected == 1) {
-              this.seriesList = series.filter(serie => serie.statusId == this.statusId && !serie.checkDate); 
+        else if (this.statusId) {
+          if (this.showSeriesNotChecked) this.showSeriesNotChecked = false;
+          if (this.statusId == 1) {
+            if (this.dislike) this.dislike = false;
+            if (this.optionSelected) {
+              if (this.optionSelected == 1) {
+                this.seriesList = series.filter(serie => serie.statusId == this.statusId && !serie.checkDate);
+              }
+              else {
+                this.seriesList = series.filter(serie => serie.statusId == this.statusId && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
+                  (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.totalEpisodes && (serie.currentEpisode < serie.totalEpisodes))));
+              }
             }
             else {
-              this.seriesList = series.filter(serie => serie.statusId == this.statusId && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
-              (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.totalEpisodes && (serie.currentEpisode < serie.totalEpisodes))));
-            }      
-          }
-          else  {
-            this.seriesList = series.filter(serie => serie.statusId == this.statusId);
-          }
-          this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);  
-        }
-        else {
-          if (this.optionSelected) this.optionSelected = null;
-          if (this.statusId == 3) {
-            if (this.dislike) {
-              this.seriesList = series.filter(serie => serie.statusId == this.statusId && serie.notLiked == true);
-            }
-            else  {
               this.seriesList = series.filter(serie => serie.statusId == this.statusId);
             }
+            this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
           }
           else {
-            if (this.dislike) this.dislike = false;
-            this.seriesList = series.filter(serie => serie.statusId == this.statusId);
-          }    
-          this.seriesList = this.statusId == 3 ? this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie) : this.seriesList.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);       
+            if (this.optionSelected) this.optionSelected = null;
+            if (this.statusId == 3) {
+              if (this.dislike) {
+                this.seriesList = series.filter(serie => serie.statusId == this.statusId && serie.notLiked == true);
+              }
+              else {
+                this.seriesList = series.filter(serie => serie.statusId == this.statusId);
+              }
+            }
+            else {
+              if (this.dislike) this.dislike = false;
+              this.seriesList = series.filter(serie => serie.statusId == this.statusId);
+            }
+            this.seriesList = this.statusId == 3 ? this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie) : this.seriesList.sort((n1, n2) => n1.numRefSerie - n2.numRefSerie);
+          }
         }
-      }
 
-      else if (this.showSeriesNotChecked) {
-        this.seriesList = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate < moment().format('YYYY-MM-DD'));
-        this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
-      }
+        else if (this.showSeriesNotChecked) {
+          this.seriesList = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate < moment().format('YYYY-MM-DD'));
+          this.seriesList = this.seriesList.sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+        }
 
-      else this.seriesList = series.filter(serie => serie.isFirst == true).sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+        else this.seriesList = series.filter(serie => serie.isFirst == true).sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
 
-    });
+      });
   }
 
   getAllSeriesForSelect() {
     this.subscriptionForGetAllSeriesForSelect = this.serieService
-    .getAll()
-    .subscribe((series: Serie[]) => {
-      this.nbrSeriesToCheckToday = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
-      (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.currentEpisode && serie.currentEpisode < serie.totalEpisodes))).length;
-      this.cdRef.detectChanges();
-    })
+      .getAll()
+      .subscribe((series: Serie[]) => {
+        this.nbrSeriesToCheckToday = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate == moment().format('YYYY-MM-DD') &&
+          (!serie.currentEpisode || (serie.currentEpisode && !serie.totalEpisodes) || (serie.currentEpisode && serie.currentEpisode && serie.currentEpisode < serie.totalEpisodes))).length;
+        this.cdRef.detectChanges();
+      })
   }
 
   getAllSeriesNotChecked() {
     this.subscriptionForGetAllSeriesNotChecked = this.serieService
-    .getAll()
-    .subscribe((series: Serie[]) => {
-      this.nbrSeriesNotChecked = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate < moment().format('YYYY-MM-DD')).length;
-      this.cdRef.detectChanges();
-    })
+      .getAll()
+      .subscribe((series: Serie[]) => {
+        this.nbrSeriesNotChecked = series.filter(serie => serie.statusId == 1 && serie.checkDate && serie.checkDate < moment().format('YYYY-MM-DD')).length;
+        this.cdRef.detectChanges();
+      })
   }
 
-  OnPageChange(event: PageEvent){
+  OnPageChange(event: PageEvent) {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
 
   showDetailsSerie(serieSelected: Serie) {
     this.listSeasonsByParentSerieKey = this.allSeries
-    .filter(serie => (serie.key == serieSelected.key) || (serie.parentSerieKey == serieSelected.key))
-    .sort((n1, n2) => n1.priority - n2.priority);
+      .filter(serie => (serie.key == serieSelected.key) || (serie.parentSerieKey == serieSelected.key))
+      .sort((n1, n2) => n1.priority - n2.priority);
 
-    const dialogRef = this.dialogService.open(SerieDetailsWithSeasonsDesktopComponent, {width: '1150px'});
+    const dialogRef = this.dialogService.open(SerieDetailsWithSeasonsDesktopComponent, { width: '1150px' });
     dialogRef.componentInstance.serie = serieSelected;
     dialogRef.componentInstance.allSeries = this.allSeries;
     dialogRef.componentInstance.listSeasonsByParentSerieKey = this.listSeasonsByParentSerieKey;
   }
 
   newSerie() {
-    const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '500px', data: {movie: {}}});
+    const dialogRef = this.dialogService.open(SerieFormDesktopComponent, { width: '500px', data: { movie: {} } });
     dialogRef.componentInstance.arraySeries = this.seriesListCopie;
     dialogRef.componentInstance.allSeries = this.allSeries;
   }
 
   editSerie(serie?: Serie) {
-    const dialogRef = this.dialogService.open(SerieFormDesktopComponent, {width: '500px'});
+    const dialogRef = this.dialogService.open(SerieFormDesktopComponent, { width: '500px' });
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
   }
@@ -204,7 +204,7 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     window.open(path);
   }
 
-  copyText(text: string){
+  copyText(text: string) {
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -227,20 +227,20 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     });
   }
 
-  onRightClick(event: MouseEvent, serie: Serie) { 
+  onRightClick(event: MouseEvent, serie: Serie) {
     // preventDefault avoids to show the visualization of the right-click menu of the browser 
-    event.preventDefault(); 
+    event.preventDefault();
 
     // we record the mouse position in our object 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    this.menuTopLeftPosition.x = event.clientX + 'px';
+    this.menuTopLeftPosition.y = event.clientY + 'px';
 
     // we open the menu 
     // we pass to the menu the information about our object 
-    this.matMenuTrigger.menuData = {serie: serie};
+    this.matMenuTrigger.menuData = { serie: serie };
 
     // we open the menu 
-    this.matMenuTrigger.openMenu(); 
+    this.matMenuTrigger.openMenu();
   }
 
   ngOnDestroy() {
@@ -248,5 +248,5 @@ export class SeriesForDesktopComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeriesForSelect.unsubscribe();
     this.subscriptionForGetAllSeriesNotChecked.unsubscribe();
   }
-  
+
 }

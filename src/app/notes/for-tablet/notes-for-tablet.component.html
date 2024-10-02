@@ -5,16 +5,10 @@
 <div class="row">
 
     <div class="col-md-4">
-        <mat-form-field class="text-application" style="margin-top: 0.3rem;">
-            <mat-label>Content</mat-label>
-            <input matInput type="text" name="content" (keyup)="getAllNotes()" [(ngModel)]="content"/>
-        </mat-form-field>
-    </div>
-
-    <div class="col-md-4">
         <mat-form-field class="text-application">
             <mat-label>Keyword</mat-label>
-            <mat-select name="keywordSelected" class="text-application" [(ngModel)]="keywordSelected" (selectionChange)="getAllNotes()">
+            <mat-select name="keywordSelected" class="text-application" [(ngModel)]="keywordSelected" (openedChange)="onSelectOpened($event)" (selectionChange)="getAllNotes()">
+                <input #searchInput class="input-search text-application" matInput type="text" name="keywordForSearch" (input)="filterOptions()" [(ngModel)]="keywordForSearch"/>
                 <mat-option value=""></mat-option>
                 <mat-option *ngFor="let keyword of keywordsList" [value]="keyword">
                     <span class="text-application">{{keyword}}</span>
@@ -23,7 +17,7 @@
         </mat-form-field>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-8">
         <button 
             type="button" 
             (click)="newNote()" 

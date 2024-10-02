@@ -19,14 +19,16 @@ import { Anime, StatusAnimes } from 'src/app/shared/models/anime.model';
 
 export class AnimeFormTabletComponent implements OnInit {
 
-  arrayAnimes: Anime[];
-  seasonAnimesList: Anime[] = [];
-  allAnimes: Anime[];
+  arrayAnimes: Anime[] = [];
+  seasonAnimesListJap: Anime[] = [];
+  seasonAnimesListEng: Anime[] = [];
+  allAnimes: Anime[] = [];
 
   anime: Anime = new Anime();
 
-  parentAnimeName: string;
-  
+  parentAnimeNameJap = '';
+  parentAnimeNameEng = '';
+
   basePath = '/PicturesAnimes';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
@@ -34,52 +36,75 @@ export class AnimeFormTabletComponent implements OnInit {
   formControl = new FormControl('', [Validators.required]);
 
   statusAnimes: StatusAnimes[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private animeService: AnimeService, 
+    private animeService: AnimeService,
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<AnimeFormTabletComponent>,
     public dialogService: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Anime[]
-  ) {}
+  ) { }
 
-  ngOnInit() {    
-    this.seasonAnimesList = this.allAnimes.filter(anime => anime.priority && anime.priority == 1).sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+  ngOnInit() {
+    this.seasonAnimesListJap = this.allAnimes.filter(anime => anime.priority && anime.priority == 1 && anime.nameAnime !== '-').sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+    this.seasonAnimesListEng = this.allAnimes.filter(anime => anime.priority && anime.priority == 1 && anime.nameAnime == '-' && anime.nameAnimeEng !== '-').sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
 
     if (this.anime.key) {
-      if (this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey)) {
-        this.parentAnimeName = this.seasonAnimesList.find(anime => anime.key == this.anime.parentAnimeKey).nameAnime;
+      if (this.seasonAnimesListJap.find(anime => anime.key == this.anime.parentAnimeKey)) {
+        this.parentAnimeNameJap = this.seasonAnimesListJap.find(anime => anime.key == this.anime.parentAnimeKey).nameAnime;
+      }
+      if (this.seasonAnimesListEng.find(anime => anime.key == this.anime.parentAnimeKey)) {
+        this.parentAnimeNameEng = this.seasonAnimesListEng.find(anime => anime.key == this.anime.parentAnimeKey).nameAnimeEng;
       }
     }
   }
 
-  filterByParentName(animeName: string) {
+  filterByParentNameJap(animeName: string) {
     if (animeName) {
-      this.seasonAnimesList = this.allAnimes
-      .filter(anime => anime.nameAnime.toLowerCase().includes(animeName.toLowerCase()) && anime.isFirst == true && anime.season && anime.season == 1)
-      .sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      this.seasonAnimesListJap = this.allAnimes
+        .filter(anime => anime.nameAnime.toLowerCase().includes(animeName.toLowerCase()) && anime.priority && anime.priority == 1 && anime.nameAnime !== '-')
+        .sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
     } else {
-      this.seasonAnimesList = this.allAnimes
-      .filter(anime => anime.isFirst == true && anime.season && anime.season == 1)
-      .sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+      this.seasonAnimesListJap = this.allAnimes
+        .filter(anime => anime.priority && anime.priority == 1 && anime.nameAnime !== '-')
+        .sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
     }
   }
 
-  getParentAnimeKey(animeKey: string) {
-    if (this.seasonAnimesList.find(anime => anime.key == animeKey)) {
-      this.parentAnimeName = this.seasonAnimesList.find(anime => anime.key == animeKey).nameAnime;
+  filterByParentNameEng(animeName: string) {
+    if (animeName) {
+      this.seasonAnimesListEng = this.allAnimes
+        .filter(anime => anime.nameAnimeEng.toLowerCase().includes(animeName.toLowerCase()) && anime.priority && anime.priority == 1 && anime.nameAnime == '-' && anime.nameAnimeEng !== '-')
+        .sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+    } else {
+      this.seasonAnimesListEng = this.allAnimes
+        .filter(anime => anime.priority && anime.priority == 1 && anime.nameAnime == '-' && anime.nameAnimeEng !== '-')
+        .sort((n1, n2) => n2.numRefAnime - n1.numRefAnime);
+    }
+  }
+
+  getParentAnimeKeyJap(animeKey: string) {
+    if (this.seasonAnimesListJap.find(anime => anime.key == animeKey)) {
+      this.parentAnimeNameJap = this.seasonAnimesListJap.find(anime => anime.key == animeKey).nameAnime;
+    }
+    this.anime.parentAnimeKey = animeKey;
+  }
+
+  getParentAnimeKeyEng(animeKey: string) {
+    if (this.seasonAnimesListEng.find(anime => anime.key == animeKey)) {
+      this.parentAnimeNameEng = this.seasonAnimesListEng.find(anime => anime.key == animeKey).nameAnimeEng;
     }
     this.anime.parentAnimeKey = animeKey;
   }
 
   save() {
-    if (!this.anime.notLiked || this.anime.statusId !== 3) {this.anime.notLiked = false;}
+    if (!this.anime.notLiked || this.anime.statusId !== 3) { this.anime.notLiked = false; }
     if (this.anime.key) {
       this.animeService.update(this.anime.key, this.anime);
       Swal.fire(
@@ -93,9 +118,9 @@ export class AnimeFormTabletComponent implements OnInit {
 
       this.animeService.create(this.anime);
       Swal.fire(
-      'New Anime added successfully',
-      '',
-      'success'
+        'New Anime added successfully',
+        '',
+        'success'
       )
     }
     this.close();
@@ -105,7 +130,7 @@ export class AnimeFormTabletComponent implements OnInit {
     const file = event.target.files[0];
     if (file) {
       const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
-      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+      this.task = this.fireStorage.upload(filePath, file);    // upload task
 
       // this.progress = this.snapTask.percentageChanges();
       this.progressValue = this.task.percentageChanges();
@@ -119,14 +144,14 @@ export class AnimeFormTabletComponent implements OnInit {
         )
       });  // <<< url is found here
 
-    } else {  
+    } else {
       alert('No images selected');
       this.anime.imageUrl = '';
     }
-  } 
+  }
 
   getErrorMessage() {
-    return this.formControl.hasError('required') ? 'Required field' :'';
+    return this.formControl.hasError('required') ? 'Required field' : '';
   }
 
   close() {

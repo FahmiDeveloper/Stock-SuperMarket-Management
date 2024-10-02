@@ -24,24 +24,25 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<Clocking>();
   dataSourceCopieForNewClocking = new MatTableDataSource<Clocking>();
   dataSourceCopieForCalculTotalClockingLate = new MatTableDataSource<Clocking>();
-  displayedColumns: string[] = ['date', 'day', 'time', 'clockingNbr', 'note', 'star'];
+  displayedColumns: string[] = ['date', 'day', 'time', 'clockingNbr', 'subject', 'restVacation', 'note', 'star'];
 
   allClockings: Clocking[]= [];
 
   currentMonthAndYear: string;
-  totalClockingLate: number = 0;
+  totalClockingLate = 0;
   minutePartList: number[] = [];
   sumClockingLate: number;
-  totalClockingLateByHoursMinute: string = '';
-  vacationLimitDays: number = 0;
-  monthSelected: string = '';
-  currentMonth: string = '';
+  totalClockingLateByHoursMinute = '';
+  vacationLimitDays = 0;
+  monthSelected = '';
+  currentMonth = '';
   currentYear: number;
-  currentMonthAndYearForVacation: string = '';
+  currentMonthAndYearForVacation = '';
   subjectSelectedId: number;
-  showVacationLimitDays: boolean = false;
+  showVacationLimitDays = false;
   isLoading: boolean;
   showDeleteAllClockingsButtton: boolean;
+  lastClockingFromList = 0;
 
   modalRefLodaing: any
 
@@ -70,8 +71,11 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     {id: 1, subjectName: 'Work on sunday'},
     {id: 2, subjectName: 'Take vacation'},
     {id: 3, subjectName: 'Take one hour'},
-    {id: 4, subjectName: 'Work half day'} ,
-    {id: 5, subjectName: 'Days Clocking late'}  
+    {id: 4, subjectName: 'Take two hours'},
+    {id: 5, subjectName: 'Take three hours'},
+    {id: 6, subjectName: 'Work half day'},
+    {id: 7, subjectName: 'Public holiday'},
+    {id: 8, subjectName: 'Vacations by month'}      
   ];
 
   constructor(
@@ -107,34 +111,21 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
 
       this.currentMonth = this.monthsList.find(month => month.monthNbr == this.monthSelected).monthName;
 
-      if (this.subjectSelectedId == 1) {
-        this.dataSource.data = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workOnSunday == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 2) {
-        this.dataSource.data = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeVacation == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 3) {
-        this.dataSource.data = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.takeOneHour == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 4) {
-        this.dataSource.data = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.workHalfDay == true))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
-      else if (this.subjectSelectedId == 5) {
-        this.dataSource.data = clockings
-        .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected && clocking.timeClocking && clocking.timeClocking > '08:00' ))
-        .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);
-      }
+      if (this.subjectSelectedId) {
+        if (this.subjectSelectedId == 8) {
+          this.dataSource.data = clockings
+          .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.subjectId) && (clocking.subjectId !== 1))
+          .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking); 
+        }
+        else {
+          this.dataSource.data = clockings
+          .filter(clocking => (clocking.dateClocking.split('-')[1] == this.monthSelected) && (clocking.subjectId == this.subjectSelectedId))
+          .sort((n1, n2) => n1.numRefClocking - n2.numRefClocking);   
+        }       
+      } 
       else {
-        this.dataSource.data = 
-        clockings.filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
+        this.dataSource.data = clockings
+        .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
         .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking);
       }
 
@@ -169,6 +160,8 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
           this.getDayFromDateClocking(clocking);
         })
       }
+
+      this.lastClockingFromList = clockings.sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0].restVacationDays;
 
     });
   }
@@ -213,7 +206,8 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.arrayClockings = this.dataSourceCopieForNewClocking.data;
     dialogRef.componentInstance.vacationLimitDays = this.vacationLimitDays;
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
-    dialogRef.componentInstance.monthSelected = this.monthSelected
+    dialogRef.componentInstance.monthSelected = this.monthSelected;
+    dialogRef.componentInstance.lastClockingFromList = this.lastClockingFromList;
   }
 
   editClocking(clocking?: Clocking) {
@@ -229,10 +223,6 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
     dialogRef.componentInstance.currentMonthAndYearForVacation = this.currentMonthAndYearForVacation;
     dialogRef.componentInstance.monthSelected = this.monthSelected;
     dialogRef.componentInstance.dataSource = this.dataSource.data;
-
-    dialogRef.afterClosed().subscribe(res => {
-      this.dataSource.data = res;
-    });
   }
 
   deleteClocking(clockingKey) {

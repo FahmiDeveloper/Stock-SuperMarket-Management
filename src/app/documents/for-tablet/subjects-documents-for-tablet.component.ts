@@ -27,11 +27,11 @@ export class SubjectDocumentsForTabletComponent implements OnInit, OnDestroy {
   subjectDocumentsListForSelect: SubjectDocuments[] = [];
   arraysubjectDocuments: SubjectDocuments[] = [];
 
-  p: number = 1;
+  p = 1;
 
-  subjectDocumentSelectedKey: string = '';
+  subjectDocumentSelectedKey = '';
   itemsPerPage: number;
-  orientation: string = '';
+  orientation = '';
 
   subscriptionForGetAllSubjectDocuments: Subscription;
   subscriptionForGetAllDocuments: Subscription;

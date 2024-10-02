@@ -47,8 +47,8 @@
         <td>{{ expiration.duration }}</td>
         <td>
             <span *ngIf="expiration.isExpired" style="color: red;">{{ expiration.restdays }}</span>
-            <span *ngIf="!expiration.isExpired && expiration.soonToExpire" style="color: #ff6900;">{{ expiration.restdays }}</span>
-            <span *ngIf="!expiration.isExpired && !expiration.soonToExpire" style="color: green;">{{ expiration.restdays }}</span> 
+            <span *ngIf="!expiration.isExpired && !expiration.soonToExpire" style="color: green;">{{ expiration.restdays }}</span>
+            <span *ngIf="!expiration.isExpired && expiration.soonToExpire" style="color: #ff6900;">{{ expiration.restdays }}</span> 
         </td>
         <td [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '15rem': '30rem'}">
             <span *ngIf="expiration.note">{{ expiration.note }}</span>

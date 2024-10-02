@@ -26,7 +26,7 @@ export class SerieFormMobileComponent implements OnInit {
   serie: Serie = new Serie();
 
   parentSerieName: string;
-  
+
   basePath = '/PicturesSeries';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
@@ -34,25 +34,25 @@ export class SerieFormMobileComponent implements OnInit {
   formControl = new FormControl('', [Validators.required]);
 
   statusSeries: StatusSeries[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private serieService: SerieService, 
+    private serieService: SerieService,
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<SerieFormMobileComponent>,
     public dialogService: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Serie[]
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.seasonSeriesList = this.allSeries
-    .filter(serie => serie.isFirst == true && serie.season && serie.season == 1)
-    .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+      .filter(serie => serie.isFirst == true && serie.season && serie.season == 1)
+      .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
 
     if (this.serie.key) {
       if (this.seasonSeriesList.find(serie => serie.key == this.serie.parentSerieKey)) {
@@ -64,12 +64,12 @@ export class SerieFormMobileComponent implements OnInit {
   filterByParentName(serieName: string) {
     if (serieName) {
       this.seasonSeriesList = this.allSeries
-      .filter(serie => serie.nameSerie.toLowerCase().includes(serieName.toLowerCase()) && serie.isFirst == true && serie.season && serie.season == 1)
-      .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+        .filter(serie => serie.nameSerie.toLowerCase().includes(serieName.toLowerCase()) && serie.isFirst == true && serie.season && serie.season == 1)
+        .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
     } else {
       this.seasonSeriesList = this.allSeries
-      .filter(serie => serie.isFirst == true && serie.season && serie.season == 1)
-      .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
+        .filter(serie => serie.isFirst == true && serie.season && serie.season == 1)
+        .sort((n1, n2) => n2.numRefSerie - n1.numRefSerie);
     }
   }
 
@@ -81,7 +81,7 @@ export class SerieFormMobileComponent implements OnInit {
   }
 
   save() {
-    if (!this.serie.notLiked || this.serie.statusId !== 3) {this.serie.notLiked = false;}
+    if (!this.serie.notLiked || this.serie.statusId !== 3) { this.serie.notLiked = false; }
     if (this.serie.key) {
       this.serieService.update(this.serie.key, this.serie);
       Swal.fire(
@@ -95,9 +95,9 @@ export class SerieFormMobileComponent implements OnInit {
 
       this.serieService.create(this.serie);
       Swal.fire(
-      'New Serie added successfully',
-      '',
-      'success'
+        'New Serie added successfully',
+        '',
+        'success'
       )
     }
     this.close();
@@ -107,7 +107,7 @@ export class SerieFormMobileComponent implements OnInit {
     const file = event.target.files[0];
     if (file) {
       const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
-      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+      this.task = this.fireStorage.upload(filePath, file);    // upload task
 
       // this.progress = this.snapTask.percentageChanges();
       this.progressValue = this.task.percentageChanges();
@@ -121,14 +121,14 @@ export class SerieFormMobileComponent implements OnInit {
         )
       });  // <<< url is found here
 
-    } else {  
+    } else {
       alert('No images selected');
       this.serie.imageUrl = '';
     }
-  } 
+  }
 
   getErrorMessage() {
-    return this.formControl.hasError('required') ? 'Required field' :'';
+    return this.formControl.hasError('required') ? 'Required field' : '';
   }
 
   close() {

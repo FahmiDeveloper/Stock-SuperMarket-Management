@@ -13,7 +13,7 @@ import { DebtService } from '../../shared/services/debt.service';
 import { UserService } from '../../shared/services/user.service';
 import { UsersListService } from '../../shared/services/list-users.service';
 
-import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from '../../shared/models/debt.model';
+import { Debt, EnvelopesList, PlacesMoney, StatusInDebts, StatusOutDebts } from '../../shared/models/debt.model';
 
 @Component({
   selector: 'debts-for-desktop',
@@ -28,28 +28,35 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   filteredDebtsByPlaceAndDebtForPay: Debt[] = [];
   filteredDebtsByPlaceAndDebtToGet: Debt[] = [];
 
-  p: number = 1;
+  p = 1;
   
   creditors: string[] = [];
-  creditorName: string ='';
+  creditorName = '';
   debtors: string[] = [];
-  debtorName: string ='';
-  sortByDesc: boolean = true;
+  debtorName = '';
+  sortByDesc = true;
   isLoading: boolean;
-  restInPocket: string = '';
-  restInWallet: string = '';
-  restInEnvelope: string = '';
-  restInBox: string = '';
-  restInPosteAccount: string = '';
+  restInPocket = '';
+  restInWallet = '';
+  restInBox = '';
+  restInPosteAccount = '';
   placeId: number;
-  getInDebt: boolean = false;
-  getOutDebt: boolean = false;
+  envelopeId: number;
+  getInDebt = false;
+  getOutDebt = false;
   statusOutDebtId: number;
   statusInDebtId: number;
   innerWidth: any;
+  restInEnvTaxi = '';
+  restInEnvInternet = '';
+  restInEnvWaterElec = '';
+  restInEnvBeinSports = '';
+  restInEnvHomeLoc = '';
+  restInEnvHomeSupp = '';
+
   
   //in debt attributes
-  totalInDebts: string = '';
+  totalInDebts = '';
   defaultTotalInDebts: number;
   customTotalInDebts: number;
   totalInDebtsByCreditor: string;
@@ -57,7 +64,7 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   defaultTotalInDebtsByCreditor: number;
 
    //out debt attributes
-  totalOutDebts: string = '';
+  totalOutDebts = '';
   defaultTotalOutDebts: number;
   customTotalOutDebts: number;
   totalOutDebtsByDebtor: string;
@@ -73,12 +80,21 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   subscriptionForGetAllDebts: Subscription;
 
   placesMoney: PlacesMoney[] = [
-    {id: 1, place: 'الجيب'},
-    {id: 2, place: 'المحفظة'},
-    {id: 3, place: 'الظرف'}, 
-    {id: 4, place: 'الصندوق'},
-    {id: 5, place: 'دين'},
-    {id: 6, place: 'الحساب البريدي'}
+    {id: 1, place: 'Pocket'},
+    {id: 2, place: 'Wallet'},
+    {id: 3, place: 'Envelopes'}, 
+    {id: 4, place: 'Box'},
+    {id: 5, place: 'Debt'},
+    {id: 6, place: 'Poste account'}
+  ];
+
+  envelopesList: EnvelopesList[] = [
+    {id: 1, envelopeFor: 'Taxi'},
+    {id: 2, envelopeFor: 'Internet'},
+    {id: 3, envelopeFor: 'Water/Elec'}, 
+    {id: 4, envelopeFor: 'Bein sports'},
+    {id: 5, envelopeFor: 'Home Location'},
+    {id: 6, envelopeFor: 'Home Supplies'}
   ];
 
   statusInDebts: StatusInDebts[] = [
@@ -111,12 +127,23 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe(debts => {
       this.debtsListCopie = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-     if (this.placeId) {
-        this.debtsList = debts.filter(debt => debt.placeId == this.placeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-        if (this.placeId == 5) {
+      if (this.placeId) {
+        if (this.placeId == 3) {
+          if (this.envelopeId) {
+            this.debtsList = debts.filter(debt => debt.placeId == 3 && debt.envelopeId == this.envelopeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+            this.getRestMoneyForeachEnvelope();
+          }
+          else {
+            this.debtsList = debts.filter(debt => debt.placeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+          }
+        } else if (this.placeId == 5) {
+          this.debtsList = debts.filter(debt => debt.placeId == 5).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
           if (this.getInDebt == true) this.showInDebt();
           if (this.getOutDebt == true) this.showOutDebt();
-        } else this.getRestMoneyForeachPlace();
+        } else {
+          this.debtsList = debts.filter(debt => debt.placeId == this.placeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+        this.getRestMoneyForeachPlace();
       } else this.debtsList = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
       this.getPlaceDebt();
     });
@@ -181,19 +208,29 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   getRestMoneyForeachPlace() {
     let debtForRestInPocket = this.debtsListCopie.filter(debt => debt.placeId == 1).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInWallet = this.debtsListCopie.filter(debt => debt.placeId == 2).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
-    let debtForRestInEnvelope = this.debtsListCopie.filter(debt => debt.placeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInBox = this.debtsListCopie.filter(debt => debt.placeId == 4).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInPosteAccount = this.debtsListCopie.filter(debt => debt.placeId == 6).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
 
     this.restInPocket = debtForRestInPocket ? debtForRestInPocket.restMoney : '0DT';
-
     this.restInWallet = debtForRestInWallet ? debtForRestInWallet.restMoney : '0DT';
-
-    this.restInEnvelope = debtForRestInEnvelope ? debtForRestInEnvelope.restMoney : '0DT';
-
     this.restInBox = debtForRestInBox ? debtForRestInBox.restMoney : '0DT';
-
     this.restInPosteAccount = debtForRestInPosteAccount ? debtForRestInPosteAccount.restMoney : '0DT';
+  }
+
+  getRestMoneyForeachEnvelope() {
+    let debtForRestInEnvTaxi = this.debtsListCopie.filter(debt => debt.placeId == 3 && debt.envelopeId == 1).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvInternet = this.debtsListCopie.filter(debt => debt.placeId == 3 && debt.envelopeId == 2).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvWaterElec = this.debtsListCopie.filter(debt => debt.placeId == 3 && debt.envelopeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvBeinSports = this.debtsListCopie.filter(debt => debt.placeId == 3 && debt.envelopeId == 4).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvHomeLoc = this.debtsListCopie.filter(debt => debt.placeId == 3 && debt.envelopeId == 5).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvHomeSupp = this.debtsListCopie.filter(debt => debt.placeId == 3 && debt.envelopeId == 6).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+
+    this.restInEnvTaxi = debtForRestInEnvTaxi ? debtForRestInEnvTaxi.restMoney : '0DT';
+    this.restInEnvInternet = debtForRestInEnvInternet ? debtForRestInEnvInternet.restMoney : '0DT';
+    this.restInEnvWaterElec = debtForRestInEnvWaterElec ? debtForRestInEnvWaterElec.restMoney : '0DT';
+    this.restInEnvBeinSports = debtForRestInEnvBeinSports ? debtForRestInEnvBeinSports.restMoney : '0DT';
+    this.restInEnvHomeLoc = debtForRestInEnvHomeLoc ? debtForRestInEnvHomeLoc.restMoney : '0DT';
+    this.restInEnvHomeSupp = debtForRestInEnvHomeSupp ? debtForRestInEnvHomeSupp.restMoney : '0DT';
   }
 
   getPlaceDebt() {
@@ -220,6 +257,11 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
   showRest(contentRestMoneyForeachPlace) {
     this.dialogService.open(contentRestMoneyForeachPlace, {width: '400px'});
     this.getRestMoneyForeachPlace();
+  }
+
+  showRestEnvelope(contentRestMoneyForeachEnve) {
+    this.dialogService.open(contentRestMoneyForeachEnve, {width: '400px'});
+    this.getRestMoneyForeachEnvelope();
   }
 
   getTotalIntDebts() { 
@@ -687,6 +729,22 @@ export class DebtsForDesktopComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });
+  }
+
+  onRightClick(event: MouseEvent, debt: Debt) { 
+    // preventDefault avoids to show the visualization of the right-click menu of the browser 
+    event.preventDefault(); 
+
+    // we record the mouse position in our object 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+
+    // we open the menu 
+    // we pass to the menu the information about our object 
+    this.matMenuTrigger.menuData = {debt: debt};
+
+    // we open the menu 
+    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

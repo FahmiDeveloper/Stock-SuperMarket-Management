@@ -39,8 +39,8 @@ export class UploadDetailsComponent implements OnChanges {
   isLoading: boolean;
   blobForDownload: Blob;
   srcExtractedImage: any;
-  fileExtractedName: string = '';
-  contentTxtFile: string = '';
+  fileExtractedName = '';
+  contentTxtFile = '';
   contentPdfFile: any;
   excelFile: File;
   data: any;

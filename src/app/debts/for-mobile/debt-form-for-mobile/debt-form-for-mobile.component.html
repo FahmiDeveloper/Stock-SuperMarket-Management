@@ -36,14 +36,14 @@
 
             <br>
 
-            <div *ngIf="debt.isRestMoney || debt.debtForPay || debt.debtToGet">
+            <div>
                 <mat-form-field color="accent">
-                    <input matInput #input type="date" placeholder="Date" [(ngModel)]="debt.date" name="date">
+                    <input matInput #input type="date" placeholder="Date" [(ngModel)]="debt.date" name="date" readonly>
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
                 <mat-form-field color="accent">
-                    <mat-select placeholder="Place" [(ngModel)]="debt.placeId" name="placeId" [required]="debt.isRestMoney">
+                    <mat-select placeholder="Place" [(ngModel)]="debt.placeId" name="placeId">
                         <mat-option *ngFor="let placeMoney of placesMoney" [value]="placeMoney.id" [hidden]="placeMoney.id == 5 && debt.isRestMoney">
                             {{placeMoney.place}}
                         </mat-option>
@@ -51,13 +51,21 @@
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
+                <mat-form-field color="accent" *ngIf="debt.isRestMoney && debt.placeId == 3">
+                    <mat-select placeholder="Envelope for" class="text-application" [(ngModel)]="debt.envelopeId" name="envelopeId">
+                        <mat-option *ngFor="let envelope of envelopesList" [value]="envelope.id">
+                            <span class="text-application">{{envelope.envelopeFor}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
                 <mat-form-field color="accent" *ngIf="debt.isRestMoney">
-                    <input matInput #input type="text" placeholder="Rest Money" [(ngModel)]="debt.restMoney" name="restMoney" required>
+                    <input matInput #input type="text" placeholder="Rest Money" [(ngModel)]="debt.restMoney" name="restMoney">
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
                 <mat-form-field color="accent" *ngIf="debt.debtForPay || debt.debtToGet">
-                    <input matInput #input type="text" placeholder="Debt" [(ngModel)]="debt.financialDebt" name="financialDebt" required>
+                    <input matInput #input type="text" placeholder="Debt" [(ngModel)]="debt.financialDebt" name="financialDebt">
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
@@ -70,12 +78,12 @@
                 </mat-form-field>
 
                 <mat-form-field color="accent" *ngIf="debt.debtForPay">
-                    <input matInput #input type="text" placeholder="Creditor" [(ngModel)]="debt.creditor" name="creditor" required>
+                    <input matInput #input type="text" placeholder="Creditor" [(ngModel)]="debt.creditor" name="creditor">
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
                 <mat-form-field color="accent" *ngIf="debt.debtToGet">
-                    <input matInput #input type="text" placeholder="Debtor" [(ngModel)]="debt.debtor" name="debtor" required>
+                    <input matInput #input type="text" placeholder="Debtor" [(ngModel)]="debt.debtor" name="debtor">
                     <mat-error *ngIf="f.invalid">{{getErrorMessage()}}</mat-error>
                 </mat-form-field>
 
@@ -164,12 +172,38 @@
                 </div>
 
                 <mat-form-field color="accent">
-                    <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="debt.note" name="note" rows="4" cols="80" required></textarea>
+                    <textarea matInput #input type="text" placeholder="Note" [(ngModel)]="debt.note" name="note" rows="4" cols="80"></textarea>
                 </mat-form-field>
             </div>
 
-            <div class="row justify-content-center" mat-dialog-actions *ngIf="debt.isRestMoney || debt.debtForPay || debt.debtToGet">
-                <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;">Save</button>
+            <div class="row justify-content-center" mat-dialog-actions>
+                <button
+                    *ngIf="debt.isRestMoney"
+                    mat-button 
+                    type="submit" 
+                    [disabled]="!debt.placeId || !debt.restMoney || !debt.note || (debt.placeId == 3 && !debt.envelopeId)" 
+                    [mat-dialog-close]="1" 
+                    style="background:#FF5722;color: white;">
+                    Save
+                </button>
+                <button
+                    *ngIf="debt.debtForPay"
+                    mat-button 
+                    type="submit" 
+                    [disabled]="!debt.financialDebt || !debt.creditor || !debt.note || (!debt.toPayThisMonth && !debt.toPayNextMonth && !debt.notToPayForNow)" 
+                    [mat-dialog-close]="1" 
+                    style="background:#FF5722;color: white;">
+                    Save
+                </button>
+                <button
+                    *ngIf="debt.debtToGet"
+                    mat-button 
+                    type="submit" 
+                    [disabled]="!debt.financialDebt || !debt.debtor || !debt.note || (!debt.toGetThisMonth && !debt.toGetNextMonth && !debt.notToGetForNow)" 
+                    [mat-dialog-close]="1" 
+                    style="background:#FF5722;color: white;">
+                    Save
+                </button>
                 <button mat-button type="button" (click)="close()" tabindex="-1" style="background:#607D8B;color: white;">Cancel</button>
             </div>
 
