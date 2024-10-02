@@ -26,7 +26,7 @@ export class MovieFormMobileComponent implements OnInit {
   movie: Movie = new Movie();
 
   parentFilmName: string;
-  
+
   basePath = '/PicturesMovies';
   task: AngularFireUploadTask;
   progressValue: Observable<number>;
@@ -34,25 +34,25 @@ export class MovieFormMobileComponent implements OnInit {
   formControl = new FormControl('', [Validators.required]);
 
   statusMovies: StatusMovies[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private movieService: MovieService, 
+    private movieService: MovieService,
     private fireStorage: AngularFireStorage,
     public dialogRef: MatDialogRef<MovieFormMobileComponent>,
     public dialogService: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Movie[]
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.partMoviesList = this.allMovies
-    .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
-    .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
+      .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
 
     if (this.movie.key) {
       if (this.partMoviesList.find(movie => movie.key == this.movie.parentFilmKey)) {
@@ -64,12 +64,12 @@ export class MovieFormMobileComponent implements OnInit {
   filterByParentName(movieName: string) {
     if (movieName) {
       this.partMoviesList = this.allMovies
-      .filter(movie => movie.nameMovie.toLowerCase().includes(movieName.toLowerCase()) && movie.isFirst == true && movie.part && movie.part == 1)
-      .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+        .filter(movie => movie.nameMovie.toLowerCase().includes(movieName.toLowerCase()) && movie.isFirst == true && movie.part && movie.part == 1)
+        .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
     } else {
       this.partMoviesList = this.allMovies
-      .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
-      .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+        .filter(movie => movie.isFirst == true && movie.part && movie.part == 1)
+        .sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
     }
   }
 
@@ -81,7 +81,7 @@ export class MovieFormMobileComponent implements OnInit {
   }
 
   save() {
-    if (!this.movie.notLiked || this.movie.statusId !== 3) {this.movie.notLiked = false;}
+    if (!this.movie.notLiked || this.movie.statusId !== 3) { this.movie.notLiked = false; }
     if (this.movie.key) {
       this.movieService.update(this.movie.key, this.movie);
       Swal.fire(
@@ -95,9 +95,9 @@ export class MovieFormMobileComponent implements OnInit {
 
       this.movieService.create(this.movie);
       Swal.fire(
-      'New Movie added successfully',
-      '',
-      'success'
+        'New Movie added successfully',
+        '',
+        'success'
       )
     }
     this.close();
@@ -107,7 +107,7 @@ export class MovieFormMobileComponent implements OnInit {
     const file = event.target.files[0];
     if (file) {
       const filePath = `${this.basePath}/${file.name}`;  // path at which image will be stored in the firebase storage
-      this.task =  this.fireStorage.upload(filePath, file);    // upload task
+      this.task = this.fireStorage.upload(filePath, file);    // upload task
 
       // this.progress = this.snapTask.percentageChanges();
       this.progressValue = this.task.percentageChanges();
@@ -121,14 +121,14 @@ export class MovieFormMobileComponent implements OnInit {
         )
       });  // <<< url is found here
 
-    } else {  
+    } else {
       alert('No images selected');
       this.movie.imageUrl = '';
     }
-  } 
+  }
 
   getErrorMessage() {
-    return this.formControl.hasError('required') ? 'Required field' :'';
+    return this.formControl.hasError('required') ? 'Required field' : '';
   }
 
   close() {

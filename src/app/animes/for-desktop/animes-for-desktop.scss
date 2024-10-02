@@ -15,7 +15,7 @@
 
 @media only screen and (max-width: 760px) {
   .dialog-responsive {
-      width: 100%;
+    width: 100%;
   }
 }
 
@@ -28,4 +28,9 @@
 
 .card-img-top {
   height: 16rem;
+}
+
+.dataTooltip {
+  font-size: 20px !important;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
 }

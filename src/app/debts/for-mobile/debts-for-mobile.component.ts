@@ -13,7 +13,7 @@ import { DebtService } from 'src/app/shared/services/debt.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { UsersListService } from 'src/app/shared/services/list-users.service';
 
-import { Debt, PlacesMoney, StatusInDebts, StatusOutDebts } from 'src/app/shared/models/debt.model';
+import { Debt, EnvelopesList, PlacesMoney, StatusInDebts, StatusOutDebts } from 'src/app/shared/models/debt.model';
 
 @Component({
   selector: 'debts-for-mobile',
@@ -25,32 +25,38 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Debt>();
   dataSourceCopie = new MatTableDataSource<Debt>();
-  displayedColumns: string[] = ['date', 'debtor', 'creditor', 'debt', 'rest', 'place', 'topayin','note', 'star'];
+  displayedColumns: string[] = ['date', 'place', 'rest', 'debtor', 'creditor', 'debt', 'topayin','note', 'star'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  filteredDebtsByPlaceAndDebtForPay: Debt[];
-  filteredDebtsByPlaceAndDebtToGet: Debt[];
+  filteredDebtsByPlaceAndDebtForPay: Debt[] = [];
+  filteredDebtsByPlaceAndDebtToGet: Debt[] = [];
   creditors: string[] = [];
-  creditorName: string ='';
+  creditorName = '';
   debtors: string[] = [];
-  debtorName: string ='';
-  sortByDesc: boolean = true;
+  debtorName = '';
+  sortByDesc = true;
   isLoading: boolean;
-  restInPocket: string = "";
-  restInWallet: string = "";
-  restInEnvelope: string = "";
-  restInBox: string = "";
-  restInPosteAccount: string = "";
-  queryNote: string = "";
+  restInPocket = '';
+  restInWallet = '';
+  restInBox = '';
+  restInPosteAccount = '';
+  queryNote = '';
   placeId: number;
-  getInDebt: boolean = false;
-  getOutDebt: boolean = false;
+  envelopeId: number;
+  getInDebt = false;
+  getOutDebt = false;
   statusOutDebtId: number;
   statusInDebtId: number;
+  restInEnvTaxi = '';
+  restInEnvInternet = '';
+  restInEnvWaterElec = '';
+  restInEnvBeinSports = '';
+  restInEnvHomeLoc = '';
+  restInEnvHomeSupp = '';
 
   //in debt attributes
-  totalInDebts: string = "";
+  totalInDebts = '';
   defaultTotalInDebts: number;
   customTotalInDebts: number;
   totalInDebtsByCreditor: string;
@@ -58,7 +64,7 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
   defaultTotalInDebtsByCreditor: number;
 
   //out debt attributes
-  totalOutDebts: string = "";
+  totalOutDebts = '';
   defaultTotalOutDebts: number;
   customTotalOutDebts: number;
   totalOutDebtsByDebtor: string;
@@ -70,12 +76,21 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
   subscriptionForGetAllDebts: Subscription;
 
   placesMoney: PlacesMoney[] = [
-    {id: 1, place: 'الجيب'},
-    {id: 2, place: 'المحفظة'},
-    {id: 3, place: 'الظرف'}, 
-    {id: 4, place: 'الصندوق'},
-    {id: 5, place: 'دين'},
-    {id: 6, place: 'الحساب البريدي'}
+    {id: 1, place: 'Pocket'},
+    {id: 2, place: 'Wallet'},
+    {id: 3, place: 'Envelopes'}, 
+    {id: 4, place: 'Box'},
+    {id: 5, place: 'Debt'},
+    {id: 6, place: 'Poste account'}
+  ];
+
+  envelopesList: EnvelopesList[] = [
+    {id: 1, envelopeFor: 'Taxi'},
+    {id: 2, envelopeFor: 'Internet'},
+    {id: 3, envelopeFor: 'Water/Elec'}, 
+    {id: 4, envelopeFor: 'Bein sports'},
+    {id: 5, envelopeFor: 'Home Location'},
+    {id: 6, envelopeFor: 'Home Supplies'}
   ];
 
   statusInDebts: StatusInDebts[] = [
@@ -111,15 +126,23 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe(debts => {
       this.dataSourceCopie.data = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      if (this.queryNote) {
-        this.dataSource.data = debts.filter(debt => debt.note.toLowerCase().includes(this.queryNote.toLowerCase())).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-      }
-      else if (this.placeId) {
-        this.dataSource.data = debts.filter(debt => debt.placeId == this.placeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
-        if (this.placeId == 5) {
+      if (this.placeId) {
+        if (this.placeId == 3) {
+          if (this.envelopeId) {
+            this.dataSource.data = debts.filter(debt => debt.placeId == 3 && debt.envelopeId == this.envelopeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+            this.getRestMoneyForeachEnvelope();
+          }
+          else {
+            this.dataSource.data = debts.filter(debt => debt.placeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+          }
+        } else if (this.placeId == 5) {
+          this.dataSource.data = debts.filter(debt => debt.placeId == 5).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
           if (this.getInDebt == true) this.showInDebt();
           if (this.getOutDebt == true) this.showOutDebt();
-        } else this.getRestMoneyForeachPlace();
+        } else {
+          this.dataSource.data = debts.filter(debt => debt.placeId == this.placeId).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
+        }
+        this.getRestMoneyForeachPlace();
       } else this.dataSource.data = debts.sort((n1, n2) => n2.numRefDebt - n1.numRefDebt);
       this.getPlaceDebt();
     });
@@ -132,19 +155,29 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
   getRestMoneyForeachPlace() {
     let debtForRestInPocket = this.dataSourceCopie.data.filter(debt => debt.placeId == 1).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInWallet = this.dataSourceCopie.data.filter(debt => debt.placeId == 2).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
-    let debtForRestInEnvelope = this.dataSourceCopie.data.filter(debt => debt.placeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInBox = this.dataSourceCopie.data.filter(debt => debt.placeId == 4).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
     let debtForRestInPosteAccount = this.dataSourceCopie.data.filter(debt => debt.placeId == 6).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
 
     this.restInPocket = debtForRestInPocket ? debtForRestInPocket.restMoney : '0DT';
-
     this.restInWallet = debtForRestInWallet ? debtForRestInWallet.restMoney : '0DT';
-
-    this.restInEnvelope = debtForRestInEnvelope ? debtForRestInEnvelope.restMoney : '0DT';
-
     this.restInBox = debtForRestInBox ? debtForRestInBox.restMoney : '0DT';
-
     this.restInPosteAccount = debtForRestInPosteAccount ? debtForRestInPosteAccount.restMoney : '0DT';
+  }
+
+  getRestMoneyForeachEnvelope() {
+    let debtForRestInEnvTaxi = this.dataSourceCopie.data.filter(debt => debt.placeId == 3 && debt.envelopeId == 1).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvInternet = this.dataSourceCopie.data.filter(debt => debt.placeId == 3 && debt.envelopeId == 2).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvWaterElec = this.dataSourceCopie.data.filter(debt => debt.placeId == 3 && debt.envelopeId == 3).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvBeinSports = this.dataSourceCopie.data.filter(debt => debt.placeId == 3 && debt.envelopeId == 4).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvHomeLoc = this.dataSourceCopie.data.filter(debt => debt.placeId == 3 && debt.envelopeId == 5).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+    let debtForRestInEnvHomeSupp = this.dataSourceCopie.data.filter(debt => debt.placeId == 3 && debt.envelopeId == 6).sort((n1, n2) => n2.numRefDebt - n1.numRefDebt)[0];
+
+    this.restInEnvTaxi = debtForRestInEnvTaxi ? debtForRestInEnvTaxi.restMoney : '0DT';
+    this.restInEnvInternet = debtForRestInEnvInternet ? debtForRestInEnvInternet.restMoney : '0DT';
+    this.restInEnvWaterElec = debtForRestInEnvWaterElec ? debtForRestInEnvWaterElec.restMoney : '0DT';
+    this.restInEnvBeinSports = debtForRestInEnvBeinSports ? debtForRestInEnvBeinSports.restMoney : '0DT';
+    this.restInEnvHomeLoc = debtForRestInEnvHomeLoc ? debtForRestInEnvHomeLoc.restMoney : '0DT';
+    this.restInEnvHomeSupp = debtForRestInEnvHomeSupp ? debtForRestInEnvHomeSupp.restMoney : '0DT';
   }
 
   getTotalOutDebts() {
@@ -586,6 +619,15 @@ export class DebtsForMobileComponent implements OnInit, OnDestroy {
       maxWidth: '100vw'
     });
     this.getRestMoneyForeachPlace();
+  }
+
+  showRestEnvelope(contentRestMoneyForeachEnve) {
+    this.dialogService.open(contentRestMoneyForeachEnve, {
+      width: '98vw',
+      height:'75vh',
+      maxWidth: '100vw'
+    });    
+    this.getRestMoneyForeachEnvelope();
   }
 
   newDebt() {

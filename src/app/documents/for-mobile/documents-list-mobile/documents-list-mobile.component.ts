@@ -24,7 +24,7 @@ export class DocumentsListForMobileComponent implements OnInit, OnDestroy {
   documentsList: Document[] = [];
   documentsListCopieForNewDocument: Document[] = [];
 
-  p: number = 1;
+  p = 1;
 
   subjectDocuments: SubjectDocuments = new SubjectDocuments();
 

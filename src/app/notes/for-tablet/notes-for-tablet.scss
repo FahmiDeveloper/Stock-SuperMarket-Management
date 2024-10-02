@@ -50,3 +50,12 @@
 :host ::ng-deep span {
   line-height: 1.5em;
 }
+
+.input-search {
+  padding: 13px;
+  width: 240px;  
+}
+
+.input-search::placeholder {
+  color: #888; 
+}

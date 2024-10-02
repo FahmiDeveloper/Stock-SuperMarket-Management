@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PageEvent } from '@angular/material/paginator';
@@ -24,14 +24,17 @@ export class NotesForTabletComponent implements OnInit, OnDestroy {
   notesList: Note[] = [];
   notesListCopie: Note[] = [];
 
-  p: number = 1;
-  content: string = '';
-  keywordSelected: string;
+  p = 1;
+  keywordForSearch = '';
+  keywordSelected = '';
   keywordsList: string[] = [];
+  keywordsListCopie: string[] = [];
+  keywordsListCopieForForm: string[] = [];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
+  @ViewChild('searchInput') inputElement!: ElementRef;
 
   subscriptionForGetAllNotes: Subscription;
   subscriptionForGetAllNotesForAdd: Subscription;
@@ -55,10 +58,14 @@ export class NotesForTabletComponent implements OnInit, OnDestroy {
     .subscribe((notes: Note[]) => {
 
       this.keywordsList = [];
+      this.keywordsListCopie = [];
+      this.keywordsListCopieForForm = [];
          
       notes.forEach(note => {
-        if (!this.keywordsList.includes(note.keyword)) {
+        if (!this.keywordsList.includes(note.keyword) && note.keyword !== 'Code used') {
           this.keywordsList.push(note.keyword);
+          this.keywordsListCopie.push(note.keyword);
+          this.keywordsListCopieForForm.push(note.keyword);
         }
       })
     });
@@ -69,18 +76,13 @@ export class NotesForTabletComponent implements OnInit, OnDestroy {
     .getAll()
     .subscribe((notes: Note[]) => {
 
-      if (this.content) {
-        this.notesList = notes.filter(note => note.keyword.toLowerCase().includes(this.content.toLowerCase()));
-        this.notesList = this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
-      }
-      
-      else if (this.keywordSelected) {
+      if (this.keywordSelected) {
         this.notesList = notes.filter(note => note.keyword == this.keywordSelected);
         this.notesList = this.notesList.sort((n1, n2) => n1.numRefNote - n2.numRefNote);
       }
 
       else {
-        this.notesList = notes.sort((n1, n2) => n2.numRefNote - n1.numRefNote);
+        this.notesList = notes.filter(note => note.keyword !== 'Code used').sort((n1, n2) => n2.numRefNote - n1.numRefNote);
       }    
 
     });
@@ -105,6 +107,7 @@ export class NotesForTabletComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(NoteFormForTabletComponent, config);
 
     dialogRef.componentInstance.arrayNotes = this.notesListCopie;
+    dialogRef.componentInstance.keywordsListCopieForForm = this.keywordsListCopieForForm;
   }
 
   editNote(note?: Note) {
@@ -112,6 +115,7 @@ export class NotesForTabletComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialogService.open(NoteFormForTabletComponent, config);
     
     dialogRef.componentInstance.note = note;
+    dialogRef.componentInstance.keywordsListCopieForForm = this.keywordsListCopieForForm;
   }
 
   deleteNote(noteKey) {
@@ -175,6 +179,25 @@ export class NotesForTabletComponent implements OnInit, OnDestroy {
 
     // we open the menu 
     this.matMenuTrigger.openMenu(); 
+  }
+
+  filterOptions() {
+    this.keywordsList = [];
+    if (this.keywordForSearch) {
+      this.keywordsList = this.keywordsListCopie.filter(keyword => keyword.toLowerCase().includes(this.keywordForSearch.toLowerCase()));
+    } else {
+      this.keywordsList = this.keywordsListCopie;
+      if (this.keywordSelected) this.keywordSelected = '';
+      this.getAllNotes();
+    }
+  }
+
+  onSelectOpened(isOpened: boolean) {
+    if (isOpened) {
+      setTimeout(() => {
+        this.inputElement.nativeElement.focus();
+      });
+    }
   }
 
   ngOnDestroy() {

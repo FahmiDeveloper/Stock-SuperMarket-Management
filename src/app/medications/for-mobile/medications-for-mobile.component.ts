@@ -27,11 +27,12 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
   medicationsListCopieForNewMedication: Medication[] = [];
   diseaseList: Disease[] = [];
 
-  p: number = 1;
+  p = 1;
 
   diseaseSelectedId: number;
-  FileName: string = '';
-  medicationName: string = '';
+  FileName = '';
+  medicationName = '';
+  pictureFile = '';
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -132,6 +133,17 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     })
   }
 
+  viewPicture(medication: Medication, showPicture) {
+    this.pictureFile = medication.urlPicture;
+    this.FileName = medication.fileName.substring(0, medication.fileName.lastIndexOf("."));
+
+    this.dialogService.open(showPicture, {
+      panelClass: "dialog-responsive",
+      width: '98vw',
+      maxWidth: '100vw'
+    });
+  }
+
   downloadPicture(medication: Medication) {
     fetch(medication.urlPicture)
     .then(res => res.blob()) // Gets the response and returns it as a blob
@@ -163,9 +175,25 @@ export class MedicationsForMobileComponent implements OnInit, OnDestroy {
     });
   }
 
+  viewMedicationFor(medicationFor: string) {
+    Swal.fire({
+      text: medicationFor,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
+  }
+
+  viewPrice(priceMedication: string) {
+    Swal.fire({
+      text: priceMedication ? priceMedication : '?',
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
+  }
+
   viewUtilisation(utilisation: string) {
     Swal.fire({
-      text: utilisation,
+      text: utilisation ? utilisation : '?',
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });

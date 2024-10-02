@@ -27,9 +27,9 @@ export class SubjectDocumentsForDesktopComponent implements OnInit, OnDestroy {
   subjectDocumentsListForSelect: SubjectDocuments[] = [];
   arraysubjectDocuments: SubjectDocuments[] = [];
 
-  p: number = 1;
+  p = 1;
 
-  subjectDocumentSelectedKey: string = '';
+  subjectDocumentSelectedKey = '';
   innerWidth: number;
   itemsPerPage: number;
 

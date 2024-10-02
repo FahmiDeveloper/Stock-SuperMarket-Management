@@ -17,7 +17,7 @@
 
     <div class="col-md-4">
         <mat-form-field class="text-application" style="width: 200px;">
-            <mat-label>Subject</mat-label>
+            <mat-placeholder>Subject</mat-placeholder>
             <mat-select name="subjectSelectedId" class="text-application" [(ngModel)]="subjectSelectedId" (selectionChange)="getAllClockings()">
                 <mat-option value=""></mat-option>
                 <mat-option *ngFor="let subject of subjectList" [value]="subject.id">
@@ -64,8 +64,8 @@
     </mat-grid-tile>
 
     <mat-grid-tile>
-        <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
-        <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
+        <span *ngIf="vacationLimitDays > 0" style="color: green;">{{ vacationLimitDays }}</span>
+        <span *ngIf="vacationLimitDays == 0 || vacationLimitDays < 0" style="color: red;">{{ vacationLimitDays }}</span>
         &nbsp;day(s)
     </mat-grid-tile>
 
@@ -124,6 +124,29 @@
                     <mat-grid-tile colspan="8">
                         <span *ngIf="clocking.clockingNbr">{{ clocking.clockingNbr }}</span>
                         <span *ngIf="!clocking.clockingNbr">-</span>
+                    </mat-grid-tile>
+                    
+                    <br>
+
+                    <mat-grid-tile colspan="4">Subj</mat-grid-tile>                
+                    <mat-grid-tile colspan="8">
+                        <span *ngIf="clocking.subjectId">
+                            <span *ngIf="clocking.subjectId == 1">Work on sunday</span>
+                            <span *ngIf="clocking.subjectId == 2">Take vacation</span>
+                            <span *ngIf="clocking.subjectId == 3">Take one hour</span>
+                            <span *ngIf="clocking.subjectId == 4">Take two hours</span>
+                            <span *ngIf="clocking.subjectId == 5">Take three hours</span>
+                            <span *ngIf="clocking.subjectId == 6">Work half day</span>
+                            <span *ngIf="clocking.subjectId == 7">Public holiday</span>
+                        </span>
+                        <span *ngIf="!clocking.subjectId">-</span>
+                    </mat-grid-tile>
+
+                    <br>
+
+                    <mat-grid-tile colspan="4">Solde</mat-grid-tile>                
+                    <mat-grid-tile colspan="8">
+                        <span [ngStyle]="{'color': clocking.restVacationDays > 0 ? 'green' : 'red'}">{{ clocking.restVacationDays }}</span>
                     </mat-grid-tile>
                     
                     <br>

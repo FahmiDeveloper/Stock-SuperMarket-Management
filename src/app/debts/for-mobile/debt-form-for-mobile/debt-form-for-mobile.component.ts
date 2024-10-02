@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 import { DebtService } from 'src/app/shared/services/debt.service';
 
-import { Debt, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
+import { Debt, EnvelopesList, PlacesMoney, Unit } from 'src/app/shared/models/debt.model';
 
 @Component({
   selector: 'debt-form-for-mobile',
@@ -21,16 +21,25 @@ export class DebtFormForMobileComponent implements OnInit {
   defaultDebts: Debt[];
   dataSource: Debt[];
 
-  selectedUnit:string;
+  selectedUnit: string;
   modalRef: any;
 
   placesMoney: PlacesMoney[] = [
-    {id: 1, place: 'الجيب'},
-    {id: 2, place: 'المحفظة'},
-    {id: 3, place: 'الظرف'}, 
-    {id: 4, place: 'الصندوق'},
-    {id: 5, place: 'دين'},
-    {id: 6, place: 'الحساب البريدي'}
+    {id: 1, place: 'Pocket'},
+    {id: 2, place: 'Wallet'},
+    {id: 3, place: 'Envelopes'}, 
+    {id: 4, place: 'Box'},
+    {id: 5, place: 'Debt'},
+    {id: 6, place: 'Poste account'}
+  ];
+
+  envelopesList: EnvelopesList[] = [
+    {id: 1, envelopeFor: 'Taxi'},
+    {id: 2, envelopeFor: 'Internet'},
+    {id: 3, envelopeFor: 'Water/Elec'}, 
+    {id: 4, envelopeFor: 'Bein sports'},
+    {id: 5, envelopeFor: 'Home Location'},
+    {id: 6, envelopeFor: 'Home Supplies'}
   ];
 
   units: Unit[] = [
@@ -92,26 +101,35 @@ export class DebtFormForMobileComponent implements OnInit {
 
   checkAddRestMoney() {
     if (!this.debt.key && this.debt.isRestMoney == true) {
-        this.debt.debtForPay = false;
-        this.debt.debtToGet = false;
+      this.debt.debtForPay = false;
+      this.debt.debtToGet = false;
+    }
+    if (this.debt.placeId) {
+      this.debt.placeId = null;
     }
   }
 
   checkDebtForPay() {
     if (!this.debt.key && this.debt.debtForPay == true) {
-        this.debt.debtToGet = false;
-        this.debt.isRestMoney = false;
-        this.debt.debtor = "Fahmi";
-        this.debt.placeId = 5;
+      this.debt.debtToGet = false;
+      this.debt.isRestMoney = false;
+      this.debt.debtor = "Fahmi";
+      this.debt.placeId = 5;
+    }
+    if (this.debt.creditor) {
+      this.debt.creditor = '';
     }
   }
 
   checkDebtToGet() {
     if (!this.debt.key && this.debt.debtToGet == true) {
-        this.debt.debtForPay = false;
-        this.debt.isRestMoney = false;
-        this.debt.creditor = "Fahmi";
-        this.debt.placeId = 5;
+      this.debt.debtForPay = false;
+      this.debt.isRestMoney = false;
+      this.debt.creditor = "Fahmi";
+      this.debt.placeId = 5;
+    }
+    if (this.debt.debtor) {
+      this.debt.debtor = '';
     }
   }
 

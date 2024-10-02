@@ -63,10 +63,12 @@
                     <mat-grid-tile colspan="4">
                         <span *ngIf="expiration.isExpired" style="color: red;">Passed</span>
                         <span *ngIf="!expiration.isExpired && !expiration.soonToExpire" style="color: green;">Rest</span>
-                        <span *ngIf="expiration.soonToExpire" style="color: #ff6900;">Rest</span>
+                        <span *ngIf="!expiration.isExpired && expiration.soonToExpire" style="color: #ff6900;">Rest</span>
                     </mat-grid-tile>                
-                    <mat-grid-tile colspan="8" [ngStyle]="{'color': expiration.isExpired ? 'red': !expiration.isExpired && !expiration.soonToExpire ? 'green' : expiration.soonToExpire ? '#ff6900' : ''}">
-                        {{ expiration.restdays }}
+                    <mat-grid-tile colspan="8">
+                        <span *ngIf="expiration.isExpired" style="color: red;">{{ expiration.restdays }}</span>
+                        <span *ngIf="!expiration.isExpired && !expiration.soonToExpire" style="color: green;">{{ expiration.restdays }}</span>
+                        <span *ngIf="!expiration.isExpired && expiration.soonToExpire" style="color: #ff6900;">{{ expiration.restdays }}</span>
                     </mat-grid-tile>
 
                     <br>

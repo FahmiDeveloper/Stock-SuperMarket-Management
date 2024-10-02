@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatMenuTrigger } from '@angular/material/menu';
 
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -30,42 +29,37 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
   allMovies: Movie[] = [];
   listPartsByParentFilmKey: Movie[] = [];
 
-  p: number = 1;
+  p = 1;
 
-  movieName: string = '';
+  movieName = '';
   statusId: number;
-  sortByDesc: boolean = true;
+  sortByDesc = true;
   optionSelected: number;
-  dislike: boolean = false;
-  nbrMoviesToCheckToday: number = 0;
-  nbrMoviesNotChecked: number = 0;
-  showMoviesNotChecked: boolean = false;
-
-  menuTopLeftPosition =  {x: '0', y: '0'} 
-
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
+  nbrMoviesToCheckToday = 0;
+  nbrMoviesNotChecked = 0;
+  showMoviesNotChecked = false;
 
   subscriptionForGetAllMovies: Subscription;
   subscriptionForGetAllMoviesForSelect: Subscription;
   subscriptionForGetAllMoviesNotChecked: Subscription;
 
   statusMovies: StatusMovies[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'},
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private movieService: MovieService, 
+    private movieService: MovieService,
     public userService: UserService,
     public usersListService: UsersListService,
     public authService: AuthService,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar,
-    private cdRef:ChangeDetectorRef
-  ) {}
+    private cdRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.getAllMovies();
@@ -73,92 +67,83 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
     this.getAllMoviesNotChecked();
   }
 
-  getAllMovies() {    
+  getAllMovies() {
     this.subscriptionForGetAllMovies = this.movieService
-    .getAll()
-    .subscribe((movies: Movie[]) => {
-      this.moviesListCopie = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      this.allMovies = movies;
+      .getAll()
+      .subscribe((movies: Movie[]) => {
+        this.moviesListCopie = movies.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+        this.allMovies = movies;
 
-      if (this.movieName) {
-        this.moviesList = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.movieName.toLowerCase()) && (movie.isFirst == true)));
-        this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else if (this.statusId) {
-        if (this.showMoviesNotChecked) this.showMoviesNotChecked = false;
-        if (this.statusId == 1) {
-          if (this.dislike) this.dislike = false;
-          if (this.optionSelected) {
-            if (this.optionSelected == 1) {
-              this.moviesList = movies.filter(movie => movie.statusId == this.statusId && !movie.checkDate); 
-            }
-            else {
-              this.moviesList = movies.filter(movie => movie.statusId == this.statusId && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD'));
-            }      
-          }
-          else  {
-            this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
-          }
+        if (this.movieName) {
+          this.moviesList = movies.filter(movie => (movie.nameMovie.toLowerCase().includes(this.movieName.toLowerCase()) && (movie.isFirst == true)));
           this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
         }
-        else {
-          if (this.optionSelected) this.optionSelected = null;
-          if (this.statusId == 3) {
-            if (this.dislike) {
-              this.moviesList = movies.filter(movie => movie.statusId == this.statusId && movie.notLiked == true);
+
+        else if (this.statusId) {
+
+          if (this.showMoviesNotChecked) this.showMoviesNotChecked = false;
+
+          if (this.statusId == 1) {
+            if (this.optionSelected) {
+              if (this.optionSelected == 1) {
+                this.moviesList = movies.filter(movie => movie.statusId == this.statusId && !movie.checkDate);
+              }
+              else {
+                this.moviesList = movies.filter(movie => movie.statusId == this.statusId && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD'));
+              }
             }
-            else  {
+            else {
               this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
             }
           }
-          else {
-            if (this.dislike) this.dislike = false;
-            this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
-          }     
-          this.moviesList = this.statusId == 3 ? this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie) : this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);            
-        }
-      }
 
-      else if (this.showMoviesNotChecked) {
-        this.moviesList = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate < moment().format('YYYY-MM-DD'));
-        this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-      }
-      
-      else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
-    });
+          else {
+            if (this.optionSelected) this.optionSelected = null;
+            this.moviesList = movies.filter(movie => movie.statusId == this.statusId);
+          }
+
+          this.moviesList = this.statusId == 1 || this.statusId == 3 ? this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie) : this.moviesList.sort((n1, n2) => n1.numRefMovie - n2.numRefMovie);
+        }
+
+        else if (this.showMoviesNotChecked) {
+          this.moviesList = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate < moment().format('YYYY-MM-DD'));
+          this.moviesList = this.moviesList.sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+        }
+
+        else this.moviesList = movies.filter(movie => movie.isFirst == true).sort((n1, n2) => n2.numRefMovie - n1.numRefMovie);
+      });
   }
 
   getAllMoviesForSelect() {
     this.subscriptionForGetAllMoviesForSelect = this.movieService
-    .getAll()
-    .subscribe((movies: Movie[]) => {
-      this.nbrMoviesToCheckToday = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD')).length;
-      this.cdRef.detectChanges();
-    })
+      .getAll()
+      .subscribe((movies: Movie[]) => {
+        this.nbrMoviesToCheckToday = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate == moment().format('YYYY-MM-DD')).length;
+        this.cdRef.detectChanges();
+      })
   }
 
   getAllMoviesNotChecked() {
     this.subscriptionForGetAllMoviesNotChecked = this.movieService
-    .getAll()
-    .subscribe((movies: Movie[]) => {
-      this.nbrMoviesNotChecked = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate < moment().format('YYYY-MM-DD')).length;
-      this.cdRef.detectChanges();
-    })
+      .getAll()
+      .subscribe((movies: Movie[]) => {
+        this.nbrMoviesNotChecked = movies.filter(movie => movie.statusId == 1 && movie.checkDate && movie.checkDate < moment().format('YYYY-MM-DD')).length;
+        this.cdRef.detectChanges();
+      })
   }
 
-  OnPageChange(elem: HTMLElement){
+  OnPageChange(elem: HTMLElement) {
     elem.scrollIntoView();
   }
 
   showDetailsMovie(movieSelected: Movie) {
     this.listPartsByParentFilmKey = this.allMovies
-    .filter(movie => (movie.key == movieSelected.key) || (movie.parentFilmKey == movieSelected.key))
-    .sort((n1, n2) => n1.priority - n2.priority);
+      .filter(movie => (movie.key == movieSelected.key) || (movie.parentFilmKey == movieSelected.key))
+      .sort((n1, n2) => n1.priority - n2.priority);
 
     const dialogRef = this.dialogService.open(MovieDetailsWithPartsMobileComponent, {
       width: '98vw',
-      height:'75vh',
+      height: '75vh',
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.movie = movieSelected;
@@ -169,18 +154,18 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
   newMovie() {
     const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
       width: '98vw',
-      height:'75vh',
-      maxWidth: '100vw', 
-      data: {movie: {}}
+      height: '75vh',
+      maxWidth: '100vw',
+      data: { movie: {} }
     });
     dialogRef.componentInstance.arrayMovies = this.moviesListCopie;
-    dialogRef.componentInstance.allMovies = this.allMovies;  
+    dialogRef.componentInstance.allMovies = this.allMovies;
   }
 
   editMovie(movie?: Movie) {
     const dialogRef = this.dialogService.open(MovieFormMobileComponent, {
       width: '98vw',
-      height:'75vh',
+      height: '75vh',
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.movie = movie;
@@ -206,12 +191,12 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
       }
     })
   }
-  
+
   followLink(path: string) {
     window.open(path);
   }
 
-  copyText(text: string){
+  copyText(text: string) {
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -240,22 +225,6 @@ export class MoviesForMobileComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#d33',
       confirmButtonText: 'Close'
     });
-  }
-
-  openMenuTrigger(event: MouseEvent, movie: Movie) { 
-    // preventDefault avoids to show the visualization of the right-click menu of the browser 
-    event.preventDefault(); 
-
-    // we record the mouse position in our object 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
-
-    // we open the menu 
-    // we pass to the menu the information about our object 
-    this.matMenuTrigger.menuData = {movie: movie};
-
-    // we open the menu 
-    this.matMenuTrigger.openMenu(); 
   }
 
   ngOnDestroy() {

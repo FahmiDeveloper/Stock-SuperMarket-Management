@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatMenuTrigger } from '@angular/material/menu';
 
 import Swal from 'sweetalert2';
 
@@ -24,31 +23,27 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
 
   anime: Anime = new Anime();
 
-  menuTopLeftPosition =  {x: '0', y: '0'} 
-
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
-
   statusAnimes: StatusAnimes[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private animeService: AnimeService, 
+    private animeService: AnimeService,
     public dialogRef: MatDialogRef<AnimeDetailsWithSeasonsMobileComponent>,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   editAnime(anime?: Anime) {
     const dialogRef = this.dialogService.open(AnimeFormMobileComponent, {
       width: '98vw',
-      height:'70vh',
+      height: '70vh',
       maxWidth: '100vw'
     });
     dialogRef.componentInstance.anime = anime;
@@ -67,7 +62,7 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
       if (result.value) {
         this.animeService.delete(animeKey);
         this.listSeasonsByParentAnimeKey.forEach((anime, index) => {
-          if(anime.key === animeKey) this.listSeasonsByParentAnimeKey.splice(index,1);
+          if (anime.key === animeKey) this.listSeasonsByParentAnimeKey.splice(index, 1);
         });
         if (this.listSeasonsByParentAnimeKey.length == 0) {
           this.dialogRef.close();
@@ -83,8 +78,8 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
       }
     })
   }
-  
-  copyText(text: string){
+
+  copyText(text: string) {
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -119,20 +114,19 @@ export class AnimeDetailsWithSeasonsMobileComponent implements OnInit {
     window.open(path);
   }
 
-  openMenuTrigger(event: MouseEvent, anime: Anime) { 
-    // preventDefault avoids to show the visualization of the right-click menu of the browser 
-    event.preventDefault(); 
+  getTruncatedNameAnime(value: string, limit: number): string {
+    if (!value) {
+      return '';
+    }
+    return value.length > limit ? value.substring(0, limit) + '...' : value;
+  }
 
-    // we record the mouse position in our object 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
-
-    // we open the menu 
-    // we pass to the menu the information about our object 
-    this.matMenuTrigger.menuData = {anime: anime};
-
-    // we open the menu 
-    this.matMenuTrigger.openMenu(); 
+  viewFullNameAnime(animeName: string) {
+    Swal.fire({
+      text: animeName,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Close'
+    });
   }
 
   close() {

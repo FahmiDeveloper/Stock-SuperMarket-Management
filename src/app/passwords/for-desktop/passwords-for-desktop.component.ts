@@ -23,9 +23,9 @@ export class PasswordsForDesktopComponent implements OnInit, OnDestroy {
   passwordsList: Password[] = [];
   passwordsListCopie: Password[] = [];
 
-  p: number = 1;
+  p = 1;
 
-  content: string = '';
+  content = '';
   innerWidth: number;
   itemsPerPage: number;
 

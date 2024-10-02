@@ -21,19 +21,22 @@ export class ClockingFormForDesktopComponent implements OnInit {
 
   clocking: Clocking = new Clocking();
 
-  selectedSubjectId: number;
   vacationLimitDays: number;
   currentMonthAndYearForVacation: string;
   monthSelected: string ;
   showVacationLimitDays: boolean;
+  lastClockingFromList: number;
   
   formControl = new FormControl('', [Validators.required]);
 
   subjectList: SubjectList[] = [
     {id: 1, subjectName: 'Work on sunday'},
     {id: 2, subjectName: 'Take vacation'},
-    {id: 3, subjectName: 'Take one hour'}  ,
-    {id: 4, subjectName: 'Work half day'} 
+    {id: 3, subjectName: 'Take one hour'},
+    {id: 4, subjectName: 'Take two hours'},
+    {id: 5, subjectName: 'Take three hours'},
+    {id: 6, subjectName: 'Work half day'},
+    {id: 7, subjectName: 'Public holiday'}  
   ];
 
   constructor(
@@ -45,76 +48,84 @@ export class ClockingFormForDesktopComponent implements OnInit {
     if (!this.clocking.key) {
       this.clocking.dateClocking = moment().format('YYYY-MM-DD');
       this.clocking.timeClocking = moment().format('HH:mm');
-    }
-    if (this.clocking.key) {
-      if (this.clocking.workOnSunday == true) this.selectedSubjectId = 1;
-      else if (this.clocking.takeVacation == true) this.selectedSubjectId = 2;
-      else if (this.clocking.takeOneHour == true) this.selectedSubjectId = 3;
-      else if (this.clocking.workHalfDay == true) this.selectedSubjectId = 4;
-      else this.selectedSubjectId = null;
+
+      if (new Date(this.clocking.dateClocking).getDate() == 1) {
+        this.vacationLimitDays = this.lastClockingFromList + 1.75;
+      }
+      else {
+        this.vacationLimitDays = this.lastClockingFromList; 
+      }
+    } 
+    else {
+      this.vacationLimitDays =  this.clocking.restVacationDays; 
     }
     if (this.monthSelected == String(new Date().getMonth()+ 1)  || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {this.showVacationLimitDays = true;} 
     else {this.showVacationLimitDays = false;}
   }
 
   save() {
-    if (this.clocking.workOnSunday == undefined && this.clocking.takeVacation == undefined && this.clocking.takeOneHour == undefined && this.clocking.workHalfDay == undefined) {
-      this.clocking.workOnSunday = false;
-      this.clocking.takeVacation = false;
-      this.clocking.takeOneHour = false;
-      this.clocking.workHalfDay = false;
-    } 
-    if (this.selectedSubjectId == 1) {
-      this.clocking.workOnSunday = true;
-      this.clocking.takeVacation = false;
-      this.clocking.takeOneHour = false;
-      this.clocking.workHalfDay = false;
-    }
-    if (this.selectedSubjectId == 2) {
-      this.clocking.workOnSunday = false;
-      this.clocking.takeVacation = true;
-      this.clocking.takeOneHour = false;
-      this.clocking.workHalfDay = false;
-    }
-    if (this.selectedSubjectId == 3) {
-      this.clocking.workOnSunday = false;
-      this.clocking.takeVacation = false;
-      this.clocking.takeOneHour = true;
-      this.clocking.workHalfDay = false;
-    }
-    if (this.selectedSubjectId == 4) {
-      this.clocking.workOnSunday = false;
-      this.clocking.takeVacation = false;
-      this.clocking.takeOneHour = false;
-      this.clocking.workHalfDay = true;
-    }
+    if (this.clocking.subjectId == 2) {
+      const start = new Date(this.clocking.dateClocking);
+      const end = new Date(this.clocking.dateEndVaction);
+      const dates = this.getDatesBetween(start, end);  
 
-    this.clocking.restVacationDays = this.vacationLimitDays;
+      for (let i = 0;i < dates.length; i++) {
+        this.clocking.dateClocking = dates[i];
+        this.clocking.note = 'Vacation';
+        if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + (i + 1);
+        if (this.arrayClockings[0] && this.arrayClockings[0].restVacationDays) this.clocking.restVacationDays = this.arrayClockings[0].restVacationDays - (i + 1);
+        this.clocking.subjectId = 2;
+        this.clocking.timeClocking = '';
+        this.clockingService.create(this.clocking);
+        Swal.fire(
+          'New clocking(s) added successfully',
+          '',
+          'success'
+        )
+      }
+    }
+    else {
+      this.clocking.restVacationDays = this.vacationLimitDays;
        
-    if (this.clocking.key) {
-
-      this.clockingService.update(this.clocking.key, this.clocking);
-
-      Swal.fire(
-        'Clocking data has been updated successfully',
+      if (this.clocking.key) {
+  
+        this.clockingService.update(this.clocking.key, this.clocking);
+  
+        Swal.fire(
+          'Clocking data has been updated successfully',
+          '',
+          'success'
+        )
+  
+      } else {
+        if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + 1;
+        else this.clocking.numRefClocking = 1;
+  
+        this.clockingService.create(this.clocking);
+  
+        Swal.fire(
+        'New clocking(s) added successfully',
         '',
         'success'
-      )
-
-    } else {
-      if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + 1;
-      else this.clocking.numRefClocking = 1;
-
-      this.clockingService.create(this.clocking);
-
-      Swal.fire(
-      'New clocking added successfully',
-      '',
-      'success'
-      )
-
+        )
+  
+      }
     }
     this.close();
+  }
+
+  getDatesBetween(startDate: Date, endDate: Date): string[] {
+    const dateArray: string[] = [];
+    let currentDate = new Date(startDate);
+  
+    while (currentDate <= endDate) {
+      // Format date as 'YYYY-MM-DD'
+      const formattedDate = currentDate.toLocaleDateString('en-CA'); // 'en-CA' is the locale for 'YYYY-MM-DD' format
+      dateArray.push(formattedDate);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  
+    return dateArray;
   }
 
   getErrorMessage() {
@@ -126,8 +137,7 @@ export class ClockingFormForDesktopComponent implements OnInit {
   }
 
   selectSubject() {
-    this.vacationLimitDays = (this.selectedSubjectId == 2) ? this.vacationLimitDays - 1 : this.vacationLimitDays;
-    if (this.vacationLimitDays < 0) this.vacationLimitDays = 0;
+    this.vacationLimitDays = this.clocking.subjectId == 6 ? this.vacationLimitDays - 0.5 : this.vacationLimitDays;
   }
 
 }

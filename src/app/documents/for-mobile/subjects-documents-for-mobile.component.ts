@@ -28,7 +28,7 @@ export class SubjectsDocumentsForMobileComponent implements OnInit, OnDestroy {
   pagedListSubjectDocuments: SubjectDocuments[] = [];
   arraysubjectDocuments: SubjectDocuments[] = [];
 
-  length: number = 0;
+  length = 0;
 
   subjectDocumentSelectedKey: string;
 

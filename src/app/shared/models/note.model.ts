@@ -4,4 +4,10 @@ export class Note {
   contentNote: string;
   numRefNote: number;
   path: string;
+  contentCode: string;
+  typescriptCode: string;
+  htmlCode: string;
+  javaCode: string;
+  cssCode: string;
+  otherCode: string;
 }

@@ -2,6 +2,7 @@ export class Anime {
 
   key: string;
   nameAnime: string;
+  nameAnimeEng: string;
   note: string;
   imageUrl: string;
   statusId: number;
@@ -21,6 +22,7 @@ export class Anime {
 
   constructor(){
     this.nameAnime = '';
+    this.nameAnimeEng = '';
     this.checkDate = '';
     this.note = '';
     this.imageUrl = '';

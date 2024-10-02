@@ -22,7 +22,7 @@ export class ExpirationFormForDesktopComponent implements OnInit {
 
   expiration: Expiration = new Expiration();
 
-  selectedUnit:string = '';
+  selectedUnit = '';
   
   formControl = new FormControl('', [Validators.required]);
 

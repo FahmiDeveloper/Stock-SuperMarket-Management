@@ -20,8 +20,8 @@ export class UploadFormComponent implements OnChanges, OnInit {
   selectedFiles?: FileList;
   currentFileUpload?: FileUpload;
   percentage = 0;
-  angularContext: boolean = false;
-  otherContext: boolean = false;
+  angularContext = false;
+  otherContext = false;
   contextFile: number;
   lastNumRefFile: number;
 

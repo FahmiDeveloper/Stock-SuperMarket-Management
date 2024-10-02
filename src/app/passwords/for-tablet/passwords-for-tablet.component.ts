@@ -23,10 +23,10 @@ export class PasswordsForTabletComponent implements OnInit, OnDestroy {
   passwordsList: Password[] = [];
   passwordsListCopie: Password[] = [];
 
-  p: number = 1;
+  p = 1;
 
-  content: string = '';
-  orientation: string = '';
+  content = '';
+  orientation = '';
 
   subscriptionForGetAllPassword: Subscription;
 

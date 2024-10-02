@@ -9,10 +9,16 @@
     <mat-checkbox name="isFirst" [(ngModel)]="anime.isFirst" class="mat-checkbox-layout">
       <span class="text-application">First</span>
     </mat-checkbox>
-    
+
     <mat-form-field color="accent">
-      <mat-placeholder class="text-application"><span>Name</span></mat-placeholder>
+      <mat-placeholder class="text-application"><span>Name Jap</span></mat-placeholder>
       <input matInput type="text" [(ngModel)]="anime.nameAnime" name="nameAnime" class="text-application" required>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <mat-placeholder class="text-application"><span>Name Eng</span></mat-placeholder>
+      <input matInput type="text" [(ngModel)]="anime.nameAnimeEng" name="nameAnimeEng" class="text-application"
+        required>
     </mat-form-field>
 
     <mat-form-field color="accent">
@@ -47,7 +53,8 @@
       <input matInput type="date" [(ngModel)]="anime.checkDate" name="checkDate" class="text-application">
     </mat-form-field>
 
-    <mat-checkbox *ngIf="anime.statusId && anime.statusId == 3" name="notLiked" [(ngModel)]="anime.notLiked" class="mat-checkbox-layout">
+    <mat-checkbox *ngIf="anime.statusId && anime.statusId == 3" name="notLiked" [(ngModel)]="anime.notLiked"
+      class="mat-checkbox-layout">
       <span class="text-application">Dislike</span>
     </mat-checkbox>
 
@@ -72,13 +79,27 @@
     </mat-form-field>
 
     <mat-form-field color="accent" *ngIf="anime.priority && anime.priority > 1">
-      <mat-placeholder class="text-application"><span>Parent film</span></mat-placeholder>
-      <input type="text" class="text-application" matInput [matAutocomplete]="auto" (keyup)="filterByParentName($event.target.value)" name="parentAnimeName" [(ngModel)]="parentAnimeName">
+      <mat-placeholder class="text-application"><span>Parent anime jap</span></mat-placeholder>
+      <input type="text" class="text-application" matInput [matAutocomplete]="auto"
+        (keyup)="filterByParentNameJap($event.target.value)" name="parentAnimeNameJap" [(ngModel)]="parentAnimeNameJap">
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let anime of seasonAnimesList" [value]="anime.key" (click)="getParentAnimeKey(anime.key)">
+        <mat-option *ngFor="let anime of seasonAnimesListJap" [value]="anime.key"
+          (click)="getParentAnimeKeyJap(anime.key)">
           <span class="text-application">{{anime.nameAnime}}</span>
         </mat-option>
-      </mat-autocomplete>         
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field color="accent" *ngIf="anime.priority && anime.priority > 1">
+      <mat-placeholder class="text-application"><span>Parent anime eng</span></mat-placeholder>
+      <input type="text" class="text-application" matInput [matAutocomplete]="auto"
+        (keyup)="filterByParentNameEng($event.target.value)" name="parentAnimeNameEng" [(ngModel)]="parentAnimeNameEng">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let anime of seasonAnimesListEng" [value]="anime.key"
+          (click)="getParentAnimeKeyEng(anime.key)">
+          <span class="text-application">{{anime.nameAnimeEng}}</span>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field color="accent">
@@ -88,23 +109,26 @@
 
     <mat-form-field color="accent">
       <mat-placeholder class="text-application"><span>Note</span></mat-placeholder>
-      <textarea matInput type="text" [(ngModel)]="anime.note" name="note" rows="4" cols="40" class="text-application"></textarea>
+      <textarea matInput type="text" [(ngModel)]="anime.note" name="note" rows="4" cols="40"
+        class="text-application"></textarea>
     </mat-form-field>
 
     <button type="button" mat-button (click)="fileInput.click()" class="text-application">Choose picture</button>
     <input hidden (change)="onFileChanged($event)" #fileInput type="file" id="file" accept=".jpeg,.jpg,.png,.svg">
     <br *ngIf="progressValue"><br *ngIf="progressValue">
     <div *ngIf="progressValue | async as val" class="progress-background">
-      <div class="progress-meter" [ngStyle] = "{'width.%': val}"></div>
+      <div class="progress-meter" [ngStyle]="{'width.%': val}"></div>
       <span style="margin-left: 45%;">{{ val | number: '1.0-0' }}%</span>
     </div>
 
     <br *ngIf="progressValue">
 
     <mat-dialog-actions>
-      <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1" style="background:#FF5722;color: white;" class="text-application">Save</button>
-      <button mat-button type="button" (click)="close()" tabindex="-1" style="background:#607D8B;color: white;" class="text-application">Cancel</button>
+      <button mat-button type="submit" [disabled]="!f.valid" [mat-dialog-close]="1"
+        style="background:#FF5722;color: white;" class="text-application">Save</button>
+      <button mat-button type="button" (click)="close()" tabindex="-1" style="background:#607D8B;color: white;"
+        class="text-application">Cancel</button>
     </mat-dialog-actions>
-  
+
   </form>
 </mat-dialog-content>

@@ -1,962 +1,1239 @@
-<!-- Desktop -->
+<!--Desktop -->
 
-<div *ngIf="isDesktop" [ngClass]="getClass()" class="text-application">
-    <div [ngStyle]="{'width' : (innerWidth < 1366 || innerWidth == 1366) ? '50%': '65%'}">
-        <div class="card welcome-card">
-            <div class="card-head welcome-head-container" style="height: 15.6rem;">
-                <div class="col-left">
-                    <div>Welcome Back!</div>
-                    <p>Angular Dashboard</p>
-                </div>
-                <div class="col-right">
-                    <img [src]="'assets/profile-bg-3.png'" alt="">
-                </div>
-            </div>
-            <div class="card-body welcome-body-container">
-                <div class="col-left">
-                    <div class="avatar">
-                        <img [src]="'assets/user3.png'" alt="">
-                    </div>
-                    <div class="name">John Doe</div>
-                    <p>Web Developer</p>
-                </div>
-                <div class="col-right">
-                    <div class="performance-container">
-                        <div class="performance">
-                            <div>Performance</div>
-                            <div>80%</div>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar"></div>
-                        </div>
-                    </div>
-                    <div class="view-profile">
-                        <button>
-                            View profile
-                            <i class="far fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col task-col">
-        <div class="task">
-            <span class="bar"></span>
-            <div class="details">
-                <div class="details-name">Movies</div>
-                <p>{{nbrMoviesToCheckToday}} to check today<br>{{nbrMoviesNotChecked}} not checked</p>
-            </div>
-            <i class="fa fa-film edit"></i>
-            <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
-        </div>
-        <div class="task">
-            <span class="bar"></span>
-            <div class="details">
-                <div class="details-name">Animes</div>
-                <p>{{nbrAnimesToCheckToday}} to check today<br>{{nbrAnimesNotChecked}} not checked</p>
-            </div>
-            <i class="fa fa-rocket edit"></i>
-            <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-desktop"></div>
-        </div>
-        <div class="task">
-            <span class="bar"></span>
-            <div class="details">
-                <div class="details-name">Series</div>
-                <p>{{nbrSeriesToCheckToday}} to check today<br>{{nbrSeriesNotChecked}} not checked</p>
-            </div>
-            <i class="fa fa-television edit"></i>
-            <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-desktop"></div>
-        </div>
-    </div>
-    <div class="col task-col">
-        <div class="task">
-            <span class="bar"></span>
-            <div class="details">
-                <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
-                <p>
-                    Tot late:&nbsp;
-                    <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-                    <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
-                    <br>
-                    Rest vac:&nbsp;
-                    <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
-                    <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
-                    day(s)
-                </p>
-            </div>
-            <i class="fa fa-clock-o edit"></i>
-        </div>
-        <div class="task">
-            <span class="bar"></span>
-            <div class="details">
-                <div class="details-name">Expirations</div>
-                <p>
-                    Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
-                    <br>
-                    Expired:&nbsp;{{contentsExpiredList.length}}
-                </p>
-            </div>
-            &nbsp;&nbsp;
-            <i class="fa fa-calendar edit"></i>
-            <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-desktop"></div>
-        </div>
-        <div class="task">
-            <span class="bar"></span>
-            <div class="details">
-                <div class="details-name">Find content</div>
-                <p>
-                    May be add users
-                    <br>
-                    Or other thing
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
+<ng-container *ngIf="isDesktop">
 
-<div *ngIf="isDesktop" class="row">
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Pocket</div>
-            <div class="card-body">
-                <span>{{restInPocket}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Wallet</div>
-            <div class="card-body">
-                <span>{{restInWallet}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Envelope</div>
-            <div class="card-body">
-                <span>{{restInEnvelope}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Box</div>
-            <div class="card-body">
-                <span>{{restInBox}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Poste Account</div>
-            <div class="card-body">
-                <span>{{restInPosteAccount}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Debts (In/Out)</div>
-            <div class="card-body">
-                <span>{{ totalInDebts || '0DT' }}</span>/<span>{{ totalOutDebts || '0DT' }}</span> 
-            </div>
-        </div>
-    </div>
-</div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-application"
+                [routerLink]="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? ['/movies-for-desktop'] : []"
+                [ngStyle]="{'cursor': nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? 'pointer' : ''}">
+                <div class="card-head">Movies</div>
+                <div class="card-body">      
+                    <p>
+                        <span *ngIf="nbrMoviesToCheckToday > 0" class="animation-background-orange">
+                            <span style="color: #FF6D4A;">{{ nbrMoviesToCheckToday }}</span>&nbsp;to check today
+                        </span>
+                        <span *ngIf="nbrMoviesToCheckToday == 0">
+                            <span style="color: green;">0</span>&nbsp;to check today           
+                        </span>
 
-<div *ngIf="isDesktop" class="row">
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Pay This Month</div>
-            <div class="card-body">
-                <span>{{totalInDebtsToPayThisMonth || '0DT'}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Pay Next Month</div>
-            <div class="card-body">
-                <span>{{totalInDebtsToPayNextMonth || '0DT'}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Pay Delayed</div>
-            <div class="card-body">
-                <span>{{totalInDebtsNotToPayForNow || '0DT'}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Get This Month</div>
-            <div class="card-body">
-                <span>{{totalOutDebtsToGetThisMonth || '0DT'}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Get Next Month</div>
-            <div class="card-body">
-                <span>{{totalOutDebtsToGetNextMonth || '0DT'}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="card text-application">
-            <div class="card-head">Get Delayed</div>
-            <div class="card-body">
-                <span>{{totalOutDebtsNotToGetForNow || '0DT'}}</span>
-            </div>
-        </div>
-    </div>
-</div>
+                        <br>
 
-
-
-
-
-
-
-
-
-<!-- Tablet and portrait-->
-
-<div *ngIf="isTablet && orientation == 'Portrait'" [ngClass]="getClass()" class="text-application">
-    <div>
-        <div class="card welcome-card">
-            <div class="card-head welcome-head-container" style="height: 15.6rem;">
-                <div class="col-left">
-                    <div>Welcome Back!</div>
-                    <p>Angular Dashboard</p>
-                </div>
-                <div class="col-right">
-                    <img [src]="'assets/profile-bg-3.png'" alt="" style="width: 115%;">
-                </div>
-            </div>
-            <div class="card-body welcome-body-container">
-                <div class="col-left">
-                    <div class="avatar">
-                        <img [src]="'assets/user3.png'" alt="">
-                    </div>
-                    <div class="name">John Doe</div>
-                    <p>Web Developer</p>
-                </div>
-                <div class="col-right">
-                    <div class="performance-container">
-                        <div class="performance">
-                            <div>Performance</div>
-                            <div>80%</div>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar"></div>
-                        </div>
-                    </div>
-                    <div class="view-profile">
-                        <button>
-                            View profile
-                            <i class="far fa-arrow-right"></i>
-                        </button>
-                    </div>
+                        <span *ngIf="nbrMoviesNotChecked > 0" class="animation-background-orange">
+                            <span style="color: #FF6D4A;">{{ nbrMoviesNotChecked }}</span>&nbsp;not checked              
+                        </span>
+                        <span *ngIf="nbrMoviesNotChecked == 0">
+                            <span style="color: green;">0</span>&nbsp;not checked              
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col task-col">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Movies</div>
-                        <p>{{nbrMoviesToCheckToday}} to check today<br>{{nbrMoviesNotChecked}} not checked</p>
-                    </div>
-                    <i class="fa fa-film edit"></i>
-                    <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Find content</div>
-                        <p>
-                            May be add users
-                            <br>
-                            Or other thing
-                        </p>
-                    </div>
+        <div class="col-md-4">
+            <div class="card text-application"
+                [routerLink]="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? ['/animes-for-desktop'] : []"
+                [ngStyle]="{'cursor': nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? 'pointer' : ''}">
+                <div class="card-head">Animes</div>
+                <div class="card-body">
+                    <p>
+                        <span *ngIf="nbrAnimesToCheckToday > 0" class="animation-background-orange">
+                            <span style="color: #FF6D4A;">{{ nbrAnimesToCheckToday }}</span>&nbsp;to check today
+                        </span>
+                        <span *ngIf="nbrAnimesToCheckToday == 0">
+                            <span style="color: green;">0</span>&nbsp;to check today           
+                        </span>
+
+                        <br>
+
+                        <span *ngIf="nbrAnimesNotChecked > 0" class="animation-background-orange">
+                            <span style="color: #FF6D4A;">{{ nbrAnimesNotChecked }}</span>&nbsp;not checked              
+                        </span>
+                        <span *ngIf="nbrAnimesNotChecked == 0">
+                            <span style="color: green;">0</span>&nbsp;not checked              
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card text-application"
+                [routerLink]="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? ['/series-for-desktop'] : []"
+                [ngStyle]="{'cursor': nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? 'pointer' : ''}">
+                <div class="card-head">Series</div>
+                <div class="card-body">
+                    <p>
+                        <span *ngIf="nbrSeriesToCheckToday > 0" class="animation-background-orange">
+                            <span style="color: #FF6D4A;">{{ nbrSeriesToCheckToday }}</span>&nbsp;to check today
+                        </span>
+                        <span *ngIf="nbrSeriesToCheckToday == 0">
+                            <span style="color: green;">0</span>&nbsp;to check today           
+                        </span>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Animes</div>
-                        <p>{{nbrAnimesToCheckToday}} to check today<br>{{nbrAnimesNotChecked}} not checked</p>
-                    </div>
-                    <i class="fa fa-rocket edit"></i>
-                    <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-tablet"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
-                        <p>
-                            Tot late:&nbsp;
-                            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-                            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
-                            <br>
-                            Rest vac:&nbsp;
-                            <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
-                            <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
-                            day(s)
-                        </p>
-                    </div>
-                    <i class="fa fa-clock-o edit"></i>
-                </div>
-            </div>
-        </div>
+                        <br>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Series</div>
-                        <p>{{nbrSeriesToCheckToday}} to check today<br>{{nbrSeriesNotChecked}} not checked</p>
-                    </div>
-                    <i class="fa fa-television edit"></i>
-                    <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-tablet"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Expirations</div>
-                        <p>
-                            Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
-                            <br>
-                            Expired:&nbsp;{{contentsExpiredList.length}}
-                        </p>
-                    </div>
-                    &nbsp;&nbsp;
-                    <i class="fa fa-calendar edit"></i>
-                    <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-tablet"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Pocket</div><br>
-                        <p>{{restInPocket}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Wallet</div><br>
-                        <p>{{restInWallet}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Envelope</div><br>
-                        <p>{{restInEnvelope}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Box</div><br>
-                        <p>{{restInBox}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Poste Account</div><br>
-                        <p>{{restInPosteAccount}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Debts (In/Out)</div><br>
-                        <p><span>{{ totalInDebts || '0DT' }}</span>/<span>{{ totalOutDebts || '0DT' }}</span> </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row"><div class="col-md-12"><h4>Pay</h4></div></div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">This Month</div><br>
-                        <p>{{totalInDebtsToPayThisMonth || '0DT'}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Next Month</div><br>
-                        <p>{{totalInDebtsToPayNextMonth || '0DT'}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Delayed</div><br>
-                        <p>{{totalInDebtsNotToPayForNow || '0DT'}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row"><div class="col-md-12"><h4>Get</h4></div></div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">This Month</div><br>
-                        <p>{{totalOutDebtsToGetThisMonth || '0DT'}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Next Month</div><br>
-                        <p>{{totalOutDebtsToGetNextMonth || '0DT'}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Delayed</div><br>
-                        <p>{{totalOutDebtsNotToGetForNow || '0DT'}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Tablet and landscape-->
-
-<div *ngIf="isTablet && orientation == 'Landscape'" [ngClass]="getClass()" class="text-application">
-
-    <div>
-        <div class="card welcome-card">
-            <div class="card-head welcome-head-container" style="height: 15.6rem;">
-                <div class="col-left">
-                    <div>Welcome Back!</div>
-                    <p>Angular Dashboard</p>
-                </div>
-                <div class="col-right">
-                    <img [src]="'assets/profile-bg-3.png'" alt="" style="width: 122%;">
-                </div>
-            </div>
-            <div class="card-body welcome-body-container">
-                <div class="col-left">
-                    <div class="avatar">
-                        <img [src]="'assets/user3.png'" alt="">
-                    </div>
-                    <div class="name">John Doe</div>
-                    <p>Web Developer</p>
-                </div>
-                <div class="col-right">
-                    <div class="performance-container">
-                        <div class="performance">
-                            <div>Performance</div>
-                            <div>80%</div>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar"></div>
-                        </div>
-                    </div>
-                    <div class="view-profile">
-                        <button>
-                            View profile
-                            <i class="far fa-arrow-right"></i>
-                        </button>
-                    </div>
+                        <span *ngIf="nbrSeriesNotChecked > 0" class="animation-background-orange">
+                            <span style="color: #FF6D4A;">{{ nbrSeriesNotChecked }}</span>&nbsp;not checked              
+                        </span>
+                        <span *ngIf="nbrSeriesNotChecked == 0">
+                            <span style="color: green;">0</span>&nbsp;not checked              
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col task-col">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Movies&nbsp;<i class="fa fa-film edit"></i></div>
-                        <p>{{nbrMoviesToCheckToday}} check today<br>{{nbrMoviesNotChecked}} not checked</p>
-                    </div>
-                    <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">{{ currentMonth }}&nbsp;{{ currentYear }}&nbsp;<i class="fa fa-clock-o edit"></i></div>
-                        <p>
-                            Late:&nbsp;
-                            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-                            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
-                            <br>
-                            Rest vac:&nbsp;
-                            <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
-                            <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
-                        </p>
-                    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-application" routerLink="/clockings-for-desktop" style="cursor: pointer;">
+                <div class="card-head">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
+                <div class="card-body">
+                    <p>
+                        Tot late:&nbsp;
+                        <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                        <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                        <br>
+                        Solde:&nbsp;
+                        <span *ngIf="vacationLimitDays > 0" style="color: green;">{{ vacationLimitDays }}</span>
+                        <span *ngIf="vacationLimitDays == 0 || vacationLimitDays < 0" style="color: red;">{{ vacationLimitDays }}</span>
+                        day(s)
+                    </p>
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card text-application" 
+                [routerLink]="contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? ['/expirations-for-desktop'] : []" 
+                [ngStyle]="{'cursor': contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? 'pointer' : ''}">
+                <div class="card-head">Expirations</div>
+                <div class="card-body">
+                    <p>
+                        <span *ngIf="contentsSoonToExpireList.length > 0" class="animation-background-orange">
+                            Soon to expire:&nbsp;<span style="color: #FF6D4A;">{{ contentsSoonToExpireList.length }}</span>
+                        </span>
+                        <span *ngIf="contentsSoonToExpireList.length == 0">
+                            Soon to expire:&nbsp;<span style="color: green;">0</span>         
+                        </span>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Animes&nbsp;<i class="fa fa-rocket edit"></i></div>
-                        <p>{{nbrAnimesToCheckToday}} check today<br>{{nbrAnimesNotChecked}} not checked</p>
-                    </div>
-                    <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-tablet"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Expirations&nbsp;<i class="fa fa-calendar edit"></i></div>
-                        <p>
-                            Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
-                            <br>
-                            Expired:&nbsp;{{contentsExpiredList.length}}
-                        </p>
-                    </div>                    
-                    <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-tablet"></div>
-                </div>
-            </div>
-        </div>
+                        <br>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Series&nbsp;<i class="fa fa-television edit"></i></div>
-                        <p>{{nbrSeriesToCheckToday}} check today<br>{{nbrSeriesNotChecked}} not checked</p>
-                    </div>
-                    <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-tablet"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Find content</div>
-                        <p>
-                            Add users
-                            <br>
-                            Or other thing
-                        </p>
-                    </div>
+                        <span *ngIf="contentsExpiredList.length > 0" class="animation-background-orange">
+                            Expired:&nbsp;<span style="color: #FF6D4A;">{{ contentsExpiredList.length }}</span>        
+                        </span>
+                        <span *ngIf="contentsExpiredList.length == 0">
+                            Expired:&nbsp;<span style="color: green;">0</span>             
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
     
-</div>
-
-<div *ngIf="isTablet && orientation == 'Landscape'" class="row">
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Pocket</div>
-            <div class="card-body">
-                <span>{{restInPocket}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Wallet</div>
-            <div class="card-body">
-                <span>{{restInWallet}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Envelope</div>
-            <div class="card-body">
-                <span>{{restInEnvelope}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Box</div>
-            <div class="card-body">
-                <span>{{restInBox}}</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div *ngIf="isTablet && orientation == 'Landscape'" class="row">
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Poste Account</div>
-            <div class="card-body">
-                <span>{{restInPosteAccount}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Debts (In/Out)</div>
-            <div class="card-body">
-                <span>{{ totalInDebts || '0DT' }}</span>/<span>{{ totalOutDebts || '0DT' }}</span> 
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Pay This Month</div>
-            <div class="card-body">
-                <span>{{totalOutDebtsToGetThisMonth || '0DT'}}</span> 
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Pay Next Month</div>
-            <div class="card-body">
-                <span>{{totalInDebtsToPayNextMonth || '0DT'}}</span> 
-            </div>
-        </div>
-    </div>
-</div>
-
-<div *ngIf="isTablet && orientation == 'Landscape'" class="row">
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Pay Delayed</div>
-            <div class="card-body">
-                <span>{{totalInDebtsNotToPayForNow || '0DT'}}</span> 
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Get This Month</div>
-            <div class="card-body">
-                <span>{{totalOutDebtsToGetThisMonth || '0DT'}}</span> 
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Get Next Month</div>
-            <div class="card-body">
-                <span>{{totalOutDebtsToGetNextMonth || '0DT'}}</span> 
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-application">
-            <div class="card-head">Get Delayed</div>
-            <div class="card-body">
-                <span>{{totalOutDebtsNotToGetForNow || '0DT'}}</span> 
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-<!-- Mobile and portrait or landscape-->
-
-<div *ngIf="isMobile && (orientation == 'Portrait' || orientation == 'Landscape')" [ngClass]="getClass()" class="text-application">
-    <div>
-        <div class="card welcome-card">
-            <div class="card-head welcome-head-container">
-                <div class="col-left">
-                    <div>Welcome Back!</div>
-                    <p>Angular Dashboard</p>
-                </div>
-                <div class="col-right">
-                    <img [src]="'assets/profile-bg-3.png'" alt="" style="width: 135%;">
+    <div class="row text-application"><div class="col-md-12"><h4>Rest</h4></div></div>
+    
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Pocket</div>
+                <div class="card-body">
+                    <span>{{restInPocket}}</span>
                 </div>
             </div>
-            <div class="card-body welcome-body-container">
-                <div class="col-left">
-                    <div class="avatar">
-                        <img [src]="'assets/user3.png'" alt="">
-                    </div>
-                    <div class="name">John Doe</div>
-                    <p>Web Developer</p>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Wallet</div>
+                <div class="card-body">
+                    <span>{{restInWallet}}</span>
                 </div>
-                <div class="col-right">
-                    <div class="performance-container">
-                        <div class="performance">
-                            <div>Performance</div>
-                            <div>80%</div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Box</div>
+                <div class="card-body">
+                    <span>{{restInBox}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Poste Acc</div>
+                <div class="card-body">
+                    <span>{{restInPosteAccount}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-application"><div class="col-md-12"><h4>Envelopes</h4></div></div>
+    
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Taxi</div>
+                <div class="card-body">
+                    <span>{{restInEnvTaxi}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Internet</div>
+                <div class="card-body">
+                    <span>{{restInEnvInternet}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Water/Elec</div>
+                <div class="card-body">
+                    <span>{{restInEnvWaterElec}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Bein sports</div>
+                <div class="card-body">
+                    <span>{{restInEnvBeinSports}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Home Loc</div>
+                <div class="card-body">
+                    <span>{{restInEnvHomeLoc}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Home Supp</div>
+                <div class="card-body">
+                    <span>{{restInEnvHomeSupp}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row text-application"><div class="col-md-12"><h4>Pay</h4></div></div>
+    
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Total</div>
+                <div class="card-body">
+                    <span>{{ totalInDebts || '0DT' }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">This Month</div>
+                <div class="card-body">
+                    <span>{{totalInDebtsToPayThisMonth || '0DT'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Next Month</div>
+                <div class="card-body">
+                    <span>{{totalInDebtsToPayNextMonth || '0DT'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Delayed</div>
+                <div class="card-body">
+                    <span>{{totalInDebtsNotToPayForNow || '0DT'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row text-application"><div class="col-md-12"><h4>Get</h4></div></div>
+    
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Total</div>
+                <div class="card-body">
+                    <span>{{ totalOutDebts || '0DT' }}</span> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">This Month</div>
+                <div class="card-body">
+                    <span>{{totalOutDebtsToGetThisMonth || '0DT'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Next Month</div>
+                <div class="card-body">
+                    <span>{{totalOutDebtsToGetNextMonth || '0DT'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application">
+                <div class="card-head">Delayed</div>
+                <div class="card-body">
+                    <span>{{totalOutDebtsNotToGetForNow || '0DT'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-container>
+
+
+
+<!--Tablet-->
+
+<ng-container *ngIf="isTablet">
+
+    <!--portrait-->
+
+    <div *ngIf="orientation == 'Portrait'" [ngClass]="getClass()" class="text-application">
+        <div class="col task-col">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? ['/movies-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Movies</div>
+                            <p>
+                                <span *ngIf="nbrMoviesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrMoviesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrMoviesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrMoviesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrMoviesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrMoviesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
                         </div>
-                        <div class="progress">
-                            <div class="progress-bar"></div>
+                        <i class="fa fa-film edit"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="task" routerLink="/clockings-for-tablet">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
+                            <p>
+                                Tot late:&nbsp;
+                                <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                                <br>
+                                Rest vac:&nbsp;
+                                <span *ngIf="vacationLimitDays > 0" style="color: green;">{{ vacationLimitDays }}</span>
+                                <span *ngIf="vacationLimitDays == 0 || vacationLimitDays < 0" style="color: red;">{{ vacationLimitDays }}</span>
+                                day(s)
+                            </p>
+                        </div>
+                        <i class="fa fa-clock-o edit"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? ['/animes-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Animes</div>
+                            <p>
+                                <span *ngIf="nbrAnimesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrAnimesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrAnimesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrAnimesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrAnimesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrAnimesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
+                        <i class="fa fa-rocket edit"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? ['/expirations-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Expirations</div>
+                            <p>
+                                <span *ngIf="contentsSoonToExpireList.length > 0" class="animation-background-orange">
+                                    Soon to expire:&nbsp;<span style="color: #FF6D4A;">{{ contentsSoonToExpireList.length }}</span>
+                                </span>
+                                <span *ngIf="contentsSoonToExpireList.length == 0">
+                                    Soon to expire:&nbsp;<span style="color: green;">0</span>         
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="contentsExpiredList.length > 0" class="animation-background-orange">
+                                    Expired:&nbsp;<span style="color: #FF6D4A;">{{ contentsExpiredList.length }}</span>        
+                                </span>
+                                <span *ngIf="contentsExpiredList.length == 0">
+                                    Expired:&nbsp;<span style="color: green;">0</span>             
+                                </span>
+                            </p>
+                        </div>
+                        &nbsp;&nbsp;
+                        <i class="fa fa-calendar edit"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? ['/series-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Series</div>
+                            <p>
+                                <span *ngIf="nbrSeriesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrSeriesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrSeriesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrSeriesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrSeriesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrSeriesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
+                        <i class="fa fa-television edit"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"><div class="col-md-12"><h4>Rest</h4></div></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Pocket</div><br>
+                            <p>{{restInPocket}}</p>
                         </div>
                     </div>
-                    <div class="view-profile">
-                        <button>
-                            View profile
-                            <i class="far fa-arrow-right"></i>
-                        </button>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Wallet</div><br>
+                            <p>{{restInWallet}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Box</div><br>
+                            <p>{{restInBox}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">        
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Poste Account</div><br>
+                            <p>{{restInPosteAccount}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"><div class="col-md-12"><h4>Envelopes</h4></div></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Taxi</div><br>
+                            <p>{{restInEnvTaxi}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Internet</div><br>
+                            <p>{{restInEnvInternet}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Water/Elec</div><br>
+                            <p>{{restInEnvWaterElec}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">        
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Bein sports</div><br>
+                            <p>{{restInEnvBeinSports}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Home Loc</div><br>
+                            <p>{{restInEnvHomeLoc}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Home Supp</div><br>
+                            <p>{{restInEnvHomeSupp}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"><div class="col-md-12"><h4>Pay</h4></div></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Total</div><br>
+                            <p><span>{{ totalInDebts || '0DT' }}</span> </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">This Month</div><br>
+                            <p>{{totalInDebtsToPayThisMonth || '0DT'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Next Month</div><br>
+                            <p>{{totalInDebtsToPayNextMonth || '0DT'}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Delayed</div><br>
+                            <p>{{totalInDebtsNotToPayForNow || '0DT'}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"><div class="col-md-12"><h4>Get</h4></div></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Total</div><br>
+                            <p><span>{{ totalOutDebts || '0DT' }}</span> </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">This Month</div><br>
+                            <p>{{totalOutDebtsToGetThisMonth || '0DT'}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Next Month</div><br>
+                            <p>{{totalOutDebtsToGetNextMonth || '0DT'}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Delayed</div><br>
+                            <p>{{totalOutDebtsNotToGetForNow || '0DT'}}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col task-col">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Movies</div>
-                        <p>{{nbrMoviesToCheckToday}} to check today<br>{{nbrMoviesNotChecked}} not checked</p>
-                    </div>
-                    <i class="fa fa-film edit"></i>
-                    <div *ngIf="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0" class="pulse-movie"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Animes</div>
-                        <p>{{nbrAnimesToCheckToday}} to check today<br>{{nbrAnimesNotChecked}} not checked</p>
-                    </div>
-                    <i class="fa fa-rocket edit"></i>
-                    <div *ngIf="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0" class="pulse-anime-tablet"></div>
-                </div>       
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Series</div>
-                        <p>{{nbrSeriesToCheckToday}} to check today<br>{{nbrSeriesNotChecked}} not checked</p>
-                    </div>
-                    <i class="fa fa-television edit"></i>
-                    <div *ngIf="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0" class="pulse-serie-tablet"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
-                        <p>
-                            Tot late:&nbsp;
-                            <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-                            <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
-                            <br>
-                            Rest vac:&nbsp;
-                            <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
-                            <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
-                            day(s)
-                        </p>
-                    </div>
-                    <i class="fa fa-clock-o edit"></i>
-                </div>
-            </div>
-        </div>
+    <!--landscape-->
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Expirations</div>
-                        <p>
-                            Soon to expire:&nbsp;{{contentsSoonToExpireList.length}}
-                            <br>
-                            Expired:&nbsp;{{contentsExpiredList.length}}
-                        </p>
-                    </div>
-                    &nbsp;&nbsp;
-                    <i class="fa fa-calendar edit"></i>
-                    <div *ngIf="contentsExpiredList.length > 0" class="pulse-expiration-tablet"></div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="task">
-                    <span class="bar"></span>
-                    <div class="details">
-                        <div class="details-name">Find content</div>
-                        <p>
-                            May be add users
-                            <br>
-                            Or other thing
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div *ngIf="orientation == 'Landscape'" [ngClass]="getClass()" class="text-application">
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Pocket</span>&nbsp;&nbsp;{{restInPocket}}</div>
+        <div class="col task-col">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task" [routerLink]="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? ['/movies-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Movies&nbsp;<i class="fa fa-film edit"></i></div>
+                            <p>
+                                <span *ngIf="nbrMoviesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrMoviesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrMoviesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrMoviesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrMoviesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrMoviesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task" [routerLink]="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? ['/animes-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Animes&nbsp;<i class="fa fa-rocket edit"></i></div>
+                            <p>
+                                <span *ngIf="nbrAnimesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrAnimesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrAnimesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrAnimesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrAnimesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrAnimesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task" [routerLink]="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? ['/series-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Series&nbsp;<i class="fa fa-television edit"></i></div>
+                            <p>
+                                <span *ngIf="nbrSeriesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrSeriesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrSeriesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrSeriesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrSeriesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrSeriesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Wallet</span>&nbsp;&nbsp;{{restInWallet}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Envelope</span>&nbsp;&nbsp;{{restInEnvelope}}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Box</span>&nbsp;&nbsp;{{restInBox}}</div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task" routerLink="/clockings-for-tablet">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}&nbsp;<i class="fa fa-clock-o edit"></i></div>
+                            <p>
+                                Late:&nbsp;
+                                <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                                <br>
+                                Rest vac:&nbsp;
+                                <span *ngIf="vacationLimitDays > 0" style="color: green;">{{ vacationLimitDays }}</span>
+                                <span *ngIf="vacationLimitDays == 0 || vacationLimitDays < 0" style="color: red;">{{ vacationLimitDays }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task" [routerLink]="contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? ['/expirations-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Expirations&nbsp;<i class="fa fa-calendar edit"></i></div>
+                            <p>
+                                <span *ngIf="contentsSoonToExpireList.length > 0" class="animation-background-orange">
+                                    Soon to expire:&nbsp;<span style="color: #FF6D4A;">{{ contentsSoonToExpireList.length }}</span>
+                                </span>
+                                <span *ngIf="contentsSoonToExpireList.length == 0">
+                                    Soon to expire:&nbsp;<span style="color: green;">0</span>         
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="contentsExpiredList.length > 0" class="animation-background-orange">
+                                    Expired:&nbsp;<span style="color: #FF6D4A;">{{ contentsExpiredList.length }}</span>        
+                                </span>
+                                <span *ngIf="contentsExpiredList.length == 0">
+                                    Expired:&nbsp;<span style="color: green;">0</span>             
+                                </span>
+                            </p>
+                        </div>                    
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Poste Account</span>&nbsp;&nbsp;{{restInPosteAccount}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Debts (In/Out)</span>&nbsp;&nbsp;<span>{{ totalInDebts || '0DT' }}</span>/<span>{{ totalOutDebts || '0DT' }}</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row"><div class="col-md-12"><h4>Pay</h4></div></div>
+            <div class="row"><div class="col-md-12"><h4>Rest</h4></div></div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">This Month</span>&nbsp;&nbsp;{{totalInDebtsToPayThisMonth || '0DT'}}</div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Pocket</div>
+                        <div class="card-body">
+                            <span>{{restInPocket}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Wallet</div>
+                        <div class="card-body">
+                            <span>{{restInWallet}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Box</div>
+                        <div class="card-body">
+                            <span>{{restInBox}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Poste Account</div>
+                        <div class="card-body">
+                            <span>{{restInPosteAccount}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Next Month</span>&nbsp;&nbsp;{{totalInDebtsToPayNextMonth || '0DT'}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Delayed</span>&nbsp;&nbsp;{{totalInDebtsNotToPayForNow || '0DT'}}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row"><div class="col-md-12"><h4>Get</h4></div></div>
+            <div class="row"><div class="col-md-12"><h4>Envelopes</h4></div></div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">This Month</span>&nbsp;&nbsp;{{totalOutDebtsToGetThisMonth || '0DT'}}</div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Taxi</div>
+                        <div class="card-body">
+                            <span>{{restInEnvTaxi}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Internet</div>
+                        <div class="card-body">
+                            <span>{{restInEnvInternet}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Water/Elec</div>
+                        <div class="card-body">
+                            <span>{{restInEnvWaterElec}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Bein sports</div>
+                        <div class="card-body">
+                            <span>{{restInEnvBeinSports}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Next Month</span>&nbsp;&nbsp;{{totalOutDebtsToGetNextMonth || '0DT'}}</div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Home Loc</div>
+                        <div class="card-body">
+                            <span>{{restInEnvHomeLoc}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Home Supp</div>
+                        <div class="card-body">
+                            <span>{{restInEnvHomeSupp}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+            </div>
+
+            <div class="row"><div class="col-md-12"><h4>Pay</h4></div></div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Total</div>
+                        <div class="card-body">
+                            <span>{{ totalInDebts || '0DT' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">This Month</div>
+                        <div class="card-body">
+                            <span>{{totalInDebtsToPayThisMonth || '0DT'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Next Month</div>
+                        <div class="card-body">
+                            <span>{{totalInDebtsToPayNextMonth || '0DT'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Delayed</div>
+                        <div class="card-body">
+                            <span>{{totalInDebtsNotToPayForNow || '0DT'}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="task">
-                    <div class="details">
-                        <div><span class="details-name">Delayed</span>&nbsp;&nbsp;{{totalOutDebtsNotToGetForNow || '0DT'}}</div>
+
+            <div class="row"><div class="col-md-12"><h4>Get</h4></div></div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Total</div>
+                        <div class="card-body">
+                            <span>{{ totalOutDebts || '0DT' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">This Month</div>
+                        <div class="card-body">
+                            <span>{{totalOutDebtsToGetThisMonth || '0DT'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Next Month</div>
+                        <div class="card-body">
+                            <span>{{totalOutDebtsToGetNextMonth || '0DT'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-application">
+                        <div class="card-head">Delayed</div>
+                        <div class="card-body">
+                            <span>{{totalOutDebtsNotToGetForNow || '0DT'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>     
+    </div>
+
+</ng-container>
+
+
+
+<!--Mobile-->
+
+<ng-container *ngIf="isMobile">
+    <div [ngClass]="getClass()" class="text-application">
+        <div class="col task-col">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? ['/movies-for-mobile'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Movies</div>
+                            <p>
+                                <span *ngIf="nbrMoviesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrMoviesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrMoviesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrMoviesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrMoviesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrMoviesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
+                        <i class="fa fa-film edit"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? ['/animes-for-mobile'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Animes</div>
+                            <p>
+                                <span *ngIf="nbrAnimesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrAnimesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrAnimesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrAnimesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrAnimesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrAnimesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
+                        <i class="fa fa-rocket edit"></i>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? ['/series-for-mobile'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Series</div>
+                            <p>
+                                <span *ngIf="nbrSeriesToCheckToday > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrSeriesToCheckToday }}</span>&nbsp;to check today
+                                </span>
+                                <span *ngIf="nbrSeriesToCheckToday == 0">
+                                    <span style="color: green;">0</span>&nbsp;to check today           
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="nbrSeriesNotChecked > 0" class="animation-background-orange">
+                                    <span style="color: #FF6D4A;">{{ nbrSeriesNotChecked }}</span>&nbsp;not checked              
+                                </span>
+                                <span *ngIf="nbrSeriesNotChecked == 0">
+                                    <span style="color: green;">0</span>&nbsp;not checked              
+                                </span>
+                            </p>
+                        </div>
+                        <i class="fa fa-television edit"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="task" routerLink="/clockings-for-mobile">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
+                            <p>
+                                Tot late:&nbsp;
+                                <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
+                                <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
+                                <br>
+                                Rest vac:&nbsp;
+                                <span *ngIf="vacationLimitDays > 0" style="color: green;">{{ vacationLimitDays }}</span>
+                                <span *ngIf="vacationLimitDays == 0 || vacationLimitDays < 0" style="color: red;">{{ vacationLimitDays }}</span>
+                                day(s)
+                            </p>
+                        </div>
+                        <i class="fa fa-clock-o edit"></i>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? ['/expirations-for-mobile'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Expirations</div>
+                            <p>
+                                <span *ngIf="contentsSoonToExpireList.length > 0" class="animation-background-orange">
+                                    Soon to expire:&nbsp;<span style="color: #FF6D4A;">{{ contentsSoonToExpireList.length }}</span>
+                                </span>
+                                <span *ngIf="contentsSoonToExpireList.length == 0">
+                                    Soon to expire:&nbsp;<span style="color: green;">0</span>         
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="contentsExpiredList.length > 0" class="animation-background-orange">
+                                    Expired:&nbsp;<span style="color: #FF6D4A;">{{ contentsExpiredList.length }}</span>        
+                                </span>
+                                <span *ngIf="contentsExpiredList.length == 0">
+                                    Expired:&nbsp;<span style="color: green;">0</span>             
+                                </span>
+                            </p>
+                        </div>
+                        &nbsp;&nbsp;
+                        <i class="fa fa-calendar edit"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"><div class="col-md-12"><h4>Rest</h4></div></div>
+    
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Pocket</span>&nbsp;&nbsp;{{restInPocket}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Wallet</span>&nbsp;&nbsp;{{restInWallet}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Box</span>&nbsp;&nbsp;{{restInBox}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Poste Account</span>&nbsp;&nbsp;{{restInPosteAccount}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"><div class="col-md-12"><h4>Envelopes</h4></div></div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Taxi</span>&nbsp;&nbsp;{{restInEnvTaxi}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Internet</span>&nbsp;&nbsp;{{restInEnvInternet}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Water/Elec</span>&nbsp;&nbsp;{{restInEnvWaterElec}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Bein sports</span>&nbsp;&nbsp;{{restInEnvBeinSports}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Home Location</span>&nbsp;&nbsp;{{restInEnvHomeLoc}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Home Supplies</span>&nbsp;&nbsp;{{restInEnvHomeSupp}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row"><div class="col-md-12"><h4>Pay</h4></div></div>
+    
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Total</span>&nbsp;&nbsp;<span>{{ totalInDebts || '0DT' }}</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">This Month</span>&nbsp;&nbsp;{{totalInDebtsToPayThisMonth || '0DT'}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Next Month</span>&nbsp;&nbsp;{{totalInDebtsToPayNextMonth || '0DT'}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Delayed</span>&nbsp;&nbsp;{{totalInDebtsNotToPayForNow || '0DT'}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row"><div class="col-md-12"><h4>Get</h4></div></div>
+    
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Total</span>&nbsp;&nbsp;<span>{{ totalOutDebts || '0DT' }}</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">This Month</span>&nbsp;&nbsp;{{totalOutDebtsToGetThisMonth || '0DT'}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Next Month</span>&nbsp;&nbsp;{{totalOutDebtsToGetNextMonth || '0DT'}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="task">
+                        <div class="details">
+                            <div><span class="details-name">Delayed</span>&nbsp;&nbsp;{{totalOutDebtsNotToGetForNow || '0DT'}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</ng-container>

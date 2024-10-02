@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { RouterModule } from '@angular/router';
@@ -27,6 +28,8 @@ import { SortPipe } from './shared/pipes/sort.pipe';
 import { AppComponent } from './app.component';
 
 import { AngularMaterialModule } from './angular-material.module';
+
+import { HttpClientModule } from '@angular/common/http';
 
 import { 
   HeaderComponent,
@@ -170,6 +173,7 @@ import { BodyComponent } from './body/body.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
 import { AppMobileComponent } from './app-mobile/app-mobile.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -186,12 +190,15 @@ import { AppMobileComponent } from './app-mobile/app-mobile.component';
     CustomFormsModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: false }),
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireMessagingModule,
+    ServiceWorkerModule.register('firebase-messaging-sw.js', { enabled: environment.production, registrationStrategy: 'registerWhenStable:30000' }),
     AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     NgxDocViewerModule, 
     BrowserAnimationsModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,

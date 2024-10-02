@@ -25,7 +25,7 @@
 <div class="row">
     <div class="col-md-12">
         <mat-form-field class="text-application" style="width: 200px;">
-            <mat-label>Subject</mat-label>
+            <mat-placeholder>Subject</mat-placeholder>
             <mat-select name="subjectSelectedId" class="text-application" [(ngModel)]="subjectSelectedId" (selectionChange)="getAllClockings()">
                 <mat-option value=""></mat-option>
                 <mat-option *ngFor="let subject of subjectList" [value]="subject.id">
@@ -49,8 +49,8 @@
         <br *ngIf="showVacationLimitDays"><br *ngIf="showVacationLimitDays">
         <span *ngIf="showVacationLimitDays" class="text-application" style="font-size: initial;">Vacation limit days in {{ currentMonthAndYearForVacation }}:<br>
             <span style="font-weight: 700;">
-                <span *ngIf="vacationLimitDays" style="color: green;">{{ vacationLimitDays }}</span>
-                <span *ngIf="!vacationLimitDays" style="color: red;">{{ vacationLimitDays }}</span>
+                <span *ngIf="vacationLimitDays > 0" style="color: green;">{{ vacationLimitDays }}</span>
+                <span *ngIf="vacationLimitDays == 0 || vacationLimitDays < 0" style="color: red;">{{ vacationLimitDays }}</span>
                 day(s)
             </span>              
         </span>
@@ -122,6 +122,37 @@
                             <span *ngIf="element.clockingNbr">{{ element.clockingNbr }}</span>
                             <span *ngIf="!element.clockingNbr">-</span>
                         </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="subject">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="gridForLegend">
+                        <div><span>Subj:</span></div>
+                        <div>
+                            <span *ngIf="element.subjectId">
+                                <span *ngIf="element.subjectId == 1">Work on sunday</span>
+                                <span *ngIf="element.subjectId == 2">Take vacation</span>
+                                <span *ngIf="element.subjectId == 3">Take one hour</span>
+                                <span *ngIf="element.subjectId == 4">Take two hours</span>
+                                <span *ngIf="element.subjectId == 5">Take three hours</span>
+                                <span *ngIf="element.subjectId == 6">Work half day</span>
+                                <span *ngIf="element.subjectId == 7">Public holiday</span>
+                            </span>
+                            <span *ngIf="!element.subjectId">-</span>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="restVacation">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="gridForLegend">
+                        <div><span>Solde:</span></div>
+                        <div><span [ngStyle]="{'color': element.restVacationDays > 0 ? 'green' : 'red'}">{{ element.restVacationDays }}</span></div>
                     </div>
                 </td>
             </ng-container>

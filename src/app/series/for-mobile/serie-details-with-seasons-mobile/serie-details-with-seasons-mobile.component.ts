@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatMenuTrigger } from '@angular/material/menu';
 
 import Swal from 'sweetalert2';
 
@@ -23,38 +22,29 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
 
   serie: Serie = new Serie();
 
-  menuTopLeftPosition =  {x: '0', y: '0'} 
-
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger;
-
   statusSeries: StatusSeries[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   constructor(
-    private serieService: SerieService, 
+    private serieService: SerieService,
     public dialogRef: MatDialogRef<SerieDetailsWithSeasonsMobileComponent>,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
-  ngOnInit() {}
-
-  showDetailsSerie(serieSeasonSelected: Serie, elem: HTMLElement) {
-    this.serie = serieSeasonSelected;
-    elem.scrollIntoView();
-  }
+  ngOnInit() { }
 
   editSerie(serie?: Serie) {
     const dialogRef = this.dialogService.open(SerieFormMobileComponent, {
       width: '98vw',
-      height:'75vh',
+      height: '75vh',
       maxWidth: '100vw'
-    });    
+    });
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
   }
@@ -71,7 +61,7 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
       if (result.value) {
         this.serieService.delete(serieId);
         this.listSeasonsByParentSerieKey.forEach((serie, index) => {
-          if(serie.key === serieId) this.listSeasonsByParentSerieKey.splice(index,1);
+          if (serie.key === serieId) this.listSeasonsByParentSerieKey.splice(index, 1);
         });
         if (this.listSeasonsByParentSerieKey.length == 0) {
           this.dialogRef.close();
@@ -87,8 +77,8 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
       }
     })
   }
-  
-  copyText(text: string){
+
+  copyText(text: string) {
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -121,22 +111,6 @@ export class SerieDetailsWithSeasonsMobileComponent implements OnInit {
 
   followLink(path: string) {
     window.open(path);
-  }
-
-  openMenuTrigger(event: MouseEvent, serie: Serie) { 
-    // preventDefault avoids to show the visualization of the right-click menu of the browser 
-    event.preventDefault(); 
-
-    // we record the mouse position in our object 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
-
-    // we open the menu 
-    // we pass to the menu the information about our object 
-    this.matMenuTrigger.menuData = {serie: serie};
-
-    // we open the menu 
-    this.matMenuTrigger.openMenu(); 
   }
 
   close() {

@@ -28,49 +28,49 @@ export class SerieDetailsWithSeasonsTabletComponent implements OnInit {
   currMonthName: string;
 
   statusSeries: StatusSeries[] = [
-    {id: 1, status: 'On hold'}, 
-    {id: 2, status: 'Not yet downloaded'}, 
-    {id: 3, status: 'Watched'}, 
-    {id: 4, status: 'Downloaded but not yet watched'},
-    {id: 5, status: 'Will be looked for'}
+    { id: 1, status: 'On hold' },
+    { id: 2, status: 'Not yet downloaded' },
+    { id: 3, status: 'Watched' },
+    { id: 4, status: 'Downloaded but not yet watched' },
+    { id: 5, status: 'Will be looked for' }
   ];
 
   monthsList = [
-    { monthNbr: 1, monthName: 'January'},
-    { monthNbr: 2, monthName: 'February'},
-    { monthNbr: 3, monthName: 'March'},
-    { monthNbr: 4, monthName: 'April'},
-    { monthNbr: 5, monthName: 'May'},
-    { monthNbr: 6, monthName: 'June'},
-    { monthNbr: 7, monthName: 'July'},
-    { monthNbr: 8, monthName: 'August'},
-    { monthNbr: 9, monthName: 'September'},
-    { monthNbr: 10, monthName: 'October'},
-    { monthNbr: 11, monthName: 'November'},
-    { monthNbr: 12, monthName: 'December'}
+    { monthNbr: 1, monthName: 'January' },
+    { monthNbr: 2, monthName: 'February' },
+    { monthNbr: 3, monthName: 'March' },
+    { monthNbr: 4, monthName: 'April' },
+    { monthNbr: 5, monthName: 'May' },
+    { monthNbr: 6, monthName: 'June' },
+    { monthNbr: 7, monthName: 'July' },
+    { monthNbr: 8, monthName: 'August' },
+    { monthNbr: 9, monthName: 'September' },
+    { monthNbr: 10, monthName: 'October' },
+    { monthNbr: 11, monthName: 'November' },
+    { monthNbr: 12, monthName: 'December' }
   ];
 
-  menuTopLeftPosition =  {x: '0', y: '0'} 
+  menuTopLeftPosition = { x: '0', y: '0' }
 
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger: MatMenuTrigger; 
+  @ViewChild(MatMenuTrigger, { static: true }) matMenuTrigger: MatMenuTrigger;
 
   constructor(
-    private serieService: SerieService, 
+    private serieService: SerieService,
     public dialogRef: MatDialogRef<SerieDetailsWithSeasonsTabletComponent>,
     public dialogService: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
-    if(window.innerHeight > window.innerWidth){
-      this.orientation = 'Portrait';    
+    if (window.innerHeight > window.innerWidth) {
+      this.orientation = 'Portrait';
     } else {
       this.orientation = 'Landscape';
     }
 
     window.matchMedia("(orientation: portrait)").addEventListener("change", e => {
       const portrait = e.matches;
-  
+
       if (portrait) {
         this.orientation = 'Portrait';
       } else {
@@ -81,7 +81,7 @@ export class SerieDetailsWithSeasonsTabletComponent implements OnInit {
   }
 
   editSerie(serie?: Serie) {
-    const dialogRef = this.dialogService.open(SerieFormTabletComponent, {width: '500px'});
+    const dialogRef = this.dialogService.open(SerieFormTabletComponent, { width: '500px' });
     dialogRef.componentInstance.serie = serie;
     dialogRef.componentInstance.allSeries = this.allSeries;
   }
@@ -98,7 +98,7 @@ export class SerieDetailsWithSeasonsTabletComponent implements OnInit {
       if (result.value) {
         this.serieService.delete(serieId);
         this.listSeasonsByParentSerieKey.forEach((serie, index) => {
-          if(serie.key === serieId) this.listSeasonsByParentSerieKey.splice(index,1);
+          if (serie.key === serieId) this.listSeasonsByParentSerieKey.splice(index, 1);
         });
         if (this.listSeasonsByParentSerieKey.length == 0) {
           this.dialogRef.close();
@@ -114,8 +114,8 @@ export class SerieDetailsWithSeasonsTabletComponent implements OnInit {
       }
     })
   }
-  
-  copyText(event: MouseEvent, text: string){
+
+  copyText(event: MouseEvent, text: string) {
     event.stopPropagation();
     let selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
@@ -150,8 +150,8 @@ export class SerieDetailsWithSeasonsTabletComponent implements OnInit {
   viewCheckDate(serieCheckDate: string) {
     this.currMonthName = '';
     var d = new Date(serieCheckDate);
-    this.currMonthName = this.monthsList.find(month => month.monthNbr == d.getMonth()+1).monthName;
-    var datestring = d.getDate()  + " " + this.currMonthName + " " + d.getFullYear();
+    this.currMonthName = this.monthsList.find(month => month.monthNbr == d.getMonth() + 1).monthName;
+    var datestring = d.getDate() + " " + this.currMonthName + " " + d.getFullYear();
     Swal.fire({
       text: datestring,
       confirmButtonColor: '#d33',
@@ -163,20 +163,20 @@ export class SerieDetailsWithSeasonsTabletComponent implements OnInit {
     window.open(path);
   }
 
-  openMenuTrigger(event: MouseEvent, serie: Serie) { 
+  openMenuTrigger(event: MouseEvent, serie: Serie) {
     // preventDefault avoids to show the visualization of the right-click menu of the browser 
-    event.preventDefault(); 
+    event.preventDefault();
 
     // we record the mouse position in our object 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    this.menuTopLeftPosition.x = event.clientX + 'px';
+    this.menuTopLeftPosition.y = event.clientY + 'px';
 
     // we open the menu 
     // we pass to the menu the information about our object 
-    this.matMenuTrigger.menuData = {serie: serie};
+    this.matMenuTrigger.menuData = { serie: serie };
 
     // we open the menu 
-    this.matMenuTrigger.openMenu(); 
+    this.matMenuTrigger.openMenu();
   }
 
   viewEpisodes(serie: Serie) {

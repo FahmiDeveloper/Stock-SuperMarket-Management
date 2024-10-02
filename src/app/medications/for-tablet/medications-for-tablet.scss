@@ -36,34 +36,20 @@
   cursor: pointer;
 }
 
-.style-button{
-  min-width: unset!important;
-  display: table; 
-  margin: 0 auto;
-}
-
-::ng-deep .my-menu {
-  width: 100%;
-}
-
-.gridForLegend {
+.grid-portrait {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  font-size: initial;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+  row-gap: 0px;
 }
 
-.center-name-medication{
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.grid-landscape {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  row-gap: 0px;
 }
 
-.center-btn{
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+.card-img-top {
+  height: 16rem;
 }
