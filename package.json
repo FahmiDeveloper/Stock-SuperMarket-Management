@@ -34,7 +34,6 @@
     "@capacitor/android": "^4.8.2",
     "@capacitor/cli": "^4.8.2",
     "@capacitor/core": "^4.8.2",
-    "@capacitor/local-notifications": "^7.0.3",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
     "bootstrap": "^4.6.0",
     "docx-preview": "^0.1.11",
