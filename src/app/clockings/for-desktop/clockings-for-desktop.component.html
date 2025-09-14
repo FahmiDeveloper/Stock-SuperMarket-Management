@@ -9,8 +9,8 @@
             <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
             <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
         </span>
-        <br *ngIf="showVacationLimitDays"><br *ngIf="showVacationLimitDays">
-        <span *ngIf="showVacationLimitDays" class="text-application" style="font-size: large;">Vacation limit days in {{ currentMonthAndYearForVacation }}:&nbsp;
+        <br><br>
+        <span class="text-application" style="font-size: large;">Vacation limit days in {{ currentMonth }}&nbsp;{{ currentYear }}:&nbsp;
             <span *ngIf="vacationLimitDays > 0" style="color: green;">{{ vacationLimitDays }}</span>
             <span *ngIf="vacationLimitDays == 0 || vacationLimitDays < 0" style="color: red;">{{ vacationLimitDays }}</span>
             day(s)

@@ -1,2 +1,2 @@
-export * from './for-desktop/index';
-export * from './for-mobile/index';
+export * from './to-do-list.component';
+export * from './task-form/index';

@@ -1,0 +1,53 @@
+[debug] [2025-09-14T00:08:19.512Z] ----------------------------------------------------------------------
+[debug] [2025-09-14T00:08:19.513Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\abcde\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-09-14T00:08:19.513Z] CLI Version:   10.9.2
+[debug] [2025-09-14T00:08:19.514Z] Platform:      win32
+[debug] [2025-09-14T00:08:19.514Z] Node Version:  v12.19.0
+[debug] [2025-09-14T00:08:19.514Z] Time:          Sun Sep 14 2025 02:08:19 GMT+0200 (Central European Summer Time)
+[debug] [2025-09-14T00:08:19.515Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-14T00:08:19.569Z] Object ".hosting" in "firebase.json" has unknown property: {"additionalProperty":"firebase"}
+[debug] [2025-09-14T00:08:19.569Z] Field ".hosting" in "firebase.json" is possibly invalid: should be array
+[debug] [2025-09-14T00:08:19.569Z] Field ".hosting" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[debug] [2025-09-14T00:08:19.572Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-09-14T00:08:19.572Z] > authorizing via signed-in user (coursangularfahmi@gmail.com)
+[debug] [2025-09-14T00:08:19.573Z] Object ".hosting" in "firebase.json" has unknown property: {"additionalProperty":"firebase"}
+[debug] [2025-09-14T00:08:19.573Z] Field ".hosting" in "firebase.json" is possibly invalid: should be array
+[debug] [2025-09-14T00:08:19.573Z] Field ".hosting" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\abcde\Documents\GitHub\Stock-SuperMarket-Management
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-09-14T00:08:34.980Z] Using project from CLI flag: oshop-d014d
+[debug] [2025-09-14T00:08:34.981Z] > refreshing access token with scopes: []
+[debug] [2025-09-14T00:08:34.982Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2025-09-14T00:08:35.158Z] <<< HTTP RESPONSE 400 {"date":"Sun, 14 Sep 2025 00:08:35 GMT","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2025-09-14T00:08:35.160Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/oshop-d014d [none]
+[debug] [2025-09-14T00:08:35.310Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/oshop-d014d 401
+[debug] [2025-09-14T00:08:35.310Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/oshop-d014d {"error":{"code":401,"message":"Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.","status":"UNAUTHENTICATED"}}
+[debug] [2025-09-14T00:08:35.311Z] HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+[debug] [2025-09-14T00:08:35.471Z] FirebaseError: HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at module.exports (C:\Users\abcde\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:47:12)
+    at RetryOperation._fn (C:\Users\abcde\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:286:39)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+[error] 
+[error] Error: Failed to get Firebase project oshop-d014d. Please make sure the project exists and your account has permission to access it.

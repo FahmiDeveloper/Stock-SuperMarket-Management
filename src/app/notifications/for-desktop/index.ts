@@ -1,0 +1,1 @@
+export * from './notifications-for-desktop.component';

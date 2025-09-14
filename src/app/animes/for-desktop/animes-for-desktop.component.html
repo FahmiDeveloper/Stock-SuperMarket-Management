@@ -68,12 +68,12 @@
         <div class="card-body align-items-center d-flex justify-content-center text-center text-application">
             <h5 *ngIf="anime.nameAnime !== '-'" class="card-title" style="cursor: pointer;"
                 (click)="copyText(anime.nameAnime)" [matTooltip]="anime.nameAnime" matTooltipPosition="below"
-                matTooltipClass="dataTooltip">
+                matTooltipClass="data-tooltip">
                 {{ getTruncatedNameAnime(anime.nameAnime, 10) }}
             </h5>
             <h5 *ngIf="anime.nameAnime == '-'" class="card-title" style="cursor: pointer;"
                 (click)="copyText(anime.nameAnimeEng)" [matTooltip]="anime.nameAnimeEng" matTooltipPosition="below"
-                matTooltipClass="dataTooltip">
+                matTooltipClass="data-tooltip">
                 {{ getTruncatedNameAnime(anime.nameAnimeEng, 10) }}
             </h5>
         </div>

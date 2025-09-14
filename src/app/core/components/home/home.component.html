@@ -3,7 +3,7 @@
 <ng-container *ngIf="isDesktop">
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="card text-application"
                 [routerLink]="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? ['/movies-for-desktop'] : []"
                 [ngStyle]="{'cursor': nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? 'pointer' : ''}">
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="card text-application"
                 [routerLink]="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? ['/animes-for-desktop'] : []"
                 [ngStyle]="{'cursor': nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? 'pointer' : ''}">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="card text-application"
                 [routerLink]="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? ['/series-for-desktop'] : []"
                 [ngStyle]="{'cursor': nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? 'pointer' : ''}">
@@ -81,10 +81,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="card text-application" routerLink="/clockings-for-desktop" style="cursor: pointer;">
                 <div class="card-head">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
                 <div class="card-body">
@@ -101,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="card text-application" 
                 [routerLink]="contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? ['/expirations-for-desktop'] : []" 
                 [ngStyle]="{'cursor': contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? 'pointer' : ''}">
@@ -122,6 +119,32 @@
                         </span>
                         <span *ngIf="contentsExpiredList.length == 0">
                             Expired:&nbsp;<span style="color: green;">0</span>             
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-application" 
+                [routerLink]="contentsRemindersTodayList.length > 0 || contentsRemindersNotDoed.length > 0 ? ['/reminders-for-desktop'] : []" 
+                [ngStyle]="{'cursor': contentsRemindersTodayList.length > 0 || contentsRemindersNotDoed.length > 0 ? 'pointer' : ''}">
+                <div class="card-head">Reminders</div>
+                <div class="card-body">
+                    <p>
+                        <span *ngIf="contentsRemindersTodayList.length > 0" class="animation-background-orange">
+                            For today:&nbsp;<span style="color: #FF6D4A;">{{ contentsRemindersTodayList.length }}</span>
+                        </span>
+                        <span *ngIf="contentsRemindersTodayList.length == 0">
+                            For today:&nbsp;<span style="color: green;">0</span>         
+                        </span>
+
+                        <br>
+
+                        <span *ngIf="contentsRemindersNotDoed.length > 0" class="animation-background-red">
+                            Not doed:&nbsp;<span style="color: red;">{{ contentsRemindersNotDoed.length }}</span>        
+                        </span>
+                        <span *ngIf="contentsRemindersNotDoed.length == 0">
+                            Not doed:&nbsp;<span style="color: green;">0</span>             
                         </span>
                     </p>
                 </div>
@@ -329,7 +352,6 @@
                                 </span>
                             </p>
                         </div>
-                        <i class="fa fa-film edit"></i>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -348,7 +370,6 @@
                                 day(s)
                             </p>
                         </div>
-                        <i class="fa fa-clock-o edit"></i>
                     </div>
                 </div>
             </div>
@@ -377,7 +398,6 @@
                                 </span>
                             </p>
                         </div>
-                        <i class="fa fa-rocket edit"></i>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -404,7 +424,6 @@
                             </p>
                         </div>
                         &nbsp;&nbsp;
-                        <i class="fa fa-calendar edit"></i>
                     </div>
                 </div>
             </div>
@@ -433,7 +452,31 @@
                                 </span>
                             </p>
                         </div>
-                        <i class="fa fa-television edit"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="contentsRemindersTodayList.length > 0 || contentsRemindersNotDoed.length > 0 ? ['/reminders-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Reminders</div>
+                            <p>
+                                <span *ngIf="contentsRemindersTodayList.length > 0" class="animation-background-orange">
+                                    For today:&nbsp;<span style="color: #FF6D4A;">{{ contentsRemindersTodayList.length }}</span>
+                                </span>
+                                <span *ngIf="contentsRemindersTodayList.length == 0">
+                                    For today:&nbsp;<span style="color: green;">0</span>         
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="contentsRemindersNotDoed.length > 0" class="animation-background-red">
+                                    Not doed:&nbsp;<span style="color: red;">{{ contentsRemindersNotDoed.length }}</span>        
+                                </span>
+                                <span *ngIf="contentsRemindersNotDoed.length == 0">
+                                    Not doed:&nbsp;<span style="color: green;">0</span>             
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -644,7 +687,7 @@
                     <div class="task" [routerLink]="nbrMoviesToCheckToday > 0 || nbrMoviesNotChecked > 0 ? ['/movies-for-tablet'] : []">
                         <span class="bar"></span>
                         <div class="details">
-                            <div class="details-name">Movies&nbsp;<i class="fa fa-film edit"></i></div>
+                            <div class="details-name">Movies</div>
                             <p>
                                 <span *ngIf="nbrMoviesToCheckToday > 0" class="animation-background-orange">
                                     <span style="color: #FF6D4A;">{{ nbrMoviesToCheckToday }}</span>&nbsp;to check today
@@ -669,7 +712,7 @@
                     <div class="task" [routerLink]="nbrAnimesToCheckToday > 0 || nbrAnimesNotChecked > 0 ? ['/animes-for-tablet'] : []">
                         <span class="bar"></span>
                         <div class="details">
-                            <div class="details-name">Animes&nbsp;<i class="fa fa-rocket edit"></i></div>
+                            <div class="details-name">Animes</div>
                             <p>
                                 <span *ngIf="nbrAnimesToCheckToday > 0" class="animation-background-orange">
                                     <span style="color: #FF6D4A;">{{ nbrAnimesToCheckToday }}</span>&nbsp;to check today
@@ -694,7 +737,7 @@
                     <div class="task" [routerLink]="nbrSeriesToCheckToday > 0 || nbrSeriesNotChecked > 0 ? ['/series-for-tablet'] : []">
                         <span class="bar"></span>
                         <div class="details">
-                            <div class="details-name">Series&nbsp;<i class="fa fa-television edit"></i></div>
+                            <div class="details-name">Series</div>
                             <p>
                                 <span *ngIf="nbrSeriesToCheckToday > 0" class="animation-background-orange">
                                     <span style="color: #FF6D4A;">{{ nbrSeriesToCheckToday }}</span>&nbsp;to check today
@@ -722,7 +765,7 @@
                     <div class="task" routerLink="/clockings-for-tablet">
                         <span class="bar"></span>
                         <div class="details">
-                            <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}&nbsp;<i class="fa fa-clock-o edit"></i></div>
+                            <div class="details-name">Clockings&nbsp;{{ currentMonth }}&nbsp;{{ currentYear }}</div>
                             <p>
                                 Late:&nbsp;
                                 <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
@@ -739,7 +782,7 @@
                     <div class="task" [routerLink]="contentsSoonToExpireList.length > 0 || contentsExpiredList.length > 0 ? ['/expirations-for-tablet'] : []">
                         <span class="bar"></span>
                         <div class="details">
-                            <div class="details-name">Expirations&nbsp;<i class="fa fa-calendar edit"></i></div>
+                            <div class="details-name">Expirations</div>
                             <p>
                                 <span *ngIf="contentsSoonToExpireList.length > 0" class="animation-background-orange">
                                     Soon to expire:&nbsp;<span style="color: #FF6D4A;">{{ contentsSoonToExpireList.length }}</span>
@@ -758,6 +801,31 @@
                                 </span>
                             </p>
                         </div>                    
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="task" [routerLink]="contentsRemindersTodayList.length > 0 || contentsRemindersNotDoed.length > 0 ? ['/reminders-for-tablet'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Reminders</div>
+                            <p>
+                                <span *ngIf="contentsRemindersTodayList.length > 0" class="animation-background-orange">
+                                    For today:&nbsp;<span style="color: #FF6D4A;">{{ contentsRemindersTodayList.length }}</span>
+                                </span>
+                                <span *ngIf="contentsRemindersTodayList.length == 0">
+                                    For today:&nbsp;<span style="color: green;">0</span>         
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="contentsRemindersNotDoed.length > 0" class="animation-background-red">
+                                    Not doed:&nbsp;<span style="color: red;">{{ contentsRemindersNotDoed.length }}</span>        
+                                </span>
+                                <span *ngIf="contentsRemindersNotDoed.length == 0">
+                                    Not doed:&nbsp;<span style="color: green;">0</span>             
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -966,7 +1034,6 @@
                                 </span>
                             </p>
                         </div>
-                        <i class="fa fa-film edit"></i>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -992,7 +1059,6 @@
                                 </span>
                             </p>
                         </div>
-                        <i class="fa fa-rocket edit"></i>
                     </div>
                 </div>
             </div>
@@ -1021,7 +1087,6 @@
                                 </span>
                             </p>
                         </div>
-                        <i class="fa fa-television edit"></i>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -1040,7 +1105,6 @@
                                 day(s)
                             </p>
                         </div>
-                        <i class="fa fa-clock-o edit"></i>
                     </div>
                 </div>
             </div>
@@ -1069,8 +1133,31 @@
                                 </span>
                             </p>
                         </div>
-                        &nbsp;&nbsp;
-                        <i class="fa fa-calendar edit"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="task" [routerLink]="contentsRemindersTodayList.length > 0 || contentsRemindersNotDoed.length > 0 ? ['/reminders-for-mobile'] : []">
+                        <span class="bar"></span>
+                        <div class="details">
+                            <div class="details-name">Reminders</div>
+                            <p>
+                                <span *ngIf="contentsRemindersTodayList.length > 0" class="animation-background-orange">
+                                    For today:&nbsp;<span style="color: #FF6D4A;">{{ contentsRemindersTodayList.length }}</span>
+                                </span>
+                                <span *ngIf="contentsRemindersTodayList.length == 0">
+                                    For today:&nbsp;<span style="color: green;">0</span>         
+                                </span>
+        
+                                <br>
+        
+                                <span *ngIf="contentsRemindersNotDoed.length > 0" class="animation-background-red">
+                                    Not doed:&nbsp;<span style="color: red;">{{ contentsRemindersNotDoed.length }}</span>        
+                                </span>
+                                <span *ngIf="contentsRemindersNotDoed.length == 0">
+                                    Not doed:&nbsp;<span style="color: green;">0</span>             
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

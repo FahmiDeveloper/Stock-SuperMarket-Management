@@ -39,7 +39,6 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
   currentYear: number;
   currentMonthAndYearForVacation = '';
   subjectSelectedId: number;
-  showVacationLimitDays = false;
   isLoading: boolean;
   showDeleteAllClockingsButtton: boolean;
   lastClockingFromList = 0;
@@ -136,14 +135,10 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
         this.showDeleteAllClockingsButtton = false;
       }
 
-      if ((this.monthSelected == String(new Date().getMonth()+ 1)) || (this.monthSelected == '0' + String(new Date().getMonth()+ 1))) {
-        this.showVacationLimitDays = true;
-        let lastClockingByCurrentMonth = clockings
-        .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
-        .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
-        if (lastClockingByCurrentMonth) this.vacationLimitDays = lastClockingByCurrentMonth.restVacationDays;
-      } 
-      else {this.showVacationLimitDays = false;}
+      let lastClockingByCurrentMonth = clockings
+      .filter(clocking => clocking.dateClocking.split('-')[1] == this.monthSelected)
+      .sort((n1, n2) => n2.numRefClocking - n1.numRefClocking)[0];
+      if (lastClockingByCurrentMonth) this.vacationLimitDays = lastClockingByCurrentMonth.restVacationDays;
    
       this.minutePartList = [];
       if (this.dataSourceCopieForCalculTotalClockingLate.data.length > 0) {
@@ -171,19 +166,49 @@ export class ClockingsForMobileComponent implements OnInit, OnDestroy {
   }
 
   calculTotalClockingLate(timeClocking: string) {
-    let composedFinancialDebt: string[] = [];
-    if (timeClocking && timeClocking > '08:00') {
-      composedFinancialDebt = timeClocking.split(':');
+    if (!timeClocking || !/^\d{2}:\d{2}$/.test(timeClocking)) return;
+
+    // Helper: HH:MM → minutes
+    const timeToMinutes = (time: string): number => {
+      const [hours, minutes] = time.split(':').map(Number);
+      return hours * 60 + minutes;
+    };
+
+    const now = new Date();
+    const month = now.getMonth(); // 0 = Jan, 6 = July, 7 = August
+
+    const summerBaseTime = timeToMinutes('07:30');
+    const regularBaseTime = timeToMinutes('08:00');
+    const clockingTime = timeToMinutes(timeClocking);
+
+    let lateMinutes = 0;
+
+    if (month === 6 || month === 7) {
+      // July or August
+      if (clockingTime > summerBaseTime) {
+        lateMinutes = clockingTime - summerBaseTime;
+      }
     } else {
-      composedFinancialDebt[1] = '0';
-    }  
-    this.minutePartList.push(Number(composedFinancialDebt[1]))
-    this.sumClockingLate = this.minutePartList.reduce((accumulator, current) => {return accumulator + current;}, 0);
-    if (this.sumClockingLate < 60) {this.totalClockingLate = this.sumClockingLate;}
-    else {
-      let hours = Math.floor(this.sumClockingLate / 60);
-      let minutes = this.sumClockingLate - (hours * 60);
-      this.totalClockingLateByHoursMinute = hours +"H "+ minutes +"Min";
+      // Other months
+      if (clockingTime > regularBaseTime) {
+        lateMinutes = clockingTime - regularBaseTime;
+      }
+    }
+
+    // Accumulate late minutes
+    this.minutePartList.push(lateMinutes);
+    this.sumClockingLate = this.minutePartList.reduce((acc, curr) => acc + curr, 0);
+
+    // Always keep total in minutes
+    this.totalClockingLate = this.sumClockingLate;
+
+    // Also provide hours/minutes format if >= 60
+    if (this.sumClockingLate < 60) {
+      this.totalClockingLateByHoursMinute = '';
+    } else {
+      const hours = Math.floor(this.sumClockingLate / 60);
+      const minutes = this.sumClockingLate % 60;
+      this.totalClockingLateByHoursMinute = `${hours}H ${minutes}Min`;
     }
   }
 

@@ -9,7 +9,7 @@
     <div class="scrollwrap scrollwrap_delayed">
         <ul class="sidenav-nav">
 
-            <li class="sidenav-nav-item" [matTooltip]="isDesktop ? navbarDataHome.label : ''" [matTooltipPosition]="isDesktop ? 'right' : ''" [matTooltipClass]="isDesktop ? 'dataTooltip' : ''" [matTooltipDisabled]="isDesktop ? collapsed == true : ''">
+            <li class="sidenav-nav-item" [matTooltip]="isDesktop ? navbarDataHome.label : ''" [matTooltipPosition]="isDesktop ? 'right' : ''" [matTooltipClass]="isDesktop ? 'data-tooltip' : ''" [matTooltipDisabled]="isDesktop ? collapsed == true : ''">
                 <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="navbarDataHome.items && navbarDataHome.items.length > 0" [ngClass]="getActiveClass(navbarDataHome)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
                     <i class="sidenav-link-icon" [class]="navbarDataHome.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
@@ -38,7 +38,7 @@
                 </div>
             </li>
 
-            <li *ngIf="isDesktop" class="sidenav-nav-item" [matTooltip]="navbarDataToDoList.label" matTooltipPosition="right" matTooltipClass="dataTooltip" [matTooltipDisabled]="collapsed == true">
+            <!-- <li *ngIf="isDesktop" class="sidenav-nav-item" [matTooltip]="navbarDataToDoList.label" matTooltipPosition="right" matTooltipClass="data-tooltip" [matTooltipDisabled]="collapsed == true">
                 <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="navbarDataToDoList.items && navbarDataToDoList.items.length > 0" [ngClass]="getActiveClass(navbarDataToDoList)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
                     <i class="sidenav-link-icon" [class]="navbarDataToDoList.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
@@ -51,7 +51,6 @@
                 <a class="sidenav-nav-link"
                     *ngIf="!navbarDataToDoList.items || (navbarDataToDoList.items && navbarDataToDoList.items.length === 0)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}" 
                     [href]="[navbarDataToDoList.routeLink]"
-                    target="_blank"                    
                     (click)="shrinkItems(navbarDataToDoList)">
                     <i class="sidenav-link-icon" [class]="navbarDataToDoList.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
@@ -66,9 +65,9 @@
                       [expanded]="navbarDataToDoList.expanded">
                     </app-sublevel-menu>
                 </div>
-            </li>
+            </li> -->
 
-            <li class="sidenav-nav-item" *ngFor="let data of getItems()" [matTooltip]="isDesktop ? data.label : ''" [matTooltipPosition]="isDesktop ? 'right' : ''" [matTooltipClass]="isDesktop ? 'dataTooltip' : ''" [matTooltipDisabled]="isDesktop ? collapsed == true : ''">
+            <li class="sidenav-nav-item" *ngFor="let data of getItems()" [matTooltip]="isDesktop ? data.label : ''" [matTooltipPosition]="isDesktop ? 'right' : ''" [matTooltipClass]="isDesktop ? 'data-tooltip' : ''" [matTooltipDisabled]="isDesktop ? collapsed == true : ''">
                 <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="data.items && data.items.length > 0" [ngClass]="getActiveClass(data)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
                     <i class="sidenav-link-icon" [class]="data.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">

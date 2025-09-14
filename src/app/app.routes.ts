@@ -49,8 +49,13 @@ import { SeriesForDesktopComponent } from './series/for-desktop/series-for-deskt
 import { SeriesForTabletComponent } from './series/for-tablet/series-for-tablet.component';
 import { SeriesForMobileComponent } from './series/for-mobile/series-for-mobile.component';
 
-import { ToDoListForDesktopComponent } from './to-do-list/for-desktop/to-do-list-desktop.component';
-import { ToDoListForMobileComponent } from './to-do-list/for-mobile/to-do-list-mobile.component';
+import { ToDoListComponent } from './to-do-list/to-do-list.component';
+
+import { RemindersForDesktopComponent } from './reminders/for-desktop/reminders-for-desktop.component';
+import { RemindersForTabletComponent } from './reminders/for-tablet/reminders-for-tablet.component';
+import { RemindersForMobileComponent } from './reminders/for-mobile/reminders-for-mobile.component';
+
+import { NotificationsComponent } from './notifications/notifications.component';
 
 import { AuthGuard } from './shared/services/auth.guard';
 import { SharedResolver } from './shared/services/shared.resolver';
@@ -109,7 +114,12 @@ export const rootRouterConfig: Routes = [
   { path: 'series-for-tablet', component: SeriesForTabletComponent,  resolve: { data: SharedResolver}},
   { path: 'series-for-mobile', component: SeriesForMobileComponent,  resolve: { data: SharedResolver}},
 
-  { path: 'to-do-list-desktop', component: ToDoListForDesktopComponent,  resolve: { data: SharedResolver}},
-  { path: 'to-do-list-mobile', component: ToDoListForMobileComponent,  resolve: { data: SharedResolver}},
+  { path: 'to-do-list', component: ToDoListComponent,  resolve: { data: SharedResolver}},
 
-]; 
+  { path: 'reminders-for-desktop', component: RemindersForDesktopComponent,  resolve: { data: SharedResolver}},
+  { path: 'reminders-for-tablet', component: RemindersForTabletComponent,  resolve: { data: SharedResolver}},
+  { path: 'reminders-for-mobile', component: RemindersForMobileComponent,  resolve: { data: SharedResolver}},
+
+  { path: 'notifications', component: NotificationsComponent,  resolve: { data: SharedResolver}}
+
+];

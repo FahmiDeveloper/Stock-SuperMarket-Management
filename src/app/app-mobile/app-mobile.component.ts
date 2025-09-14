@@ -13,6 +13,8 @@ import { AuthService } from '../shared/services/auth.service';
 import { UsersListService } from '../shared/services/list-users.service';
 
 import { FirebaseUserModel } from '../shared/models/user.model';
+import { Notification } from 'src/app/shared/models/notification.model';
+import { NotificationService } from '../shared/services/notification.service';
 
 // @UntilDestroy()
 
@@ -34,7 +36,8 @@ export class AppMobileComponent implements OnInit {
   isConnected:boolean;
 
   sideNavList: SideNavList[] = [
-    {icon: 'home', text: 'Home', link: '/home'}, 
+    {icon: 'home', text: 'Home', link: '/home'},
+    {icon: 'view_list', text: 'To Do List', link: '/to-do-list'},
     {icon: 'movie', text: 'Movies', link: '/movies-for-mobile'},
     {icon: 'insert_photo', text: 'Animes', link: '/animes-for-mobile'}, 
     {icon: 'theaters', text: 'Series', link: '/series-for-mobile'},
@@ -45,21 +48,28 @@ export class AppMobileComponent implements OnInit {
     {icon: 'attachment', text: 'Files', link: '/files'},
     {icon: 'lock_open', text: 'Passwords', link: '/passwords-for-mobile'},
     {icon: 'local_hospital', text: 'Medications', link: '/medications-for-mobile'},
-    {icon: 'format_align_justify', text: 'Documents', link: '/documents-for-mobile'}
+    {icon: 'format_align_justify', text: 'Documents', link: '/documents-for-mobile'},
+    {icon: 'notifications_none', text: 'Reminders', link: '/reminders-for-mobile'}
   ];
+
+  allNotifNotDone: Notification[]= [];
+  subscriptionForGetAllNotifNotDone: Subscription;
+  isOpenOverlayNotifs = false;
 
   constructor(
     private observer: BreakpointObserver, 
     private router: Router,
     private afAuth: AngularFireAuth, 
     public authService: AuthService, 
-    public usersListService: UsersListService
+    public usersListService: UsersListService,
+    public notificationService: NotificationService  
   ) {}
 
   ngOnInit() {
     this.checkIfUserIsConnected();
     this.getUserData();
     this.getAllUsers();
+    this.getAllNotificationsNotDone();
   }
 
   checkIfUserIsConnected() {
@@ -117,6 +127,20 @@ export class AppMobileComponent implements OnInit {
     });
   }
 
+  getAllNotificationsNotDone() {
+    this.subscriptionForGetAllNotifNotDone = this.notificationService
+    .getAll()
+    .subscribe((notifications: Notification[]) => {
+      this.allNotifNotDone = []; 
+      notifications.forEach(notification => {
+        if (notification.notifSubjectDone == false) {
+          this.allNotifNotDone.push(notification);
+        }
+      })
+      this.allNotifNotDone = this.allNotifNotDone.sort((n1, n2) => new Date(n2.formatDate).getTime() - new Date(n1.formatDate).getTime()).slice(0, 5);  
+    });
+  }
+
   logout(){
     this.authService
       .doLogout()
@@ -139,6 +163,31 @@ export class AppMobileComponent implements OnInit {
   redirectToSideNavContext(sideNavContext: SideNavList) {
     this.router.navigate([sideNavContext.link]);
     this.sidenav.close();
+  }
+
+  getTruncatedNameSubject(value: string, limit: number): string {
+    if (!value) {
+      return '';
+    }
+    return value.length > limit ? value.substring(0, limit) + '...' : value;
+  }
+
+  getTimeAgo(notificationDate: string): string {
+    const now = new Date();
+    const notifDate = new Date(notificationDate);
+    const diffInSeconds = Math.floor((now.getTime() - notifDate.getTime()) / 1000);
+  
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} sec ago`;
+    } else if (diffInSeconds < 3600) {
+      return `${Math.floor(diffInSeconds / 60)} min ago`;
+    } else if (diffInSeconds < 86400) {
+      return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    } else if (diffInSeconds < 604800) {
+      return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    } else {
+      return notifDate.toLocaleDateString(); // Show full date after a week
+    }
   }
 }
 
