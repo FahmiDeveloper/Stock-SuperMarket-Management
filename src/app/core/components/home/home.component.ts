@@ -1,4 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
+
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { Subscription } from 'rxjs';
@@ -10,6 +12,8 @@ import { SerieService } from 'src/app/shared/services/serie.service';
 import { ExpirationService } from 'src/app/shared/services/expiration.service';
 import { DebtService } from 'src/app/shared/services/debt.service';
 import { ClockingService } from 'src/app/shared/services/clocking.service';
+import { ReminderService } from 'src/app/shared/services/reminder.service';
+import { TimeCheckingService } from 'src/app/time-checking.service';
 
 import { Movie } from 'src/app/shared/models/movie.model';
 import { Anime } from 'src/app/shared/models/anime.model';
@@ -17,8 +21,7 @@ import { Serie } from 'src/app/shared/models/serie.model';
 import { Expiration } from 'src/app/shared/models/expiration.model';
 import { Debt } from 'src/app/shared/models/debt.model';
 import { Clocking } from 'src/app/shared/models/clocking.model';
-import { NotificationService } from 'src/app/notification.service';
-import { MessagingService } from 'src/app/messaging.service';
+import { Reminder } from 'src/app/shared/models/reminder.model';
 
 @Component({
   selector: 'app-home',
@@ -28,9 +31,9 @@ import { MessagingService } from 'src/app/messaging.service';
 
 export class HomeComponent implements OnInit, OnDestroy {
 
-  isDesktop: boolean;
-  isTablet: boolean;
-  isMobile: boolean;
+  isDesktop = false;
+  isTablet = false;
+  isMobile = false;
 
   innerWidth: any;
   orientation = '';
@@ -101,6 +104,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   customTotalInDebtsNotToGetForNow: number;
   defaultTotalInDebtsNotToGetForNow: number;
 
+  allReminders: Reminder[] = [];
+  contentsRemindersTodayList: Reminder[] = [];
+  contentsRemindersNotDoed: Reminder[] = [];
+
   subscriptionForGetAllMoviesToCheckToday: Subscription;
   subscriptionForGetAllMoviesNotChecked: Subscription;
 
@@ -116,8 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   subscriptionForGetAllClockings: Subscription;
 
-  message;
-  token: string | null = null;
+  subscriptionForGetAllReminders: Subscription;
 
   constructor(
     private movieService: MovieService,
@@ -126,26 +132,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     public expirationService: ExpirationService,
     private debtService: DebtService,
     public clockingService: ClockingService,
-    // private notificationService: NotificationService,
-    // private messagingService: MessagingService,
-    private deviceService: DeviceDetectorService
+    public reminderService: ReminderService, 
+    private timeCheckingService: TimeCheckingService,
+    private deviceService: DeviceDetectorService,
+    private router: Router
   ) {}
 
-  ngOnInit(): void {
-    // this.messagingService.requestPermission();
-    // this.messagingService.receiveMessage();
-    // this.messagingService.currentMessage.subscribe((msg) => {
-    //   this.message = msg;
-    // });
-    // this.messagingService.requestPermission().subscribe(
-    //   (token) => {
-    //     this.token = token;
-    //     this.sendNotification();
-    //   },
-    //   (error) => {
-    //     console.error('Permission denied or error: ', error);
-    //   }
-    // );
+  ngOnInit() {
     this.isDesktop = this.deviceService.isDesktop();
     this.isTablet = this.deviceService.isTablet();
     this.isMobile = this.deviceService.isMobile();
@@ -191,6 +184,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getAllDebtsStatistics();
 
     this.getAllClockings();
+
+    this.getAllReminders();
+    this.sendRemindersForChecking();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -258,26 +254,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     .subscribe((expirations: Expiration[]) => {
 
       this.contentsExpiredList = [];
-      const nowTime = new Date();
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // set to 00:00:00
 
       expirations.forEach(expiration => {
-        const dateExpiration = new Date(expiration.dateExpiration);
-    
-        const diff = Math.abs(dateExpiration.getTime() - nowTime.getTime());
+        const expDate = new Date(expiration.dateExpiration);
+        const expirationDate = new Date(expDate.getFullYear(), expDate.getMonth(), expDate.getDate()); // 00:00:00
 
-        let diffInDays  = Math.round(diff / (1000 * 60 * 60  * 24));
+        const diffMs = expirationDate.getTime() - today.getTime(); // difference in ms
+        const diffInDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-        var years = Math.floor(diffInDays / 365);
-        var months = Math.floor(diffInDays % 365 / 30);
-        var days = Math.floor(diffInDays % 365 % 30);
+        const absDays = Math.abs(diffInDays);
+        const years = Math.floor(absDays / 365);
+        const months = Math.floor((absDays % 365) / 30);
+        const days = (absDays % 365) % 30;
 
-        expiration.restdays = years + "Y " + months + "M " + days + "D";
+        expiration.restdays = `${years}Y ${months}M ${days}D`;
 
-        if (nowTime > dateExpiration || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D") {
+        if (now > expirationDate || expiration.restdays == 0 + "Y " + 0 + "M " + 0 + "D") {
           this.contentsExpiredList.push(expiration);
         }
 
-        if (nowTime < dateExpiration && years == 0 && months == 0 && days >= 1 && days <= 7) {
+        if (now < expirationDate && years == 0 && months == 0 && days >= 1 && days <= 3) {
           this.contentsSoonToExpireList.push(expiration);
         }
 
@@ -760,40 +758,91 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   calculTotalClockingLate(timeClocking: string) {
-    let composedFinancialDebt: string[] = [];
-    if (timeClocking && timeClocking > '08:00') {
-      composedFinancialDebt = timeClocking.split(':');
+    if (!timeClocking || !/^\d{2}:\d{2}$/.test(timeClocking)) return;
+
+    // Helper: HH:MM → minutes
+    const timeToMinutes = (time: string): number => {
+      const [hours, minutes] = time.split(':').map(Number);
+      return hours * 60 + minutes;
+    };
+
+    const now = new Date();
+    const month = now.getMonth(); // 0 = Jan, 6 = July, 7 = August
+
+    const summerBaseTime = timeToMinutes('07:30');
+    const regularBaseTime = timeToMinutes('08:00');
+    const clockingTime = timeToMinutes(timeClocking);
+
+    let lateMinutes = 0;
+
+    if (month === 6 || month === 7) {
+      // July or August
+      if (clockingTime > summerBaseTime) {
+        lateMinutes = clockingTime - summerBaseTime;
+      }
     } else {
-      composedFinancialDebt[1] = '0';
-    }  
-    this.minutePartList.push(Number(composedFinancialDebt[1]))
-    this.sumClockingLate = this.minutePartList.reduce((accumulator, current) => {return accumulator + current;}, 0);
-    if (this.sumClockingLate < 60) {this.totalClockingLate = this.sumClockingLate;}
-    else {
-      let hours = Math.floor(this.sumClockingLate / 60);
-      let minutes = this.sumClockingLate - (hours * 60);
-      this.totalClockingLateByHoursMinute = hours +"H "+ minutes +"Min";
+      // Other months
+      if (clockingTime > regularBaseTime) {
+        lateMinutes = clockingTime - regularBaseTime;
+      }
+    }
+
+    // Accumulate late minutes
+    this.minutePartList.push(lateMinutes);
+    this.sumClockingLate = this.minutePartList.reduce((acc, curr) => acc + curr, 0);
+
+    // Always keep total in minutes
+    this.totalClockingLate = this.sumClockingLate;
+
+    // Also provide hours/minutes format if >= 60
+    if (this.sumClockingLate < 60) {
+      this.totalClockingLateByHoursMinute = '';
+    } else {
+      const hours = Math.floor(this.sumClockingLate / 60);
+      const minutes = this.sumClockingLate % 60;
+      this.totalClockingLateByHoursMinute = `${hours}H ${minutes}Min`;
     }
   }
 
-  // sendNotification() {
-  //   if (this.token) {
-  //     this.notificationService.sendNotification(
-  //       this.token,
-  //       'Notification Title',
-  //       'This is the notification body'
-  //     ).subscribe(
-  //       (response) => {
-  //         console.log('Notification sent successfully: ', response);
-  //       },
-  //       (error) => {
-  //         console.error('Error sending notification: ', error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error('User token not found!');
-  //   }
-  // }
+  getAllReminders() {
+    this.contentsRemindersTodayList = [];
+    this.contentsRemindersNotDoed = [];
+    const currentTime = this.formatDate(new Date());
+    this.subscriptionForGetAllReminders = this.reminderService
+    .getAll()
+    .subscribe((reminders: Reminder[]) => {
+      let remindersCopy = reminders;
+      this.contentsRemindersTodayList = reminders.filter(reminder => reminder.date == moment().format('YYYY-MM-DD'));
+      this.contentsRemindersNotDoed = remindersCopy.filter(reminder => reminder.targetDate < currentTime);
+    });
+  }
+
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, so add 1
+    const day = date.getDate().toString().padStart(2, '0');
+    const hour = date.getHours().toString().padStart(2, '0');
+    const minute = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${year}-${month}-${day} ${hour}:${minute}`;
+  }
+
+  sendRemindersForChecking() {
+    this.allReminders = [];
+    this.subscriptionForGetAllReminders = this.reminderService
+    .getAll()
+    .subscribe((reminders: Reminder[]) => {
+      if (reminders.length > 0) {
+        this.allReminders = reminders;
+        this.timeCheckingService.startCheckingTime(this.allReminders, this.isDesktop);
+        this.router.events.subscribe(event => {
+          if (event instanceof NavigationStart) {
+            this.timeCheckingService.startCheckingTime(this.allReminders, this.isDesktop);
+          }
+        });
+      }
+    });
+  }
 
   ngOnDestroy() {
     this.subscriptionForGetAllMoviesToCheckToday.unsubscribe();
@@ -804,6 +853,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionForGetAllSeriesNotChecked.unsubscribe();
     this.subscriptionForGetAllContentsExpired.unsubscribe();
     this.subscriptionForGetAllDebts.unsubscribe();
+    this.subscriptionForGetAllClockings.unsubscribe();
+    this.subscriptionForGetAllReminders.unsubscribe();
   }
   
 }

@@ -66,53 +66,50 @@ export class ClockingFormForMobileComponent implements OnInit {
   }
 
   save() {
-    if (this.clocking.subjectId == 2) {
-      const start = new Date(this.clocking.dateClocking);
-      const end = new Date(this.clocking.dateEndVaction);
-      const dates = this.getDatesBetween(start, end);  
+    if (!this.clocking.key) {
+      if (this.clocking.subjectId == 2) {
+        const start = new Date(this.clocking.dateClocking);
+        const end = new Date(this.clocking.dateEndVaction);
+        const dates = this.getDatesBetween(start, end);  
 
-      for (let i = 0;i < dates.length; i++) {
-        this.clocking.dateClocking = dates[i];
-        this.clocking.note = 'Vacation';
-        if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + (i + 1);
-        if (this.arrayClockings[0] && this.arrayClockings[0].restVacationDays) this.clocking.restVacationDays = this.arrayClockings[0].restVacationDays - (i + 1);
-        this.clocking.subjectId = 2;
-        this.clocking.timeClocking = '';
-        this.clockingService.create(this.clocking);
-        Swal.fire(
-          'New clocking(s) added successfully',
-          '',
-          'success'
-        )
-      }
-    }
-    else {
-      this.clocking.restVacationDays = this.vacationLimitDays;
-       
-      if (this.clocking.key) {
-  
-        this.clockingService.update(this.clocking.key, this.clocking);
-  
-        Swal.fire(
-          'Clocking data has been updated successfully',
-          '',
-          'success'
-        )
-  
+        for (let i = 0;i < dates.length; i++) {
+          this.clocking.dateClocking = dates[i];
+          this.clocking.note = 'Vacation';
+          if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + (i + 1);
+          if (this.arrayClockings[0] && (this.arrayClockings[0].restVacationDays || this.arrayClockings[0].restVacationDays === 0)) this.clocking.restVacationDays = this.arrayClockings[0].restVacationDays - (i + 1);
+          this.clocking.subjectId = 2;
+          this.clocking.timeClocking = '';
+          this.clockingService.create(this.clocking);
+        }
       } else {
-        if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + 1;
-        else this.clocking.numRefClocking = 1;
-  
-        this.clockingService.create(this.clocking);
-  
-        Swal.fire(
+        this.clocking.restVacationDays = this.vacationLimitDays;
+        if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) {
+          this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + 1;
+        } else {
+          this.clocking.numRefClocking = 1;
+        }
+        this.clockingService.create(this.clocking);  
+      }
+      Swal.fire(
         'New clocking(s) added successfully',
         '',
         'success'
-        )
-  
-      }
-    }
+      )
+    } else {
+        this.clocking.restVacationDays = this.vacationLimitDays;
+        
+        if (this.clocking.key) {
+    
+          this.clockingService.update(this.clocking.key, this.clocking);
+    
+          Swal.fire(
+            'Clocking data has been updated successfully',
+            '',
+            'success'
+          )
+    
+        } 
+    }  
     this.close();
   }
 

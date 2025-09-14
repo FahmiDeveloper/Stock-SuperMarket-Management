@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { INavbarData, fadeInOut } from './helper';
-import { navbarDataHome, navbarDataToDoList, navbarDataForDesktop, navbarDataForTablet } from './nav-data';
+import { navbarDataHome, navbarDataForDesktop, navbarDataForTablet } from './nav-data';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -38,7 +38,7 @@ export class SidenavComponent implements OnInit {
   collapsed = false;
   screenWidth = 0;
   navbarDataHome = navbarDataHome;
-  navbarDataToDoList = navbarDataToDoList;
+  // navbarDataToDoList = navbarDataToDoList;
   navDataForDesktop = navbarDataForDesktop;
   navDataToShow: INavbarData [] = [];
   navDataForTablet = navbarDataForTablet;

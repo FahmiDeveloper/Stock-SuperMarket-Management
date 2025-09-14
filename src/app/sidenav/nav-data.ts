@@ -69,6 +69,11 @@ export const navbarDataForDesktop: INavbarData[] = [
         routeLink: 'documents-for-desktop',
         icon: 'fa fa-file-text-o',
         label: 'Documents'
+    },
+    {
+        routeLink: 'reminders-for-desktop',
+        icon: 'fa fa-bell',
+        label: 'Reminders'
     }
 ];
 

@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientModule } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -28,8 +30,6 @@ import { SortPipe } from './shared/pipes/sort.pipe';
 import { AppComponent } from './app.component';
 
 import { AngularMaterialModule } from './angular-material.module';
-
-import { HttpClientModule } from '@angular/common/http';
 
 import { 
   HeaderComponent,
@@ -159,13 +159,20 @@ import {
 } from './series/index';
 
 import { 
-  ToDoListForDesktopComponent,
-  TaskDesktopComponent,
-  TaskFormDesktopComponent,
-  ToDoListForMobileComponent,
-  TaskMobileComponent,
-  TaskFormMobileComponent
+  ToDoListComponent,
+  TaskFormComponent,
 } from './to-do-list/index';
+
+import { 
+  RemindersForDesktopComponent,
+  ReminderFormForDesktopComponent,
+  RemindersForTabletComponent,
+  ReminderFormForTabletComponent,
+  RemindersForMobileComponent,
+  ReminderFormForMobileComponent
+} from './reminders/index';
+
+import { NotificationsComponent } from './notifications/index';
 
 import { MaterialElevationDirective } from './shared/directives/material-elevation.directive';
 
@@ -173,7 +180,6 @@ import { BodyComponent } from './body/body.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
 import { AppMobileComponent } from './app-mobile/app-mobile.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -305,12 +311,17 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     SerieFormMobileComponent,
     SerieDetailsWithSeasonsMobileComponent,
 
-    ToDoListForDesktopComponent,
-    TaskDesktopComponent,
-    TaskFormDesktopComponent,
-    ToDoListForMobileComponent,
-    TaskMobileComponent,
-    TaskFormMobileComponent,
+    ToDoListComponent,
+    TaskFormComponent,
+
+    RemindersForDesktopComponent,
+    ReminderFormForDesktopComponent,
+    RemindersForTabletComponent,
+    ReminderFormForTabletComponent,
+    RemindersForMobileComponent,
+    ReminderFormForMobileComponent,
+
+    NotificationsComponent,
 
     BodyComponent,
     SidenavComponent,

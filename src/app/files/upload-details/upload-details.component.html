@@ -8,7 +8,8 @@
         class="text-application add-three-dots"
         style="font-size: x-large;cursor: pointer;" 
         (click)="copyText(file)"
-        [matTooltip]="file.fileNameWithoutType.length > 65 ? file.fileNameWithoutType : ''">
+        [matTooltip]="file.fileNameWithoutType.length > 65 ? file.fileNameWithoutType : ''"
+        matTooltipClass="data-tooltip">
         {{ file.fileNameWithoutType }}
       </span>    
   

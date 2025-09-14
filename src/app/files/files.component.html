@@ -128,7 +128,8 @@
               class="text-application add-three-dots"
               style="font-size: x-large;cursor: pointer;" 
               (click)="copyText(link)"
-              [matTooltip]="link.content.length > 60 ? link.content : ''">
+              [matTooltip]="link.content.length > 60 ? link.content : ''"
+              matTooltipClass="data-tooltip">
               {{ link.content }}
             </span>    
         

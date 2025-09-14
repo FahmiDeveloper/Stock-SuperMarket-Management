@@ -41,22 +41,11 @@
 
 <br>
 
-<mat-grid-list *ngIf="!showVacationLimitDays" cols=1 rowHeight="30px" class="text-application">
+<mat-grid-list cols=2 rowHeight="30px" class="text-application">
 
     <mat-grid-tile>Total clockings late in {{ currentMonth }}&nbsp;{{ currentYear }}</mat-grid-tile>
 
-    <mat-grid-tile>
-        <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
-        <span *ngIf="sumClockingLate == 60 || sumClockingLate > 60">{{ totalClockingLateByHoursMinute }}</span>
-    </mat-grid-tile>
-
-</mat-grid-list>
-
-<mat-grid-list *ngIf="showVacationLimitDays" cols=2 rowHeight="30px" class="text-application">
-
-    <mat-grid-tile>Total clockings late in {{ currentMonth }}&nbsp;{{ currentYear }}</mat-grid-tile>
-
-    <mat-grid-tile> Vacation limit days in {{ currentMonthAndYearForVacation }}</mat-grid-tile>
+    <mat-grid-tile> Vacation limit days in {{ currentMonth }}&nbsp;{{ currentYear }}</mat-grid-tile>
 
     <mat-grid-tile>
         <span *ngIf="sumClockingLate < 60 || !sumClockingLate">{{ totalClockingLate }}&nbsp;Min</span>
