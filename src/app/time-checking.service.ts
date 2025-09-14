@@ -46,12 +46,8 @@ export class TimeCheckingService implements OnDestroy {
       allReminders.forEach(reminder => {
         this.notificationForSave = {};
         if (currentTime === reminder.targetDate) {
-          if (isDesktop) {
-            this.showNotificationDesktopService.showNotificationDesktop(`${reminder.subject}`, `${bodyNotif}`);
-          } else {
-            this.showNotificationAndroidService.showNotificationAndroid(reminder.subject, `${bodyNotif}`);
-          }
-
+          this.showNotificationDesktopService.showNotificationDesktop(`${reminder.subject}`, `${bodyNotif}`);
+          
           this.notificationForSave.date = reminder.date;
           this.notificationForSave.time = reminder.time;
           this.notificationForSave.subject = reminder.subject;
