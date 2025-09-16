@@ -72,7 +72,6 @@ export class ClockingFormForTabletComponent implements OnInit {
 
         for (let i = 0;i < dates.length; i++) {
           this.clocking.dateClocking = dates[i];
-          this.clocking.note = 'Vacation';
           if (this.arrayClockings[0] && this.arrayClockings[0].numRefClocking) this.clocking.numRefClocking = this.arrayClockings[0].numRefClocking + (i + 1);
           if (this.arrayClockings[0] && (this.arrayClockings[0].restVacationDays || this.arrayClockings[0].restVacationDays === 0)) this.clocking.restVacationDays = this.arrayClockings[0].restVacationDays - (i + 1);
           this.clocking.subjectId = 2;

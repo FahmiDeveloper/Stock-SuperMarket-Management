@@ -72,8 +72,8 @@ export class SidenavComponent implements OnInit {
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
   }
 
-  handleClick(item: INavbarData): void {
-    this.shrinkItems(item);
+  handleClick(item: INavbarData, event: MouseEvent): void {
+    this.shrinkItems(item, event);
     item.expanded = !item.expanded;
   }
 
@@ -81,15 +81,25 @@ export class SidenavComponent implements OnInit {
     return this.router.url.includes(data.routeLink) ? 'active' : ''; 
   }
 
-  shrinkItems(item: INavbarData): void {
+  shrinkItems(item: INavbarData, event: MouseEvent): void {
     if (!this.multiple) {
       if (this.isDesktop) {
+        if (item.routeLink == 'to-do-list') {
+          event.preventDefault(); 
+          const url = this.router.serializeUrl(
+            this.router.createUrlTree(['/to-do-list'])
+          );
+          window.open(url, '_blank');
+        } else {
+          this.router.navigate(['/' + item.routeLink]);
+        }      
         for (let modelItem of this.navDataForDesktop) {
           if (item !== modelItem && modelItem.expanded) {
             modelItem.expanded = false;
           }
         }
       } else {
+        this.router.navigate(['/' + item.routeLink]);
         for (let modelItem of this.navDataForTablet) {
           if (item !== modelItem && modelItem.expanded) {
             modelItem.expanded = false;

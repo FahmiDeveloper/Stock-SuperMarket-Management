@@ -7,14 +7,19 @@ export const navbarDataHome: INavbarData =
     label: 'Home'
 };
 
-export const navbarDataToDoList: INavbarData = 
-{
-    routeLink: 'https://to-do.live.com/tasks/inbox',
-    icon: 'fa fa-tasks',
-    label: 'ToDoList'
-};
+// export const navbarDataToDoList: INavbarData = 
+// {
+//     routeLink: 'to-do-list-desktop',
+//     icon: 'fa fa-tasks',
+//     label: 'ToDoList'
+// };
 
 export const navbarDataForDesktop: INavbarData[] = [
+    {
+        routeLink: 'to-do-list',
+        icon: 'fa fa-tasks',
+        label: 'To Do List'
+    },
     {
         routeLink: 'movies-for-desktop',
         icon: 'fa fa-film',
@@ -78,6 +83,11 @@ export const navbarDataForDesktop: INavbarData[] = [
 ];
 
 export const navbarDataForTablet: INavbarData[] = [
+    {
+        routeLink: 'to-do-list',
+        icon: 'fa fa-tasks',
+        label: 'To Do List'
+    },
     {
         routeLink: 'movies-for-tablet',
         icon: 'fa fa-film',
