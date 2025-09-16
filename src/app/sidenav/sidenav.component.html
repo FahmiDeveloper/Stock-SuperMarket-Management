@@ -10,7 +10,7 @@
         <ul class="sidenav-nav">
 
             <li class="sidenav-nav-item" [matTooltip]="isDesktop ? navbarDataHome.label : ''" [matTooltipPosition]="isDesktop ? 'right' : ''" [matTooltipClass]="isDesktop ? 'data-tooltip' : ''" [matTooltipDisabled]="isDesktop ? collapsed == true : ''">
-                <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="navbarDataHome.items && navbarDataHome.items.length > 0" [ngClass]="getActiveClass(navbarDataHome)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
+                <a class="sidenav-nav-link" (click)="handleClick(data, $event)" *ngIf="navbarDataHome.items && navbarDataHome.items.length > 0" [ngClass]="getActiveClass(navbarDataHome)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
                     <i class="sidenav-link-icon" [class]="navbarDataHome.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
                         {{navbarDataHome.label}}
@@ -22,7 +22,7 @@
                 <a class="sidenav-nav-link"
                     *ngIf="!navbarDataHome.items || (navbarDataHome.items && navbarDataHome.items.length === 0)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}" 
                     [routerLink]="[navbarDataHome.routeLink]"
-                    (click)="shrinkItems(navbarDataHome)">
+                    (click)="shrinkItems(navbarDataHome, $event)">
                     <i class="sidenav-link-icon" [class]="navbarDataHome.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
                         {{navbarDataHome.label}}
@@ -68,7 +68,7 @@
             </li> -->
 
             <li class="sidenav-nav-item" *ngFor="let data of getItems()" [matTooltip]="isDesktop ? data.label : ''" [matTooltipPosition]="isDesktop ? 'right' : ''" [matTooltipClass]="isDesktop ? 'data-tooltip' : ''" [matTooltipDisabled]="isDesktop ? collapsed == true : ''">
-                <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="data.items && data.items.length > 0" [ngClass]="getActiveClass(data)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
+                <a class="sidenav-nav-link" (click)="handleClick(data, $event)" *ngIf="data.items && data.items.length > 0" [ngClass]="getActiveClass(data)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}">
                     <i class="sidenav-link-icon" [class]="data.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
                         {{data.label}}
@@ -78,11 +78,8 @@
                 </a>
     
                 <a class="sidenav-nav-link"
-                    *ngIf="!data.items || (data.items && data.items.length === 0)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}" 
-                    [routerLink]="[data.routeLink]"
-                    routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact: true}"
-                    (click)="shrinkItems(data)">
+                    *ngIf="!data.items || (data.items && data.items.length === 0)" [ngStyle]="{'width': collapsed == false ? '3rem': ''}"             
+                    (click)="shrinkItems(data, $event)">
                     <i class="sidenav-link-icon" [class]="data.icon"></i>
                     <span class="sidenav-link-text text-application" @fadeInOut *ngIf="collapsed">
                         {{data.label}}
